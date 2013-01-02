@@ -53,6 +53,7 @@ public class LedSkin extends SkinBase<Led> {
     private Pane                pane;
     private Region              frame;
     private Region              off;
+    private Region              onBack;
     private Region              on;
     private Region              highlight;
     private InnerShadow         innerShadow;
