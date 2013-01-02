@@ -55,7 +55,7 @@ public class LcdSkin extends SkinBase<Lcd> {
     private static final double        MINIMUM_HEIGHT    = 5;
     private static final double        MAXIMUM_WIDTH     = 1024;
     private static final double        MAXIMUM_HEIGHT    = 1024;
-    private static final double        ASPECT_RATIO      = DEFAULT_HEIGHT / DEFAULT_WIDTH;
+    private static double              aspectRatio       = DEFAULT_HEIGHT / DEFAULT_WIDTH;
     private static final Text          ONE_SEGMENT       = new Text("8");
     private static final DecimalFormat DEC_FORMAT        = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US));
     private static final boolean       SCIFI_FORMAT      = false;
@@ -131,6 +131,10 @@ public class LcdSkin extends SkinBase<Lcd> {
         if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0 ||
             control.getPrefWidth() <= 0 || getHeight() <= 0) {
             control.setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
+        }
+
+        if (control.getPrefWidth() != DEFAULT_WIDTH || control.getPrefHeight() != DEFAULT_HEIGHT) {
+            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
         }
     }
 
@@ -241,16 +245,19 @@ public class LcdSkin extends SkinBase<Lcd> {
     private void registerListeners() {
         registerChangeListener(control.widthProperty(), "RESIZE");
         registerChangeListener(control.heightProperty(), "RESIZE");
+        registerChangeListener(control.keepAspectProperty(), "RESIZE");
         registerChangeListener(control.titleProperty(), "UPDATE");
         registerChangeListener(control.numberSystemProperty(), "UPDATE");
         registerChangeListener(control.currentValueProperty(), "UPDATE");
+        registerChangeListener(control.minMeasuredValueProperty(), "UPDATE");
+        registerChangeListener(control.maxMeasuredValueProperty(), "UPDATE");
+        registerChangeListener(control.prefWidthProperty(), "PREF_SIZE");
+        registerChangeListener(control.prefHeightProperty(), "PREF_SIZE");
         registerChangeListener(control.valueFontProperty(), "FONT");
         registerChangeListener(control.numberSystemVisibleProperty(), "NUMBER_SYSTEM_VISIBLE");
         registerChangeListener(control.backgroundVisibleProperty(), "BACKGROUND_VISIBLE");
         registerChangeListener(control.animationDurationProperty(), "ANIMATION_DURATION");
         registerChangeListener(control.thresholdExceededProperty(), "THRESHOLD_EXCEEDED");
-        registerChangeListener(control.minMeasuredValueProperty(), "MIN_MEASURED_VALUE");
-        registerChangeListener(control.maxMeasuredValueProperty(), "MAX_MEASURED_VALUE");
         registerChangeListener(control.trendProperty(), "TREND");
         registerChangeListener(control.thresholdExceededProperty(), "THRESHOLD_EXCEEDED");
         registerChangeListener(control.valueVisibleProperty(), "VALUE_VISIBLE");
@@ -275,6 +282,8 @@ public class LcdSkin extends SkinBase<Lcd> {
         } else if ("RESIZE".equals(PROPERTY)) {
             resize();
             updateLcd();
+        } else if ("PREF_SIZE".equals(PROPERTY)) {
+            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
         } else if ("BACKGROUND_VISIBLE".equals(PROPERTY)) {
             lcdMain.setVisible(control.isBackgroundVisible());
             lcdFrame.setVisible(control.isBackgroundVisible());
@@ -534,13 +543,13 @@ public class LcdSkin extends SkinBase<Lcd> {
     }
 
     private void resize() {
-        width  = control.getWidth();
-        height = control.getHeight();
+        width       = control.getWidth();
+        height      = control.getHeight();
         if (control.isKeepAspect()) {
-            if (ASPECT_RATIO * width > height) {
-                width  = 1 / (ASPECT_RATIO / height);
-            } else if (1 / (ASPECT_RATIO / height) > width) {
-                height = ASPECT_RATIO * width;
+            if (aspectRatio * width > height) {
+                width  = 1 / (aspectRatio / height);
+            } else if (1 / (aspectRatio / height) > width) {
+                height = aspectRatio * width;
             }
         }
 
@@ -552,9 +561,9 @@ public class LcdSkin extends SkinBase<Lcd> {
         lcdMainInnerShadow0.setRadius(3.0 / 132.0 * height);
         lcdMainInnerShadow1.setRadius(2.0 / 132.0 * height);
 
-        lcdThreshold.setPrefSize(0.0955911838647091 * width, 0.26287567615509033 * height);
+        lcdThreshold.setPrefSize(0.20 * height, 0.20 * height);
         lcdThreshold.setTranslateX(0.027961994662429348 * width);
-        lcdThreshold.setTranslateY(0.69 * height);
+        lcdThreshold.setTranslateY(0.75 * height);
 
         lcdTrendDown.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
         lcdTrendDown.setTranslateX(0.1785283377676299 * width);

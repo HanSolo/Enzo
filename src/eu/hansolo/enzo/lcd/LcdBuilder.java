@@ -93,6 +93,11 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
+    public final LcdBuilder keepAspect(final boolean KEEP_ASPECT) {
+        properties.put("keepAspect", new SimpleBooleanProperty(KEEP_ASPECT));
+        return this;
+    }
+
     public final LcdBuilder backgroundVisible(final boolean BACKGROUND_VISIBLE) {
         properties.put("backgroundVisible", new SimpleBooleanProperty(BACKGROUND_VISIBLE));
         return this;
@@ -223,6 +228,8 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setThreshold(((DoubleProperty) properties.get(key)).get());
             } else if("decimals".equals(key)) {
                 CONTROL.setDecimals(((IntegerProperty) properties.get(key)).get());
+            } else if ("keepAspect".equals(key)) {
+                CONTROL.setKeepAspect(((BooleanProperty) properties.get(key)).get());
             } else if ("backgroundVisible".equals(key)) {
                 CONTROL.setBackgroundVisible(((BooleanProperty) properties.get(key)).get());
             } else if("minMeasuredValueVisible".equals(key)) {

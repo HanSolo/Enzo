@@ -46,6 +46,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Control;
 import javafx.util.Duration;
 
@@ -117,7 +119,8 @@ public class Lcd extends Control {
     }
 
     private boolean                      initialized;
-    private boolean                      keepAspect;
+    private boolean                      firstTime;
+    private BooleanProperty              keepAspect;
     private DoubleProperty               value;
     private DoubleProperty               currentValue;
     private DoubleProperty               minValue;
@@ -164,7 +167,8 @@ public class Lcd extends Control {
     public Lcd() {
         getStyleClass().add("lcd");
         initialized               = false;
-        keepAspect                = true;
+        firstTime                 = true;
+        keepAspect                = new SimpleBooleanProperty(true);
         value                     = new SimpleDoubleProperty(0);
         currentValue              = new SimpleDoubleProperty(0);
         minValue                  = new SimpleDoubleProperty(0);
@@ -245,6 +249,14 @@ public class Lcd extends Control {
                 if (isValueAnimationEnabled()) {
                     toValueAnimation.setInterpolator(Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
                     toValueAnimation.play();
+                    toValueAnimation.setOnFinished(new EventHandler<ActionEvent>() {
+                        @Override public void handle(final ActionEvent EVENT) {
+                            if (firstTime) {
+                                resetMinMaxMeasuredValue();
+                                firstTime = false;
+                            }
+                        }
+                    });
                 } else {
                     currentValue.set(newValue.doubleValue());
                 }
@@ -252,10 +264,10 @@ public class Lcd extends Control {
         });
         currentValue.addListener(new ChangeListener<Number>() {
             @Override public void changed(final ObservableValue<? extends Number> ov, final Number oldValue, final Number newValue) {
-                if (Double.compare(currentValue.get(), getMinMeasuredValue()) < 0) {
+                if (Double.compare(currentValue.get(), getMinMeasuredValue()) < 0 && !firstTime) {
                     setMinMeasuredValue(currentValue.get());
                 }
-                if (Double.compare(currentValue.get(), getMaxMeasuredValue()) > 0) {
+                if (Double.compare(currentValue.get(), getMaxMeasuredValue()) > 0 && !firstTime) {
                     setMaxMeasuredValue(currentValue.get());
                 }
                 if (initialized) {
@@ -272,6 +284,12 @@ public class Lcd extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
+        return keepAspect.get();
+    }
+    public final void setKeepAspect(final boolean KEEP_ASPECT) {
+        keepAspect.set(KEEP_ASPECT);
+    }
+    public final BooleanProperty keepAspectProperty() {
         return keepAspect;
     }
 
@@ -309,7 +327,6 @@ public class Lcd extends Control {
     }
     public final void setValueAnimationEnabled(final boolean VALUE_ANIMATION_ENABLED) {
         valueAnimationEnabled.set(VALUE_ANIMATION_ENABLED);
-        
     }
     public final BooleanProperty valueAnimationEnabledProperty() {
         return valueAnimationEnabled;
@@ -320,7 +337,6 @@ public class Lcd extends Control {
     }
     public final void setAnimationDuration(final double ANIMATION_DURATION) {
         animationDuration.set(ANIMATION_DURATION);
-        
     }
     public final DoubleProperty animationDurationProperty() {
         return animationDuration;
@@ -331,7 +347,6 @@ public class Lcd extends Control {
     }
     public final void setMinValue(final double MIN_VALUE) {
         minValue.set(MIN_VALUE);
-        
     }
     public final DoubleProperty minValueProperty() {
         return minValue;
@@ -342,7 +357,6 @@ public class Lcd extends Control {
     }
     public final void setMaxValue(final double MAX_VALUE) {
         maxValue.set(MAX_VALUE);
-        
     }
     public final DoubleProperty maxValueProperty() {
         return maxValue;
@@ -357,7 +371,6 @@ public class Lcd extends Control {
     }
     public final void setMinMeasuredValue(final double MIN_MEASURED_VALUE) {
         minMeasuredValue.set(MIN_MEASURED_VALUE);
-        
     }
     public final DoubleProperty minMeasuredValueProperty() {
         return minMeasuredValue;
@@ -371,7 +384,6 @@ public class Lcd extends Control {
     }
     public final void setMaxMeasuredValue(final double MAX_MEASURED_VALUE) {
         maxMeasuredValue.set(MAX_MEASURED_VALUE);
-        
     }
     public final DoubleProperty maxMeasuredValueProperty() {
         return maxMeasuredValue;
