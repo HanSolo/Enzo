@@ -282,12 +282,10 @@ public class Lcd extends Control {
     public final double getValue() {
         return value.get();
     }
-
     public final void setValue(final double VALUE) {
         formerValue.set(value.get());
         value.set(clamp(getMinValue(), getMaxValue(), VALUE));
     }
-
     public final DoubleProperty valueProperty() {
         return value;
     }
@@ -295,7 +293,6 @@ public class Lcd extends Control {
     public final double getCurrentValue() {
         return currentValue.get();
     }
-
     public final ReadOnlyDoubleProperty currentValueProperty() {
         return currentValue;
     }
@@ -303,7 +300,6 @@ public class Lcd extends Control {
     public final double getFormerValue() {
         return formerValue.get();
     }
-
     public final ReadOnlyDoubleProperty formerValueProperty() {
         return formerValue;
     }
@@ -311,12 +307,10 @@ public class Lcd extends Control {
     public final boolean isValueAnimationEnabled() {
         return valueAnimationEnabled.get();
     }
-
     public final void setValueAnimationEnabled(final boolean VALUE_ANIMATION_ENABLED) {
         valueAnimationEnabled.set(VALUE_ANIMATION_ENABLED);
         
     }
-
     public final BooleanProperty valueAnimationEnabledProperty() {
         return valueAnimationEnabled;
     }
@@ -324,12 +318,10 @@ public class Lcd extends Control {
     public final double getAnimationDuration() {
         return animationDuration.get();
     }
-
     public final void setAnimationDuration(final double ANIMATION_DURATION) {
         animationDuration.set(ANIMATION_DURATION);
         
     }
-
     public final DoubleProperty animationDurationProperty() {
         return animationDuration;
     }
@@ -337,12 +329,10 @@ public class Lcd extends Control {
     public final double getMinValue() {
         return minValue.get();
     }
-
     public final void setMinValue(final double MIN_VALUE) {
         minValue.set(MIN_VALUE);
         
     }
-
     public final DoubleProperty minValueProperty() {
         return minValue;
     }
@@ -350,12 +340,10 @@ public class Lcd extends Control {
     public final double getMaxValue() {
         return maxValue.get();
     }
-
     public final void setMaxValue(final double MAX_VALUE) {
         maxValue.set(MAX_VALUE);
         
     }
-
     public final DoubleProperty maxValueProperty() {
         return maxValue;
     }
@@ -367,16 +355,13 @@ public class Lcd extends Control {
     public final double getMinMeasuredValue() {
         return minMeasuredValue.get();
     }
-
     public final void setMinMeasuredValue(final double MIN_MEASURED_VALUE) {
         minMeasuredValue.set(MIN_MEASURED_VALUE);
         
     }
-
     public final DoubleProperty minMeasuredValueProperty() {
         return minMeasuredValue;
     }
-
     public final void resetMinMeasuredValue() {
         setMinMeasuredValue(getValue());
     }
@@ -384,16 +369,13 @@ public class Lcd extends Control {
     public final double getMaxMeasuredValue() {
         return maxMeasuredValue.get();
     }
-
     public final void setMaxMeasuredValue(final double MAX_MEASURED_VALUE) {
         maxMeasuredValue.set(MAX_MEASURED_VALUE);
         
     }
-
     public final DoubleProperty maxMeasuredValueProperty() {
         return maxMeasuredValue;
     }
-
     public final void resetMaxMeasuredValue() {
         setMaxMeasuredValue(getValue());
     }
@@ -406,11 +388,9 @@ public class Lcd extends Control {
     public final double getThreshold() {
         return threshold.get();
     }
-
     public final void setThreshold(final double THRESHOLD) {
         threshold.set(clamp(getMinValue(), getMaxValue(), THRESHOLD));
     }
-
     public final DoubleProperty thresholdProperty() {
         return threshold;
     }
@@ -418,12 +398,10 @@ public class Lcd extends Control {
     public final boolean isThresholdBehaviorInverted() {
         return thresholdBehaviorInverted.get();
     }
-
     public final void setThresholdBehaviorInverted(final boolean THRESHOLD_BEHAVIOR_INVERTED) {
         thresholdBehaviorInverted.set(THRESHOLD_BEHAVIOR_INVERTED);
         
     }
-
     public final BooleanProperty thresholdBehaviorInvertedProperty() {
         return thresholdBehaviorInverted;
     }
@@ -431,12 +409,10 @@ public class Lcd extends Control {
     public final boolean isThresholdExceeded() {
         return thresholdExceeded.get();
     }
-
     public final void setThresholdExceeded(final boolean THRESHOLD_EXCEEDED) {
         thresholdExceeded.set(THRESHOLD_EXCEEDED);
         
     }
-
     public final BooleanProperty thresholdExceededProperty() {
         return thresholdExceeded;
     }
@@ -444,11 +420,9 @@ public class Lcd extends Control {
     public final String getTitle() {
         return title.get();
     }
-
     public final void setTitle(final String TITLE) {
         title.set(TITLE);
     }
-
     public final StringProperty titleProperty() {
         return title;
     }
@@ -456,12 +430,10 @@ public class Lcd extends Control {
     public final String getUnit() {
         return unit.get();
     }
-
     public final void setUnit(final String UNIT) {
         unit.set(UNIT);
         
     }
-
     public final StringProperty unitProperty() {
         return unit;
     }
@@ -469,12 +441,10 @@ public class Lcd extends Control {
     public final NumberSystem getNumberSystem() {
         return numberSystem.get();
     }
-
     public final void setNumberSystem(final NumberSystem NUMBER_SYSTEM) {
         numberSystem.set(NUMBER_SYSTEM);
         
     }
-
     public final ObjectProperty numberSystemProperty() {
         return numberSystem;
     }
@@ -482,12 +452,10 @@ public class Lcd extends Control {
     public final Trend getTrend() {
         return trend.get();
     }
-
     public final void setTrend(final Trend TREND) {
         trend.set(TREND);
         
     }
-
     public final ObjectProperty<Trend> trendProperty() {
         return trend;
     }
@@ -495,7 +463,6 @@ public class Lcd extends Control {
     public final boolean isValueVisible() {
         return valueVisible.get();
     }
-
     public final ReadOnlyBooleanProperty valueVisibleProperty() {
         return valueVisible;
     }
@@ -503,12 +470,10 @@ public class Lcd extends Control {
     public final boolean isMinMeasuredValueVisible() {
         return minMeasuredValueVisible.get();
     }
-
     public final void setMinMeasuredValueVisible(final boolean MIN_MEASURED_VALUE_VISIBLE) {
         minMeasuredValueVisible.set(MIN_MEASURED_VALUE_VISIBLE);
         
     }
-
     public final BooleanProperty minMeasuredValueVisibleProperty() {
         return minMeasuredValueVisible;
     }
@@ -516,12 +481,10 @@ public class Lcd extends Control {
     public final boolean isMaxMeasuredValueVisible() {
         return maxMeasuredValueVisible.get();
     }
-
     public final void setMaxMeasuredValueVisible(final boolean MAX_MEASURED_VALUE_VISIBLE) {
         maxMeasuredValueVisible.set(MAX_MEASURED_VALUE_VISIBLE);
         
     }
-
     public final BooleanProperty maxMeasuredValueVisibleProperty() {
         return maxMeasuredValueVisible;
     }
@@ -529,12 +492,10 @@ public class Lcd extends Control {
     public final boolean isThresholdVisible() {
         return thresholdVisible.get();
     }
-
     public final void setThresholdVisible(final boolean THRESHOLD_VISIBLE) {
         thresholdVisible.set(THRESHOLD_VISIBLE);
         
     }
-
     public final BooleanProperty thresholdVisibleProperty() {
         return thresholdVisible;
     }
@@ -542,12 +503,10 @@ public class Lcd extends Control {
     public final boolean isBackgroundVisible() {
         return backgroundVisible.get();
     }
-
     public final void setBackgroundVisible(final boolean BACKGROUND_VISIBLE) {
         backgroundVisible.set(BACKGROUND_VISIBLE);
         
     }
-
     public final BooleanProperty backgroundVisibleProperty() {
         return backgroundVisible;
     }
@@ -555,11 +514,9 @@ public class Lcd extends Control {
     public final String getTitleFont() {
         return titleFont.get();
     }
-
     public final void setTitleFont(final String TITLE_FONT) {
         titleFont.set(TITLE_FONT);
     }
-
     public final StringProperty titleFontProperty() {
         return titleFont;
     }
@@ -567,12 +524,10 @@ public class Lcd extends Control {
     public final String getUnitFont() {
         return unitFont.get();
     }
-
     public final void setUnitFont(final String UNIT_FONT) {
         unitFont.set(UNIT_FONT);
         
     }
-
     public final StringProperty unitFontProperty() {
         return unitFont;
     }
@@ -580,12 +535,10 @@ public class Lcd extends Control {
     public final LcdFont getValueFont() {
         return valueFont.get();
     }
-
     public final void setValueFont(final LcdFont VALUE_FONT) {
         valueFont.set(VALUE_FONT);
         
     }
-
     public final ObjectProperty<LcdFont> valueFontProperty() {
         return valueFont;
     }
@@ -593,12 +546,10 @@ public class Lcd extends Control {
     public final int getDecimals() {
         return decimals.get();
     }
-
     public final void setDecimals(final int DECIMALS) {
         final int dec = DECIMALS > 5 ? 5 : (DECIMALS < 0 ? 0 : DECIMALS);
         decimals.set(dec);
     }
-
     public final IntegerProperty decimalsProperty() {
         return decimals;
     }
@@ -606,12 +557,10 @@ public class Lcd extends Control {
     public final boolean isNumberSystemVisible() {
         return numberSystemVisible.get();
     }
-
     public final void setNumberSystemVisible(final boolean NUMBER_SYSTEM_VISIBLE) {
         numberSystemVisible.set(NUMBER_SYSTEM_VISIBLE);
         
     }
-
     public final BooleanProperty numberSystemVisibleProperty() {
         return numberSystemVisible;
     }
@@ -619,7 +568,6 @@ public class Lcd extends Control {
     public final boolean isBlinking() {
         return blinking.get();
     }
-
     public final void setBlinking(final boolean BLINKING) {
         blinking.set(BLINKING);
         if (BLINKING) {
@@ -629,7 +577,6 @@ public class Lcd extends Control {
             valueVisible.set(true);
         }
     }
-
     public final BooleanProperty blinkingProperty() {
         return blinking;
     }
@@ -637,11 +584,9 @@ public class Lcd extends Control {
     public final boolean isTitleVisible() {
         return titleVisible.get();
     }
-
     public final void setTitleVisible(final boolean TITLE_VISIBLE) {
         titleVisible.set(TITLE_VISIBLE);
     }
-
     public final BooleanProperty titleVisibleProperty() {
         return titleVisible;
     }
@@ -649,11 +594,9 @@ public class Lcd extends Control {
     public final boolean isUnitVisible() {
         return unitVisible.get();
     }
-
     public final void setUnitVisible(final boolean UNIT_VISIBLE) {
         unitVisible.set(UNIT_VISIBLE);
     }
-
     public final BooleanProperty unitVisibleProperty() {
         return unitVisible;
     }
@@ -661,11 +604,9 @@ public class Lcd extends Control {
     public final boolean isTrendVisible() {
         return trendVisible.get();
     }
-
     public final void setTrendVisible(final boolean TREND_VISIBLE) {
         trendVisible.set(TREND_VISIBLE);
     }
-
     public final BooleanProperty trendVisibleProperty() {
         return trendVisible;
     }
@@ -673,11 +614,9 @@ public class Lcd extends Control {
     public final boolean isFormerValueVisible() {
         return formerValueVisible.get();
     }
-
     public final void setFormerValueVisible(final boolean FORMER_VALUE_VISIBLE) {
         formerValueVisible.set(FORMER_VALUE_VISIBLE);
     }
-
     public final BooleanProperty formerValueVisibleProperty() {
         return formerValueVisible;
     }
@@ -685,12 +624,10 @@ public class Lcd extends Control {
     public final int getMinMeasuredValueDecimals() {
         return minMeasuredValueDecimals.get();
     }
-
     public final void setMinMeasuredValueDecimals(final int MIN_MEASURED_VALUE_DECIMALS) {
         final int DECIMALS = MIN_MEASURED_VALUE_DECIMALS > 5 ? 5 : (MIN_MEASURED_VALUE_DECIMALS < 0 ? 0 : MIN_MEASURED_VALUE_DECIMALS);
         minMeasuredValueDecimals.set(DECIMALS);
     }
-
     public final IntegerProperty minMeasuredValueDecimalsProperty() {
         return maxMeasuredValueDecimals;
     }
@@ -698,12 +635,10 @@ public class Lcd extends Control {
     public final int getMaxMeasuredValueDecimals() {
         return maxMeasuredValueDecimals.get();
     }
-
     public final void setMaxMeasuredValueDecimals(final int MAX_MEASURED_VALUE_DECIMALS) {
         final int DECIMALS = MAX_MEASURED_VALUE_DECIMALS > 5 ? 5 : (MAX_MEASURED_VALUE_DECIMALS < 0 ? 0 : MAX_MEASURED_VALUE_DECIMALS);
         maxMeasuredValueDecimals.set(DECIMALS);
     }
-
     public final IntegerProperty maxMeasuredValueDecimalsProperty() {
         return maxMeasuredValueDecimals;
     }

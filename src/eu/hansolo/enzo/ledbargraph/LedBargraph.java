@@ -89,11 +89,9 @@ public class LedBargraph extends Control {
     public final Led.Type getLedType() {
         return ledType.get();
     }
-
     public final void setLedType(final Led.Type LED_TYPE) {
         ledType.set(LED_TYPE);
     }
-
     public final ObjectProperty<Led.Type> ledTypeProperty() {
         return ledType;
     }
@@ -101,11 +99,9 @@ public class LedBargraph extends Control {
     public final boolean isFrameVisible() {
         return frameVisible.get();
     }
-
     public final void setFrameVisible(final boolean FRAME_VISIBLE) {
         frameVisible.set(FRAME_VISIBLE);
     }
-
     public final BooleanProperty frameVisibleProperty() {
         return frameVisible;
     }
@@ -113,12 +109,10 @@ public class LedBargraph extends Control {
     public final double getLedSize() {
         return ledSize.get();
     }
-
     public final void setLedSize(final double LED_SIZE) {
         double size = LED_SIZE < 10 ? 10 : (LED_SIZE > 50 ? 50 : LED_SIZE);
         ledSize.set(size);
     }
-
     public final DoubleProperty ledSizeProperty() {
         return ledSize;
     }
@@ -126,11 +120,9 @@ public class LedBargraph extends Control {
     public final Orientation getOrientation() {
         return orientation.get();
     }
-
     public final void setOrientation(final Orientation ORIENTATION) {
         orientation.set(ORIENTATION);
     }
-
     public final ObjectProperty<Orientation> orientationProperty() {
         return orientation;
     }
@@ -138,7 +130,6 @@ public class LedBargraph extends Control {
     public final int getNoOfLeds() {
         return noOfLeds.get();
     }
-
     public final void setNoOfLeds(final int NO_OF_LEDS) {
         int amount = NO_OF_LEDS < 5 ? 5 : NO_OF_LEDS;
         if (amount > noOfLeds.get()) {
@@ -148,7 +139,6 @@ public class LedBargraph extends Control {
         }
         noOfLeds.set(amount);
     }
-
     public final IntegerProperty noOfLedsProperty() {
         return noOfLeds;
     }
@@ -156,11 +146,9 @@ public class LedBargraph extends Control {
     public final LinkedList<Color> getLedColors() {
         return ledColors.get();
     }
-
     public final void setLedColors(final LinkedList<Color> LED_COLORS) {
         ledColors.set(LED_COLORS);
     }
-
     public final ObjectProperty<LinkedList<Color>> ledColorsProperty() {
         return ledColors;
     }
@@ -176,7 +164,6 @@ public class LedBargraph extends Control {
         }
         return ledColor;
     }
-
     public final void setLedColor(final int INDEX, final Color COLOR) {
         int realIndex = INDEX - 1;
         if (realIndex < 0) {
@@ -191,11 +178,9 @@ public class LedBargraph extends Control {
     public final boolean isPeakValueVisible() {
         return peakValueVisible.get();
     }
-
     public final void setPeakValueVisible(final boolean PEAK_VALUE_VISIBLE) {
         peakValueVisible.set(PEAK_VALUE_VISIBLE);
     }
-
     public final BooleanProperty peakValueVisibleProperty() {
         return peakValueVisible;
     }
@@ -203,12 +188,10 @@ public class LedBargraph extends Control {
     public final double getValue() {
         return value.get();
     }
-
     public final void setValue(final double VALUE) {
         double val = VALUE < 0 ? 0 : (VALUE > 1 ? 1 : VALUE);
         value.set(val);
     }
-
     public final DoubleProperty valueProperty() {
         return value;
     }

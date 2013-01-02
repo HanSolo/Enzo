@@ -101,11 +101,9 @@ public class Led extends Control {
     public final Color getColor() {
         return color.get();
     }
-
     public final void setColor(final Color COLOR) {
         color.set(COLOR);
     }
-
     public final ObjectProperty<Color> colorProperty() {
         return color;
     }
@@ -113,11 +111,9 @@ public class Led extends Control {
     public final Type getType() {
         return type.get();
     }
-
     public final void setType(final Type TYPE) {
         type.set(TYPE);
     }
-
     public final ObjectProperty<Type> typeProperty() {
         return type;
     }
@@ -125,11 +121,9 @@ public class Led extends Control {
     public final boolean isOn() {
         return on.get();
     }
-
     public final void setOn(final boolean ON) {
         on.set(ON);
     }
-
     public final BooleanProperty onProperty() {
         return on;
     }
@@ -137,7 +131,6 @@ public class Led extends Control {
     public final boolean isBlinking() {
         return blink.get();
     }
-
     public final void setBlink(final boolean BLINK) {
         blink.set(BLINK);
         if (BLINK) {
@@ -147,7 +140,6 @@ public class Led extends Control {
             setOn(false);
         }
     }
-
     public final BooleanProperty blinkProperty() {
         return blink;
     }
@@ -155,11 +147,9 @@ public class Led extends Control {
     public final boolean isFrameVisible() {
         return frameVisible.get();
     }
-
     public final void setFrameVisible(final boolean FRAME_VISIBLE) {
         frameVisible.set(FRAME_VISIBLE);
     }
-
     public final BooleanProperty frameVisibleProperty() {
         return frameVisible;
     }
