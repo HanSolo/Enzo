@@ -80,7 +80,7 @@ public class Demo extends Application {
 
         Scene scene = new Scene(pane, 400, 400, Color.DARKGRAY);
 
-        stage.setTitle("JavaFX Custom Control");
+        stage.setTitle("Lcd demo");
         stage.setScene(scene);
         stage.show();
 

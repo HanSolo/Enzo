@@ -26,49 +26,9 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.hansolo.enzo.led;
-
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
-
-/**
- * Created by
- * User: hansolo
- * Date: 16.11.12
- * Time: 10:09
- */
-public class Demo extends Application {
-    private Led control;
-
-    @Override public void init() {
-        control = LedBuilder.create()
-                            .color(Color.LIGHTBLUE)
-                            .type(Led.Type.ROUND)
-                            //.frameVisible(false)
-                            .blink(true)
-                            .build();
-    }
-
-    @Override public void start(Stage stage) {
-        StackPane pane = new StackPane();
-        pane.getChildren().setAll(control);
-
-        Scene scene = new Scene(pane, 400, 400, Color.DARKGRAY);
-
-        stage.setTitle("Led demo");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @Override public void stop() {
-
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+/************************************************************
+* BARGRAPH class                                            *
+************************************************************/
+.bargraph {
+    -fx-skin: "eu.hansolo.enzo.ledbargraph.skin.LedBargraphSkin";
 }

@@ -26,49 +26,22 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.hansolo.enzo.led;
+package eu.hansolo.enzo.ledbargraph.behavior;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import com.sun.javafx.scene.control.behavior.BehaviorBase;
+import eu.hansolo.enzo.ledbargraph.LedBargraph;
 
 
 /**
  * Created by
  * User: hansolo
- * Date: 16.11.12
- * Time: 10:09
+ * Date: 16.02.12
+ * Time: 11:30
  */
-public class Demo extends Application {
-    private Led control;
+public class LedBargraphBehavior extends BehaviorBase<LedBargraph> {
 
-    @Override public void init() {
-        control = LedBuilder.create()
-                            .color(Color.LIGHTBLUE)
-                            .type(Led.Type.ROUND)
-                            //.frameVisible(false)
-                            .blink(true)
-                            .build();
-    }
-
-    @Override public void start(Stage stage) {
-        StackPane pane = new StackPane();
-        pane.getChildren().setAll(control);
-
-        Scene scene = new Scene(pane, 400, 400, Color.DARKGRAY);
-
-        stage.setTitle("Led demo");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @Override public void stop() {
-
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+    // ******************** Constructors **************************************
+    public LedBargraphBehavior(final LedBargraph CONTROL) {
+        super(CONTROL);
     }
 }

@@ -26,42 +26,59 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.hansolo.enzo.led;
+package eu.hansolo.enzo.ledbargraph;
 
+import eu.hansolo.enzo.led.Led;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 
 /**
  * Created by
  * User: hansolo
- * Date: 16.11.12
- * Time: 10:09
+ * Date: 19.11.12
+ * Time: 04:02
  */
 public class Demo extends Application {
-    private Led control;
+    private static final Random RND = new Random();
+    private LedBargraph         control;
+    private long                lastTimerCall;
+    private AnimationTimer      timer;
 
     @Override public void init() {
-        control = LedBuilder.create()
-                            .color(Color.LIGHTBLUE)
-                            .type(Led.Type.ROUND)
-                            //.frameVisible(false)
-                            .blink(true)
-                            .build();
+        control = LedBargraphBuilder.create()
+                                    .ledType(Led.Type.ROUND)
+                                    .ledSize(32)
+                                    .build();
+        lastTimerCall = System.nanoTime();
+        timer = new AnimationTimer() {
+            @Override public void handle(final long NOW) {
+                if (NOW > lastTimerCall + 100_000_000l) {
+                    control.setValue(RND.nextDouble());
+                    lastTimerCall = NOW;
+                }
+            }
+        };
     }
 
     @Override public void start(Stage stage) {
         StackPane pane = new StackPane();
+
         pane.getChildren().setAll(control);
 
-        Scene scene = new Scene(pane, 400, 400, Color.DARKGRAY);
+        Scene scene = new Scene(pane, 400, 400, Color.rgb(0, 0, 0, 0.8));
 
-        stage.setTitle("Led demo");
+        stage.setTitle("Led Bargraph demo");
         stage.setScene(scene);
         stage.show();
+
+        timer.start();
     }
 
     @Override public void stop() {
