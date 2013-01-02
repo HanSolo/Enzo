@@ -54,6 +54,17 @@ public class Led extends Control {
     private static final String STYLE_CLASS_SQUARE = "led-square";
     private static final String STYLE_CLASS_VER    = "led-ver";
     private static final String STYLE_CLASS_HOR    = "led-hor";
+
+    public static final String STYLE_CLASS_RED     = "led-red";
+    public static final String STYLE_CLASS_GREEN   = "led-green";
+    public static final String STYLE_CLASS_BLUE    = "led-blue";
+    public static final String STYLE_CLASS_YELLOW  = "led-yellow";
+    public static final String STYLE_CLASS_ORANGE  = "led-orange";
+    public static final String STYLE_CLASS_CYAN    = "led-cyan";
+    public static final String STYLE_CLASS_MAGENTA = "led-magenta";
+    public static final String STYLE_CLASS_PURPLE  = "led-purple";
+    public static final String STYLE_CLASS_GRAY    = "led-gray";
+
     private ObjectProperty<Color> color;
     private ObjectProperty<Type>  type;
     private BooleanProperty       on;

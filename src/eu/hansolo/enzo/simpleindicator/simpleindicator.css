@@ -1,0 +1,143 @@
+/*
+ * Copyright (c) 2013, Gerrit Grunwald
+ * All right reserved
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * The names of its contributors may not be used to endorse or promote
+ * products derived from this software without specific prior written
+ * permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+ * THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/************************************************************
+* INDICATOR class                                           *
+************************************************************/
+.indicator {
+    -fx-skin                 : "eu.hansolo.enzo.simpleindicator.skin.SimpleIndicatorSkin";
+    -fx-indicator-inner-color: #fcfcfc;
+    -fx-indicator-outer-color: #cccccc;
+    -fx-indicator-glow-color : transparent;
+}
+
+
+/************************************************************
+* INDICATOR components                                      *
+************************************************************/
+.indicator .outer-frame {
+    -fx-background-color : linear-gradient(from 0% 0% to 0% 100%,
+                                           rgb(242,242,242) 0%,
+                                           rgb(242,242,242) 14%,
+                                           rgb(242,242,242) 15%,
+                                           rgb(54,54,54) 86%,
+                                           rgb(51,51,51) 87%,
+                                           rgb(51,51,51) 100%);
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 125 1 C 193.4842 1 249 56.5158 249 125 C 249 193.4842 193.4842 249 125 249 C 56.5158 249 1 193.4842 1 125 C 1 56.5158 56.5158 1 125 1 Z";
+    -fx-effect           : innershadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.0, 0, 0);
+}
+.indicator .inner-frame {
+    -fx-background-color : linear-gradient(from 0% 0% to 0% 100%,
+                                           rgb(51,51,51) 0%,
+                                           rgb(51,51,51) 15%,
+                                           rgb(54,54,54) 16%,
+                                           rgb(226,226,226) 86%,
+                                           rgb(226,226,226) 100%);
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 125 25 C 180.2292 25 225 69.7708 225 125 C 225 180.2292 180.2292 225 125 225 C 69.7708 225 25 180.2292 25 125 C 25 69.7708 69.7708 25 125 25 Z";
+    -fx-effect           : dropshadow(gaussian, rgba(0, 0, 0, 0.5), 3, 0.0, 0, 0);
+}
+.indicator .main-back {
+    -fx-background-color : radial-gradient(center 50% 77%, radius 84%,
+                                           -fx-indicator-inner-color 0%,
+                                           -fx-indicator-outer-color 100%);
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 30 125 C 30 72.5323 72.5323 30 125 30 C 177.4677 30 220 72.5323 220 125 C 220 177.4677 177.4677 220 125 220 C 72.5323 220 30 177.4677 30 125 Z";
+    -fx-effect           : dropshadow(gaussian, -fx-indicator-glow-color, 15, 0.0, 0, 0);
+}
+.indicator .main {
+    -fx-background-color : radial-gradient(center 50% 77%, radius 84%,
+                                           -fx-indicator-inner-color 0%,
+                                           -fx-indicator-outer-color 100%);
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 30 125 C 30 72.5323 72.5323 30 125 30 C 177.4677 30 220 72.5323 220 125 C 220 177.4677 177.4677 220 125 220 C 72.5323 220 30 177.4677 30 125 Z";
+    -fx-effect           : innershadow(gaussian, rgba(0, 0, 0, 0.65), 25, 0.0, 0, 0);
+}
+.indicator .highlight {
+    -fx-background-color : linear-gradient(from 0% 0% to 0% 100%,
+                                           rgba(255,255,255,0.8) 0%,
+                                           rgba(255,255,255,0) 100%);
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 61 73.5 C 61 52.7891 90.101 36 126 36 C 161.899 36 191 52.7891 191 73.5 C 191 94.2109 161.899 111 126 111 C 90.101 111 61 94.2109 61 73.5 Z";
+}
+
+
+/************************************************************
+* INDICATOR designs                                         *
+************************************************************/
+.indicator-off {
+    -fx-indicator-inner-color: #fcfcfc;
+    -fx-indicator-outer-color: #cccccc;
+    -fx-indicator-glow-color : transparent;
+}
+.indicator-red {
+    -fx-indicator-inner-color: #e58584;
+    -fx-indicator-outer-color: #ca0814;
+    -fx-indicator-glow-color : #ca0814;
+}
+.inicator-green {
+    -fx-indicator-inner-color: #d1e4ca;
+    -fx-indicator-outer-color: #2bca23;
+    -fx-indicator-glow-color : #2bca23;
+}
+.indicator-blue {
+    -fx-indicator-inner-color: #95feff;
+    -fx-indicator-outer-color: #033bff;
+    -fx-indicator-glow-color : #033bff;
+}
+.indicator-yellow {
+    -fx-indicator-inner-color: #ffffcc;
+    -fx-indicator-outer-color: #fafa00;
+    -fx-indicator-glow-color : #fafa00;
+}
+.indicator-orange {
+    -fx-indicator-inner-color: #e4b883;
+    -fx-indicator-outer-color: #fc5100;
+    -fx-indicator-glow-color : #fc5100;
+}
+.indicator-cyan {
+    -fx-indicator-inner-color: #efffff;
+    -fx-indicator-outer-color: #00ffff;
+    -fx-indicator-glow-color : #00ffff;
+}
+.indicator-magenta {
+    -fx-indicator-inner-color: #ffd5ff;
+    -fx-indicator-outer-color: #ff00ff;
+    -fx-indicator-glow-color : #ff00ff;
+}
+.indicator-purple {
+    -fx-indicator-inner-color: #e3cbff;
+    -fx-indicator-outer-color: #7900ff;
+    -fx-indicator-glow-color : #7900ff;
+}
+.indicator-gray {
+    -fx-indicator-inner-color: #fcfcfc;
+    -fx-indicator-outer-color: #cccccc;
+    -fx-indicator-glow-color : #cccccc;
+}

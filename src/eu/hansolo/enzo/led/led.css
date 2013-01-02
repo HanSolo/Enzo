@@ -189,3 +189,35 @@
     -fx-scale-shape      : true;
     -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
 }
+
+
+/************************************************************
+* LED designs                                               *
+************************************************************/
+.led-red {
+    -fx-led-color: #ca0814;
+}
+.led-green {
+    -fx-led-color: #2bca23;
+}
+.led-blue {
+    -fx-led-color: #033bff;
+}
+.led-yellow {
+    -fx-led-color: #fafa00;
+}
+.led-orange {
+    -fx-led-color: #fc5100;
+}
+.led-cyan {
+    -fx-led-color: #00ffff;
+}
+.led-magenta {
+    -fx-led-color: #ff00ff;
+}
+.led-purple {
+    -fx-led-color: #7900ff;
+}
+.led-gray {
+    -fx-led-color: #cccccc;
+}

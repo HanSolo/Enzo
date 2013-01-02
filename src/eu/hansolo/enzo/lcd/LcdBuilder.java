@@ -63,8 +63,8 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         return new LcdBuilder();
     }
 
-    public final LcdBuilder styleClass(final String DESIGN) {
-        properties.put("styleClass", new SimpleStringProperty(DESIGN));
+    public final LcdBuilder styleClass(final String STYLE_CLASS) {
+        properties.put("styleClass", new SimpleStringProperty(STYLE_CLASS));
         return this;
     }
 
