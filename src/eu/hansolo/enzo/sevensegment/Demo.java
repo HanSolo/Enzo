@@ -26,69 +26,37 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.hansolo.enzo.lcd;
+package eu.hansolo.enzo.sevensegment;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.Random;
-
 
 public class Demo extends Application {
-    private static final Random RND = new Random();
-    private Lcd                 control;
-    private long                lastTimerCall;
-    private AnimationTimer      timer;
-
-    @Override public void init() {
-        control = LcdBuilder.create()
-                            .styleClass(Lcd.STYLE_CLASS_DARKAMBER)
-                            .title("Room temp")
-                            .unit("°C")
-                            .unitVisible(true)
-                            .decimals(2)
-                            .minMeasuredValueDecimals(2)
-                            .minMeasuredValueVisible(true)
-                            .maxMeasuredValueDecimals(2)
-                            .maxMeasuredValueVisible(true)
-                            .formerValueVisible(true)
-                            .threshold(26)
-                            .thresholdVisible(true)
-                            .trendVisible(true)
-                            .numberSystemVisible(true)
-                            .valueFont(Lcd.LcdFont.LCD)
-                            .valueAnimationEnabled(true)
-                            .build();
-        lastTimerCall = System.nanoTime();
-        timer         = new AnimationTimer() {
-            @Override public void handle(long now) {
-                if (now > lastTimerCall + 1_500_000_000l) {
-                    control.setValue(RND.nextDouble() * 100);
-                    lastTimerCall = now;
-                }
-            }
-        };
-    }
-
     @Override public void start(Stage stage) {
+        SevenSegment control = SevenSegmentBuilder.create()
+            .prefWidth(268)
+            .prefHeight(357)
+            .character("2")
+            //.styleClass(SevenSegment.STYLE_CLASS_BLUE)
+            .segmentStyle(SevenSegment.SegmentStyle.BLUE)
+            .build();
+
         StackPane pane = new StackPane();
         pane.getChildren().setAll(control);
 
-        Scene scene = new Scene(pane, 400, 400, Color.DARKGRAY);
+        Scene scene = new Scene(pane, 268, 357, Color.DARKGRAY);
 
-        stage.setTitle("Lcd demo");
+        stage.setTitle("JavaFX Custom Control");
         stage.setScene(scene);
         stage.show();
-
-        timer.start();
     }
 
     public static void main(String[] args) {
-        launch(args);
+        Application.launch(args);
     }
 }
 
