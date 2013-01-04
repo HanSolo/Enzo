@@ -189,15 +189,6 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> {
         }
     }
 
-    @Override protected void layoutChildren(final double X, final double Y, final double W, final double H) {
-        //if (!isDirty) return;
-        // update your graphical intense updates here
-
-        //isDirty = false;
-
-        super.layoutChildren(X, Y, W, H);
-    }
-
     @Override public final void dispose() {
         control = null;
     }
