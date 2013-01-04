@@ -1,0 +1,156 @@
+/*
+ * Copyright (c) 2013, Gerrit Grunwald
+ * All right reserved
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * The names of its contributors may not be used to endorse or promote
+ * products derived from this software without specific prior written
+ * permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+ * THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/******************************************************************************
+ * GAUGE class                                                                *
+ *****************************************************************************/
+.radial {
+    -fx-skin             : "eu.hansolo.enzo.gauge.skin.RadialSkin";
+    -fx-gauge-outer-frame: ladder(-fx-base, derive(-fx-base,30%) 40%, derive(-fx-base,-30%) 41%);
+    -fx-gauge-main-frame : ladder(-fx-base, derive(-fx-base,40%) 40%, derive(-fx-base,-40%) 41%);
+    -fx-gauge-inner-frame: ladder(-fx-base, derive(-fx-base,50%) 40%, derive(-fx-base,-50%) 41%);
+    -fx-gauge-background : -fx-background;
+    -fx-gauge-tick       : ladder(-fx-background, white 49%, rgb(44, 44, 44) 50%);
+    -fx-gauge-title      : ladder(-fx-background, white 49%, rgb(44, 44, 44) 50%);
+    -fx-gauge-needle     : #ff0000;
+    -fx-gauge-knob       : ladder(-fx-base, derive(-fx-base,30%) 40%, derive(-fx-base,-30%) 41%);
+}
+
+
+/******************************************************************************
+ * GAUGE components                                                           *
+ *****************************************************************************/
+.radial .background {
+    -fx-background-color : radial-gradient(center 50% 73%,
+                                           radius 50%,
+                                           derive(-fx-gauge-background,50%) 0%,
+                                           derive(-fx-gauge-background,-10%) 100%);
+                           /*linear-gradient(from 0% 0% to 0% 100%,
+                           derive(-fx-gauge-background,25%) 0%,
+                           derive(-fx-gauge-background,-25%) 100%);*/
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+    -fx-effect           : innershadow(gaussian, rgba(0, 0, 0, 0.5), 4, 0.0, 0, 2);
+}
+.radial .ticks {
+    -fx-text-fill: -fx-gauge-tick;
+}
+
+
+/******************************************************************************
+ * GAUGE needle                                                               *
+ *****************************************************************************/
+.radial .needle-standard {
+    -fx-background-color : transparent,
+    transparent,
+    derive(-fx-gauge-needle, -10%),
+    linear-gradient(from 0% 0% to 100% 0%,
+        derive(-fx-gauge-needle, -15%) 0%,
+        derive(-fx-gauge-needle, 20%) 50%,
+        derive(-fx-gauge-needle, -15%) 100%);
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 3.0313 0 L 0 74 L 7.9688 74 L 4.9375 0 L 3.0313 0 Z";
+}
+.radial .needle-arrow {
+    -fx-background-color : transparent,
+                           transparent,
+                           derive(-fx-gauge-needle, -10%),
+                           linear-gradient(from 0% 0% to 100% 0%,
+                                           derive(-fx-gauge-needle, -15%) 0%,
+                                           derive(-fx-gauge-needle, 20%) 50%,
+                                           derive(-fx-gauge-needle, -15%) 100%);
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 4 81 L 4 26 L 0.3125 26 L 7.4375 0.6875 L 14.375 26 L 11 26 L 11 81 L 4 81 Z";
+}
+.radial .needle-scientific {
+    -fx-background-color : transparent,
+                           transparent,
+                           derive(-fx-gauge-needle, -10%),
+                           linear-gradient(from 0% 0% to 100% 0%,
+                                           derive(-fx-gauge-needle, -15%) 0%,
+                                           derive(-fx-gauge-needle, 20%) 50%,
+                                           derive(-fx-gauge-needle, -15%) 100%);
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 9 81 L 9 10.3126 L 8 8.2032 L 8 0 L 7 0 L 7 8.2345 L 6 10.2501 L 6 81 L 9 81 Z";
+}
+.radial .needle-big {
+    -fx-background-color : transparent,
+                           transparent,
+                           derive(-fx-gauge-needle, -10%),
+                                  linear-gradient(from 0% 0% to 100% 0%,
+                                                  derive(-fx-gauge-needle, -15%) 0%,
+                                                  derive(-fx-gauge-needle, 20%) 50%,
+                                                  derive(-fx-gauge-needle, -15%) 100%);
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 14.9688 78.5 L 7.4688 0.0938 L 0.0313 78.5 L 14.9688 78.5 Z";
+}
+
+
+/******************************************************************************
+ * GAUGE knob                                                                 *
+ *****************************************************************************/
+.radial .knob {
+    -fx-background-color : transparent,
+                           transparent,
+                           linear-gradient(derive(-fx-gauge-knob,-61%) 0%, derive(-fx-gauge-knob,-80%) 47%, derive(-fx-gauge-knob,-91%) 100%),
+                           linear-gradient(derive(-fx-gauge-knob,70%) 0%, derive(-fx-gauge-knob,-70%) 100%);
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0em;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+}
+.radial .knob-highlight {
+    -fx-background-color : radial-gradient(center 50% 0%, radius 50%, rgba(255,255,255,0.75) 0%,rgba(255,255,255,0) 100%);
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0em;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 15.9065 4.9498 C 14.4757 2.35 11.71 0.5888 8.5327 0.5888 C 5.3555 0.5888 2.5897 2.35 1.1589 4.9498 C 2.5897 6.2497 5.3555 7.1308 8.5327 7.1308 C 11.71 7.1308 14.4757 6.2497 15.9065 4.9498 Z";
+}
+.radial .title {
+    -fx-fill: -fx-gauge-title;
+}
