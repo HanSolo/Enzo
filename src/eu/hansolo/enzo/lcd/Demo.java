@@ -46,7 +46,9 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = LcdBuilder.create()
-                            .styleClass(Lcd.STYLE_CLASS_DARKAMBER)
+                            .styleClass(Lcd.STYLE_CLASS_LIGHTGREEN)
+                            .foregroundShadowVisible(true)
+                            .crystalOverlayVisible(true)
                             .title("Room temp")
                             .unit("°C")
                             .unitVisible(true)

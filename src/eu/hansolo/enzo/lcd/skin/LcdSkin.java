@@ -31,13 +31,22 @@ package eu.hansolo.enzo.lcd.skin;
 import eu.hansolo.enzo.lcd.Lcd;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.VPos;
+import javafx.scene.Group;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.InnerShadowBuilder;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.shape.SVGPathBuilder;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -46,6 +55,7 @@ import javafx.scene.text.TextAlignment;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.Random;
 
 
 public class LcdSkin extends SkinBase<Lcd> {
@@ -59,12 +69,23 @@ public class LcdSkin extends SkinBase<Lcd> {
     private static final Text          ONE_SEGMENT       = new Text("8");
     private static final DecimalFormat DEC_FORMAT        = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US));
     private static final boolean       SCIFI_FORMAT      = false;
+    private static final Color         DARK_NOISE_COLOR   = Color.rgb(100, 100, 100, 0.10);
+    private static final Color         BRIGHT_NOISE_COLOR = Color.rgb(200, 200, 200, 0.05);
+    private static final DropShadow    FOREGROUND_SHADOW  = DropShadowBuilder.create()
+                                                                             .offsetX(0).offsetY(1)
+                                                                             .color(Color.rgb(0, 0, 0, 0.5))
+                                                                             .blurType(BlurType.GAUSSIAN)
+                                                                             .radius(2)
+                                                                             .build();
     private Lcd                        control;
     private double                     width;
     private double                     height;
     private Pane                       pane;
     private Region                     lcdFrame;
     private Region                     lcdMain;
+    private ImageView                  lcdCrystalOverlay;
+    private Image                      crystalImage;
+    private SVGPath                    lcdMainClip;
     private InnerShadow                lcdMainInnerShadow0;
     private InnerShadow                lcdMainInnerShadow1;
     private Region                     lcdThreshold;
@@ -94,6 +115,7 @@ public class LcdSkin extends SkinBase<Lcd> {
     private int                        noOfSegments;
     private StringBuilder              lcdBackgroundText;
     private StringBuilder              decBuffer;
+    private Group shadowGroup;
 
 
     // ******************** Constructors **************************************
@@ -164,6 +186,16 @@ public class LcdSkin extends SkinBase<Lcd> {
                                                 .build();
         lcdMain.setEffect(lcdMainInnerShadow1);
 
+        lcdMainClip = SVGPathBuilder.create()
+                                    .content("M 1 5 C 1 3 3 1 5 1 C 5 1 127 1 127 1 C 129 1 131 3 131 5 " +
+                                             "C 131 5 131 43 131 43 C 131 45 129 47 127 47 C 127 47 5 47 5 47 " +
+                                             "C 3 47 1 45 1 43 C 1 43 1 5 1 5 Z")
+                                    .build();
+        crystalImage      = createNoiseImage(132, 48, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8);
+        lcdCrystalOverlay = new ImageView(crystalImage);
+        lcdCrystalOverlay.setClip(lcdMainClip);
+        lcdCrystalOverlay.setVisible(control.isCrystalOverlayVisible());
+
         lcdThreshold = new Region();
         lcdThreshold.getStyleClass().setAll("lcd-threshold");
         lcdThreshold.setVisible(control.isThresholdVisible() && control.isThresholdExceeded());
@@ -219,22 +251,27 @@ public class LcdSkin extends SkinBase<Lcd> {
         lcdFormerValue = new Text(Double.toString(control.getFormerValue()));
         lcdFormerValue.getStyleClass().setAll("lcd-fg");
 
+        shadowGroup = new Group();
+        shadowGroup.setEffect(control.isForegroundShadowVisible() ? FOREGROUND_SHADOW : null);
+        shadowGroup.getChildren().setAll(lcdThreshold,
+                                         lcdTrendDown,
+                                         lcdTrendFalling,
+                                         lcdTrendSteady,
+                                         lcdTrendRising,
+                                         lcdTrendUp,
+                                         lcdValueString,
+                                         lcdUnitString,
+                                         lcdTitle,
+                                         lcdNumberSystem,
+                                         lcdMinMeasuredValue,
+                                         lcdMaxMeasuredValue,
+                                         lcdFormerValue);
+
         pane.getChildren().setAll(lcdFrame,
                                   lcdMain,
-                                  lcdThreshold,
-                                  lcdTrendDown,
-                                  lcdTrendFalling,
-                                  lcdTrendSteady,
-                                  lcdTrendRising,
-                                  lcdTrendUp,
+                                  lcdCrystalOverlay,
                                   lcdValueBackgroundString,
-                                  lcdValueString,
-                                  lcdUnitString,
-                                  lcdTitle,
-                                  lcdNumberSystem,
-                                  lcdMinMeasuredValue,
-                                  lcdMaxMeasuredValue,
-                                  lcdFormerValue);
+                                  shadowGroup);                                  
 
         getChildren().setAll(pane);
 
@@ -256,6 +293,8 @@ public class LcdSkin extends SkinBase<Lcd> {
         registerChangeListener(control.valueFontProperty(), "FONT");
         registerChangeListener(control.numberSystemVisibleProperty(), "NUMBER_SYSTEM_VISIBLE");
         registerChangeListener(control.backgroundVisibleProperty(), "BACKGROUND_VISIBLE");
+        registerChangeListener(control.crystalOverlayVisibleProperty(), "CRYSTAL_OVERLAY_VISIBLE");
+        registerChangeListener(control.foregroundShadowVisibleProperty(), "FOREGROUND_SHADOW_VISIBLE");
         registerChangeListener(control.animationDurationProperty(), "ANIMATION_DURATION");
         registerChangeListener(control.thresholdExceededProperty(), "THRESHOLD_EXCEEDED");
         registerChangeListener(control.trendProperty(), "TREND");
@@ -286,7 +325,13 @@ public class LcdSkin extends SkinBase<Lcd> {
             aspectRatio = control.getPrefHeight() / control.getPrefWidth();
         } else if ("BACKGROUND_VISIBLE".equals(PROPERTY)) {
             lcdMain.setVisible(control.isBackgroundVisible());
+            lcdCrystalOverlay.setVisible(control.isBackgroundVisible());
             lcdFrame.setVisible(control.isBackgroundVisible());
+        } else if ("CRYSTAL_OVERLAY_VISIBLE".equals(PROPERTY)) {
+            lcdCrystalOverlay.setVisible(control.isCrystalOverlayVisible());
+            resize();
+        } else if ("FOREGROUND_SHADOW_VISIBLE".equals(PROPERTY)) {
+            shadowGroup.setEffect(control.isForegroundShadowVisible() ? FOREGROUND_SHADOW : null);
         } else if ("TREND".equals(PROPERTY)) {
             updateTrend();
         } else if ("THRESHOLD_EXCEEDED".equals(PROPERTY)) {
@@ -374,6 +419,28 @@ public class LcdSkin extends SkinBase<Lcd> {
 
         DEC_FORMAT.applyPattern(decBuffer.toString());
         return DEC_FORMAT.format(VALUE);
+    }
+
+    private Image createNoiseImage(final double WIDTH, final double HEIGHT, final Color DARK_COLOR, final Color BRIGHT_COLOR, final double ALPHA_VARIATION_IN_PERCENT) {
+        int width  = WIDTH <= 0 ? (int) DEFAULT_WIDTH : (int) WIDTH;
+        int height = HEIGHT <= 0 ? (int) DEFAULT_HEIGHT : (int) HEIGHT;
+        double alphaVariationInPercent      = control.clamp(0, 100, ALPHA_VARIATION_IN_PERCENT);
+        final WritableImage IMAGE           = new WritableImage(width, height);
+        final PixelWriter   PIXEL_WRITER    = IMAGE.getPixelWriter();
+        final Random        BW_RND          = new Random();
+        final Random        ALPHA_RND       = new Random();
+        final double        ALPHA_START     = alphaVariationInPercent / 100 / 2;
+        final double        ALPHA_VARIATION = alphaVariationInPercent / 100;
+        Color noiseColor;
+        double noiseAlpha;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                noiseColor = BW_RND.nextBoolean() == true ? BRIGHT_COLOR : DARK_COLOR;
+                noiseAlpha = control.clamp(0, 1, ALPHA_START + ALPHA_RND.nextDouble() * ALPHA_VARIATION);
+                PIXEL_WRITER.setColor(x, y, Color.color(noiseColor.getRed(), noiseColor.getGreen(), noiseColor.getBlue(), noiseAlpha));
+            }
+        }
+        return IMAGE;
     }
 
     private void updateFonts() {
@@ -560,6 +627,14 @@ public class LcdSkin extends SkinBase<Lcd> {
         lcdMain.setTranslateY(1);
         lcdMainInnerShadow0.setRadius(3.0 / 132.0 * height);
         lcdMainInnerShadow1.setRadius(2.0 / 132.0 * height);
+
+        if (width > 0 && height > 0 && lcdCrystalOverlay.isVisible()) {
+            lcdMainClip.setScaleX(width / (DEFAULT_WIDTH - 2.0));
+            lcdMainClip.setScaleY(height / (DEFAULT_HEIGHT - 2.0));
+            lcdMainClip.setTranslateX((width - DEFAULT_WIDTH - 2) * 0.5);
+            lcdMainClip.setTranslateY((height - DEFAULT_HEIGHT - 2) * 0.5);
+            lcdCrystalOverlay.setImage(createNoiseImage(width, height, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8));
+        }
 
         lcdThreshold.setPrefSize(0.20 * height, 0.20 * height);
         lcdThreshold.setTranslateX(0.027961994662429348 * width);

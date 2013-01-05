@@ -69,6 +69,7 @@ public class Lcd extends Control {
     public static final String STYLE_CLASS_BLUE_LIGHTBLUE   = "lcd-blue-lightblue";
     public static final String STYLE_CLASS_BLUE_GRAY        = "lcd-blue-gray";
     public static final String STYLE_CLASS_STANDARD         = "lcd-standard";
+    public static final String STYLE_CLASS_LIGHTGREEN       = "lcd-lightgreen";
     public static final String STYLE_CLASS_STANDARD_GREEN   = "lcd-standard-green";
     public static final String STYLE_CLASS_BLUE_BLUE        = "lcd-blue-blue";
     public static final String STYLE_CLASS_RED_DARKRED      = "lcd-red-darkred";
@@ -151,6 +152,8 @@ public class Lcd extends Control {
     private BooleanProperty              numberSystemVisible;
     private BooleanProperty              blinking;
     private BooleanProperty              backgroundVisible;
+    private BooleanProperty              crystalOverlayVisible;
+    private BooleanProperty              foregroundShadowVisible;
     private BooleanProperty              titleVisible;
     private BooleanProperty              unitVisible;
     private BooleanProperty              trendVisible;
@@ -193,6 +196,8 @@ public class Lcd extends Control {
         formerValueVisible        = new SimpleBooleanProperty(false);
         thresholdVisible          = new SimpleBooleanProperty(false);
         backgroundVisible         = new SimpleBooleanProperty(true);
+        crystalOverlayVisible     = new SimpleBooleanProperty(false);
+        foregroundShadowVisible   = new SimpleBooleanProperty(false);
         titleFont                 = new SimpleStringProperty("Verdana");
         unitFont                  = new SimpleStringProperty("Verdana");
         unitVisible               = new SimpleBooleanProperty(false);
@@ -411,8 +416,7 @@ public class Lcd extends Control {
         return thresholdBehaviorInverted.get();
     }
     public final void setThresholdBehaviorInverted(final boolean THRESHOLD_BEHAVIOR_INVERTED) {
-        thresholdBehaviorInverted.set(THRESHOLD_BEHAVIOR_INVERTED);
-        
+        thresholdBehaviorInverted.set(THRESHOLD_BEHAVIOR_INVERTED);        
     }
     public final BooleanProperty thresholdBehaviorInvertedProperty() {
         return thresholdBehaviorInverted;
@@ -422,8 +426,7 @@ public class Lcd extends Control {
         return thresholdExceeded.get();
     }
     public final void setThresholdExceeded(final boolean THRESHOLD_EXCEEDED) {
-        thresholdExceeded.set(THRESHOLD_EXCEEDED);
-        
+        thresholdExceeded.set(THRESHOLD_EXCEEDED);        
     }
     public final BooleanProperty thresholdExceededProperty() {
         return thresholdExceeded;
@@ -454,8 +457,7 @@ public class Lcd extends Control {
         return numberSystem.get();
     }
     public final void setNumberSystem(final NumberSystem NUMBER_SYSTEM) {
-        numberSystem.set(NUMBER_SYSTEM);
-        
+        numberSystem.set(NUMBER_SYSTEM);       
     }
     public final ObjectProperty numberSystemProperty() {
         return numberSystem;
@@ -465,8 +467,7 @@ public class Lcd extends Control {
         return trend.get();
     }
     public final void setTrend(final Trend TREND) {
-        trend.set(TREND);
-        
+        trend.set(TREND);        
     }
     public final ObjectProperty<Trend> trendProperty() {
         return trend;
@@ -483,8 +484,7 @@ public class Lcd extends Control {
         return minMeasuredValueVisible.get();
     }
     public final void setMinMeasuredValueVisible(final boolean MIN_MEASURED_VALUE_VISIBLE) {
-        minMeasuredValueVisible.set(MIN_MEASURED_VALUE_VISIBLE);
-        
+        minMeasuredValueVisible.set(MIN_MEASURED_VALUE_VISIBLE);       
     }
     public final BooleanProperty minMeasuredValueVisibleProperty() {
         return minMeasuredValueVisible;
@@ -494,8 +494,7 @@ public class Lcd extends Control {
         return maxMeasuredValueVisible.get();
     }
     public final void setMaxMeasuredValueVisible(final boolean MAX_MEASURED_VALUE_VISIBLE) {
-        maxMeasuredValueVisible.set(MAX_MEASURED_VALUE_VISIBLE);
-        
+        maxMeasuredValueVisible.set(MAX_MEASURED_VALUE_VISIBLE);        
     }
     public final BooleanProperty maxMeasuredValueVisibleProperty() {
         return maxMeasuredValueVisible;
@@ -516,11 +515,30 @@ public class Lcd extends Control {
         return backgroundVisible.get();
     }
     public final void setBackgroundVisible(final boolean BACKGROUND_VISIBLE) {
-        backgroundVisible.set(BACKGROUND_VISIBLE);
-        
+        backgroundVisible.set(BACKGROUND_VISIBLE);        
     }
     public final BooleanProperty backgroundVisibleProperty() {
         return backgroundVisible;
+    }
+
+    public final boolean isCrystalOverlayVisible() {
+        return crystalOverlayVisible.get();
+    }
+    public final void setCrystalOverlayVisible(final boolean CRYSTAL_OVERLAY_VISIBLE) {
+        crystalOverlayVisible.set(CRYSTAL_OVERLAY_VISIBLE);
+    }
+    public final BooleanProperty crystalOverlayVisibleProperty() {
+        return crystalOverlayVisible;
+    }
+
+    public final boolean isForegroundShadowVisible() {
+        return foregroundShadowVisible.get();
+    }
+    public final void setForegroundShadowVisible(final boolean FOREGROUND_SHADOW_VISIBLE) {
+        foregroundShadowVisible.set(FOREGROUND_SHADOW_VISIBLE);
+    }
+    public final BooleanProperty foregroundShadowVisibleProperty() {
+        return foregroundShadowVisible;
     }
 
     public final String getTitleFont() {
@@ -537,8 +555,7 @@ public class Lcd extends Control {
         return unitFont.get();
     }
     public final void setUnitFont(final String UNIT_FONT) {
-        unitFont.set(UNIT_FONT);
-        
+        unitFont.set(UNIT_FONT);        
     }
     public final StringProperty unitFontProperty() {
         return unitFont;
@@ -548,8 +565,7 @@ public class Lcd extends Control {
         return valueFont.get();
     }
     public final void setValueFont(final LcdFont VALUE_FONT) {
-        valueFont.set(VALUE_FONT);
-        
+        valueFont.set(VALUE_FONT);        
     }
     public final ObjectProperty<LcdFont> valueFontProperty() {
         return valueFont;
@@ -570,8 +586,7 @@ public class Lcd extends Control {
         return numberSystemVisible.get();
     }
     public final void setNumberSystemVisible(final boolean NUMBER_SYSTEM_VISIBLE) {
-        numberSystemVisible.set(NUMBER_SYSTEM_VISIBLE);
-        
+        numberSystemVisible.set(NUMBER_SYSTEM_VISIBLE);        
     }
     public final BooleanProperty numberSystemVisibleProperty() {
         return numberSystemVisible;
@@ -657,7 +672,7 @@ public class Lcd extends Control {
 
 
     // ******************** Private Methods ***********************************
-    private static double clamp(final double MIN, final double MAX, final double VALUE) {
+    public static double clamp(final double MIN, final double MAX, final double VALUE) {
         if (VALUE < MIN) return MIN;
         if (VALUE > MAX) return MAX;
         return VALUE;

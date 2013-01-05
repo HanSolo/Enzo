@@ -103,6 +103,16 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
+    public final LcdBuilder crystalOverlayVisible(final boolean CRYSTAL_OVERLAY_VISIBLE) {
+        properties.put("crystalOverlayVisible", new SimpleBooleanProperty(CRYSTAL_OVERLAY_VISIBLE));
+        return this;
+    }
+
+    public final LcdBuilder foregroundShadowVisible(final boolean FOREGROUND_SHADOW_VISIBLE) {
+        properties.put("foregroundShadowVisible", new SimpleBooleanProperty(FOREGROUND_SHADOW_VISIBLE));
+        return this;
+    }
+
     public final LcdBuilder minMeasuredValueVisible(final boolean MIN_MEASURED_VALUE_VISIBLE) {
         properties.put("minMeasuredValueVisible", new SimpleBooleanProperty(MIN_MEASURED_VALUE_VISIBLE));
         return this;
@@ -232,6 +242,10 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setKeepAspect(((BooleanProperty) properties.get(key)).get());
             } else if ("backgroundVisible".equals(key)) {
                 CONTROL.setBackgroundVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("crystalOverlayVisible".equals(key)) {
+                CONTROL.setCrystalOverlayVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("foregroundShadowVisible".equals(key)) {
+                CONTROL.setForegroundShadowVisible(((BooleanProperty) properties.get(key)).get());
             } else if("minMeasuredValueVisible".equals(key)) {
                 CONTROL.setMinMeasuredValueVisible(((BooleanProperty) properties.get(key)).get());
             } else if("minMeasuredValueDecimals".equals(key)) {

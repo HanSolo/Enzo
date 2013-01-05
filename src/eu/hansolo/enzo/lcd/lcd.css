@@ -256,6 +256,15 @@
     -fx-lcd-fg     : rgb( 35,  42,  52);
     -fx-lcd-fg-trsp: rgba(35,  42,  52, 0.1);
 }
+.lcd-lightgreen {
+    -fx-lcd-bg0    : rgb(194, 212, 188);
+    -fx-lcd-bg1    : rgb(212, 234, 206);
+    -fx-lcd-bg2    : rgb(205, 224, 194);
+    -fx-lcd-bg3    : rgb(206, 225, 194);
+    -fx-lcd-bg4    : rgb(214, 233, 206);
+	-fx-lcd-fg     : rgb(  0,  12,   6);
+	-fx-lcd-fg-trsp: rgba(0,   12,   6, 0.1);
+}
 .lcd-standard-green {
     -fx-lcd-bg0    : rgb(255, 255, 255);
     -fx-lcd-bg1    : rgb(219, 230, 220);
