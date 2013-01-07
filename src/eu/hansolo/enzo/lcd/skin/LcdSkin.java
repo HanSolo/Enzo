@@ -262,7 +262,7 @@ public class LcdSkin extends SkinBase<Lcd> {
                                          lcdValueString,
                                          lcdUnitString,
                                          lcdTitle,
-            lcdInfoText,
+                                         lcdInfoText,
                                          lcdMinMeasuredValue,
                                          lcdMaxMeasuredValue,
                                          lcdFormerValue);
@@ -633,7 +633,7 @@ public class LcdSkin extends SkinBase<Lcd> {
 
         lcdFrame.setPrefSize(width, height);
 
-        lcdMain.setPrefSize(width - 2.0, height - 2);
+        lcdMain.setPrefSize(width - 2.0, height - 2.0);
         lcdMain.setTranslateX(1);
         lcdMain.setTranslateY(1);
         lcdMainInnerShadow0.setRadius(3.0 / 132.0 * height);
@@ -716,7 +716,7 @@ public class LcdSkin extends SkinBase<Lcd> {
         lcdTitle.setX((width - lcdTitle.getLayoutBounds().getWidth()) * 0.5);
         lcdTitle.setY(lcdMain.getLayoutY() + lcdTitle.getLayoutBounds().getHeight() + 0.04 * height);
 
-        // NumberSystem
+        // Info Text
         lcdInfoText.setFont(lcdSmallFont);
         lcdInfoText.setTextOrigin(VPos.BASELINE);
         lcdInfoText.setTextAlignment(TextAlignment.RIGHT);

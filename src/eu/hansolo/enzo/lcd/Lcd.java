@@ -695,7 +695,7 @@ public class Lcd extends Control {
     }
 
 
-    // ******************** Private Methods ***********************************
+    // ******************** Utility Methods ***********************************
     public static double clamp(final double MIN, final double MAX, final double VALUE) {
         if (VALUE < MIN) return MIN;
         if (VALUE > MAX) return MAX;
