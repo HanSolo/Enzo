@@ -61,7 +61,9 @@ public class Demo extends Application {
                             .threshold(26)
                             .thresholdVisible(true)
                             .trendVisible(true)
-                            .numberSystemVisible(true)
+                            //.numberSystemVisible(false)
+                            .infoTextVisible(true)
+                            .infoText("WARNING")
                             .valueFont(Lcd.LcdFont.LCD)
                             .valueAnimationEnabled(true)
                             .build();

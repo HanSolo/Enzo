@@ -158,6 +158,16 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
+    public final LcdBuilder infoText(final String INFO_TEXT) {
+        properties.put("infoText", new SimpleStringProperty(INFO_TEXT));
+        return this;
+    }
+
+    public final LcdBuilder infoTextVisible(final boolean INFO_TEXT_VISIBLE) {
+        properties.put("infoTextVisible", new SimpleBooleanProperty(INFO_TEXT_VISIBLE));
+        return this;
+    }
+
     public final LcdBuilder trendVisible(final boolean TREND_VISIBLE) {
         properties.put("trendVisible", new SimpleBooleanProperty(TREND_VISIBLE));
         return this;
@@ -264,6 +274,10 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setUnit(((StringProperty) properties.get(key)).get());
             } else if ("unitVisible".equals(key)) {
                 CONTROL.setUnitVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("infoText".equals(key)) {
+                CONTROL.setInfoText(((StringProperty) properties.get(key)).get());
+            } else if ("infoTextVisible".equals(key)) {
+                CONTROL.setInfoTextVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("trendVisible".equals(key)) {
                 CONTROL.setTrendVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("trend".equals(key)) {

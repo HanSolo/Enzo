@@ -138,6 +138,8 @@ public class Lcd extends Control {
     private BooleanProperty              thresholdExceeded;
     private StringProperty               title;
     private StringProperty               unit;
+    private StringProperty               infoText;
+    private BooleanProperty              infoTextVisible;
     private ObjectProperty<NumberSystem> numberSystem;
     private ObjectProperty<Trend>        trend;
     private BooleanProperty              valueVisible;
@@ -188,6 +190,8 @@ public class Lcd extends Control {
         thresholdExceeded         = new SimpleBooleanProperty(false);
         title                     = new SimpleStringProperty("");
         unit                      = new SimpleStringProperty("");
+        infoText                  = new SimpleStringProperty("");
+        infoTextVisible           = new SimpleBooleanProperty(false);
         numberSystem              = new SimpleObjectProperty<>(NumberSystem.DECIMAL);
         trend                     = new SimpleObjectProperty<>(Trend.UNKNOWN);
         valueVisible              = new SimpleBooleanProperty(true);
@@ -451,6 +455,26 @@ public class Lcd extends Control {
     }
     public final StringProperty unitProperty() {
         return unit;
+    }
+
+    public final String getInfoText() {
+        return infoText.get();
+    }
+    public final void setInfoText(final String INFO_TEXT) {
+        infoText.set(INFO_TEXT);
+    }
+    public final StringProperty infoTextProperty() {
+        return infoText;
+    }
+
+    public final boolean isInfoTextVisible() {
+        return infoTextVisible.get();
+    }
+    public final void setInfoTextVisible(final boolean INFO_TEXT_VISIBLE) {
+        infoTextVisible.set(INFO_TEXT_VISIBLE);
+    }
+    public final BooleanProperty infoTextVisibleProperty() {
+        return infoTextVisible;
     }
 
     public final NumberSystem getNumberSystem() {

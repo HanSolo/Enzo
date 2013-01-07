@@ -98,7 +98,7 @@ public class LcdSkin extends SkinBase<Lcd> {
     private Text                       lcdValueBackgroundString;
     private Text                       lcdUnitString;
     private Text                       lcdTitle;
-    private Text                       lcdNumberSystem;
+    private Text                       lcdInfoText;
     private Text                       lcdMinMeasuredValue;
     private Text                       lcdMaxMeasuredValue;
     private Text                       lcdFormerValue;
@@ -236,9 +236,9 @@ public class LcdSkin extends SkinBase<Lcd> {
         lcdTitle.getStyleClass().setAll("lcd-fg");
         lcdTitle.setVisible(control.isTitleVisible());
 
-        lcdNumberSystem = new Text(control.getNumberSystem().toString());
-        lcdNumberSystem.getStyleClass().setAll("lcd-fg");
-        lcdNumberSystem.setVisible(control.isNumberSystemVisible());
+        lcdInfoText = control.isNumberSystemVisible() ? new Text(control.getNumberSystem().toString()) : new Text(control.getInfoText());
+        lcdInfoText.getStyleClass().setAll("lcd-fg");
+        lcdInfoText.setVisible(control.isInfoTextVisible());
 
         lcdMinMeasuredValue = new Text(Double.toString(control.getMaxValue()));
         lcdMinMeasuredValue.getStyleClass().setAll("lcd-fg");
@@ -262,7 +262,7 @@ public class LcdSkin extends SkinBase<Lcd> {
                                          lcdValueString,
                                          lcdUnitString,
                                          lcdTitle,
-                                         lcdNumberSystem,
+            lcdInfoText,
                                          lcdMinMeasuredValue,
                                          lcdMaxMeasuredValue,
                                          lcdFormerValue);
@@ -284,6 +284,8 @@ public class LcdSkin extends SkinBase<Lcd> {
         registerChangeListener(control.heightProperty(), "RESIZE");
         registerChangeListener(control.keepAspectProperty(), "RESIZE");
         registerChangeListener(control.titleProperty(), "UPDATE");
+        registerChangeListener(control.unitProperty(), "UPDATE");
+        registerChangeListener(control.infoTextProperty(), "UPDATE");
         registerChangeListener(control.numberSystemProperty(), "UPDATE");
         registerChangeListener(control.currentValueProperty(), "UPDATE");
         registerChangeListener(control.minMeasuredValueProperty(), "UPDATE");
@@ -301,6 +303,7 @@ public class LcdSkin extends SkinBase<Lcd> {
         registerChangeListener(control.thresholdExceededProperty(), "THRESHOLD_EXCEEDED");
         registerChangeListener(control.valueVisibleProperty(), "VALUE_VISIBLE");
         registerChangeListener(control.unitVisibleProperty(), "UNIT_VISIBLE");
+        registerChangeListener(control.infoTextVisibleProperty(), "INFO_VISIBLE");
         registerChangeListener(control.formerValueVisibleProperty(), "FORMER_VALUE_VISIBLE");
         registerChangeListener(control.maxMeasuredValueVisibleProperty(), "MAX_MEASURED_VISIBLE");
         registerChangeListener(control.minMeasuredValueVisibleProperty(), "MIN_MEASURED_VISIBLE");
@@ -351,7 +354,9 @@ public class LcdSkin extends SkinBase<Lcd> {
         } else if ("MIN_MEASURED_VISIBLE".equals(PROPERTY)) {
             lcdMinMeasuredValue.setVisible(control.isMinMeasuredValueVisible());
         } else if ("NUMBER_SYSTEM_VISIBLE".equals(PROPERTY)) {
-            lcdNumberSystem.setVisible(control.isNumberSystemVisible());
+            updateLcd();
+        } else if ("INFO_VISIBLE".equals(PROPERTY)) {
+            lcdInfoText.setVisible(control.isInfoTextVisible());
         }
     }
 
@@ -569,9 +574,6 @@ public class LcdSkin extends SkinBase<Lcd> {
                 lcdValueString.setText(formatLcdValue(control.getCurrentValue(), control.getDecimals()));
                 break;
         }
-        lcdNumberSystem.setText(control.getNumberSystem().toString());
-        lcdNumberSystem.setX(width - lcdNumberSystem.getLayoutBounds().getWidth() - 0.0416666667 * height);
-        lcdNumberSystem.setY(lcdMain.getLayoutY() + lcdMain.getLayoutBounds().getHeight() - 0.0416666667 * height);
 
         if (isNoOfDigitsInvalid()) {
             lcdValueString.setText("-E-");
@@ -607,6 +609,15 @@ public class LcdSkin extends SkinBase<Lcd> {
         // Update the former lcd value
         lcdFormerValue.setText(formatLcdValue(control.getFormerValue(), control.getDecimals()));
         lcdFormerValue.setX((width - lcdFormerValue.getLayoutBounds().getWidth()) * 0.5);
+
+        // Update the lcd info string
+        lcdInfoText.setText(control.isNumberSystemVisible() ? control.getNumberSystem().toString() : control.getInfoText());
+        lcdInfoText.setX(width - lcdInfoText.getLayoutBounds().getWidth() - 0.0416666667 * height);
+        lcdInfoText.setY(lcdMain.getLayoutY() + lcdMain.getLayoutBounds().getHeight() - 0.0416666667 * height);
+        if (lcdInfoText.getX() < lcdFormerValue.getX() + lcdFormerValue.getLayoutBounds().getWidth()) {
+            lcdInfoText.setText("...");
+            lcdInfoText.setX(width - lcdInfoText.getLayoutBounds().getWidth() - 0.0416666667 * height);
+        }
     }
 
     private void resize() {
@@ -706,12 +717,12 @@ public class LcdSkin extends SkinBase<Lcd> {
         lcdTitle.setY(lcdMain.getLayoutY() + lcdTitle.getLayoutBounds().getHeight() + 0.04 * height);
 
         // NumberSystem
-        lcdNumberSystem.setFont(lcdSmallFont);
-        lcdNumberSystem.setTextOrigin(VPos.BASELINE);
-        lcdNumberSystem.setTextAlignment(TextAlignment.RIGHT);
-        lcdNumberSystem.setText(control.getNumberSystem().toString());
-        lcdNumberSystem.setX(lcdMain.getLayoutX() + (lcdMain.getLayoutBounds().getWidth() - lcdTitle.getLayoutBounds().getWidth()) * 0.5);
-        lcdNumberSystem.setY(lcdMain.getLayoutY() + height - 1 - 0.0416666667 * height);
+        lcdInfoText.setFont(lcdSmallFont);
+        lcdInfoText.setTextOrigin(VPos.BASELINE);
+        lcdInfoText.setTextAlignment(TextAlignment.RIGHT);
+        lcdInfoText.setText(control.getNumberSystem().toString());
+        lcdInfoText.setX(lcdMain.getLayoutX() + (lcdMain.getLayoutBounds().getWidth() - lcdTitle.getLayoutBounds().getWidth()) * 0.5);
+        lcdInfoText.setY(lcdMain.getLayoutY() + height - 1 - 0.0416666667 * height);
 
         // Min measured value
         lcdMinMeasuredValue.setFont(lcdSmallFont);
