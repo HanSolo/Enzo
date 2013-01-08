@@ -34,6 +34,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.Random;
 
@@ -46,10 +47,12 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = LcdBuilder.create()
-                            .styleClass(Lcd.STYLE_CLASS_LIGHTGREEN)
+                            .prefWidth(528)
+                            .prefHeight(192)
+                            .styleClass(Lcd.STYLE_CLASS_STANDARD_GREEN)
                             .foregroundShadowVisible(true)
                             .crystalOverlayVisible(true)
-                            .title("Room temp")
+                            .title("Room Temp")
                             .unit("°C")
                             .unitVisible(true)
                             .decimals(2)
@@ -63,14 +66,14 @@ public class Demo extends Application {
                             .trendVisible(true)
                             //.numberSystemVisible(false)
                             .infoTextVisible(true)
-                            .infoText("WARNING")
+                            .infoText("Info")
                             .valueFont(Lcd.LcdFont.LCD)
                             .valueAnimationEnabled(true)
                             .build();
         lastTimerCall = System.nanoTime();
         timer         = new AnimationTimer() {
             @Override public void handle(long now) {
-                if (now > lastTimerCall + 1_500_000_000l) {
+                if (now > lastTimerCall + 3_000_000_000l) {
                     control.setValue(RND.nextDouble() * 100);
                     lastTimerCall = now;
                 }
@@ -82,9 +85,11 @@ public class Demo extends Application {
         StackPane pane = new StackPane();
         pane.getChildren().setAll(control);
 
-        Scene scene = new Scene(pane, 400, 400, Color.DARKGRAY);
+        Scene scene = new Scene(pane, Color.TRANSPARENT);
 
         stage.setTitle("Lcd demo");
+        stage.centerOnScreen();
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.show();
 

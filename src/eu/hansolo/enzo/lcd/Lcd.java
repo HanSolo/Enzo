@@ -74,7 +74,7 @@ public class Lcd extends Control {
     public static final String STYLE_CLASS_BLUE_BLUE        = "lcd-blue-blue";
     public static final String STYLE_CLASS_RED_DARKRED      = "lcd-red-darkred";
     public static final String STYLE_CLASS_DARKBLUE         = "lcd-darkblue";
-    public static final String STYLE_CLASS_LILA             = "lcd-lila";
+    public static final String STYLE_CLASS_PURPLE           = "lcd-purple";
     public static final String STYLE_CLASS_BLACK_RED        = "lcd-black-red";
     public static final String STYLE_CLASS_DARKGREEN        = "lcd-darkgreen";
     public static final String STYLE_CLASS_AMBER            = "lcd-amber";
@@ -83,10 +83,10 @@ public class Lcd extends Control {
     public static final String STYLE_CLASS_YELLOW_BLACK     = "lcd-yellow-black";
     public static final String STYLE_CLASS_BLACK_YELLOW     = "lcd-black-yellow";
     public static final String STYLE_CLASS_LIGHTGREEN_BLACK = "lcd-lightgreen-black";
-    public static final String STYLE_CLASS_DARKLILA         = "lcd-darklila";
+    public static final String STYLE_CLASS_DARKPURPLE       = "lcd-darkpurple";
     public static final String STYLE_CLASS_DARKAMBER        = "lcd-darkamber";
     public static final String STYLE_CLASS_BLUE_LIGHTBLUE2  = "lcd-blue-lightblue2";
-    public static final String STYLE_CLASS_GRAY_LILA        = "lcd-gray-lila";
+    public static final String STYLE_CLASS_GRAY_PURPLE      = "lcd-gray-purple";
     public static final String STYLE_CLASS_SECTIONS         = "lcd-sections";
     public static enum LcdFont {
         STANDARD,

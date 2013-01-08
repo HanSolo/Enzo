@@ -301,7 +301,7 @@
     -fx-lcd-fg     : rgb( 61, 179, 255);
     -fx-lcd-fg-trsp: rgba(61, 179, 255, 0.1);
 }
-.lcd-lila {
+.lcd-purple {
     -fx-lcd-bg0    : rgb(175, 164, 255);
     -fx-lcd-bg1    : rgb(188, 168, 253);
     -fx-lcd-bg2    : rgb(176, 159, 255);
@@ -382,7 +382,7 @@
     -fx-lcd-fg     : rgb(  0,  35,   0);
     -fx-lcd-fg-trsp: rgba( 0,  35,   0, 0.1);
 }
-.lcd-darklila {
+.lcd-darkpurple {
     -fx-lcd-bg0    : rgb( 35,  24,  75);
     -fx-lcd-bg1    : rgb( 42,  20, 111);
     -fx-lcd-bg2    : rgb( 40,  22, 103);
@@ -409,7 +409,7 @@
     -fx-lcd-fg     : rgb(193, 253, 254);
     -fx-lcd-fg-trsp: rgba(193, 253, 254, 0.1);
 }
-.lcd-gray-lila {
+.lcd-gray-purple {
     -fx-lcd-bg0    : rgb(153, 164, 161);
     -fx-lcd-bg1    : rgb(203, 215, 213);
     -fx-lcd-bg2    : rgb(202, 212, 211);
