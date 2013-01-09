@@ -60,7 +60,7 @@ import java.util.List;
  * Time: 14:18
  */
 public class ClockSkin extends SkinBase<Clock> {
-    private static final long           INTERVAL       = 20000000l;
+    private static final long           INTERVAL       = 20_000_000l;
     private static final int            PREFERRED_SIZE = 200;
     private Clock                       control;
     private Pane                        pane;
@@ -136,7 +136,13 @@ public class ClockSkin extends SkinBase<Clock> {
             @Override public void handle(final long NOW) {
                 if (NOW >= lastTimerCall + INTERVAL) {
                     // Seconds
-                    secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6 + Calendar.getInstance().get(Calendar.MILLISECOND) * 0.006);
+                    secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6);
+                    if (control.isDiscreteSecond()) {
+                        secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6);
+                    } else {
+                        secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6 + Calendar.getInstance().get(Calendar.MILLISECOND) * 0.006);
+                    }
+
                     // Minutes
                     minute.set((Calendar.getInstance().get(Calendar.MINUTE)) * 6);
                     // Hours
@@ -240,6 +246,7 @@ public class ClockSkin extends SkinBase<Clock> {
                                                                                .build())
                                                       .build());
         secondPointerGroup.getChildren().setAll(secondPointer);
+        secondPointerGroup.setVisible(control.isSecondPointerVisible());
 
         centerKnob = new Region();
         centerKnob.getStyleClass().setAll("center-knob-ios6");
@@ -257,6 +264,7 @@ public class ClockSkin extends SkinBase<Clock> {
     private void registerListeners() {
         registerChangeListener(control.widthProperty(), "RESIZE");
         registerChangeListener(control.heightProperty(), "RESIZE");
+        registerChangeListener(control.secondPointerVisibleProperty(), "SECOND_POINTER_VISIBLE");
         registerChangeListener(control.nightModeProperty(), "DESIGN");
         registerChangeListener(control.designProperty(), "DESIGN");
     }
@@ -269,6 +277,8 @@ public class ClockSkin extends SkinBase<Clock> {
             resize();
         } else if ("DESIGN".equals(PROPERTY)) {
             updateDesign();
+        } else if ("SECOND_POINTER_VISIBLE".equals(PROPERTY)) {
+            secondPointerGroup.setVisible(control.isSecondPointerVisible());
         }
     }
 

@@ -70,6 +70,16 @@ public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
+    public final ClockBuilder discreteSecond(final boolean DISCRETE_SECOND) {
+        properties.put("discreteSecond", new SimpleBooleanProperty(DISCRETE_SECOND));
+        return this;
+    }
+
+    public final ClockBuilder secondPointerVisible(final boolean SECOND_POINTER_VISIBLE) {
+        properties.put("secondPointerVisible", new SimpleBooleanProperty(SECOND_POINTER_VISIBLE));
+        return this;
+    }
+
     @Override public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B) this;
@@ -105,6 +115,10 @@ public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setNightMode(((BooleanProperty) properties.get(key)).get());
             } else if ("design".equals(key)) {
                 CONTROL.setDesign(((ObjectProperty<Clock.Design>) properties.get(key)).get());
+            } else if ("discreteSecond".equals(key)) {
+                CONTROL.setDiscrecteSecond(((BooleanProperty) properties.get(key)).get());
+            } else if ("secondPointerVisible".equals(key)) {
+                CONTROL.setSecondPointerVisible(((BooleanProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

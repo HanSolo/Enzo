@@ -45,6 +45,8 @@ public class Clock extends Control {
         IOS6,
         DB
     }
+    private BooleanProperty        discrecteSecond;
+    private BooleanProperty        secondPointerVisible;
     private BooleanProperty        nightMode;
     private ObjectProperty<Design> design;
 
@@ -52,20 +54,40 @@ public class Clock extends Control {
     // ******************** Constructors **************************************
     public Clock() {
         getStyleClass().add("clock");
-        nightMode           = new SimpleBooleanProperty(false);
-        design              = new SimpleObjectProperty<>(Design.IOS6);
+        discrecteSecond      = new SimpleBooleanProperty(false);
+        secondPointerVisible = new SimpleBooleanProperty(true);
+        nightMode            = new SimpleBooleanProperty(false);
+        design               = new SimpleObjectProperty<>(Design.IOS6);
     }
 
 
     // ******************** Methods *******************************************
+    public final boolean isDiscreteSecond() {
+        return discrecteSecond.get();
+    }
+    public final void setDiscrecteSecond(final boolean DISCRETE_SECOND) {
+        discrecteSecond.set(DISCRETE_SECOND);
+    }
+    public final BooleanProperty discreteSecondProperty() {
+        return discrecteSecond;
+    }
+
+    public final boolean isSecondPointerVisible() {
+        return secondPointerVisible.get();
+    }
+    public final void setSecondPointerVisible(final boolean SECOND_POINTER_VISIBLE) {
+        secondPointerVisible.set(SECOND_POINTER_VISIBLE);
+    }
+    public final BooleanProperty secondPointerVisibleProperty() {
+        return secondPointerVisible;
+    }
+
     public final boolean isNightMode() {
         return nightMode.get();
     }
-
     public final void setNightMode(final boolean NIGHT_MODE) {
         nightMode.set(NIGHT_MODE);
     }
-
     public final BooleanProperty nightModeProperty() {
         return nightMode;
     }
@@ -73,11 +95,9 @@ public class Clock extends Control {
     public final Design getDesign() {
         return design.get();
     }
-
     public final void setDesign(final Design DESIGN) {
         design.set(DESIGN);
     }
-
     public final ObjectProperty<Design> designProperty() {
         return design;
     }
