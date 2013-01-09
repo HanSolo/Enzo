@@ -54,7 +54,7 @@ public class Clock extends Control {
     // ******************** Constructors **************************************
     public Clock() {
         getStyleClass().add("clock");
-        discreteSecond = new SimpleBooleanProperty(false);
+        discreteSecond       = new SimpleBooleanProperty(false);
         secondPointerVisible = new SimpleBooleanProperty(true);
         nightMode            = new SimpleBooleanProperty(false);
         design               = new SimpleObjectProperty<>(Design.IOS6);
