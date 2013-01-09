@@ -116,7 +116,7 @@ public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
             } else if ("design".equals(key)) {
                 CONTROL.setDesign(((ObjectProperty<Clock.Design>) properties.get(key)).get());
             } else if ("discreteSecond".equals(key)) {
-                CONTROL.setDiscrecteSecond(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setDiscreteSecond(((BooleanProperty) properties.get(key)).get());
             } else if ("secondPointerVisible".equals(key)) {
                 CONTROL.setSecondPointerVisible(((BooleanProperty) properties.get(key)).get());
             }

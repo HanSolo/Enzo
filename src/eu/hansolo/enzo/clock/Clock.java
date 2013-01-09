@@ -45,7 +45,7 @@ public class Clock extends Control {
         IOS6,
         DB
     }
-    private BooleanProperty        discrecteSecond;
+    private BooleanProperty        discreteSecond;
     private BooleanProperty        secondPointerVisible;
     private BooleanProperty        nightMode;
     private ObjectProperty<Design> design;
@@ -54,7 +54,7 @@ public class Clock extends Control {
     // ******************** Constructors **************************************
     public Clock() {
         getStyleClass().add("clock");
-        discrecteSecond      = new SimpleBooleanProperty(false);
+        discreteSecond = new SimpleBooleanProperty(false);
         secondPointerVisible = new SimpleBooleanProperty(true);
         nightMode            = new SimpleBooleanProperty(false);
         design               = new SimpleObjectProperty<>(Design.IOS6);
@@ -63,13 +63,13 @@ public class Clock extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isDiscreteSecond() {
-        return discrecteSecond.get();
+        return discreteSecond.get();
     }
-    public final void setDiscrecteSecond(final boolean DISCRETE_SECOND) {
-        discrecteSecond.set(DISCRETE_SECOND);
+    public final void setDiscreteSecond(final boolean DISCRETE_SECOND) {
+        discreteSecond.set(DISCRETE_SECOND);
     }
     public final BooleanProperty discreteSecondProperty() {
-        return discrecteSecond;
+        return discreteSecond;
     }
 
     public final boolean isSecondPointerVisible() {
