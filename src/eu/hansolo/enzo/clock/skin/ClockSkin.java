@@ -136,13 +136,11 @@ public class ClockSkin extends SkinBase<Clock> {
             @Override public void handle(final long NOW) {
                 if (NOW >= lastTimerCall + INTERVAL) {
                     // Seconds
-                    secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6);
                     if (control.isDiscreteSecond()) {
                         secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6);
                     } else {
                         secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6 + Calendar.getInstance().get(Calendar.MILLISECOND) * 0.006);
                     }
-
                     // Minutes
                     minute.set((Calendar.getInstance().get(Calendar.MINUTE)) * 6);
                     // Hours
