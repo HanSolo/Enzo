@@ -55,7 +55,7 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
 
 
     // ******************** Constructors **************************************
-    protected LcdBuilder() {};
+    protected LcdBuilder() {}
 
 
     // ******************** Methods *******************************************

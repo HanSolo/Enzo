@@ -101,11 +101,8 @@ public class ClockSkin extends SkinBase<Clock> {
     // ******************** Constructors **************************************
     public ClockSkin(final Clock CONTROL) {
         super(CONTROL);
-        control  = CONTROL;
-
-        pane = new Pane();
-        pane.prefWidthProperty().bind(control.widthProperty());
-        pane.prefHeightProperty().bind(control.heightProperty());
+        control = CONTROL;
+        pane    = new Pane();
 
         nightDayStyleClass        = control.isNightMode() ? "night-mode" : "day-mode";
 
@@ -154,10 +151,9 @@ public class ClockSkin extends SkinBase<Clock> {
             }
         });
 
-        addListeners();
-
-        initGraphics();
         init();
+        initGraphics();
+        registerListeners();
         timer.start();
     }
 
@@ -258,7 +254,7 @@ public class ClockSkin extends SkinBase<Clock> {
         updateDesign();
     }
 
-    private void addListeners() {
+    private void registerListeners() {
         registerChangeListener(control.widthProperty(), "RESIZE");
         registerChangeListener(control.heightProperty(), "RESIZE");
         registerChangeListener(control.nightModeProperty(), "DESIGN");

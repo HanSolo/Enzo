@@ -86,7 +86,7 @@ public class SimpleIndicatorBuilder<B extends SimpleIndicatorBuilder<B>> extends
         final SimpleIndicator CONTROL = new SimpleIndicator();
         for (String key : properties.keySet()) {
             if("styleClass".equals(key)) {
-                CONTROL.getStyleClass().add(((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("indicator", ((StringProperty) properties.get(key)).get());
             } else if ("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if ("prefHeight".equals(key)) {

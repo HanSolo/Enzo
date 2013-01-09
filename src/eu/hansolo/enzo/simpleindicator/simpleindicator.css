@@ -97,44 +97,44 @@
     -fx-indicator-glow-color : transparent;
 }
 .indicator-red {
-    -fx-indicator-inner-color: #e58584;
-    -fx-indicator-outer-color: #ca0814;
-    -fx-indicator-glow-color : #ca0814;
+    -fx-indicator-inner-color: #ff4000;
+    -fx-indicator-outer-color: #bc0011;
+    -fx-indicator-glow-color : #ff4000;
 }
-.inicator-green {
-    -fx-indicator-inner-color: #d1e4ca;
-    -fx-indicator-outer-color: #2bca23;
-    -fx-indicator-glow-color : #2bca23;
+.indicator-green {
+    -fx-indicator-inner-color: #40ff00;
+    -fx-indicator-outer-color: #008c23;
+    -fx-indicator-glow-color : #40ff00;
 }
 .indicator-blue {
-    -fx-indicator-inner-color: #95feff;
-    -fx-indicator-outer-color: #033bff;
-    -fx-indicator-glow-color : #033bff;
+    -fx-indicator-inner-color: #007fff;
+    -fx-indicator-outer-color: #0000d9;
+    -fx-indicator-glow-color : #007fff;
 }
 .indicator-yellow {
-    -fx-indicator-inner-color: #ffffcc;
-    -fx-indicator-outer-color: #fafa00;
-    -fx-indicator-glow-color : #fafa00;
+    -fx-indicator-inner-color: #ffff00;
+    -fx-indicator-outer-color: #8c8c00;
+    -fx-indicator-glow-color : #ffff00;
 }
 .indicator-orange {
-    -fx-indicator-inner-color: #e4b883;
-    -fx-indicator-outer-color: #fc5100;
-    -fx-indicator-glow-color : #fc5100;
+    -fx-indicator-inner-color: #ff8000;
+    -fx-indicator-outer-color: #b25900;
+    -fx-indicator-glow-color : #ff8000;
 }
 .indicator-cyan {
-    -fx-indicator-inner-color: #efffff;
-    -fx-indicator-outer-color: #00ffff;
+    -fx-indicator-inner-color: #00ffff;
+    -fx-indicator-outer-color: #008c8c;
     -fx-indicator-glow-color : #00ffff;
 }
 .indicator-magenta {
-    -fx-indicator-inner-color: #ffd5ff;
-    -fx-indicator-outer-color: #ff00ff;
+    -fx-indicator-inner-color: #ff00ff;
+    -fx-indicator-outer-color: #8c008c;
     -fx-indicator-glow-color : #ff00ff;
 }
 .indicator-purple {
-    -fx-indicator-inner-color: #e3cbff;
-    -fx-indicator-outer-color: #7900ff;
-    -fx-indicator-glow-color : #7900ff;
+    -fx-indicator-inner-color: #a64dff;
+    -fx-indicator-outer-color: #5900b2;
+    -fx-indicator-glow-color : #a64dff;
 }
 .indicator-gray {
     -fx-indicator-inner-color: #fcfcfc;

@@ -45,20 +45,15 @@ public class Clock extends Control {
         IOS6,
         DB
     }
-    private static final String    DEFAULT_STYLE_CLASS = "clock";
     private BooleanProperty        nightMode;
     private ObjectProperty<Design> design;
 
 
     // ******************** Constructors **************************************
     public Clock() {
+        getStyleClass().add("clock");
         nightMode           = new SimpleBooleanProperty(false);
         design              = new SimpleObjectProperty<>(Design.IOS6);
-        init();
-    }
-
-    private void init() {
-        getStyleClass().add(DEFAULT_STYLE_CLASS);
     }
 
 
