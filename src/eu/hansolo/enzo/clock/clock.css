@@ -1,0 +1,202 @@
+/*
+ * Copyright (c) 2013, Gerrit Grunwald
+ * All right reserved
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * The names of its contributors may not be used to endorse or promote
+ * products derived from this software without specific prior written
+ * permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+ * THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/******************************************************************************
+ * CLOCK class                                                                *
+ *****************************************************************************/
+.clock {
+    -fx-skin                : "eu.hansolo.enzo.clock.skin.ClockSkin";
+    -fx-clock-background    : white;
+    -fx-hour-pointer-color  : rgb(44, 44, 44);
+    -fx-minute-pointer-color: rgb(44, 44, 44);
+    -fx-second-pointer-color: rgb(207, 43, 27);
+    -fx-major-tick-color    : rgb(44, 44, 44);
+    -fx-minor-tick-color    : rgb(44, 44, 44);
+    -fx-center-knob-color   : rgb(44, 44, 44);
+}
+
+
+/******************************************************************************
+ * CLOCK Nightmode (dark colors)                                              *
+ *****************************************************************************/
+.clock .night-mode {
+    -fx-clock-background    : rgb(50, 50, 50);
+    -fx-hour-pointer-color  : rgb(227, 227, 227);
+    -fx-minute-pointer-color: rgb(227, 227, 227);
+    -fx-major-tick-color    : rgb(227, 227, 227);
+    -fx-minor-tick-color    : rgb(227, 227, 227);
+    -fx-center-knob-color   : rgb(227, 227, 227);
+}
+
+
+/******************************************************************************
+ * CLOCK Daymode (bright colors)                                              *
+ *****************************************************************************/
+.clock .day-mode {
+-fx-clock-background    : white;
+    -fx-hour-pointer-color  : rgb(44, 44, 44);
+    -fx-minute-pointer-color: rgb(44, 44, 44);
+    -fx-major-tick-color    : rgb(44, 44, 44);
+    -fx-minor-tick-color    : rgb(44, 44, 44);
+    -fx-center-knob-color   : rgb(44, 44, 44);
+}
+
+
+/******************************************************************************
+ * CLOCK iOS6 Style                                                           *
+ *****************************************************************************/
+.clock .background-ios6 {
+    -fx-background-color : linear-gradient(from 16% 16% to 83% 83%,
+                                           derive(-fx-clock-background, -11%) 0%,
+                                           -fx-clock-background 100%);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+    -fx-effect           : innershadow(gaussian, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
+}
+.clock .minor-tick-ios6 {
+    -fx-background-color : -fx-minor-tick-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+}
+.clock .major-tick-ios6 {
+    -fx-background-color : -fx-major-tick-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+}
+.clock .hour-pointer-ios6 {
+    -fx-background-color : -fx-hour-pointer-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 0 L 8 0 L 8 84 L 0 84 L 0 0 Z";
+}
+.clock .minute-pointer-ios6 {
+    -fx-background-color : -fx-minute-pointer-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 0 L 8 0 L 8 116 L 0 116 L 0 0 Z";
+}
+.clock .second-pointer-ios6 {
+    -fx-background-color : -fx-second-pointer-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 8 72.3988 C 8.5426 72.3988 8.9825 72.8517 8.9825 73.4104 C 8.9825 73.9691 8.5426 74.422 8 74.422 C 7.4574 74.422 7.0175 73.9691 7.0175 73.4104 C 7.0175 72.8517 7.4574 72.3988 8 72.3988 ZM 8 0 C 3.5817 0 0 3.6878 0 8.237 C 0 12.3437 2.9187 15.7486 6.7368 16.3721 L 6.7368 70.1944 C 5.5024 70.7088 4.6316 71.9549 4.6316 73.4104 C 4.6316 74.8659 5.5024 76.112 6.7368 76.6264 L 6.7368 100 L 9.2632 100 L 9.2632 76.6264 C 10.4976 76.112 11.3684 74.8659 11.3684 73.4104 C 11.3684 71.9549 10.4976 70.7088 9.2632 70.1944 L 9.2632 16.3721 C 13.0813 15.7486 16 12.3437 16 8.237 C 16 3.6878 12.4183 0 8 0 Z";
+}
+.clock .center-knob-ios6 {
+    -fx-background-color : transparent, transparent, white, black;
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0em;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+}
+.clock .foreground-ios6 {
+    -fx-background-color : rgba(255, 255, 255, 0.2);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 4.9839 72.482 C 18.0152 31.1014 53.9389 1.0572 100.1166 1.0572 C 146.5602 1.0572 182.6676 31.4482 195.4718 73.1978 C 196.9087 77.883 150.0777 100.1673 100 100 C 50.2169 99.8337 3.4843 77.2438 4.9839 72.482 Z";
+}
+
+
+/******************************************************************************
+ * CLOCK German Railway Style                                                 *
+ *****************************************************************************/
+.clock .background-db {
+    -fx-background-color : linear-gradient(from 16% 16% to 83% 83%,
+    derive(-fx-clock-background, -11%) 0%,
+    -fx-clock-background 100%);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+    -fx-effect           : innershadow(gaussian, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
+}
+.clock .minor-tick-db {
+    -fx-background-color : -fx-minor-tick-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+}
+.clock .major-tick-db {
+    -fx-background-color : -fx-major-tick-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+}
+.clock .hour-pointer-db {
+    -fx-background-color : -fx-hour-pointer-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 0 L 11 0 L 11 66 L 0 66 L 0 0 Z";
+}
+.clock .minute-pointer-db {
+    -fx-background-color : -fx-minute-pointer-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 0 L 8 0 L 8 94 L 0 94 L 0 0 Z";
+}
+.clock .second-pointer-db {
+    -fx-background-color : -fx-second-pointer-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 58 28.5 C 58 31.5376 60.4624 34 63.5 34 C 66.5376 34 69 31.5376 69 28.5 C 69 25.4624 66.5376 23 63.5 23 C 60.4624 23 58 25.4624 58 28.5 ZM 57 28.5 C 57 25.1732 59.5017 22.4292 62.725 22.045 L 63 6 L 64 6 L 64.275 22.045 C 67.5008 22.427 70 25.1715 70 28.5 C 70 31.7503 67.6157 34.4445 64.5 34.925 L 65 64 L 62 64 L 62.5 34.925 C 59.3843 34.4445 57 31.7503 57 28.5 Z";
+}
+.clock .center-knob-db {
+    -fx-background-color : -fx-center-knob-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+}
+.clock .foreground-db {
+    -fx-background-color : rgba(255, 255, 255, 0.2);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 4.9839 72.482 C 18.0152 31.1014 53.9389 1.0572 100.1166 1.0572 C 146.5602 1.0572 182.6676 31.4482 195.4718 73.1978 C 196.9087 77.883 150.0777 100.1673 100 100 C 50.2169 99.8337 3.4843 77.2438 4.9839 72.482 Z";
+}

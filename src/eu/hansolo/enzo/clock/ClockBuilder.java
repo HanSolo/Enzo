@@ -26,7 +26,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.hansolo.enzo.gauge;
+package eu.hansolo.enzo.clock;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -35,8 +35,6 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.control.ControlBuilder;
 
 import java.util.HashMap;
@@ -45,51 +43,30 @@ import java.util.HashMap;
 /**
  * Created by
  * User: hansolo
- * Date: 15.11.12
- * Time: 00:53
+ * Date: 09.01.13
+ * Time: 09:02
  */
-
-public class RadialBuilder<B extends RadialBuilder<B>> extends ControlBuilder<B> {
+public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
     private HashMap<String, Property> properties = new HashMap<>();
 
 
     // ******************** Constructors **************************************
-    protected RadialBuilder() {
+    protected ClockBuilder() {
     }
 
 
     // ******************** Methods *******************************************
-    public final static RadialBuilder create() {
-        return new RadialBuilder();
+    public final static ClockBuilder create() {
+        return new ClockBuilder();
     }
 
-    public final RadialBuilder value(final double VALUE) {
-        properties.put("value", new SimpleDoubleProperty(VALUE));
+    public final ClockBuilder nightMode(final boolean NIGHT_MODE) {
+        properties.put("nightMode", new SimpleBooleanProperty(NIGHT_MODE));
         return this;
     }
 
-    public final RadialBuilder minValue(final double MIN_VALUE) {
-        properties.put("minValue", new SimpleDoubleProperty(MIN_VALUE));
-        return this;
-    }
-
-    public final RadialBuilder maxValue(final double MAX_VALUE) {
-        properties.put("maxValue", new SimpleDoubleProperty(MAX_VALUE));
-        return this;
-    }
-
-    public final RadialBuilder title(final String TITLE) {
-        properties.put("title", new SimpleStringProperty(TITLE));
-        return this;
-    }
-
-    public final RadialBuilder needleType(final Radial.NeedleType NEEDLE_TYPE) {
-        properties.put("needleType", new SimpleObjectProperty<Radial.NeedleType>(NEEDLE_TYPE));
-        return this;
-    }
-
-    public final RadialBuilder animated(final boolean ANIMATED) {
-        properties.put("animated", new SimpleBooleanProperty(ANIMATED));
+    public final ClockBuilder design(final Clock.Design DESIGN) {
+        properties.put("design", new SimpleObjectProperty<Clock.Design>(DESIGN));
         return this;
     }
 
@@ -113,8 +90,8 @@ public class RadialBuilder<B extends RadialBuilder<B>> extends ControlBuilder<B>
         return (B) this;
     }
 
-    @Override public final Radial build() {
-        final Radial CONTROL = new Radial();
+    @Override public final Clock build() {
+        final Clock CONTROL = new Clock();
         for (String key : properties.keySet()) {
             if ("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
@@ -124,18 +101,10 @@ public class RadialBuilder<B extends RadialBuilder<B>> extends ControlBuilder<B>
                 CONTROL.setLayoutX(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutY".equals(key)) {
                 CONTROL.setLayoutY(((DoubleProperty) properties.get(key)).get());
-            } else if ("value".equals(key)) {
-                CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
-            } else if ("minValue".equals(key)) {
-                CONTROL.setMinValue(((DoubleProperty) properties.get(key)).get());
-            } else if ("maxValue".equals(key)) {
-                CONTROL.setMaxValue(((DoubleProperty) properties.get(key)).get());
-            } else if ("title".equals(key)) {
-                CONTROL.setTitle(((StringProperty) properties.get(key)).get());
-            } else if ("needleType".equals(key)) {
-                CONTROL.setNeedleType(((ObjectProperty<Radial.NeedleType>) properties.get(key)).get());
-            } else if ("animated".equals(key)) {
-                CONTROL.setAnimated(((BooleanProperty) properties.get(key)).get());
+            } else if ("nightMode".equals(key)) {
+                CONTROL.setNightMode(((BooleanProperty) properties.get(key)).get());
+            } else if ("design".equals(key)) {
+                CONTROL.setDesign(((ObjectProperty<Clock.Design>) properties.get(key)).get());
             }
         }
         return CONTROL;
