@@ -104,7 +104,7 @@ public class SevenSegmentBuilder<B extends SevenSegmentBuilder<B>> extends Contr
         final SevenSegment CONTROL = new SevenSegment();
         for (String key : properties.keySet()) {
             if ("styleClass".equals(key)) {
-                CONTROL.getStyleClass().add(((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("seven-segment", ((StringProperty) properties.get(key)).get());
             } else if ("segmentStyle".equals(key)) {
                 CONTROL.setSegmentStyle(((ObjectProperty<SevenSegment.SegmentStyle>) properties.get(key)).get());
             } else if ("characterString".equals(key)) {

@@ -237,7 +237,7 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         final Lcd CONTROL = new Lcd();
         for (String key : properties.keySet()) {
             if("styleClass".equals(key)) {
-                CONTROL.getStyleClass().add(((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("lcd", ((StringProperty) properties.get(key)).get());
             } else if("value".equals(key)) {
                 CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
             } else if("valueAnimationEnabled".equals(key)) {

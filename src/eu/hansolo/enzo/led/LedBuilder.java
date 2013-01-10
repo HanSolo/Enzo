@@ -117,7 +117,7 @@ public class LedBuilder<B extends LedBuilder<B>> extends ControlBuilder<B> {
         final Led CONTROL = new Led();
         for (String key : properties.keySet()) {
             if("styleClass".equals(key)) {
-                CONTROL.getStyleClass().add(((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("led", ((StringProperty) properties.get(key)).get());
             } else if ("color".equals(key)) {
                 CONTROL.setColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("type".equals(key)) {

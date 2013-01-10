@@ -44,16 +44,16 @@ import java.util.Map;
 
 
 public class SevenSegment extends Control {
-    public static final String           STYLE_CLASS_OFF     = "sevensegment-off";
-    public static final String           STYLE_CLASS_RED     = "sevensegment-red";
-    public static final String           STYLE_CLASS_GREEN   = "sevensegment-green";
-    public static final String           STYLE_CLASS_BLUE    = "sevensegment-blue";
-    public static final String           STYLE_CLASS_YELLOW  = "sevensegment-yellow";
-    public static final String           STYLE_CLASS_ORANGE  = "sevensegment-orange";
-    public static final String           STYLE_CLASS_CYAN    = "sevensegment-cyan";
-    public static final String           STYLE_CLASS_MAGENTA = "sevensegment-magenta";
-    public static final String           STYLE_CLASS_WHITE   = "sevensegment-white";
-    public static final String           STYLE_CLASS_BLACK   = "sevensegment-black";
+    public static final String           STYLE_CLASS_OFF     = "seven-segment-off";
+    public static final String           STYLE_CLASS_RED     = "seven-segment-red";
+    public static final String           STYLE_CLASS_GREEN   = "seven-segment-green";
+    public static final String           STYLE_CLASS_BLUE    = "seven-segment-blue";
+    public static final String           STYLE_CLASS_YELLOW  = "seven-segment-yellow";
+    public static final String           STYLE_CLASS_ORANGE  = "seven-segment-orange";
+    public static final String           STYLE_CLASS_CYAN    = "seven-segment-cyan";
+    public static final String           STYLE_CLASS_MAGENTA = "seven-segment-magenta";
+    public static final String           STYLE_CLASS_WHITE   = "seven-segment-white";
+    public static final String           STYLE_CLASS_BLACK   = "seven-segment-black";
     public static enum                   Segment {
         A,
         B,
@@ -115,7 +115,7 @@ public class SevenSegment extends Control {
     }
 
     public SevenSegment(final String CHARACTER, final SegmentStyle SEGMENT_STYLE) {
-        getStyleClass().add("sevensegment");
+        getStyleClass().add("seven-segment");
         keepAspect   = new SimpleBooleanProperty(true);
         character    = new SimpleStringProperty(CHARACTER.substring(0, 1));
         dotOn        = new SimpleBooleanProperty(false);
