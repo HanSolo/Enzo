@@ -48,6 +48,8 @@ import javafx.scene.paint.Color;
  */
 public class LedSkin extends SkinBase<Led> {
     private static final double PREFERRED_SIZE = 16;
+    private static final double MINIMUM_SIZE   = 8;
+    private static final double MAXIMUM_SIZE   = 1024;
     private Led                 control;
     private double              size;
     private Pane                pane;
@@ -75,18 +77,16 @@ public class LedSkin extends SkinBase<Led> {
     // ******************** Initialization ************************************
     private void init() {
         if (control.getPrefWidth() <= 0 || control.getPrefHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || control.getHeight() <= 0) {
+            control.getWidth() <= 0 || control.getHeight() <= 0) {
             control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
         }
 
-        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
-            control.setMinSize(8, 8);
+        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0) {
+            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
-            control.setMaxSize(1024, 1024);
+        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0) {
+            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
     }
 

@@ -60,42 +60,44 @@ import java.util.List;
  * Time: 14:18
  */
 public class ClockSkin extends SkinBase<Clock> {
-    private static final long           INTERVAL       = 20_000_000l;
-    private static final int            PREFERRED_SIZE = 200;
-    private Clock                       control;
-    private Pane                        pane;
-    private String                      nightDayStyleClass;
-    private Region                      background;
-    private Region                      hourPointer;
-    private Region                      minutePointer;
-    private Region                      secondPointer;
-    private Region                      centerKnob;
-    private Region                      foreground;
-    private double                      size;
-    private double                      hourPointerWidthFactor;
-    private double                      hourPointerHeightFactor;
-    private double                      minutePointerWidthFactor;
-    private double                      minutePointerHeightFactor;
-    private double                      secondPointerWidthFactor;
-    private double                      secondPointerHeightFactor;
-    private double                      majorTickWidthFactor;
-    private double                      majorTickHeightFactor;
-    private double                      minorTickWidthFactor;
-    private double                      minorTickHeightFactor;
-    private double                      majorTickOffset;
-    private double                      minorTickOffset;
-    private Rotate                      hourAngle;
-    private Rotate                      minuteAngle;
-    private Rotate                      secondAngle;
-    private List<Region>                ticks;
-    private Group                       tickMarkGroup;
-    private Group                       pointerGroup;
-    private Group                       secondPointerGroup;
-    private DoubleProperty              currentMinuteAngle;
-    private DoubleProperty              minute;
-    private Timeline                    timeline;
-    private long                        lastTimerCall;
-    private AnimationTimer              timer;
+    private static final long   INTERVAL       = 20_000_000l;
+    private static final int    PREFERRED_SIZE = 200;
+    private static final double MINIMUM_SIZE   = 50;
+    private static final double MAXIMUM_SIZE   = 1024;
+    private Clock               control;
+    private Pane                pane;
+    private String              nightDayStyleClass;
+    private Region              background;
+    private Region              hourPointer;
+    private Region              minutePointer;
+    private Region              secondPointer;
+    private Region              centerKnob;
+    private Region              foreground;
+    private double              size;
+    private double              hourPointerWidthFactor;
+    private double              hourPointerHeightFactor;
+    private double              minutePointerWidthFactor;
+    private double              minutePointerHeightFactor;
+    private double              secondPointerWidthFactor;
+    private double              secondPointerHeightFactor;
+    private double              majorTickWidthFactor;
+    private double              majorTickHeightFactor;
+    private double              minorTickWidthFactor;
+    private double              minorTickHeightFactor;
+    private double              majorTickOffset;
+    private double              minorTickOffset;
+    private Rotate              hourAngle;
+    private Rotate              minuteAngle;
+    private Rotate              secondAngle;
+    private List<Region>        ticks;
+    private Group               tickMarkGroup;
+    private Group               pointerGroup;
+    private Group               secondPointerGroup;
+    private DoubleProperty      currentMinuteAngle;
+    private DoubleProperty      minute;
+    private Timeline            timeline;
+    private long                lastTimerCall;
+    private AnimationTimer      timer;
 
 
     // ******************** Constructors **************************************
@@ -165,18 +167,16 @@ public class ClockSkin extends SkinBase<Clock> {
     // ******************** Initialization ************************************
     private void init() {
         if (control.getPrefWidth() <= 0 || control.getPrefHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || control.getHeight() <= 0) {
+            control.getWidth() <= 0 || control.getHeight() <= 0) {
             control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
         }
 
-        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
-            control.setMinSize(50, 50);
+        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0) {
+            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
-            control.setMaxSize(1024, 1024);
+        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0) {
+            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
     }
 

@@ -56,6 +56,8 @@ import javafx.util.Duration;
  */
 public class RadialSkin extends SkinBase<Radial> {
     private static final double PREFERRED_SIZE = 200;
+    private static final double MINIMUM_SIZE   = 50;
+    private static final double MAXIMUM_SIZE   = 1024;
     private Radial   control;
     private double   size;
     private Pane     pane;
@@ -84,18 +86,16 @@ public class RadialSkin extends SkinBase<Radial> {
 
     private void init() {
         if (control.getPrefWidth() <= 0 || control.getPrefHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || control.getHeight() <= 0) {
+            control.getWidth() <= 0 || control.getHeight() <= 0) {
             control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
         }
 
-        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
-            control.setMinSize(50, 50);
+        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0) {
+            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
-            control.setMaxSize(1024, 1024);
+        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0) {
+            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
     }
 

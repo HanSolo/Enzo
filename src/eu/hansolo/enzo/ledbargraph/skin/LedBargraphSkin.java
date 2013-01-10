@@ -52,6 +52,8 @@ import java.util.List;
  */
 public class LedBargraphSkin extends SkinBase<LedBargraph> {
     private static final double PREFERRED_SIZE = 16;
+    private static final double MINIMUM_SIZE   = 8;
+    private static final double MAXIMUM_SIZE   = 1024;
     public static final long    PEAK_TIMEOUT   = 1_500_000_000l;
     private LedBargraph         control;
     private Pane                bargraph;
@@ -89,18 +91,16 @@ public class LedBargraphSkin extends SkinBase<LedBargraph> {
     // ******************** Initialization ************************************
     private void init() {
         if (control.getPrefWidth() <= 0 || control.getPrefHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || control.getHeight() <= 0) {
+            control.getWidth() <= 0 || control.getHeight() <= 0) {
             control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
         }
 
-        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
-            control.setMinSize(8, 8);
+        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0) {
+            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
-            control.setMaxSize(1024, 1024);
+        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <=0) {
+            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
 
         for(int i = 0 ; i < control.getNoOfLeds() ; i++) {

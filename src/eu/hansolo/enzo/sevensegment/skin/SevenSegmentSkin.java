@@ -83,7 +83,7 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> {
     // ******************** Initialization ************************************
     private void init() {
         if (control.getPrefWidth() <= 0 || control.getPrefHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || control.getHeight() <= 0) {
+            control.getWidth() <= 0 || control.getHeight() <= 0) {
             if (control.getPrefWidth() > 0 && control.getPrefHeight() > 0) {
                 control.setPrefSize(control.getPrefWidth(), control.getPrefHeight());
             } else {
@@ -91,13 +91,11 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> {
             }
         }
 
-        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
+        if (control.getMinWidth() <= 0 || control.getMinHeight() <= 0) {
             control.setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
         }
 
-        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0 ||
-            control.getPrefWidth() <= 0 || getHeight() <= 0) {
+        if (control.getMaxWidth() <= 0 || control.getMaxHeight() <= 0) {
             control.setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
         }
 
