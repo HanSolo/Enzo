@@ -279,13 +279,7 @@ public class Lcd extends Control {
                 if (Double.compare(currentValue.get(), getMaxMeasuredValue()) > 0 && !firstTime) {
                     setMaxMeasuredValue(currentValue.get());
                 }
-                if (initialized) {
-                    if (isThresholdBehaviorInverted()) {
-                        setThresholdExceeded(currentValue.get() < getThreshold());
-                    } else {
-                        setThresholdExceeded(currentValue.get() > getThreshold());
-                    }
-                }
+                validateThreshold();
             }
         });
     }
@@ -313,7 +307,7 @@ public class Lcd extends Control {
         formerValue.set(value.get());
         value.set(clamp(getMinValue(), getMaxValue(), VALUE));
     }
-    public final DoubleProperty valueProperty() {
+    public final ReadOnlyDoubleProperty valueProperty() {
         return value;
     }
 
@@ -411,8 +405,9 @@ public class Lcd extends Control {
     }
     public final void setThreshold(final double THRESHOLD) {
         threshold.set(clamp(getMinValue(), getMaxValue(), THRESHOLD));
+        validateThreshold();
     }
-    public final DoubleProperty thresholdProperty() {
+    public final ReadOnlyDoubleProperty thresholdProperty() {
         return threshold;
     }
 
@@ -700,6 +695,16 @@ public class Lcd extends Control {
         if (VALUE < MIN) return MIN;
         if (VALUE > MAX) return MAX;
         return VALUE;
+    }
+
+    private void validateThreshold() {
+        if (initialized) {
+            if (isThresholdBehaviorInverted()) {
+                setThresholdExceeded(currentValue.get() < getThreshold());
+            } else {
+                setThresholdExceeded(currentValue.get() > getThreshold());
+            }
+        }
     }
 
 

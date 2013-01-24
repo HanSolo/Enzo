@@ -48,7 +48,7 @@ public class Demo extends Application {
         control = LcdBuilder.create()
                             .prefWidth(528)
                             .prefHeight(192)
-                            .styleClass(Lcd.STYLE_CLASS_GREEN_DARKGREEN)
+                            .styleClass(Lcd.STYLE_CLASS_DARKBLUE)
                             .foregroundShadowVisible(true)
                             .crystalOverlayVisible(true)
                             .title("Room Temp")

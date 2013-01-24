@@ -190,7 +190,7 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> {
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = DEFAULT_HEIGHT;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - getInsets().getTop() - getInsets().getBottom());
+            prefHeight = Math.max(0, PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
@@ -198,25 +198,25 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> {
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = DEFAULT_WIDTH;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - getInsets().getLeft() - getInsets().getRight());
+            prefWidth = Math.max(0, PREF_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getInsets().getTop() - getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
     }
 
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getInsets().getLeft() - getInsets().getRight()));
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getInsets().getTop() - getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
     }
 
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getInsets().getLeft() - getInsets().getRight()));
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
     }
 
 
