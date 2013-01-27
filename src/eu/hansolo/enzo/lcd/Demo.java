@@ -64,8 +64,8 @@ public class Demo extends Application {
                             .thresholdVisible(true)
                             .trendVisible(true)
                             //.numberSystemVisible(false)
-                            .infoTextVisible(true)
-                            .infoText("Info")
+                            .lowerRightTextVisible(true)
+                            .lowerRightText("Info")
                             .valueFont(Lcd.LcdFont.LCD)
                             .valueAnimationEnabled(true)
                             .build();
@@ -92,7 +92,13 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        timer.start();
+        control.setValue(60);
+        control.setTrend(Lcd.Trend.RISING);
+        control.setAlarmVisible(true);
+        control.setBatteryVisible(true);
+        control.setBatteryCharge(0.5);
+
+        //timer.start();
     }
 
     public static void main(String[] args) {

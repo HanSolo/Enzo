@@ -138,13 +138,18 @@ public class Lcd extends Control {
     private BooleanProperty              thresholdExceeded;
     private StringProperty               title;
     private StringProperty               unit;
-    private StringProperty               infoText;
-    private BooleanProperty              infoTextVisible;
+    private StringProperty               lowerRightText;
+    private BooleanProperty              lowerRightTextVisible;
+    private StringProperty               upperLeftText;
+    private BooleanProperty              upperLeftTextVisible;
+    private StringProperty               upperRightText;
+    private BooleanProperty              upperRightTextVisible;
     private ObjectProperty<NumberSystem> numberSystem;
     private ObjectProperty<Trend>        trend;
+    private DoubleProperty               batteryCharge;
     private BooleanProperty              valueVisible;
-    private BooleanProperty              minMeasuredValueVisible;
-    private BooleanProperty              maxMeasuredValueVisible;
+    private BooleanProperty minMeasuredValueVisible;
+    private BooleanProperty maxMeasuredValueVisible;
     private BooleanProperty              formerValueVisible;
     private BooleanProperty              thresholdVisible;
     private StringProperty               unitFont;
@@ -159,6 +164,8 @@ public class Lcd extends Control {
     private BooleanProperty              titleVisible;
     private BooleanProperty              unitVisible;
     private BooleanProperty              trendVisible;
+    private BooleanProperty              batteryVisible;
+    private BooleanProperty              alarmVisible;
     private Transition                   toValueAnimation;
     private boolean                      toggleValue;
     private boolean                      toggleThreshold;
@@ -190,10 +197,15 @@ public class Lcd extends Control {
         thresholdExceeded         = new SimpleBooleanProperty(false);
         title                     = new SimpleStringProperty("");
         unit                      = new SimpleStringProperty("");
-        infoText                  = new SimpleStringProperty("");
-        infoTextVisible           = new SimpleBooleanProperty(false);
+        lowerRightText            = new SimpleStringProperty("");
+        lowerRightTextVisible     = new SimpleBooleanProperty(false);
+        upperLeftText             = new SimpleStringProperty("");
+        upperLeftTextVisible      = new SimpleBooleanProperty(false);
+        upperRightText            = new SimpleStringProperty("");
+        upperRightTextVisible     = new SimpleBooleanProperty(false);
         numberSystem              = new SimpleObjectProperty<>(NumberSystem.DECIMAL);
         trend                     = new SimpleObjectProperty<>(Trend.UNKNOWN);
+        batteryCharge             = new SimpleDoubleProperty(0);
         valueVisible              = new SimpleBooleanProperty(true);
         minMeasuredValueVisible   = new SimpleBooleanProperty(false);
         maxMeasuredValueVisible   = new SimpleBooleanProperty(false);
@@ -215,6 +227,8 @@ public class Lcd extends Control {
         titleVisible              = new SimpleBooleanProperty(true);
         unitVisible               = new SimpleBooleanProperty(true);
         trendVisible              = new SimpleBooleanProperty(false);
+        batteryVisible            = new SimpleBooleanProperty(false);
+        alarmVisible              = new SimpleBooleanProperty(false);
         toggleValue               = false;
         toggleThreshold           = false;
         interval                  = 500_000_000l;
@@ -452,24 +466,64 @@ public class Lcd extends Control {
         return unit;
     }
 
-    public final String getInfoText() {
-        return infoText.get();
+    public final String getLowerRightText() {
+        return lowerRightText.get();
     }
-    public final void setInfoText(final String INFO_TEXT) {
-        infoText.set(INFO_TEXT);
+    public final void setLowerRightText(final String LOWER_RIGHT_TEXT) {
+        lowerRightText.set(LOWER_RIGHT_TEXT);
     }
-    public final StringProperty infoTextProperty() {
-        return infoText;
+    public final StringProperty lowerRightTextProperty() {
+        return lowerRightText;
     }
 
-    public final boolean isInfoTextVisible() {
-        return infoTextVisible.get();
+    public final boolean isLowerRightTextVisible() {
+        return lowerRightTextVisible.get();
     }
-    public final void setInfoTextVisible(final boolean INFO_TEXT_VISIBLE) {
-        infoTextVisible.set(INFO_TEXT_VISIBLE);
+    public final void setLowerRightTextVisible(final boolean LOWER_RIGHT_TEXT_VISIBLE) {
+        lowerRightTextVisible.set(LOWER_RIGHT_TEXT_VISIBLE);
     }
-    public final BooleanProperty infoTextVisibleProperty() {
-        return infoTextVisible;
+    public final BooleanProperty lowerRightTextVisibleProperty() {
+        return lowerRightTextVisible;
+    }
+
+    public final String getUpperLeftText() {
+        return upperLeftText.get();
+    }
+    public final void setUpperLeftText(final String UPPER_LEFT_TEXT) {
+        upperLeftText.set(UPPER_LEFT_TEXT);
+    }
+    public final StringProperty upperLeftTextProperty() {
+        return upperLeftText;
+    }
+
+    public final boolean isUpperLeftTextVisible() {
+        return upperLeftTextVisible.get();
+    }
+    public final void setUpperLeftTextVisible(final boolean UPPER_LEFT_TEXT_VISIBLE) {
+        upperLeftTextVisible.set(UPPER_LEFT_TEXT_VISIBLE);
+    }
+    public final BooleanProperty upperLeftTextVisibleProperty() {
+        return upperLeftTextVisible;
+    }
+
+    public final String getUpperRightText() {
+        return upperRightText.get();
+    }
+    public final void setUpperRightText(final String UPPER_RIGHT_TEXT) {
+        upperRightText.set(UPPER_RIGHT_TEXT);
+    }
+    public final StringProperty upperRightTextProperty() {
+        return upperRightText;
+    }
+
+    public final boolean isUpperRightTextVisible() {
+        return upperRightTextVisible.get();
+    }
+    public final void setUpperRightTextVisible(final boolean UPPER_RIGHT_TEXT_VISIBLE) {
+        upperRightTextVisible.set(UPPER_RIGHT_TEXT_VISIBLE);
+    }
+    public final BooleanProperty upperRightTextVisibleProperty() {
+        return upperRightTextVisible;
     }
 
     public final NumberSystem getNumberSystem() {
@@ -492,6 +546,16 @@ public class Lcd extends Control {
         return trend;
     }
 
+    public final double getBatteryCharge() {
+        return batteryCharge.get();
+    }
+    public final void setBatteryCharge(final double BATTERY_CHARGE) {
+        batteryCharge.set(clamp(0.0, 1.0, BATTERY_CHARGE));
+    }
+    public final DoubleProperty batteryChargeProperty() {
+        return batteryCharge;
+    }
+
     public final boolean isValueVisible() {
         return valueVisible.get();
     }
@@ -503,7 +567,7 @@ public class Lcd extends Control {
         return minMeasuredValueVisible.get();
     }
     public final void setMinMeasuredValueVisible(final boolean MIN_MEASURED_VALUE_VISIBLE) {
-        minMeasuredValueVisible.set(MIN_MEASURED_VALUE_VISIBLE);       
+        minMeasuredValueVisible.set(MIN_MEASURED_VALUE_VISIBLE);
     }
     public final BooleanProperty minMeasuredValueVisibleProperty() {
         return minMeasuredValueVisible;
@@ -513,7 +577,7 @@ public class Lcd extends Control {
         return maxMeasuredValueVisible.get();
     }
     public final void setMaxMeasuredValueVisible(final boolean MAX_MEASURED_VALUE_VISIBLE) {
-        maxMeasuredValueVisible.set(MAX_MEASURED_VALUE_VISIBLE);        
+        maxMeasuredValueVisible.set(MAX_MEASURED_VALUE_VISIBLE);
     }
     public final BooleanProperty maxMeasuredValueVisibleProperty() {
         return maxMeasuredValueVisible;
@@ -655,6 +719,26 @@ public class Lcd extends Control {
     }
     public final BooleanProperty trendVisibleProperty() {
         return trendVisible;
+    }
+
+    public final boolean isBatteryVisible() {
+        return batteryVisible.get();
+    }
+    public final void setBatteryVisible(final boolean BATTERY_VISIBLE) {
+        batteryVisible.set(BATTERY_VISIBLE);
+    }
+    public final BooleanProperty batteryVisibleProperty() {
+        return batteryVisible;
+    }
+
+    public final boolean isAlarmVisible() {
+        return alarmVisible.get();
+    }
+    public final void setAlarmVisible(final boolean ALARM_VISIBLE) {
+        alarmVisible.set(ALARM_VISIBLE);
+    }
+    public final BooleanProperty alarmVisibleProperty() {
+        return alarmVisible;
     }
 
     public final boolean isFormerValueVisible() {

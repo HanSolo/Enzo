@@ -158,13 +158,33 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
-    public final LcdBuilder infoText(final String INFO_TEXT) {
-        properties.put("infoText", new SimpleStringProperty(INFO_TEXT));
+    public final LcdBuilder lowerRightText(final String LOWER_RIGHT_TEXT) {
+        properties.put("lowerRightText", new SimpleStringProperty(LOWER_RIGHT_TEXT));
         return this;
     }
 
-    public final LcdBuilder infoTextVisible(final boolean INFO_TEXT_VISIBLE) {
-        properties.put("infoTextVisible", new SimpleBooleanProperty(INFO_TEXT_VISIBLE));
+    public final LcdBuilder lowerRightTextVisible(final boolean LOWER_RIGHT_TEXT_VISIBLE) {
+        properties.put("lowerRightTextVisible", new SimpleBooleanProperty(LOWER_RIGHT_TEXT_VISIBLE));
+        return this;
+    }
+
+    public final LcdBuilder upperLeftText(final String UPPER_LEFT_TEXT) {
+        properties.put("upperLeftText", new SimpleStringProperty(UPPER_LEFT_TEXT));
+        return this;
+    }
+
+    public final LcdBuilder upperLeftTextVisible(final boolean UPPER_LEFT_TEXT_VISIBLE) {
+        properties.put("upperLeftTextVisible", new SimpleBooleanProperty(UPPER_LEFT_TEXT_VISIBLE));
+        return this;
+    }
+
+    public final LcdBuilder upperRightText(final String UPPER_RIGHT_TEXT) {
+        properties.put("upperRightText", new SimpleStringProperty(UPPER_RIGHT_TEXT));
+        return this;
+    }
+
+    public final LcdBuilder upperRightTextVisible(final boolean UPPER_RIGHT_TEXT_VISIBLE) {
+        properties.put("upperRightTextVisible", new SimpleBooleanProperty(UPPER_RIGHT_TEXT_VISIBLE));
         return this;
     }
 
@@ -175,6 +195,21 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
 
     public final LcdBuilder trend(final Lcd.Trend TREND) {
         properties.put("trend", new SimpleObjectProperty<>(TREND));
+        return this;
+    }
+
+    public final LcdBuilder batterCharge(final double BATTERY_CHARGE) {
+        properties.put("batteryCharge", new SimpleDoubleProperty(BATTERY_CHARGE));
+        return this;
+    }
+
+    public final LcdBuilder batteryVisible(final boolean BATTERY_VISIBLE) {
+        properties.put("batteryVisible", new SimpleBooleanProperty(BATTERY_VISIBLE));
+        return this;
+    }
+
+    public final LcdBuilder alarmVisible(final boolean ALARM_VISIBLE) {
+        properties.put("alarmVisible", new SimpleBooleanProperty(ALARM_VISIBLE));
         return this;
     }
 
@@ -274,14 +309,28 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setUnit(((StringProperty) properties.get(key)).get());
             } else if ("unitVisible".equals(key)) {
                 CONTROL.setUnitVisible(((BooleanProperty) properties.get(key)).get());
-            } else if ("infoText".equals(key)) {
-                CONTROL.setInfoText(((StringProperty) properties.get(key)).get());
-            } else if ("infoTextVisible".equals(key)) {
-                CONTROL.setInfoTextVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("lowerRightText".equals(key)) {
+                CONTROL.setLowerRightText(((StringProperty) properties.get(key)).get());
+            } else if ("lowerRightTextVisible".equals(key)) {
+                CONTROL.setLowerRightTextVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("upperLeftText".equals(key)) {
+                CONTROL.setUpperLeftText(((StringProperty) properties.get(key)).get());
+            } else if ("upperLeftTextVisible".equals(key)) {
+                CONTROL.setUpperLeftTextVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("upperRightText".equals(key)) {
+                CONTROL.setUpperRightText(((StringProperty) properties.get(key)).get());
+            } else if ("upperRightTextVisible".equals(key)) {
+                CONTROL.setUpperRightTextVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("trendVisible".equals(key)) {
                 CONTROL.setTrendVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("trend".equals(key)) {
                 CONTROL.setTrend(((ObjectProperty<Lcd.Trend>) properties.get(key)).get());
+            } else if ("batteryCharge".equals(key)) {
+                CONTROL.setBatteryCharge(((DoubleProperty) properties.get(key)).get());
+            } else if ("batteryVisible".equals(key)) {
+                CONTROL.setBatteryVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("alarmVisible".equals(key)) {
+                CONTROL.setAlarmVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("thresholdVisible".equals(key)) {
                 CONTROL.setThresholdVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("thresholdBehaviorInverted".equals(key)) {
