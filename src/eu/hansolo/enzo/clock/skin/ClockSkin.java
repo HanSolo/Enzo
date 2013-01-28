@@ -38,6 +38,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
@@ -46,6 +47,9 @@ import javafx.scene.effect.InnerShadowBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
@@ -69,7 +73,9 @@ public class ClockSkin extends SkinBase<Clock> {
     private String              nightDayStyleClass;
     private Region              background;
     private Region              hourPointer;
+    private Region              hourPointerFlour;
     private Region              minutePointer;
+    private Region              minutePointerFlour;
     private Region              secondPointer;
     private Region              centerKnob;
     private Region              foreground;
@@ -90,9 +96,12 @@ public class ClockSkin extends SkinBase<Clock> {
     private Rotate              minuteAngle;
     private Rotate              secondAngle;
     private List<Region>        ticks;
+    private List<Text>          tickLabels;
     private Group               tickMarkGroup;
+    private Group               tickLabelGroup;
     private Group               pointerGroup;
     private Group               secondPointerGroup;
+    private Font                tickLabelFont;
     private DoubleProperty      currentMinuteAngle;
     private DoubleProperty      minute;
     private Timeline            timeline;
@@ -123,6 +132,8 @@ public class ClockSkin extends SkinBase<Clock> {
         majorTickOffset = 0.018;
         minorTickOffset = 0.05;
 
+        tickLabelFont      = Font.loadFont(getClass().getResourceAsStream("/resources/helvetica.ttf"), 12);
+
         minute             = new SimpleDoubleProperty(0);
         currentMinuteAngle = new SimpleDoubleProperty(0);
 
@@ -131,7 +142,8 @@ public class ClockSkin extends SkinBase<Clock> {
         minuteAngle = new Rotate();
         secondAngle = new Rotate();
 
-        ticks = new ArrayList<>(60);
+        ticks      = new ArrayList<>(60);
+        tickLabels = new ArrayList<>(12);
 
         timeline = new Timeline();
         timer = new AnimationTimer() {
@@ -182,14 +194,38 @@ public class ClockSkin extends SkinBase<Clock> {
 
     private void initGraphics() {
         background = new Region();
-        background.getStyleClass().setAll("background-ios6");
+        if (Clock.Design.IOS6 == control.getDesign()) {
+            background.getStyleClass().setAll("background-ios6");
+        }else if (Clock.Design.DB == control.getDesign()) {
+            background.getStyleClass().setAll("background-db");
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            background.getStyleClass().setAll("background-braun");
+        }
 
+        String majorTickStyleClass;
+        String minorTickStyleClass;
+        if (Clock.Design.IOS6 == control.getDesign()) {
+            majorTickStyleClass = "major-tick-ios6";
+            minorTickStyleClass = "minor-tick-ios6";
+        } else if (Clock.Design.DB == control.getDesign()) {
+            majorTickStyleClass = "major-tick-db";
+            minorTickStyleClass = "minor-tick-db";
+        } else {
+            majorTickStyleClass = "major-tick-braun";
+            minorTickStyleClass = "minor-tick-braun";
+        }
+
+        int tickLabelCounter = 1;
         for (double angle = 0 ; angle < 360 ; angle += 6) {
             Region tick = new Region();
             if (angle % 30 == 0) {
-                tick.getStyleClass().setAll("major-tick-ios6");
+                tick.getStyleClass().setAll(majorTickStyleClass);
+                Text tickLabel = new Text(Integer.toString(tickLabelCounter));
+                tickLabel.getStyleClass().setAll("tick-label-braun");
+                tickLabels.add(tickLabel);
+                tickLabelCounter++;
             } else {
-                tick.getStyleClass().setAll("minor-tick-ios6");
+                tick.getStyleClass().setAll(minorTickStyleClass);
             }
             ticks.add(tick);
         }
@@ -203,13 +239,52 @@ public class ClockSkin extends SkinBase<Clock> {
                                              .build());
         tickMarkGroup.getChildren().setAll(ticks);
 
+        tickLabelGroup = new Group();
+        tickLabelGroup.setEffect(DropShadowBuilder.create()
+                                                  .color(Color.rgb(0, 0, 0, 0.65))
+                                                  .radius(1.5)
+                                                  .blurType(BlurType.GAUSSIAN)
+                                                  .offsetY(1)
+                                                  .build());
+        tickLabelGroup.getChildren().setAll(tickLabels);
+
         hourPointer = new Region();
-        hourPointer.getStyleClass().setAll("hour-pointer-ios6");
+        if (Clock.Design.IOS6 == control.getDesign()) {
+            hourPointer.getStyleClass().setAll("hour-pointer-ios6");
+        } else if (Clock.Design.DB == control.getDesign()) {
+            hourPointer.getStyleClass().setAll("hour-pointer-db");
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            hourPointer.getStyleClass().setAll("hour-pointer-braun");
+        }
         hourPointer.getTransforms().setAll(hourAngle);
 
+        hourPointerFlour = new Region();
+        hourPointerFlour.getStyleClass().setAll("hour-pointer-braun-flour");
+        if (Clock.Design.BRAUN == control.getDesign()) {
+            hourPointerFlour.setVisible(true);
+        } else {
+            hourPointerFlour.setVisible(false);
+        }
+        hourPointerFlour.getTransforms().setAll(hourAngle);
+
         minutePointer = new Region();
-        minutePointer.getStyleClass().setAll("minute-pointer-ios6");
+        if (Clock.Design.IOS6 == control.getDesign()) {
+            minutePointer.getStyleClass().setAll("minute-pointer-ios6");
+        } else if (Clock.Design.DB == control.getDesign()) {
+            minutePointer.getStyleClass().setAll("minute-pointer-db");
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            minutePointer.getStyleClass().setAll("minute-pointer-braun");
+        }
         minutePointer.getTransforms().setAll(minuteAngle);
+
+        minutePointerFlour = new Region();
+        minutePointerFlour.getStyleClass().setAll("minute-pointer-braun-flour");
+        if (Clock.Design.BRAUN == control.getDesign()) {
+            minutePointerFlour.setVisible(true);
+        } else {
+            minutePointerFlour.setVisible(false);
+        }
+        minutePointerFlour.getTransforms().setAll(minuteAngle);
 
         pointerGroup = new Group();
         pointerGroup.setEffect(DropShadowBuilder.create()
@@ -218,10 +293,16 @@ public class ClockSkin extends SkinBase<Clock> {
                                                 .blurType(BlurType.GAUSSIAN)
                                                 .offsetY(6)
                                                 .build());
-        pointerGroup.getChildren().setAll(minutePointer, hourPointer);
+        pointerGroup.getChildren().setAll(minutePointerFlour, minutePointer, hourPointerFlour, hourPointer);
 
         secondPointer = new Region();
-        secondPointer.getStyleClass().setAll("second-pointer-ios6");
+        if (Clock.Design.IOS6 == control.getDesign()) {
+            secondPointer.getStyleClass().setAll("second-pointer-ios6");
+        } else if (Clock.Design.DB == control.getDesign()) {
+            secondPointer.getStyleClass().setAll("second-pointer-db");
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            secondPointer.getStyleClass().setAll("second-pointer-braun");
+        }
         secondPointer.getTransforms().setAll(secondAngle);
 
         secondPointerGroup = new Group();
@@ -247,12 +328,24 @@ public class ClockSkin extends SkinBase<Clock> {
         secondPointerGroup.setVisible(control.isSecondPointerVisible());
 
         centerKnob = new Region();
-        centerKnob.getStyleClass().setAll("center-knob-ios6");
+        if (Clock.Design.IOS6 == control.getDesign()) {
+            centerKnob.getStyleClass().setAll("center-knob-ios6");
+        } else if (Clock.Design.DB == control.getDesign()) {
+            centerKnob.getStyleClass().setAll("center-knob-db");
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            centerKnob.getStyleClass().setAll("center-knob-braun");
+        }
 
         foreground = new Region();
-        foreground.getStyleClass().setAll("foreground-ios6");
+        if (Clock.Design.IOS6 == control.getDesign()) {
+            foreground.getStyleClass().setAll("foreground-ios6");
+        } else if (Clock.Design.DB == control.getDesign()) {
+            foreground.getStyleClass().setAll("foreground-db");
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            foreground.getStyleClass().setAll("foreground-braun");
+        }
 
-        pane.getChildren().setAll(background, tickMarkGroup, pointerGroup, secondPointerGroup, centerKnob, foreground);
+        pane.getChildren().setAll(background, tickMarkGroup, tickLabelGroup, pointerGroup, secondPointerGroup, centerKnob, foreground);
 
         getChildren().setAll(pane);
 
@@ -319,7 +412,6 @@ public class ClockSkin extends SkinBase<Clock> {
     private void updateDesign() {
         // Set day or night mode
         nightDayStyleClass = control.isNightMode() ? "night-mode" : "day-mode";
-
         // Set Styles for each component
         if (Clock.Design.IOS6 == control.getDesign()) {
             background.getStyleClass().setAll(nightDayStyleClass, "background-ios6");
@@ -339,6 +431,28 @@ public class ClockSkin extends SkinBase<Clock> {
             secondPointer.getStyleClass().setAll(nightDayStyleClass, "second-pointer-ios6");
             centerKnob.getStyleClass().setAll(nightDayStyleClass, "center-knob-ios6");
             foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-ios6");
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            nightDayStyleClass = control.isNightMode() ? "night-mode-braun" : "day-mode-braun";
+            background.getStyleClass().setAll(nightDayStyleClass, "background-braun");
+            int index = 0;
+            for (double angle = 0 ; angle < 360 ; angle += 6) {
+                if (angle % 30 == 0) {
+                    ticks.get(index).getStyleClass().setAll(nightDayStyleClass, "major-tick-braun");
+                } else {
+                    ticks.get(index).getStyleClass().setAll(nightDayStyleClass, "minor-tick-braun");
+                }
+                index++;
+            }
+            System.out.println(ticks.size());
+            index = 0;
+            for (index = 0 ; index < 12 ; index++) {
+                tickLabels.get(index).getStyleClass().setAll(nightDayStyleClass, "tick-label-braun");
+            }
+            hourPointer.getStyleClass().setAll(nightDayStyleClass, "hour-pointer-braun");
+            minutePointer.getStyleClass().setAll(nightDayStyleClass, "minute-pointer-braun");
+            secondPointer.getStyleClass().setAll(nightDayStyleClass, "second-pointer-braun");
+            centerKnob.getStyleClass().setAll(nightDayStyleClass, "center-knob-braun");
+            foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-braun");
         } else {
             background.getStyleClass().setAll(nightDayStyleClass, "background-db");
             int index = 0;
@@ -366,6 +480,8 @@ public class ClockSkin extends SkinBase<Clock> {
 
         background.setPrefSize(size, size);
 
+        // TODO: hourPointer and minutePointer have to be vice versa...wrong scaling here !!!
+
         if (Clock.Design.IOS6 == control.getDesign()) {
             hourPointerWidthFactor    = 0.04;
             hourPointerHeightFactor   = 0.55;
@@ -385,6 +501,25 @@ public class ClockSkin extends SkinBase<Clock> {
             minuteAngle.setPivotY(size * 0.66 * minutePointerHeightFactor);
             secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
             secondAngle.setPivotY(size * 0.7341040462 * secondPointerHeightFactor);
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            hourPointerWidthFactor    = 0.105;
+            hourPointerHeightFactor   = 0.485;
+            minutePointerWidthFactor  = 0.105;
+            minutePointerHeightFactor = 0.4;
+            secondPointerWidthFactor  = 0.09;
+            secondPointerHeightFactor = 0.53;
+            majorTickWidthFactor      = 0.015;
+            majorTickHeightFactor     = 0.045;
+            minorTickWidthFactor      = 0.0075;
+            minorTickHeightFactor     = 0.0225;
+            majorTickOffset           = 0.012;
+            minorTickOffset           = 0.02;
+            hourAngle.setPivotX(size * 0.5 * hourPointerWidthFactor);
+            hourAngle.setPivotY(size * 0.895 * hourPointerHeightFactor);
+            minuteAngle.setPivotX(size * 0.5 * minutePointerWidthFactor);
+            minuteAngle.setPivotY(size * 0.87 * minutePointerHeightFactor);
+            secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
+            secondAngle.setPivotY(size * 0.8125 * secondPointerHeightFactor);
         } else {
             hourPointerWidthFactor    = 0.04;
             hourPointerHeightFactor   = 0.47;
@@ -429,48 +564,74 @@ public class ClockSkin extends SkinBase<Clock> {
             index++;
         }
 
-        hourPointer.setPrefWidth(size * hourPointerWidthFactor);
-        hourPointer.setPrefHeight(size * hourPointerHeightFactor);
+        if (Clock.Design.BRAUN == control.getDesign()) {
+            int tickLabelCounter = 0;
+            tickLabelFont = Font.loadFont(getClass().getResourceAsStream("/resources/helvetica.ttf"), (0.075 * size));
+            for (double angle = 0 ; angle < 360 ; angle += 30.0) {
+                double x = 0.31 * size * Math.sin(Math.toRadians(150 - angle));
+                double y = 0.31 * size * Math.cos(Math.toRadians(150 - angle));
+                tickLabels.get(tickLabelCounter).setFont(tickLabelFont);
+                tickLabels.get(tickLabelCounter).setLayoutX(size * 0.5 + x - tickLabels.get(tickLabelCounter).getLayoutBounds().getWidth() * 0.5);
+                tickLabels.get(tickLabelCounter).setLayoutY(size * 0.5 + y);
+                tickLabels.get(tickLabelCounter).setTextOrigin(VPos.CENTER);
+                tickLabels.get(tickLabelCounter).setTextAlignment(TextAlignment.CENTER);
+                tickLabelCounter++;
+            }
+        }
+
+        hourPointer.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
         if (Clock.Design.IOS6 == control.getDesign()) {
-            hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() *0.5));
+            hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
             hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.24));
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
+            hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.108));
+            hourPointerFlour.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
+            hourPointerFlour.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
+            hourPointerFlour.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.108));
         } else {
             hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
             hourPointer.setTranslateY(size * 0.5 - hourPointer.getPrefHeight());
         }
 
-        minutePointer.setPrefWidth(size * minutePointerWidthFactor);
-        minutePointer.setPrefHeight(size * minutePointerHeightFactor);
+        minutePointer.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
         if (Clock.Design.IOS6 == control.getDesign()) {
             minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
             minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.34));
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
+            minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.128));
+            minutePointerFlour.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
+            minutePointerFlour.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
+            minutePointerFlour.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.128));
         } else {
             minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
             minutePointer.setTranslateY(size * 0.5 - minutePointer.getPrefHeight());
         }
 
-        secondPointer.setPrefWidth(size * secondPointerWidthFactor);
-        secondPointer.setPrefHeight(size * secondPointerHeightFactor);
+        secondPointer.setPrefSize(size * secondPointerWidthFactor, size * secondPointerHeightFactor);
         if (Clock.Design.IOS6 == control.getDesign()) {
             secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
             secondPointer.setTranslateY(size * 0.5 - (secondPointer.getPrefHeight()) + (secondPointer.getPrefHeight() * 0.2658959538));
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
+            secondPointer.setTranslateY(size * 0.5 - secondPointer.getPrefHeight() + (secondPointer.getPrefHeight() * 0.189));
         } else {
             secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
             secondPointer.setTranslateY(size * 0.5 - secondPointer.getPrefHeight());
         }
 
         if (Clock.Design.IOS6 == control.getDesign()) {
-            centerKnob.setPrefWidth(size * 0.015);
-            centerKnob.setPrefHeight(size * 0.015);
+            centerKnob.setPrefSize(size * 0.015, size * 0.015);
+        } else if (Clock.Design.BRAUN == control.getDesign()) {
+            centerKnob.setPrefSize(size * 0.085, size * 0.085);
         } else {
-            centerKnob.setPrefWidth(size * 0.1);
-            centerKnob.setPrefHeight(size * 0.1);
+            centerKnob.setPrefSize(size * 0.1, size * 0.1);
         }
         centerKnob.setTranslateX(size * 0.5 - (centerKnob.getPrefWidth() * 0.5));
         centerKnob.setTranslateY(size * 0.5 - (centerKnob.getPrefHeight() * 0.5));
 
-        foreground.setPrefWidth(size * 0.955);
-        foreground.setPrefHeight(size * 0.495);
+        foreground.setPrefSize(size * 0.955, size * 0.495);
         foreground.setTranslateX(size * 0.5 - (foreground.getPrefWidth() * 0.5));
         foreground.setTranslateY(size * 0.01);
     }

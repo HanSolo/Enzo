@@ -43,7 +43,8 @@ import javafx.scene.control.Control;
 public class Clock extends Control {
     public enum Design {
         IOS6,
-        DB
+        DB,
+        BRAUN
     }
     private BooleanProperty        discreteSecond;
     private BooleanProperty        secondPointerVisible;

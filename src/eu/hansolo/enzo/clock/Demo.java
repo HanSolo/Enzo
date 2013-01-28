@@ -52,7 +52,9 @@ public class Demo extends Application {
 
     @Override public void init() {
         clock = ClockBuilder.create()
-                            .design(Clock.Design.DB)
+                            .design(Clock.Design.BRAUN)
+                            .nightMode(true)
+                            .discreteSecond(true)
                             .build();
     }
 
@@ -60,15 +62,14 @@ public class Demo extends Application {
         StackPane pane = new StackPane();
         pane.getChildren().setAll(clock);
 
-        Scene scene = new Scene(pane, 400, 400, Color.rgb(195, 195, 195));
+        //Scene scene = new Scene(pane, 400, 400, Color.rgb(195, 195, 195));
+        Scene scene = new Scene(pane, 400, 400, Color.BLACK);
 
         stage.setTitle("Clock Demo");
         stage.setScene(scene);
         stage.show();
 
         //clock.setMajorTickHeight(30);
-        clock.setNightMode(true);
-        clock.setDesign(Clock.Design.IOS6);
 
         calcNoOfNodes(scene.getRoot());
         System.out.println("No. of nodes in scene: " + noOfNodes);
