@@ -39,9 +39,48 @@ import java.util.Random;
 
 
 public class Demo extends Application {
-    private static final Random RND = new Random();
+    private static final Random   RND = new Random();
+    private static final String[] STYLE_CLASSES = {
+    "lcd-beige",
+    "lcd-blue",
+    "lcd-orange",
+    "lcd-red",
+    "lcd-yellow",
+    "lcd-white",
+    "lcd-gray",
+    "lcd-black",
+    "lcd-green",
+    "lcd-green-darkgreen",
+    "lcd-blue2",
+    "lcd-blue-black",
+    "lcd-blue-darkblue",
+    "lcd-blue-lightblue",
+    "lcd-blue-gray",
+    "lcd-standard",
+    "lcd-lightgreen",
+    "lcd-standard-green",
+    "lcd-blue-blue",
+    "lcd-red-darkred",
+    "lcd-darkblue",
+    "lcd-purple",
+    "lcd-black-red",
+    "lcd-darkgreen",
+    "lcd-amber",
+    "lcd-lightblue",
+    "lcd-green-black",
+    "lcd-yellow-black",
+    "lcd-black-yellow",
+    "lcd-lightgreen-black",
+    "lcd-darkpurple",
+    "lcd-darkamber",
+    "lcd-blue-lightblue2",
+    "lcd-gray-purple",
+    "lcd-sections"
+    };
     private Lcd                 control;
     private long                lastTimerCall;
+    private double              charge;
+    private int                 styleClassCounter;
     private AnimationTimer      timer;
 
     @Override public void init() {
@@ -52,6 +91,8 @@ public class Demo extends Application {
                             .foregroundShadowVisible(true)
                             .crystalOverlayVisible(true)
                             .title("Room Temp")
+                            .batteryVisible(true)
+                            .alarmVisible(true)
                             .unit("°C")
                             .unitVisible(true)
                             .decimals(2)
@@ -66,14 +107,23 @@ public class Demo extends Application {
                             //.numberSystemVisible(false)
                             .lowerRightTextVisible(true)
                             .lowerRightText("Info")
-                            .valueFont(Lcd.LcdFont.LCD)
+                            .valueFont(Lcd.LcdFont.ELEKTRA)
                             .valueAnimationEnabled(true)
                             .build();
+        charge = 0.0;
+        styleClassCounter = 0;
         lastTimerCall = System.nanoTime();
-        timer         = new AnimationTimer() {
+        timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 3_000_000_000l) {
+                    styleClassCounter ++;
+                    if (styleClassCounter > 34) styleClassCounter = 0;
+                    control.getStyleClass().setAll("lcd", STYLE_CLASSES[styleClassCounter]);
                     control.setValue(RND.nextDouble() * 100);
+                    control.setTrend(Lcd.Trend.values()[RND.nextInt(5)]);
+                    charge += 0.02;
+                    if (charge > 1.0) charge = 0.0;
+                    control.setBatteryCharge(charge);
                     lastTimerCall = now;
                 }
             }
@@ -92,13 +142,7 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        control.setValue(60);
-        control.setTrend(Lcd.Trend.RISING);
-        control.setAlarmVisible(true);
-        control.setBatteryVisible(true);
-        control.setBatteryCharge(0.5);
-
-        //timer.start();
+        timer.start();
     }
 
     public static void main(String[] args) {

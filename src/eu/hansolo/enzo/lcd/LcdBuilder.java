@@ -68,6 +68,16 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
+    public final LcdBuilder textMode(final boolean TEXT_MODE) {
+        properties.put("textMode", new SimpleBooleanProperty(TEXT_MODE));
+        return this;
+    }
+
+    public final LcdBuilder text(final String TEXT) {
+        properties.put("text", new SimpleStringProperty(TEXT));
+        return this;
+    }
+
     public final LcdBuilder value(final double VALUE) {
         properties.put("value", new SimpleDoubleProperty(VALUE));
         return this;
@@ -130,6 +140,16 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
 
     public final LcdBuilder maxMeasuredValueDecimals(final int MAX_MEASURED_VALUE_DECIMALS) {
         properties.put("maxMeasuredValueDecimals", new SimpleIntegerProperty(MAX_MEASURED_VALUE_DECIMALS));
+        return this;
+    }
+
+    public final LcdBuilder lowerCenterText(final String LOWER_CENTER_TEXT) {
+        properties.put("lowerCenterText", new SimpleStringProperty(LOWER_CENTER_TEXT));
+        return this;
+    }
+
+    public final LcdBuilder lowerCenterTextVisible(final boolean LOWER_CENTER_TEXT_VISIBLE) {
+        properties.put("lowerCenterTextVisible", new SimpleBooleanProperty(LOWER_CENTER_TEXT_VISIBLE));
         return this;
     }
 
@@ -273,6 +293,10 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         for (String key : properties.keySet()) {
             if("styleClass".equals(key)) {
                 CONTROL.getStyleClass().setAll("lcd", ((StringProperty) properties.get(key)).get());
+            } else if("textMode".equals(key)) {
+                CONTROL.setTextMode(((BooleanProperty) properties.get(key)).get());
+            } else if("text".equals(key)) {
+                CONTROL.setText(((StringProperty) properties.get(key)).get());
             } else if("value".equals(key)) {
                 CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
             } else if("valueAnimationEnabled".equals(key)) {
@@ -309,6 +333,10 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setUnit(((StringProperty) properties.get(key)).get());
             } else if ("unitVisible".equals(key)) {
                 CONTROL.setUnitVisible(((BooleanProperty) properties.get(key)).get());
+            } else if("lowerCenterText".equals(key)) {
+                CONTROL.setLowerCenterText(((StringProperty) properties.get(key)).get());
+            } else if("lowerCenterTextVisible".equals(key)) {
+                CONTROL.setLowerCenterTextVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("lowerRightText".equals(key)) {
                 CONTROL.setLowerRightText(((StringProperty) properties.get(key)).get());
             } else if ("lowerRightTextVisible".equals(key)) {

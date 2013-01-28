@@ -93,7 +93,8 @@ public class Lcd extends Control {
         LCD,
         BUS,
         PIXEL,
-        PHONE_LCD
+        PHONE_LCD,
+        ELEKTRA
     }
     public static enum NumberSystem {
         DECIMAL("dec"),
@@ -122,6 +123,8 @@ public class Lcd extends Control {
     private boolean                      initialized;
     private boolean                      firstTime;
     private BooleanProperty              keepAspect;
+    private BooleanProperty              textMode;
+    private StringProperty               text;
     private DoubleProperty               value;
     private DoubleProperty               currentValue;
     private DoubleProperty               minValue;
@@ -138,6 +141,8 @@ public class Lcd extends Control {
     private BooleanProperty              thresholdExceeded;
     private StringProperty               title;
     private StringProperty               unit;
+    private StringProperty               lowerCenterText;
+    private BooleanProperty              lowerCenterTextVisible;
     private StringProperty               lowerRightText;
     private BooleanProperty              lowerRightTextVisible;
     private StringProperty               upperLeftText;
@@ -148,8 +153,8 @@ public class Lcd extends Control {
     private ObjectProperty<Trend>        trend;
     private DoubleProperty               batteryCharge;
     private BooleanProperty              valueVisible;
-    private BooleanProperty minMeasuredValueVisible;
-    private BooleanProperty maxMeasuredValueVisible;
+    private BooleanProperty              minMeasuredValueVisible;
+    private BooleanProperty              maxMeasuredValueVisible;
     private BooleanProperty              formerValueVisible;
     private BooleanProperty              thresholdVisible;
     private StringProperty               unitFont;
@@ -181,6 +186,8 @@ public class Lcd extends Control {
         initialized               = false;
         firstTime                 = true;
         keepAspect                = new SimpleBooleanProperty(true);
+        textMode                  = new SimpleBooleanProperty(false);
+        text                      = new SimpleStringProperty("");
         value                     = new SimpleDoubleProperty(0);
         currentValue              = new SimpleDoubleProperty(0);
         minValue                  = new SimpleDoubleProperty(0);
@@ -197,6 +204,8 @@ public class Lcd extends Control {
         thresholdExceeded         = new SimpleBooleanProperty(false);
         title                     = new SimpleStringProperty("");
         unit                      = new SimpleStringProperty("");
+        lowerCenterText           = new SimpleStringProperty("");
+        lowerCenterTextVisible    = new SimpleBooleanProperty(false);
         lowerRightText            = new SimpleStringProperty("");
         lowerRightTextVisible     = new SimpleBooleanProperty(false);
         upperLeftText             = new SimpleStringProperty("");
@@ -312,6 +321,26 @@ public class Lcd extends Control {
 
     @Override public boolean isResizable() {
         return true;
+    }
+
+    public final boolean isTextMode() {
+        return textMode.get();
+    }
+    public final void setTextMode(final boolean TEXT_MODE) {
+        textMode.set(TEXT_MODE);
+    }
+    public final BooleanProperty textModeProperty() {
+        return textMode;
+    }
+
+    public final String getText() {
+        return text.get();
+    }
+    public final void setText(final String TEXT) {
+        text.set(TEXT);
+    }
+    public final StringProperty textProperty() {
+        return text;
     }
 
     public final double getValue() {
@@ -464,6 +493,26 @@ public class Lcd extends Control {
     }
     public final StringProperty unitProperty() {
         return unit;
+    }
+
+    public final String getLowerCenterText() {
+        return lowerCenterText.get();
+    }
+    public final void setLowerCenterText(final String LOWER_CENTER_TEXT) {
+        lowerCenterText.set(LOWER_CENTER_TEXT);
+    }
+    public final StringProperty lowerCenterTextProperty() {
+        return lowerCenterText;
+    }
+
+    public final boolean isLowerCenterTextVisible() {
+        return lowerCenterTextVisible.get();
+    }
+    public final void setLowerCenterTextVisible(final boolean LOWER_CENTER_TEXT_VISIBLE) {
+        lowerCenterTextVisible.set(LOWER_CENTER_TEXT_VISIBLE);
+    }
+    public final BooleanProperty lowerCenterTextVisibleProperty() {
+        return lowerCenterTextVisible;
     }
 
     public final String getLowerRightText() {
