@@ -28,13 +28,14 @@
 
 package eu.hansolo.enzo.gauge.skin;
 
+import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.gauge.Radial;
+import eu.hansolo.enzo.gauge.behavior.RadialBehavior;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
-import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadowBuilder;
@@ -54,7 +55,7 @@ import javafx.util.Duration;
  * Date: 15.11.12
  * Time: 00:53
  */
-public class RadialSkin extends SkinBase<Radial> {
+public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
     private static final double PREFERRED_SIZE = 200;
     private static final double MINIMUM_SIZE   = 50;
     private static final double MAXIMUM_SIZE   = 1024;
@@ -74,7 +75,7 @@ public class RadialSkin extends SkinBase<Radial> {
 
     // ******************** Constructors **************************************
     public RadialSkin(final Radial CONTROL) {
-        super(CONTROL);
+        super(CONTROL, new RadialBehavior(CONTROL));
         control   = CONTROL;
         pane      = new Pane();
         angleStep = 0;

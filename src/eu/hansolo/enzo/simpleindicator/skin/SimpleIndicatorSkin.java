@@ -28,8 +28,9 @@
 
 package eu.hansolo.enzo.simpleindicator.skin;
 
+import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.simpleindicator.SimpleIndicator;
-import javafx.scene.control.SkinBase;
+import eu.hansolo.enzo.simpleindicator.behavior.SimpleIndicatorBehavior;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
@@ -40,7 +41,7 @@ import javafx.scene.layout.Region;
  * Date: 06.03.12
  * Time: 13:53
  */
-public class SimpleIndicatorSkin extends SkinBase<SimpleIndicator> {
+public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, SimpleIndicatorBehavior> {
     private static final double PREFERRED_SIZE = 48;
     private static final double MINIMUM_SIZE   = 16;
     private static final double MAXIMUM_SIZE   = 1024;
@@ -56,7 +57,7 @@ public class SimpleIndicatorSkin extends SkinBase<SimpleIndicator> {
 
     // ******************** Constructors **************************************
     public SimpleIndicatorSkin(final SimpleIndicator CONTROL) {
-        super(CONTROL);
+        super(CONTROL, new SimpleIndicatorBehavior(CONTROL));
         control = CONTROL;
         pane    = new Pane();
 

@@ -28,7 +28,9 @@
 
 package eu.hansolo.enzo.clock.skin;
 
+import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.clock.Clock;
+import eu.hansolo.enzo.clock.behavior.ClockBehavior;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -40,7 +42,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
-import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadowBuilder;
@@ -63,7 +64,7 @@ import java.util.List;
  * Date: 31.10.12
  * Time: 14:18
  */
-public class ClockSkin extends SkinBase<Clock> {
+public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
     private static final long   INTERVAL       = 20_000_000l;
     private static final int    PREFERRED_SIZE = 200;
     private static final double MINIMUM_SIZE   = 50;
@@ -111,7 +112,7 @@ public class ClockSkin extends SkinBase<Clock> {
 
     // ******************** Constructors **************************************
     public ClockSkin(final Clock CONTROL) {
-        super(CONTROL);
+        super(CONTROL, new ClockBehavior(CONTROL));
         control = CONTROL;
         pane    = new Pane();
 
@@ -247,6 +248,7 @@ public class ClockSkin extends SkinBase<Clock> {
                                                   .offsetY(1)
                                                   .build());
         tickLabelGroup.getChildren().setAll(tickLabels);
+        tickLabelGroup.setVisible(Clock.Design.BRAUN == control.getDesign());
 
         hourPointer = new Region();
         if (Clock.Design.IOS6 == control.getDesign()) {
@@ -472,6 +474,7 @@ public class ClockSkin extends SkinBase<Clock> {
             centerKnob.getStyleClass().setAll(nightDayStyleClass, "center-knob-db");
             foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-db");
         }
+        tickLabelGroup.setVisible(Clock.Design.BRAUN == control.getDesign());
         resize();
     }
 

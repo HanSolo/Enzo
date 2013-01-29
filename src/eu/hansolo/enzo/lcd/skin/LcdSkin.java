@@ -28,11 +28,12 @@
 
 package eu.hansolo.enzo.lcd.skin;
 
+import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.lcd.Lcd;
+import eu.hansolo.enzo.lcd.behavior.LcdBehavior;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
-import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.DropShadowBuilder;
@@ -58,7 +59,7 @@ import java.util.Locale;
 import java.util.Random;
 
 
-public class LcdSkin extends SkinBase<Lcd> {
+public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
     private static final double        DEFAULT_WIDTH     = 132;
     private static final double        DEFAULT_HEIGHT    = 48;
     private static final double        MINIMUM_WIDTH     = 5;
@@ -122,7 +123,7 @@ public class LcdSkin extends SkinBase<Lcd> {
 
     // ******************** Constructors **************************************
     public LcdSkin(final Lcd CONTROL) {
-        super(CONTROL);
+        super(CONTROL, new LcdBehavior(CONTROL));
         control                  = CONTROL;
         pane                     = new Pane();
         lcdValueOffsetLeft       = 0.0;

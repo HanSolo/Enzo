@@ -30,10 +30,11 @@ package eu.hansolo.enzo.clock;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -47,23 +48,54 @@ import javafx.stage.Stage;
  */
 public class Demo extends Application {
 
-    private Clock      clock;
+    private Clock      clock1;
+    private Clock      clock2;
+    private Clock      clock3;
+    private Clock      clock4;
+    private Clock      clock5;
+    private Clock      clock6;
     private static int noOfNodes;
 
     @Override public void init() {
-        clock = ClockBuilder.create()
-                            .design(Clock.Design.BRAUN)
-                            .nightMode(true)
-                            .discreteSecond(true)
-                            .build();
+        clock1 = ClockBuilder.create()
+                             .design(Clock.Design.IOS6)
+                             .build();
+        clock2 = ClockBuilder.create()
+                             .design(Clock.Design.IOS6)
+                             .nightMode(true)
+                             .build();
+        clock3 = ClockBuilder.create()
+                             .design(Clock.Design.DB)
+                             .build();
+        clock4 = ClockBuilder.create()
+                             .design(Clock.Design.DB)
+                             .nightMode(true)
+                             .build();
+        clock5 = ClockBuilder.create()
+                             .design(Clock.Design.BRAUN)
+                             .discreteSecond(true)
+                             .build();
+        clock6 = ClockBuilder.create()
+                             .design(Clock.Design.BRAUN)
+                             .nightMode(true)
+                             .discreteSecond(true)
+                             .build();
     }
 
     @Override public void start(Stage stage) {
-        StackPane pane = new StackPane();
-        pane.getChildren().setAll(clock);
+        GridPane pane = new GridPane();
+        pane.setPadding(new Insets(10, 10, 10, 10));
+        pane.setHgap(10);
+        pane.setVgap(10);
+        pane.add(clock1, 0, 0);
+        pane.add(clock2, 0, 1);
+        pane.add(clock3, 1, 0);
+        pane.add(clock4, 1, 1);
+        pane.add(clock5, 2, 0);
+        pane.add(clock6, 2, 1);
 
         //Scene scene = new Scene(pane, 400, 400, Color.rgb(195, 195, 195));
-        Scene scene = new Scene(pane, 400, 400, Color.BLACK);
+        Scene scene = new Scene(pane, Color.BLACK);
 
         stage.setTitle("Clock Demo");
         stage.setScene(scene);

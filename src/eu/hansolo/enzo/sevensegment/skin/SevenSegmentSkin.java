@@ -28,9 +28,10 @@
 
 package eu.hansolo.enzo.sevensegment.skin;
 
+import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.sevensegment.SevenSegment;
+import eu.hansolo.enzo.sevensegment.behavior.SevenSegmentBehavior;
 import javafx.collections.ListChangeListener;
-import javafx.scene.control.SkinBase;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -39,7 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class SevenSegmentSkin extends SkinBase<SevenSegment> {
+public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmentBehavior> {
     private static final double DEFAULT_WIDTH  = 268;
     private static final double DEFAULT_HEIGHT = 357;
     private static final double MINIMUM_WIDTH  = 5;
@@ -65,7 +66,7 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> {
 
     // ******************** Constructors **************************************
     public SevenSegmentSkin(final SevenSegment CONTROL) {
-        super(CONTROL);
+        super(CONTROL, new SevenSegmentBehavior(CONTROL));
         control     = CONTROL;
         aspectRatio = DEFAULT_HEIGHT / DEFAULT_WIDTH;
         pane        = new Pane();

@@ -28,8 +28,9 @@
 
 package eu.hansolo.enzo.led.skin;
 
+import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.led.Led;
-import javafx.scene.control.SkinBase;
+import eu.hansolo.enzo.led.behavior.LedBehavior;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.DropShadowBuilder;
@@ -46,7 +47,7 @@ import javafx.scene.paint.Color;
  * Date: 16.11.12
  * Time: 09:20
  */
-public class LedSkin extends SkinBase<Led> {
+public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
     private static final double PREFERRED_SIZE = 16;
     private static final double MINIMUM_SIZE   = 8;
     private static final double MAXIMUM_SIZE   = 1024;
@@ -64,7 +65,7 @@ public class LedSkin extends SkinBase<Led> {
 
     // ******************** Constructors **************************************
     public LedSkin(final Led CONTROL) {
-        super(CONTROL);
+        super(CONTROL, new LedBehavior(CONTROL));
         control = CONTROL;
         pane    = new Pane();
 

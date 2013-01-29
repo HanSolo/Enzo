@@ -28,14 +28,15 @@
 
 package eu.hansolo.enzo.ledbargraph.skin;
 
+import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.led.Led;
 import eu.hansolo.enzo.led.LedBuilder;
 import eu.hansolo.enzo.ledbargraph.LedBargraph;
+import eu.hansolo.enzo.ledbargraph.behavior.LedBargraphBehavior;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Orientation;
-import javafx.scene.control.SkinBase;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -50,7 +51,7 @@ import java.util.List;
  * Date: 16.02.12
  * Time: 11:30
  */
-public class LedBargraphSkin extends SkinBase<LedBargraph> {
+public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBehavior> {
     private static final double PREFERRED_SIZE = 16;
     private static final double MINIMUM_SIZE   = 8;
     private static final double MAXIMUM_SIZE   = 1024;
@@ -66,7 +67,7 @@ public class LedBargraphSkin extends SkinBase<LedBargraph> {
 
     // ******************** Constructors **************************************
     public LedBargraphSkin(final LedBargraph CONTROL) {
-        super(CONTROL);
+        super(CONTROL, new LedBargraphBehavior(CONTROL));
         control         = CONTROL;
         ledList         = new ArrayList<>(control.getNoOfLeds());
         stepSize        = new SimpleDoubleProperty(1.0 / control.getNoOfLeds());
