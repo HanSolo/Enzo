@@ -58,7 +58,7 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
     public static final long    PEAK_TIMEOUT   = 1_500_000_000l;
     private LedBargraph         control;
     private Pane                bargraph;
-    private List <Led>          ledList;
+    private List<Led>           ledList;
     private long                lastTimerCall;
     private DoubleProperty      stepSize;
     private int                 peakLedIndex;

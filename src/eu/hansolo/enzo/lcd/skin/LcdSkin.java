@@ -692,13 +692,22 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
             }
         }
 
+        lcdFrame.setCache(false);
+        lcdFrame.setCacheShape(false);
         lcdFrame.setPrefSize(width, height);
+        lcdFrame.setCacheShape(true);
+        lcdFrame.setCache(true);
 
+        lcdMain.setCache(false);
+        lcdMain.setCacheShape(false);
         lcdMain.setPrefSize(width - 2.0, height - 2.0);
         lcdMain.setTranslateX(1);
         lcdMain.setTranslateY(1);
         lcdMainInnerShadow0.setRadius(3.0 / 132.0 * height);
         lcdMainInnerShadow1.setRadius(2.0 / 132.0 * height);
+        lcdMain.setCacheShape(true);
+        lcdMain.setCache(true);
+
 
         if (width > 0 && height > 0 && lcdCrystalOverlay.isVisible()) {
             lcdMainClip.setScaleX(width / (DEFAULT_WIDTH - 2.0));
@@ -706,39 +715,68 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
             lcdMainClip.setTranslateX((width - DEFAULT_WIDTH - 2) * 0.5);
             lcdMainClip.setTranslateY((height - DEFAULT_HEIGHT - 2) * 0.5);
             lcdCrystalOverlay.setImage(createNoiseImage(width, height, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8));
+            lcdCrystalOverlay.setCache(true);
         }
 
+        lcdThreshold.setCacheShape(false);
+        lcdThreshold.setCacheShape(false);
         lcdThreshold.setPrefSize(0.20 * height, 0.20 * height);
         lcdThreshold.setTranslateX(0.027961994662429348 * width);
         lcdThreshold.setTranslateY(0.75 * height);
+        lcdThreshold.setCacheShape(true);
+        lcdThreshold.setCache(true);
 
+        lcdTrendDown.setCache(false);
+        lcdTrendDown.setCacheShape(false);
         lcdTrendDown.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
         lcdTrendDown.setTranslateX(0.1439393939 * width);
         lcdTrendDown.setTranslateY(0.8125 * height);
+        lcdTrendDown.setCacheShape(true);
+        lcdTrendDown.setCache(true);
 
+        lcdTrendFalling.setCache(false);
+        lcdTrendFalling.setCacheShape(false);
         lcdTrendFalling.setPrefSize(0.06982171896732214 * width, 0.13879903157552084 * height);
         lcdTrendFalling.setTranslateX(0.1439393939 * width);
         lcdTrendFalling.setTranslateY(0.8061291376749674 * height);
+        lcdTrendFalling.setCacheShape(true);
+        lcdTrendFalling.setCache(true);
 
+        lcdTrendSteady.setCache(false);
+        lcdTrendSteady.setCacheShape(false);
         lcdTrendSteady.setPrefSize(0.0676060878869259 * width, 0.1342292626698812 * height);
         lcdTrendSteady.setTranslateX(0.1439393939 * width);
         lcdTrendSteady.setTranslateY(0.8078853289286295 * height);
+        lcdTrendSteady.setCacheShape(true);
+        lcdTrendSteady.setCache(true);
 
+        lcdTrendRising.setCache(false);
+        lcdTrendRising.setCacheShape(false);
         lcdTrendRising.setPrefSize(0.06982171896732214 * width, 0.13879903157552084 * height);
         lcdTrendRising.setTranslateX(0.1439393939 * width);
         lcdTrendRising.setTranslateY(0.8050718307495117 * height);
+        lcdTrendRising.setCacheShape(true);
+        lcdTrendRising.setCache(true);
 
+        lcdTrendUp.setCache(false);
+        lcdTrendUp.setCacheShape(false);
         lcdTrendUp.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
         lcdTrendUp.setTranslateX(0.1439393939 * width);
         lcdTrendUp.setTranslateY(0.8041377067565918 * height);
+        lcdTrendUp.setCacheShape(true);
+        lcdTrendUp.setCache(true);
 
         lcdBattery.setPrefSize(0.0833333333 * width, 0.1458333333 * height);
         lcdBattery.setTranslateX(0.6439393939 * width);
         lcdBattery.setTranslateY(0.81 * height);
 
+        lcdAlarm.setCache(false);
+        lcdAlarm.setCacheShape(false);
         lcdAlarm.setPrefSize(0.1666666667 * height, 0.1666666667 * height);
         lcdAlarm.setTranslateX(0.2651515152 * width);
         lcdAlarm.setTranslateY(0.7916666667 * height);
+        lcdAlarm.setCacheShape(true);
+        lcdAlarm.setCache(true);
 
         updateFonts();
 
@@ -766,15 +804,17 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
         }
         lcdText.setY(height - (lcdText.getLayoutBounds().getHeight() * lcdDigitalFontSizeFactor) * 0.5);
 
+        // Visualize the lcd semitransparent background text
+        lcdBackgroundText.setCache(false);
         updateBackgroundText();
 
-        // Visualize the lcd semitransparent background text
         if (control.isUnitVisible()) {
             lcdBackgroundText.setX(width - 2 - lcdBackgroundText.getLayoutBounds().getWidth() - lcdValueOffsetRight);
         } else {
             lcdBackgroundText.setX((width - lcdBackgroundText.getLayoutBounds().getWidth()) - lcdValueOffsetRight);
         }
         lcdBackgroundText.setY(height - (lcdBackgroundText.getLayoutBounds().getHeight() * lcdDigitalFontSizeFactor) * 0.5);
+        lcdBackgroundText.setCache(true);
 
         // Setup the font for the lcd title, number system, min measured, max measure and former value
         // Title

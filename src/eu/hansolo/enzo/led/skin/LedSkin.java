@@ -238,6 +238,16 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
         innerShadow.setRadius(size * 0.08);
         glow.setRadius(size * 0.25);
 
+        // remove all caching
+        frame.setCache(false);
+        frame.setCacheShape(false);
+        off.setCache(false);
+        off.setCacheShape(false);
+        on.setCache(false);
+        on.setCacheShape(false);
+        highlight.setCache(false);
+        highlight.setCacheShape(false);
+
         switch(control.getType()) {
             case HORIZONTAL:
                 frame.setPrefSize(size, size * 0.56);
@@ -303,5 +313,15 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
                 highlight.setTranslateY((size - highlight.getPrefHeight()) * 0.5);
                 break;
         }
+
+        // switch on all caching
+        frame.setCacheShape(true);
+        frame.setCache(true);
+        off.setCacheShape(true);
+        off.setCache(true);
+        on.setCacheShape(true);
+        on.setCache(true);
+        highlight.setCacheShape(true);
+        highlight.setCache(true);
     }
 }

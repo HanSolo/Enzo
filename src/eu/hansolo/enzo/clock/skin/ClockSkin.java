@@ -574,8 +574,8 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
                 double x = 0.31 * size * Math.sin(Math.toRadians(150 - angle));
                 double y = 0.31 * size * Math.cos(Math.toRadians(150 - angle));
                 tickLabels.get(tickLabelCounter).setFont(tickLabelFont);
-                tickLabels.get(tickLabelCounter).setLayoutX(size * 0.5 + x - tickLabels.get(tickLabelCounter).getLayoutBounds().getWidth() * 0.5);
-                tickLabels.get(tickLabelCounter).setLayoutY(size * 0.5 + y);
+                tickLabels.get(tickLabelCounter).setX(size * 0.5 + x - tickLabels.get(tickLabelCounter).getLayoutBounds().getWidth() * 0.5);
+                tickLabels.get(tickLabelCounter).setY(size * 0.5 + y);
                 tickLabels.get(tickLabelCounter).setTextOrigin(VPos.CENTER);
                 tickLabels.get(tickLabelCounter).setTextAlignment(TextAlignment.CENTER);
                 tickLabelCounter++;
