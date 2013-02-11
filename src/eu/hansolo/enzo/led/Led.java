@@ -30,8 +30,10 @@ package eu.hansolo.enzo.led;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
@@ -72,6 +74,7 @@ public class Led extends Control {
     private BooleanProperty       frameVisible;
     private boolean               toggle;
     private long                  lastTimerCall;
+    private LongProperty          interval;
     private AnimationTimer        timer;
 
 
@@ -83,11 +86,12 @@ public class Led extends Control {
         on            = new SimpleBooleanProperty(false);
         blink         = new SimpleBooleanProperty(false);
         frameVisible  = new SimpleBooleanProperty(true);
+        interval      = new SimpleLongProperty(500_000_000);
         toggle        = false;
         lastTimerCall = System.nanoTime();
         timer         = new AnimationTimer() {
             @Override public void handle(final long NOW) {
-                if (NOW > lastTimerCall + 500_000_000l) {
+                if (NOW > lastTimerCall + getInterval()) {
                     toggle ^= true;
                     setOn(toggle);
                     lastTimerCall = NOW;
@@ -144,6 +148,16 @@ public class Led extends Control {
         return blink;
     }
 
+    public final long getInterval() {
+        return interval.get();
+    }
+    public final void setInterval(final long INTERVAL) {
+        interval.set(clamp(50_000_000l, 5_000_000_000l, INTERVAL));
+    }
+    public final LongProperty intervalProperty() {
+        return interval;
+    }
+
     public final boolean isFrameVisible() {
         return frameVisible.get();
     }
@@ -152,6 +166,14 @@ public class Led extends Control {
     }
     public final BooleanProperty frameVisibleProperty() {
         return frameVisible;
+    }
+
+
+    // ******************** Utility Methods ***********************************
+    public static long clamp(final long MIN, final long MAX, final long VALUE) {
+        if (VALUE < MIN) return MIN;
+        if (VALUE > MAX) return MAX;
+        return VALUE;
     }
 
 

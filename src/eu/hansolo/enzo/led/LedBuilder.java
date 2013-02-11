@@ -30,10 +30,12 @@ package eu.hansolo.enzo.led;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -93,6 +95,11 @@ public class LedBuilder<B extends LedBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
+    public final LedBuilder interval(final long INTERVAL) {
+        properties.put("interval", new SimpleLongProperty(INTERVAL));
+        return this;
+    }
+
     @Override public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B) this;
@@ -126,6 +133,8 @@ public class LedBuilder<B extends LedBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setOn(((BooleanProperty) properties.get(key)).get());
             } else if ("blink".equals(key)) {
                 CONTROL.setBlink(((BooleanProperty) properties.get(key)).get());
+            } else if ("interval".equals(key)) {
+                CONTROL.setInterval(((LongProperty) properties.get(key)).get());
             } else if ("frameVisible".equals(key)) {
                 CONTROL.setFrameVisible(((BooleanProperty) properties.get(key)).get());
             }  else if ("prefWidth".equals(key)) {

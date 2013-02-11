@@ -30,9 +30,11 @@ package eu.hansolo.enzo.led;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.Random;
 
 
 /**
@@ -42,22 +44,25 @@ import javafx.stage.Stage;
  * Time: 10:09
  */
 public class Demo extends Application {
-    private Led control;
+    private static final Random RND = new Random();
 
     @Override public void init() {
-        control = LedBuilder.create()
-                            .color(Color.LIGHTBLUE)
-                            .type(Led.Type.ROUND)
-                            //.frameVisible(false)
-                            .blink(true)
-                            .build();
     }
 
     @Override public void start(Stage stage) {
-        StackPane pane = new StackPane();
-        pane.getChildren().setAll(control);
+        GridPane pane = new GridPane();
+        for (int y = 0 ; y < 20 ; y++) {
+            for (int x = 0 ; x < 40 ; x++) {
+                pane.add(LedBuilder.create()
+                                   .color(Color.rgb(RND.nextInt(255), RND.nextInt(255), RND.nextInt(255)))
+                                   .frameVisible(false)
+                                   .interval(50_000_000l)
+                                   .blink(true)
+                                   .build(), x, y);
+            }
+        }
 
-        Scene scene = new Scene(pane, 400, 400, Color.DARKGRAY);
+        Scene scene = new Scene(pane, Color.rgb(50, 50, 50));
 
         stage.setTitle("Led demo");
         stage.setScene(scene);
