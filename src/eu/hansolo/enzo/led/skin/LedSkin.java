@@ -31,6 +31,7 @@ package eu.hansolo.enzo.led.skin;
 import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.led.Led;
 import eu.hansolo.enzo.led.behavior.LedBehavior;
+import javafx.scene.CacheHint;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.DropShadowBuilder;
@@ -317,11 +318,15 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
         // switch on all caching
         frame.setCacheShape(true);
         frame.setCache(true);
+        frame.setCacheHint(CacheHint.SPEED);
         off.setCacheShape(true);
         off.setCache(true);
+        off.setCacheHint(CacheHint.SPEED);
         on.setCacheShape(true);
         on.setCache(true);
+        on.setCacheHint(CacheHint.SPEED);
         highlight.setCacheShape(true);
         highlight.setCache(true);
+        highlight.setCacheHint(CacheHint.SPEED);
     }
 }

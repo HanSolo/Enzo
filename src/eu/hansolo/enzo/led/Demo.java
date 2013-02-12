@@ -56,7 +56,7 @@ public class Demo extends Application {
                 pane.add(LedBuilder.create()
                                    .color(Color.rgb(RND.nextInt(255), RND.nextInt(255), RND.nextInt(255)))
                                    .frameVisible(false)
-                                   .interval(50_000_000l)
+                                   .interval(500_000_000l)
                                    .blink(true)
                                    .build(), x, y);
             }
