@@ -581,7 +581,7 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
         availableWidth = width - 2 - lcdValueOffsetRight - widthOfDecimals;
 
         // Number of segments
-        noOfSegments = (int) Math.round(availableWidth / oneSegmentWidth);
+        noOfSegments = (int) Math.floor(availableWidth / oneSegmentWidth);
 
         // Add segments to background text
         lcdBackgroundTextBuilder.setLength(0);
