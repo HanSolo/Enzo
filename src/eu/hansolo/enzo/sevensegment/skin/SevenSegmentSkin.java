@@ -271,70 +271,37 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
             }
         }
 
-        segmentA.setCache(false);
-        segmentA.setCacheShape(false);
         segmentA.setPrefSize(0.7078622846461055 * width, 0.12605043085349374 * height);
         segmentA.setTranslateX(0.11621808294040054 * width);
         segmentA.setTranslateY(0.0 * height);
-        segmentA.setCacheShape(true);
-        segmentA.setCache(true);
 
-        segmentB.setCache(false);
-        segmentB.setCacheShape(false);
         segmentB.setPrefSize(0.19782541758978545 * width, 0.4623330167027749 * height);
         segmentB.setTranslateX(0.6715775674848414 * width);
         segmentB.setTranslateY(0.03402365890203738 * height);
-        segmentB.setCacheShape(true);
-        segmentB.setCache(true);
 
-        segmentC.setCache(false);
-        segmentC.setCacheShape(false);
         segmentC.setPrefSize(0.20474943474157534 * width, 0.46794295110622375 * height);
         segmentC.setTranslateX(0.6267936478799848 * width);
         segmentC.setTranslateY(0.5036215902376575 * height);
-        segmentC.setCacheShape(true);
-        segmentC.setCache(true);
 
-        segmentD.setCache(false);
-        segmentD.setCacheShape(false);
         segmentD.setPrefSize(0.7041493885552705 * width, 0.12605042016806722 * height);
         segmentD.setTranslateX(0.04532256055234084 * width);
         segmentD.setTranslateY(0.8739495798319328 * height);
-        segmentD.setCacheShape(true);
-        segmentD.setCache(true);
 
-        segmentE.setCache(false);
-        segmentE.setCacheShape(false);
         segmentE.setPrefSize(0.20156638302020172 * width, 0.4595308704536502 * height);
         segmentE.setTranslateX(0.0 * width);
         segmentE.setTranslateY(0.5036443288252801 * height);
-        segmentE.setCacheShape(true);
-        segmentE.setCache(true);
 
-        segmentF.setCache(false);
-        segmentF.setCacheShape(false);
         segmentF.setPrefSize(0.20103195532044368 * width, 0.47076633998325895 * height);
         segmentF.setTranslateX(0.03783089367311392 * width);
         segmentF.setTranslateY(0.028435463998831956 * height);
-        segmentF.setCacheShape(true);
-        segmentF.setCache(true);
 
-        segmentG.setCache(false);
-        segmentG.setCacheShape(false);
         segmentG.setPrefSize(0.6134279165694962 * width, 0.12605042016806722 * height);
         segmentG.setTranslateX(0.12985323436224638 * width);
         segmentG.setTranslateY(0.4369747899159664 * height);
-        segmentG.setCacheShape(true);
-        segmentG.setCache(true);
 
-        segmentDot.setCache(false);
-        segmentDot.setCacheShape(false);
         segmentDot.setPrefSize(0.16791044776119404 * width, 0.12605042016806722 * height);
         segmentDot.setTranslateX(0.832089552238806 * width);
         segmentDot.setTranslateY(0.8739495798319328 * height);
-        segmentDot.setCacheShape(true);
-        segmentDot.setCache(true);
-
     }
 
 

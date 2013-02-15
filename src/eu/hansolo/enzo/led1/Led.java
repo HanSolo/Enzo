@@ -173,9 +173,12 @@ public class Led extends Control {
 
     private BooleanProperty          on;
     private BooleanProperty          blinking;
+    private boolean                  _frameVisible;
     private BooleanProperty          frameVisible;
     private ObjectProperty<LedColor> color;
+    private boolean                  _keepAspect;
     private BooleanProperty          keepAspect;
+    private long                     _interval;
     private LongProperty             interval;
     private long                     lastTimerCall;
     private boolean                  toggle;
@@ -187,10 +190,10 @@ public class Led extends Control {
         getStyleClass().add("led");
         on            = new SimpleBooleanProperty(false);
         blinking      = new SimpleBooleanProperty(false);
-        frameVisible  = new SimpleBooleanProperty(true);
+        _frameVisible = true;
         color         = new SimpleObjectProperty<>(LedColor.RED);
-        keepAspect    = new SimpleBooleanProperty(true);
-        interval      = new SimpleLongProperty(500_000_000);
+        _keepAspect   = true;
+        _interval     = 500_000_000l;
         lastTimerCall = System.nanoTime();
         toggle        = false;
         timer         = new AnimationTimer() {
@@ -208,12 +211,19 @@ public class Led extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
-        return keepAspect.get();
+        return keepAspect != null ? keepAspect.get() : _keepAspect;
     }
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
-        keepAspect.set(KEEP_ASPECT);
+        if (keepAspect != null) {
+            keepAspect.set(KEEP_ASPECT);
+        } else {
+            _keepAspect = KEEP_ASPECT;
+        }
     }
     public final BooleanProperty keepAspectProperty() {
+        if (keepAspect == null) {
+            keepAspect = new SimpleBooleanProperty(this, "keepAspect", _keepAspect);
+        }
         return keepAspect;
     }
 
@@ -247,22 +257,36 @@ public class Led extends Control {
     }
 
     public final long getInterval() {
-        return interval.get();
+        return interval != null ? interval.get() : _interval;
     }
     public final void setInterval(final long INTERVAL) {
-        interval.set(clamp(50_000_000l, 5_000_000_000l, INTERVAL));
+        if (interval != null) {
+            interval.set(clamp(50_000_000l, 5_000_000_000l, INTERVAL));
+        } else {
+            _interval = clamp(50_000_000l, 5_000_000_000l, INTERVAL);
+        }
     }
     public final LongProperty intervalProperty() {
+        if (interval == null) {
+            interval = new SimpleLongProperty(this, "interval", _interval);
+        }
         return interval;
     }
 
     public final boolean isFrameVisible() {
-        return frameVisible.get();
+        return frameVisible != null ? frameVisible.get() : _frameVisible;
     }
-    public final void setFrameVisible(final boolean FRAMEVISIBLE) {
-        frameVisible.set(FRAMEVISIBLE);
+    public final void setFrameVisible(final boolean FRAME_VISIBLE) {
+        if (frameVisible != null) {
+            frameVisible.set(FRAME_VISIBLE);
+        } else {
+            _frameVisible = FRAME_VISIBLE;
+        }
     }
     public final BooleanProperty frameVisibleProperty() {
+        if (frameVisible == null) {
+            frameVisible = new SimpleBooleanProperty(this, "frameVisible", _frameVisible);
+        }
         return frameVisible;
     }
 

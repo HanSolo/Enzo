@@ -82,6 +82,7 @@ public class SevenSegment extends Control {
             CLASS = CLASS_NAME;
         }
     }
+    private boolean                      _keepAspect;
     private BooleanProperty              keepAspect;
     private StringProperty               character;
     private BooleanProperty              dotOn;
@@ -116,7 +117,7 @@ public class SevenSegment extends Control {
 
     public SevenSegment(final String CHARACTER, final SegmentStyle SEGMENT_STYLE) {
         getStyleClass().add("seven-segment");
-        keepAspect   = new SimpleBooleanProperty(true);
+        _keepAspect  = true;
         character    = new SimpleStringProperty(CHARACTER.substring(0, 1));
         dotOn        = new SimpleBooleanProperty(false);
         segmentStyle = new SimpleObjectProperty<>(SEGMENT_STYLE);
@@ -154,12 +155,19 @@ public class SevenSegment extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
-        return keepAspect.get();
+        return keepAspect != null ? keepAspect.get() : _keepAspect;
     }
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
-        keepAspect.set(KEEP_ASPECT);
+        if (keepAspect != null) {
+            keepAspect.set(KEEP_ASPECT);
+        } else {
+            _keepAspect = KEEP_ASPECT;
+        }
     }
     public final BooleanProperty keepAspectProperty() {
+        if (keepAspect == null) {
+            keepAspect = new SimpleBooleanProperty(this, "keepAspect", _keepAspect);
+        }
         return keepAspect;
     }
 

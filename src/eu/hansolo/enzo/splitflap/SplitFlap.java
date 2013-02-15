@@ -41,6 +41,7 @@ public class SplitFlap extends Control {
     }
     private static final FlipEvent       FLIP_FORWARD = new FlipEvent(FlipEvent.FLIP_FORWARD);
     private static final FlipEvent       FIP_BACKWARD = new FlipEvent(FlipEvent.FLIP_BACKWARD);
+    private boolean                      _keepAspect;
     private BooleanProperty              keepAspect;
     private DoubleProperty               flipTime;
     private ObjectProperty<Color>        textColor;
@@ -59,7 +60,7 @@ public class SplitFlap extends Control {
 
     public SplitFlap(final CharacterSet CHARACTER_SET, final String TEXT) {
         getStyleClass().add("split-flap");
-        keepAspect             = new SimpleBooleanProperty(true);
+        _keepAspect            = true;
         flipTime               = new SimpleDoubleProperty(500);
         textColor              = new SimpleObjectProperty<>(Color.WHITE);
         selectedSet            = new ArrayList<>(64);
@@ -80,12 +81,19 @@ public class SplitFlap extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
-        return keepAspect.get();
+        return keepAspect != null ? keepAspect.get() : _keepAspect;
     }
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
-        keepAspect.set(KEEP_ASPECT);
+        if (keepAspect != null) {
+            keepAspect.set(KEEP_ASPECT);
+        } else {
+            _keepAspect = KEEP_ASPECT;
+        }
     }
     public final BooleanProperty keepAspectProperty() {
+        if (keepAspect == null) {
+            keepAspect = new SimpleBooleanProperty(this, "keepAspect", _keepAspect);
+        }
         return keepAspect;
     }
 

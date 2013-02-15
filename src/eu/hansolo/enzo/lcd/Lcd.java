@@ -122,6 +122,7 @@ public class Lcd extends Control {
 
     private boolean                      initialized;
     private boolean                      firstTime;
+    private boolean                      _keepAspect;
     private BooleanProperty              keepAspect;
     private BooleanProperty              textMode;
     private StringProperty               text;
@@ -185,7 +186,7 @@ public class Lcd extends Control {
         getStyleClass().add("lcd");
         initialized               = false;
         firstTime                 = true;
-        keepAspect                = new SimpleBooleanProperty(true);
+        _keepAspect               = true;
         textMode                  = new SimpleBooleanProperty(false);
         text                      = new SimpleStringProperty("");
         value                     = new SimpleDoubleProperty(0);
@@ -310,12 +311,19 @@ public class Lcd extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
-        return keepAspect.get();
+        return keepAspect != null ? keepAspect.get() : _keepAspect;
     }
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
-        keepAspect.set(KEEP_ASPECT);
+        if (keepAspect != null) {
+            keepAspect.set(KEEP_ASPECT);
+        } else {
+            _keepAspect = KEEP_ASPECT;
+        }
     }
     public final BooleanProperty keepAspectProperty() {
+        if (keepAspect == null) {
+            keepAspect = new SimpleBooleanProperty(this, "keepAspect", _keepAspect);
+        }
         return keepAspect;
     }
 

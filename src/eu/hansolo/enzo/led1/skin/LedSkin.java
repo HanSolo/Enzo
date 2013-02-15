@@ -4,7 +4,6 @@ import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.led1.Led;
 import eu.hansolo.enzo.led1.behavior.LedBehavior;
 import javafx.collections.ListChangeListener;
-import javafx.scene.CacheHint;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.DropShadowBuilder;
@@ -195,11 +194,6 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
             control.setBlinking(false);
         }
 
-        frame.setCache(false);
-        ledOff.setCache(false);
-        ledOn.setCache(false);
-        highlight.setCache(false);
-
         size    = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
         width   = control.getWidth();
         height  = control.getHeight();
@@ -228,15 +222,6 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
         highlight.setPrefSize(0.5 * width, 0.5 * height);
         highlight.setTranslateX(0.25 * width);
         highlight.setTranslateY(0.25 * height);
-
-        frame.setCache(true);
-        frame.setCacheHint(CacheHint.SPEED);
-        ledOff.setCache(true);
-        ledOff.setCacheHint(CacheHint.SPEED);
-        ledOn.setCache(true);
-        ledOn.setCacheHint(CacheHint.SPEED);
-        highlight.setCache(true);
-        highlight.setCacheHint(CacheHint.SPEED);
 
         control.setBlinking(wasBlinking);
     }

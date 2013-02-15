@@ -27,8 +27,8 @@ public class Demo extends Application {
             for (int x = 0 ; x < 40 ; x++) {
                 pane.add(LedBuilder.create()
                                     .color(Led.LedColor.values()[RND.nextInt(Led.LedColor.values().length)])
-                                    .frameVisible(false)
-                                    .interval(1_000_000_000l)
+                                    //.frameVisible(false)
+                                    //.interval(1_000_000_000l)
                                     .blinking(true)
                                     .build(), x, y);
             }
