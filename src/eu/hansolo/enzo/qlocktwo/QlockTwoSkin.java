@@ -43,15 +43,12 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
     private Region         p3;
     private Region         p4;
     private Text[][]       matrix;
-    private Region         innerBounds;
     private Region         highlight;
     private Font           font;
     private double         startX;
     private double         startY;
     private double         stepX;
     private double         stepY;
-    private double         charX;
-    private double         charY;
     private long           lastTimerCall;
     private AnimationTimer timer;
 
@@ -123,21 +120,12 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         stepY  = DEFAULT_WIDTH * 0.0805;
         font = Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, DEFAULT_WIDTH * 0.048);
 
-        charX = 0;
-        charY = 0;
-
         background = RegionBuilder.create().styleClass("background").build();
 
         p1 = RegionBuilder.create().styleClass("off").build();
-
         p2 = RegionBuilder.create().styleClass("off").build();
-
         p3 = RegionBuilder.create().styleClass("off").build();
-
         p4 = RegionBuilder.create().styleClass("off").build();
-
-        innerBounds = RegionBuilder.create().styleClass("innerbounds").build();
-        innerBounds.setVisible(false);
 
         highlight = RegionBuilder.create().styleClass("highlight").build();
 
@@ -149,11 +137,10 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         }
 
         pane.getChildren().setAll(background,
-            p4,
-            p3,
-            p2,
-            p1,
-                                  innerBounds);
+                                  p4,
+                                  p3,
+                                  p2,
+                                  p1);
         for (int y = 0 ; y < 10 ; y++) {
             for (int x = 0 ; x < 11 ; x++) {
                 pane.getChildren().add(matrix[x][y]);
@@ -304,10 +291,6 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         p1.setTranslateX(0.044 * width);
         p1.setTranslateY(0.044 * height);
 
-        innerBounds.setPrefSize(0.752 * width, 0.752 * height);
-        innerBounds.setTranslateX(0.124 * width);
-        innerBounds.setTranslateY(0.12 * height);
-
         startX = size * 0.124;
         startY = size * 0.132;
         stepX  = size * 0.072;
@@ -326,7 +309,5 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         highlight.setTranslateY(0.28614569091796876 * height);
 
     }
-
-
 }
 
