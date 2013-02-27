@@ -1,0 +1,68 @@
+.qlocktwo {
+    -fx-skin         : "eu.hansolo.enzo.qlocktwo.QlockTwoSkin";
+    -qlock-background: black;
+    -qlock-on        : white;
+    -qlock-off       : rgb(64, 62, 65);
+}
+
+.qlocktwo .on {
+    -fx-fill            : -qlock-on;
+    -fx-background-color: -qlock-on;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 472.0 475.0 C 472.0 473.0 473.0 472.0 475.0 472.0 C 477.0 472.0 478.0 473.0 478.0 475.0 C 478.0 477.0 477.0 478.0 475.0 478.0 C 473.0 478.0 472.0 477.0 472.0 475.0 Z";
+}
+
+.qlocktwo .off {
+    -fx-fill            : -qlock-off;
+    -fx-background-color: -qlock-off;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 472.0 475.0 C 472.0 473.0 473.0 472.0 475.0 472.0 C 477.0 472.0 478.0 473.0 478.0 475.0 C 478.0 477.0 477.0 478.0 475.0 478.0 C 473.0 478.0 472.0 477.0 472.0 475.0 Z";
+}
+
+.qlocktwo .background {
+    -fx-background-color: -qlock-background;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 0.0 0.0 H 500.0 V 500.0 H 0.0 V 0.0 Z";
+}
+
+.qlocktwo .innerbounds {
+    -fx-background-color: red;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 62.0 60.0 H 438.0 V 436.0 H 62.0 V 60.0 Z";
+}
+
+.qlocktwo .highlight {
+    -fx-background-color: linear-gradient(from 99% 2% to 50% 100%, 
+                                          rgba(255, 255, 255, 0.29804) 0%, 
+                                          rgba(255, 255, 255, 0.04706) 100%);
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 500.0 143.0 C 500.0 143.0 500.0 500.0 500.0 500.0 C 500.0 500.0 71.0 500.0 71.0 500.0 C 195.0 359.0 334.0 244.0 500.0 143.0 Z";
+}
+
+.qlocktwo .black-ice-tea {
+    -qlock-background: black;
+    -qlock-on        : white;
+    -qlock-off       : rgb(64, 62, 65);
+}
+.qlocktwo .cherry-cake {
+    -qlock-background: rgb(224, 9, 24);
+    -qlock-on        : white;
+    -qlock-off       : rgb(178, 7, 19);
+}
+.qlocktwo .vanilla-sugar {
+    -qlock-background: rgb(207, 206, 204);
+    -qlock-on        : white;
+    -qlock-off       : rgb(164, 164, 162);
+}
+.qlocktwo .frozen-blackberry {
+    -qlock-background: rgb(84, 50, 136);
+    -qlock-on        : white;
+    -qlock-off       : rgb(111, 84, 153);
+}
+.qlocktwo .lime-juice {
+    -qlock-background: rgb(168, 175, 10);
+    -qlock-on        : white;
+    -qlock-off       : rgb(133, 139, 7);
+}
+
+
