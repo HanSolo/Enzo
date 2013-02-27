@@ -190,13 +190,13 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
                                                   .offsetY(-1.0)
                                                   .radius(1.0 / 434.0 * DEFAULT_WIDTH)
                                                   .color(Color.rgb(0, 0, 0, 0.65))
-                                                  .blurType(BlurType.GAUSSIAN)
+                                                  .blurType(BlurType.TWO_PASS_BOX)
                                                   .build();
         backgroundInnerHighlight = InnerShadowBuilder.create()
                                                      .offsetY(1.0)
                                                      .radius(1.0 / 434.0 * DEFAULT_WIDTH)
                                                      .color(Color.rgb(200, 200, 200, 0.65))
-                                                     .blurType(BlurType.GAUSSIAN)
+                                                     .blurType(BlurType.TWO_PASS_BOX)
                                                      .input(backgroundInnerShadow)
                                                      .build();
         background.setEffect(backgroundInnerHighlight);
@@ -204,14 +204,14 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
         dotInnerShadow = InnerShadowBuilder.create()
                                            .radius(0.018 * DEFAULT_WIDTH)
                                            .color(Color.rgb(0, 0, 0, 0.65))
-                                           .blurType(BlurType.GAUSSIAN)
+                                           .blurType(BlurType.TWO_PASS_BOX)
                                            .build();
 
         glow = DropShadowBuilder.create()
                                 .input(dotInnerShadow)
                                 .radius(0.023 * DEFAULT_WIDTH)
                                 .color(control.getColor())
-                                .blurType(BlurType.GAUSSIAN)
+                                .blurType(BlurType.TWO_PASS_BOX)
                                 .build();
 
         // dot definitions
