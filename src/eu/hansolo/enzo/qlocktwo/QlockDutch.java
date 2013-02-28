@@ -214,8 +214,6 @@ public class QlockDutch implements Qlock {
     private void addHour(List<QlockWord> timeList, final int HOUR) {
         if (HOUR == 12) {
             timeList.add(QlockLanguage.EEN);
-        } else if (HOUR == 5) {
-            timeList.add(QlockLanguage.VIJF1);
         } else if (HOUR == 10 || HOUR + 1 == 10) {
             timeList.add(QlockLanguage.TIEN1);
         } else if (HOUR + 1 == 5) {

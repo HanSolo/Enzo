@@ -211,8 +211,6 @@ public class QlockGerman implements Qlock {
     private void addHour(List<QlockWord> timeList, final int HOUR) {
         if (HOUR == 12) {
             timeList.add(QlockLanguage.EINS);
-        } else if (HOUR == 5) {
-            timeList.add(QlockLanguage.FÜNF2);
         } else {
             if (HOUR + 1 == 5) {
                 timeList.add(QlockLanguage.FÜNF2);
