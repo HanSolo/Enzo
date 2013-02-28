@@ -97,7 +97,7 @@ public class QlockGerman implements Qlock {
         timeList.add(QlockLanguage.IST);
         switch (minute) {
             case 0:
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
                 timeList.add(QlockLanguage.UHR);
                 break;
             case 5:
