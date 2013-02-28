@@ -14,16 +14,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class QlockFrench implements Qlock {
     private static final QlockTwo.Language LANGUAGE = QlockTwo.Language.FRENCH;
     private static final String[][] MATRIX = {
-        {"I", "L", "N", "E", "S", "T", "O", "U", "N", "E", "R"},
-        {"D", "E", "U", "X", "N", "U", "T", "R", "O", "I", "S"},
-        {"Q", "U", "A", "T", "R", "E", "D", "O", "U", "Z", "E"},
-        {"C", "I", "N", "Q", "S", "I", "X", "S", "E", "P", "T"},
-        {"H", "U", "I", "T", "N", "E", "U", "F", "D", "I", "X"},
+        {"I", "L", "N", "E", "S", "T", "O", "D", "E", "U", "X"},
+        {"Q", "U", "A", "T", "R", "E", "T", "R", "O", "I", "S"},
+        {"N", "E", "U", "F", "U", "N", "E", "S", "E", "P", "T"},
+        {"H", "U", "I", "T", "S", "I", "X", "C", "I", "N", "Q"},
+        {"M", "I", "D", "I", "X", "M", "I", "N", "U", "I", "T"},
         {"O", "N", "Z", "E", "R", "H", "E", "U", "R", "E", "S"},
         {"M", "O", "I", "N", "S", "O", "L", "E", "D", "I", "X"},
-        {"E", "T", "R", "Q", "U", "A", "R", "T", "R", "E", "D"},
+        {"E", "T", "R", "Q", "U", "A", "R", "T", "P", "M", "D"},
         {"V", "I", "N", "G", "T", "-", "C", "I", "N", "Q", "U"},
-        {"E", "T", "S", "D", "E", "M", "I", "E", "P", "A", "N"}
+        {"E", "T", "S", "D", "E", "M", "I", "E", "P", "A", "M"}
     };
     private boolean p1;
     private boolean p2;
@@ -127,30 +127,30 @@ public class QlockFrench implements Qlock {
                 break;
             case 25:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(QlockLanguage.HEURE);
                 timeList.add(QlockLanguage.VINGT_CINQ);
                 break;
             case 30:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(QlockLanguage.HEURE);
                 timeList.add(QlockLanguage.ET1);
                 timeList.add(QlockLanguage.DEMIE);
                 break;
             case 35:
                 addHour(timeList, hour);
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(QlockLanguage.HEURE);
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.VINGT_CINQ);
                 break;
             case 40:
                 addHour(timeList, hour);
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(QlockLanguage.HEURE);
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.VINGT);
                 break;
             case 45:
                 addHour(timeList, hour);
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(QlockLanguage.HEURE);
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.LE);
                 timeList.add(QlockLanguage.QUART);
@@ -194,7 +194,7 @@ public class QlockFrench implements Qlock {
 
     private void addHour(List<QlockWord> timeList, final int HOUR) {
         if (HOUR == 12) {
-            timeList.add(QlockLanguage.UN);
+            timeList.add(QlockLanguage.UNE);
         } else if (HOUR == 5) {
             timeList.add(QlockLanguage.CINQ1);
         } else {
@@ -203,20 +203,19 @@ public class QlockFrench implements Qlock {
     }
 
     private enum QlockLanguage implements QlockWord {
-        UN(0, 7, 8),
-        DEUX(1, 0, 3),
+        UNE(2, 4, 6),
+        DEUX(0, 7, 10),
         TROIS(1, 6, 10),
-        QUATRE(2, 0,5),
-        CINQ(3, 0, 3),
+        QUATRE(1, 0, 5),
+        CINQ(3, 7, 10),
         CINQ1(8, 6, 9),
         SIX(3, 4, 6),
-        SEPT(3, 7, 10),
-        HUIT(4, 0, 3),
-        NEUF(4, 4, 7),
-        DIX(4, 8, 10),
+        SEPT(2, 7, 10),
+        HUIT(3, 0, 3),
+        NEUF(2, 0, 3),
+        DIX(4, 2, 4),
         DIX1(6, 8, 10),
         ONZE(5, 0, 3),
-        DOUZE(2, 6, 10),
         IL(0, 0, 1),
         EST(0, 3, 5),
         ET(7, 0, 1),
@@ -225,9 +224,11 @@ public class QlockFrench implements Qlock {
         LE(6, 6, 7),
         QUART(7, 3, 7),
         VINGT(8, 0, 4),
+        MIDI(4, 0, 3),
         VINGT_CINQ(8, 0, 9),
         MOINS(6, 0, 4),
         ET1(9, 0, 1),
+        DEMI(9, 3, 6),
         DEMIE(9, 3, 7);
 
         private final int ROW;

@@ -93,64 +93,87 @@ public class QlockSpanish implements Qlock {
 
         timeList.clear();
 
-        timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
-        timeList.add(QlockLanguage.LAS);
         switch (minute)
         {
             case 0:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
                 break;
             case 5:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
                 timeList.add(QlockLanguage.Y);
                 timeList.add(QlockLanguage.CINCO1);
                 break;
             case 10:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
                 timeList.add(QlockLanguage.Y);
                 timeList.add(QlockLanguage.DIEZ1);
                 break;
             case 15:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
                 timeList.add(QlockLanguage.Y);
                 timeList.add(QlockLanguage.CUARTO);
                 break;
             case 20:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
                 timeList.add(QlockLanguage.Y);
                 timeList.add(QlockLanguage.VEINTE);
                 break;
             case 25:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
                 timeList.add(QlockLanguage.Y);
                 timeList.add(QlockLanguage.VEINTICINCO);
                 break;
             case 30:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
                 timeList.add(QlockLanguage.Y);
                 timeList.add(QlockLanguage.MEDIA);
                 break;
             case 35:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.MENOS);
                 timeList.add(QlockLanguage.VEINTICINCO);
                 addHour(timeList, hour);
                 break;
             case 40:
+                timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+                timeList.add(hour == 1 ? QlockLanguage.LA : QlockLanguage.LAS);
                 timeList.add(QlockLanguage.MENOS);
                 timeList.add(QlockLanguage.VEINTE);
                 addHour(timeList, hour);
                 break;
             case 45:
+                timeList.add(QlockLanguage.SON);
+                timeList.add(QlockLanguage.LAS);
                 timeList.add(QlockLanguage.MENOS);
                 timeList.add(QlockLanguage.CUARTO);
                 addHour(timeList, hour);
                 break;
             case 50:
+                // ES LA UNA MENOS DIEZ
+                timeList.add(QlockLanguage.SON);
+                timeList.add(QlockLanguage.LAS);
                 timeList.add(QlockLanguage.MENOS);
                 timeList.add(QlockLanguage.DIEZ1);
                 addHour(timeList, hour);
                 break;
             case 55:
+                timeList.add(QlockLanguage.SON);
+                timeList.add(QlockLanguage.LAS);
                 timeList.add(QlockLanguage.MENOS);
                 timeList.add(QlockLanguage.CINCO1);
                 addHour(timeList, hour);
@@ -182,7 +205,7 @@ public class QlockSpanish implements Qlock {
 
     private void addHour(List<QlockWord> timeList, final int HOUR) {
         if (HOUR == 12) {
-            timeList.add(QlockLanguage.UNO);
+            timeList.add(QlockLanguage.UNA);
         } else if (HOUR == 10) {
             timeList.add(QlockLanguage.DIEZ1);
         } else {
@@ -191,7 +214,7 @@ public class QlockSpanish implements Qlock {
     }
 
     private enum QlockLanguage implements QlockWord {
-        UNO(0, 8, 10),
+        UNA(0, 8, 10),
         DOS(1, 0, 2),
         TRES(1, 4, 7),
         CUATRO(2, 0, 5),
@@ -202,11 +225,12 @@ public class QlockSpanish implements Qlock {
         OCHO(4, 0, 3),
         NUEVE(4, 4, 8),
         DIEZ(5, 2, 5),
-        DIEZ1(9, 0, 2),
+        DIEZ1(7, 7, 10),
         ONCE(7, 5, 10),
         DOCE(6, 0, 3),
         SON(0, 1, 3),
         ES(0, 0, 1),
+        LA(0, 5, 6),
         LAS(0, 5, 7),
         Y(6, 5, 5),
         MENOS(6, 6, 10),
