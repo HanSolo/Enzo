@@ -1,10 +1,8 @@
 package eu.hansolo.enzo.qlocktwo;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
 
@@ -51,7 +49,6 @@ public class QlockTwo extends Control {
         }
     }
     private ObjectProperty<QlockColor> color;
-    private DoubleProperty             brightness;
     private ObjectProperty<Language>   language;
     private Qlock                      qlock;
     private BooleanProperty            highlightVisible;
@@ -61,7 +58,6 @@ public class QlockTwo extends Control {
     public QlockTwo() {
         getStyleClass().add("qlocktwo");
         color            = new SimpleObjectProperty<>(QlockColor.BLACK_ICE_TEA);
-        brightness       = new SimpleDoubleProperty(1.0);
         qlock            = new QlockGerman();
         language         = new SimpleObjectProperty<>(qlock.getLanguage());
         highlightVisible = new SimpleBooleanProperty(true);
@@ -85,22 +81,6 @@ public class QlockTwo extends Control {
     }
     public final ObjectProperty<QlockColor> colorProperty() {
         return color;
-    }
-
-    public final double getBrightness() {
-        return brightness.get();
-    }
-    public final void setBrightness(final double BRIGHTNESS) {
-        if (BRIGHTNESS < 0.25) {
-            brightness.set(0.25);
-        } else if (BRIGHTNESS > 1) {
-            brightness.set(1);
-        } else {
-            brightness.set(BRIGHTNESS);
-        }
-    }
-    public final DoubleProperty brightnessProperty() {
-        return brightness;
     }
 
     public final Language getLanguage() {

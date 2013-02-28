@@ -111,7 +111,7 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         stepX      = DEFAULT_WIDTH * 0.072;
         stepY      = DEFAULT_WIDTH * 0.08;
         font       = Font.loadFont(getClass().getResourceAsStream("/resources/din.otf"), DEFAULT_WIDTH * 0.048);
-        background = RegionBuilder.create().styleClass("background").build();
+        background = RegionBuilder.create().styleClass("background", control.getColor().STYLE_CLASS).build();
 
         p1 = RegionBuilder.create().styleClass("dot-off").build();
         p2 = RegionBuilder.create().styleClass("dot-off").build();

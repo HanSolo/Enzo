@@ -2,20 +2,12 @@ package eu.hansolo.enzo.qlocktwo;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.ControlBuilder;
-import javafx.scene.paint.Color;
-import javafx.util.Builder;
 
 import java.util.HashMap;
 
@@ -33,6 +25,20 @@ public class QlockTwoBuilder<B extends QlockTwoBuilder<B>> extends ControlBuilde
         return new QlockTwoBuilder();
     }
 
+    public final QlockTwoBuilder color(final QlockTwo.QlockColor COLOR) {
+        properties.put("color", new SimpleObjectProperty<QlockTwo.QlockColor>(COLOR));
+        return this;
+    }
+
+    public final QlockTwoBuilder language(final QlockTwo.Language LANGUAGE) {
+        properties.put("language", new SimpleObjectProperty<QlockTwo.Language>(LANGUAGE));
+        return this;
+    }
+
+    public final QlockTwoBuilder highlightVisible(final boolean HIGHLIGHT_VISIBLE) {
+        properties.put("highlightVisible", new SimpleBooleanProperty(HIGHLIGHT_VISIBLE));
+        return this;
+    }
 
     @Override public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
@@ -57,8 +63,12 @@ public class QlockTwoBuilder<B extends QlockTwoBuilder<B>> extends ControlBuilde
     @Override public final QlockTwo build() {
         final QlockTwo CONTROL = new QlockTwo();
         for (String key : properties.keySet()) {
-            if ("".equals(key)) {
-
+            if ("color".equals(key)) {
+                CONTROL.setColor(((ObjectProperty<QlockTwo.QlockColor>) properties.get(key)).get());
+            } else if ("language".equals(key)) {
+                CONTROL.setLanguage(((ObjectProperty<QlockTwo.Language>) properties.get(key)).get());
+            } else if ("highlightVisible".equals(key)) {
+                CONTROL.setHighlightVisible(((BooleanProperty) properties.get(key)).get());
             } else if("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
