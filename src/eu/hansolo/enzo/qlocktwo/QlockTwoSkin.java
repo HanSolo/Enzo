@@ -3,16 +3,15 @@ package eu.hansolo.enzo.qlocktwo;
 import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ListChangeListener;
-import javafx.geometry.VPos;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.LabelBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.RegionBuilder;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextBuilder;
 
 import java.util.Calendar;
 
@@ -24,8 +23,8 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
     private static final double MINIMUM_HEIGHT = 50;
     private static final double MAXIMUM_WIDTH  = 1024;
     private static final double MAXIMUM_HEIGHT = 1024;
-    private QlockTwo control;
-    private static double  aspectRatio;
+    private static final double ASPECT_RATIO   = 1.0;
+    private QlockTwo       control;
     private double         size;
     private double         width;
     private double         height;
@@ -40,7 +39,7 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
     private Region         p2;
     private Region         p3;
     private Region         p4;
-    private Text[][]       matrix;
+    private Label[][]      matrix;
     private Region         highlight;
     private Font           font;
     private double         startX;
@@ -55,7 +54,6 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
     public QlockTwoSkin(final QlockTwo CONTROL) {
         super(CONTROL, new QlockTwoBehavior(CONTROL));
         control              = CONTROL;
-        aspectRatio          = 1.0;
         hour                 = 0;
         minute               = 0;
         oldMinute            = 0;
@@ -105,35 +103,34 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <= 0) {
             control.setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
         }
-
-        if (control.getPrefWidth() != DEFAULT_WIDTH || control.getPrefHeight() != DEFAULT_HEIGHT) {
-            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
-        }
     }
 
     private void initGraphics() {
-        startX = DEFAULT_WIDTH * 0.124;
-        startY = DEFAULT_WIDTH * 0.132;
-        stepX  = DEFAULT_WIDTH * 0.072;
-        stepY  = DEFAULT_WIDTH * 0.0805;
-        font = Font.loadFont(getClass().getResourceAsStream("/resources/don.otf"), DEFAULT_WIDTH * 0.048);
+        startX     = DEFAULT_WIDTH * 0.114;
+        startY     = DEFAULT_WIDTH * 0.112;
+        stepX      = DEFAULT_WIDTH * 0.072;
+        stepY      = DEFAULT_WIDTH * 0.08;
+        font       = Font.loadFont(getClass().getResourceAsStream("/resources/din.otf"), DEFAULT_WIDTH * 0.048);
         background = RegionBuilder.create().styleClass("background").build();
 
-        p1 = RegionBuilder.create().styleClass("off").build();
-        p2 = RegionBuilder.create().styleClass("off").build();
-        p3 = RegionBuilder.create().styleClass("off").build();
-        p4 = RegionBuilder.create().styleClass("off").build();
+        p1 = RegionBuilder.create().styleClass("dot-off").build();
+        p2 = RegionBuilder.create().styleClass("dot-off").build();
+        p3 = RegionBuilder.create().styleClass("dot-off").build();
+        p4 = RegionBuilder.create().styleClass("dot-off").build();
 
         highlight = RegionBuilder.create().styleClass("highlight").build();
 
-        matrix = new Text[11][10];
+        matrix = new Label[11][10];
         for (int y = 0 ; y < 10 ; y++) {
             for (int x = 0 ; x < 11 ; x++) {
-                matrix[x][y] = TextBuilder.create()
-                                          .textOrigin(VPos.CENTER)
+                matrix[x][y] = LabelBuilder.create()
+                                          //.textOrigin(VPos.CENTER)
+                                          .alignment(Pos.CENTER)
+                                          .prefWidth(DEFAULT_WIDTH * 0.048)
+                                          .prefHeight(DEFAULT_HEIGHT * 0.048)
                                           .text(control.getQlock().getMatrix()[y][x])
                                           .font(font)
-                                          .styleClass("off")
+                                          .styleClass("text-off")
                                           .build();
             }
         }
@@ -175,8 +172,6 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         super.handleControlPropertyChanged(PROPERTY);
         if ("RESIZE".equals(PROPERTY)) {
             resize();
-        } else if ("PREF_SIZE".equals(PROPERTY)) {
-            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
         } else if ("COLOR".equals(PROPERTY)) {
             background.getStyleClass().setAll("background", control.getColor().STYLE_CLASS);
             p1.getStyleClass().setAll(control.getQlock().isP1() ? "on" : "off", control.getColor().STYLE_CLASS);
@@ -229,35 +224,23 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
     }
 
 
-    // ******************** Utility methods ***********************************
-    private String colorToCss(final Color COLOR) {
-        StringBuilder cssColor = new StringBuilder();
-        cssColor.append("rgba(")
-                .append((int) (COLOR.getRed() * 255)).append(", ")
-                .append((int) (COLOR.getGreen() * 255)).append(", ")
-                .append((int) (COLOR.getBlue() * 255)).append(", ")
-                .append(COLOR.getOpacity()).append(")");
-        return cssColor.toString();
-    }
-
-
     // ******************** Update ********************************************
     private void updateClock() {
         for (int y = 0 ; y < 10 ; y++) {
             for (int x = 0 ; x < 11 ; x++) {
-                matrix[x][y].getStyleClass().setAll("off", control.getColor().STYLE_CLASS);
+                matrix[x][y].getStyleClass().setAll("text-off", control.getColor().STYLE_CLASS);
             }
         }
 
         for (QlockWord word : control.getQlock().getTime(minute, hour)) {
             for (int col = word.getStart() ; col <= word.getStop() ; col++) {
-                matrix[col][word.getRow()].getStyleClass().setAll("on", control.getColor().STYLE_CLASS);
+                matrix[col][word.getRow()].getStyleClass().setAll("text-on", control.getColor().STYLE_CLASS);
             }
         }
-        p1.getStyleClass().setAll(control.getQlock().isP1() ? "on" : "off", control.getColor().STYLE_CLASS);
-        p2.getStyleClass().setAll(control.getQlock().isP2() ? "on" : "off", control.getColor().STYLE_CLASS);
-        p3.getStyleClass().setAll(control.getQlock().isP3() ? "on" : "off", control.getColor().STYLE_CLASS);
-        p4.getStyleClass().setAll(control.getQlock().isP4() ? "on" : "off", control.getColor().STYLE_CLASS);
+        p1.getStyleClass().setAll(control.getQlock().isP1() ? "dot-on" : "dot-off", control.getColor().STYLE_CLASS);
+        p2.getStyleClass().setAll(control.getQlock().isP2() ? "dot-on" : "dot-off", control.getColor().STYLE_CLASS);
+        p3.getStyleClass().setAll(control.getQlock().isP3() ? "dot-on" : "dot-off", control.getColor().STYLE_CLASS);
+        p4.getStyleClass().setAll(control.getQlock().isP4() ? "dot-on" : "dot-off", control.getColor().STYLE_CLASS);
     }
 
 
@@ -267,10 +250,10 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         width  = control.getWidth();
         height = control.getHeight();
 
-        if (aspectRatio * width > height) {
-            width  = 1 / (aspectRatio / height);
-        } else if (1 / (aspectRatio / height) > width) {
-            height = aspectRatio * width;
+        if (width > height) {
+            width  = 1 / (ASPECT_RATIO / height);
+        } else if (1 / (ASPECT_RATIO / height) > width) {
+            height = width;
         }
 
         background.setPrefSize(1.0 * width, 1.0 * height);
@@ -293,16 +276,18 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         p1.setTranslateX(0.044 * width);
         p1.setTranslateY(0.044 * height);
 
-        startX = size * 0.124;
-        startY = size * 0.132;
+        startX = size * 0.114;
+        startY = size * 0.112;
         stepX  = size * 0.072;
-        stepY  = size * 0.0805;
+        stepY  = size * 0.08;
         font = Font.font("DINfun Pro", FontWeight.NORMAL, FontPosture.REGULAR, size * 0.048);
         for (int y = 0 ; y < 10 ; y++) {
             for (int x = 0 ; x < 11 ; x++) {
                 matrix[x][y].setFont(font);
-                matrix[x][y].setX(startX + x * stepX);
-                matrix[x][y].setY(startY + y * stepY);
+                matrix[x][y].setPrefSize(size * 0.048, size * 0.048);
+                matrix[x][y].setTranslateY(startY + y * stepY);
+                matrix[x][y].setTranslateX(startX + x * stepX);
+                matrix[x][y].setTranslateY(startY + y * stepY);
             }
         }
 

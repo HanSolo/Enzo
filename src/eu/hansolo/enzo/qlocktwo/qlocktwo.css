@@ -5,22 +5,26 @@
     -qlock-off             : rgb(64, 62, 65);
 }
 
-.qlocktwo .on {
-    -fx-fill               : -qlock-on;
+.qlocktwo .text-on {
+    -fx-text-fill          : -qlock-on;
+    -fx-font-smoothing-type: lcd;
+    -fx-effect             : dropshadow(two-pass-box, rgba(255, 255, 255, 0.65), 3, 0, 0, 0);
+}
+.qlocktwo .dot-on {
     -fx-background-color   : -qlock-on;
     -fx-scale-shape        : true;
-    -fx-text-alignment     : center;
-    -fx-font-smoothing-type: lcd;
     -fx-shape              : "M 472.0 475.0 C 472.0 473.0 473.0 472.0 475.0 472.0 C 477.0 472.0 478.0 473.0 478.0 475.0 C 478.0 477.0 477.0 478.0 475.0 478.0 C 473.0 478.0 472.0 477.0 472.0 475.0 Z";
     -fx-effect             : dropshadow(two-pass-box, rgba(255, 255, 255, 0.65), 3, 0, 0, 0);
 }
 
-.qlocktwo .off {
-    -fx-fill               : -qlock-off;
-    -fx-background-color   : -qlock-off;
-    -fx-scale-shape        : true;
+.qlocktwo .text-off {
+    -fx-text-fill          : -qlock-off;
     -fx-text-alignment     : center;
     -fx-font-smoothing-type: lcd;
+}
+.qlocktwo .dot-off {
+    -fx-background-color   : -qlock-off;
+    -fx-scale-shape        : true;
     -fx-shape              : "M 472.0 475.0 C 472.0 473.0 473.0 472.0 475.0 472.0 C 477.0 472.0 478.0 473.0 478.0 475.0 C 478.0 477.0 477.0 478.0 475.0 478.0 C 473.0 478.0 472.0 477.0 472.0 475.0 Z";
 }
 
@@ -28,12 +32,6 @@
     -fx-background-color: -qlock-background;
     -fx-scale-shape     : true;
     -fx-shape           : "M 0.0 0.0 H 500.0 V 500.0 H 0.0 V 0.0 Z";
-}
-
-.qlocktwo .innerbounds {
-    -fx-background-color: red;
-    -fx-scale-shape     : true;
-    -fx-shape           : "M 62.0 60.0 H 438.0 V 436.0 H 62.0 V 60.0 Z";
 }
 
 .qlocktwo .highlight {

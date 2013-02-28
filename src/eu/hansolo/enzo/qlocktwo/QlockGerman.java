@@ -103,27 +103,27 @@ public class QlockGerman implements Qlock {
             case 5:
                 timeList.add(QlockLanguage.FÜNF1);
                 timeList.add(QlockLanguage.NACH);
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
                 break;
             case 10:
                 timeList.add(QlockLanguage.ZEHN);
                 timeList.add(QlockLanguage.NACH);
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
                 break;
             case 15:
                 timeList.add(QlockLanguage.VIERTEL);
                 timeList.add(QlockLanguage.NACH);
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
                 break;
             case 20:
                 timeList.add(QlockLanguage.ZWANZIG);
                 timeList.add(QlockLanguage.NACH);
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
                 break;
             case 25:
                 timeList.add(QlockLanguage.FÜNF1);
                 timeList.add(QlockLanguage.VOR);
-                timeList.add(QlockLanguage.HALB);
+                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.HALB);
                 addHour(timeList, hour);
                 break;
             case 30:
