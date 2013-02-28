@@ -1,5 +1,5 @@
 .qlocktwo {
-    -fx-skin               : "eu.hansolo.enzo.qlocktwo.QlockTwoSkin";
+    -fx-skin               : "eu.hansolo.enzo.qlocktwo.skin.QlockTwoSkin";
     -qlock-background      : black;
     -qlock-on              : white;
     -qlock-off             : rgb(64, 62, 65);

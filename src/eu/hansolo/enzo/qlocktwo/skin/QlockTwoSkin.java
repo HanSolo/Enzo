@@ -1,6 +1,9 @@
-package eu.hansolo.enzo.qlocktwo;
+package eu.hansolo.enzo.qlocktwo.skin;
 
 import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
+import eu.hansolo.enzo.qlocktwo.QlockTwo;
+import eu.hansolo.enzo.qlocktwo.behavior.QlockTwoBehavior;
+import eu.hansolo.enzo.qlocktwo.QlockWord;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;

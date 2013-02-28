@@ -98,72 +98,68 @@ public class QlockFrench implements Qlock {
         switch (minute) {
             case 0:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                if (hour == 1) {
-                    timeList.add(QlockLanguage.HEURE);
-                } else {
-                    timeList.add(QlockLanguage.HEURES);
-                }
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 break;
             case 5:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.CINQ1);
                 break;
             case 10:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.DIX1);
                 break;
             case 15:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.ET);
                 timeList.add(QlockLanguage.QUART);
                 break;
             case 20:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.VINGT);
                 break;
             case 25:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.HEURE);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.VINGT_CINQ);
                 break;
             case 30:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.HEURE);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.ET1);
                 timeList.add(QlockLanguage.DEMIE);
                 break;
             case 35:
                 addHour(timeList, hour);
-                timeList.add(QlockLanguage.HEURE);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.VINGT_CINQ);
                 break;
             case 40:
                 addHour(timeList, hour);
-                timeList.add(QlockLanguage.HEURE);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.VINGT);
                 break;
             case 45:
                 addHour(timeList, hour);
-                timeList.add(QlockLanguage.HEURE);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.LE);
                 timeList.add(QlockLanguage.QUART);
                 break;
             case 50:
                 addHour(timeList, hour);
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.DIX1);
                 break;
             case 55:
                 addHour(timeList, hour);
-                timeList.add(QlockLanguage.HEURES);
+                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.CINQ1);
                 break;
