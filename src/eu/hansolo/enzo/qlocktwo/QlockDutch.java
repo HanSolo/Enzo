@@ -215,9 +215,11 @@ public class QlockDutch implements Qlock {
         if (HOUR == 12) {
             timeList.add(QlockLanguage.EEN);
         } else if (HOUR == 5) {
-            timeList.add(QlockLanguage.VIJF2);
+            timeList.add(QlockLanguage.VIJF1);
         } else if (HOUR == 10 || HOUR + 1 == 10) {
             timeList.add(QlockLanguage.TIEN1);
+        } else if (HOUR + 1 == 5) {
+            timeList.add(QlockLanguage.VIJF);
         } else {
             timeList.add(QlockLanguage.valueOf(LOOKUP.get(HOUR + 1)));
         }
@@ -228,9 +230,8 @@ public class QlockDutch implements Qlock {
         TWEE(5, 0, 3),
         DRIE(5, 7, 10),
         VIER(6, 0, 3),
-        VIJF(0, 7, 10),
         VIJF1(0, 7, 10),
-        VIJF2(6, 4, 7),
+        VIJF(6, 4, 7),
         ZES(6, 8, 10),
         ZEVEN(7, 0, 4),
         ACHT(8, 0, 3),
