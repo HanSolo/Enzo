@@ -119,7 +119,7 @@ public class QlockDutch implements Qlock {
                 timeList.add(QlockLanguage.TIEN);
                 timeList.add(QlockLanguage.VOOR);
                 timeList.add(QlockLanguage.HALF);
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                addHour(timeList, hour);
                 break;
             case 25:
                 timeList.add(QlockLanguage.VIJF1);
