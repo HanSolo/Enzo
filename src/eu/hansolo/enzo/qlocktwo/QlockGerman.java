@@ -229,7 +229,7 @@ public class QlockGerman implements Qlock {
         ZWEI(5, 7, 10),
         DREI(2, 0, 3),
         VIER(6, 7, 10),
-        FÜNF(4, 7, 0),
+        FÜNF(4, 7, 10),
         FÜNF1(0, 7, 10),
         FÜNF2(4, 7, 10),
         SECHS(7, 0, 4),
