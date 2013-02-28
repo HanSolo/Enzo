@@ -8,22 +8,22 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by
  * User: hansolo
- * Date: 27.02.13
- * Time: 15:44
+ * Date: 28.02.13
+ * Time: 07:53
  */
-public class QlockGerman implements Qlock {
-    private static final QlockTwo.Language LANGUAGE = QlockTwo.Language.GERMAN;
+public class QlockSpanish implements Qlock {
+    private static final QlockTwo.Language LANGUAGE = QlockTwo.Language.SPANISH;
     private static final String[][] MATRIX = {
-        {"E", "S", "K", "I", "S", "T", "A", "F", "Ü", "N", "F"},
-        {"Z", "E", "H", "N", "Z", "W", "A", "N", "Z", "I", "G"},
-        {"D", "R", "E", "I", "V", "I", "E", "R", "T", "E", "L"},
-        {"V", "O", "R", "F", "U", "N", "K", "N", "A", "C", "H"},
-        {"H", "A", "L", "B", "A", "E", "L", "F", "Ü", "N", "F"},
-        {"E", "I", "N", "S", "X", "Ä", "M", "Z", "W", "E", "I"},
-        {"D", "R", "E", "I", "A", "U", "J", "V", "I", "E", "R"},
-        {"S", "E", "C", "H", "S", "N", "L", "A", "C", "H", "T"},
-        {"S", "I", "E", "B", "E", "N", "Z", "W", "Ö", "L", "F"},
-        {"Z", "E", "H", "N", "E", "U", "N", "K", "U", "H", "R"}
+        {"E", "S", "O", "N", "E", "L", "A", "S", "U", "N", "A"},
+        {"D", "O", "S", "I", "T", "R", "E", "S", "O", "R", "E"},
+        {"C", "U", "A", "T", "R", "O", "C", "I", "N", "C", "O"},
+        {"S", "E", "I", "S", "A", "S", "I", "E", "T", "E", "N"},
+        {"O", "C", "H", "O", "N", "U", "E", "V", "E", "Y", "O"},
+        {"L", "A", "D", "I", "E", "Z", "S", "O", "N", "C", "E"},
+        {"D", "O", "C", "E", "L", "Y", "M", "E", "N", "O", "S"},
+        {"O", "V", "E", "I", "N", "T", "E", "D", "I", "E", "Z"},
+        {"V", "E", "I", "N", "T", "I", "C", "I", "N", "C", "O"},
+        {"M", "E", "D", "I", "A", "C", "U", "A", "R", "T", "O"}
     };
     private boolean p1;
     private boolean p2;
@@ -33,9 +33,9 @@ public class QlockGerman implements Qlock {
     private List<QlockWord> timeList;
 
 
-    public QlockGerman() {
+    public QlockSpanish() {
         LOOKUP = new ConcurrentHashMap<>();
-        LOOKUP.putAll(QlockTwo.Language.GERMAN.getLookup());
+        LOOKUP.putAll(QlockTwo.Language.SPANISH.getLookup());
         timeList = new ArrayList<>(10);
     }
 
@@ -93,70 +93,70 @@ public class QlockGerman implements Qlock {
 
         timeList.clear();
 
-        timeList.add(QlockLanguage.ES);
-        timeList.add(QlockLanguage.IST);
-        switch (minute) {
+        timeList.add(hour == 1 ? QlockLanguage.ES : QlockLanguage.SON);
+        timeList.add(QlockLanguage.LAS);
+        switch (minute)
+        {
             case 0:
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(QlockLanguage.UHR);
                 break;
             case 5:
-                timeList.add(QlockLanguage.FÜNF1);
-                timeList.add(QlockLanguage.NACH);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(QlockLanguage.Y);
+                timeList.add(QlockLanguage.CINCO1);
                 break;
             case 10:
-                timeList.add(QlockLanguage.ZEHN);
-                timeList.add(QlockLanguage.NACH);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(QlockLanguage.Y);
+                timeList.add(QlockLanguage.DIEZ1);
                 break;
             case 15:
-                timeList.add(QlockLanguage.VIERTEL);
-                timeList.add(QlockLanguage.NACH);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(QlockLanguage.Y);
+                timeList.add(QlockLanguage.CUARTO);
                 break;
             case 20:
-                timeList.add(QlockLanguage.ZWANZIG);
-                timeList.add(QlockLanguage.NACH);
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(QlockLanguage.Y);
+                timeList.add(QlockLanguage.VEINTE);
                 break;
             case 25:
-                timeList.add(QlockLanguage.FÜNF1);
-                timeList.add(QlockLanguage.VOR);
-                timeList.add(QlockLanguage.HALB);
-                addHour(timeList, hour);
+                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(QlockLanguage.Y);
+                timeList.add(QlockLanguage.VEINTICINCO);
                 break;
             case 30:
-                timeList.add(QlockLanguage.HALB);
-                addHour(timeList, hour);
+                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                timeList.add(QlockLanguage.Y);
+                timeList.add(QlockLanguage.MEDIA);
                 break;
             case 35:
-                timeList.add(QlockLanguage.FÜNF1);
-                timeList.add(QlockLanguage.NACH);
-                timeList.add(QlockLanguage.HALB);
+                timeList.add(QlockLanguage.MENOS);
+                timeList.add(QlockLanguage.VEINTICINCO);
                 addHour(timeList, hour);
                 break;
             case 40:
-                timeList.add(QlockLanguage.ZWANZIG);
-                timeList.add(QlockLanguage.VOR);
+                timeList.add(QlockLanguage.MENOS);
+                timeList.add(QlockLanguage.VEINTE);
                 addHour(timeList, hour);
                 break;
             case 45:
-                timeList.add(QlockLanguage.VIERTEL);
-                timeList.add(QlockLanguage.VOR);
+                timeList.add(QlockLanguage.MENOS);
+                timeList.add(QlockLanguage.CUARTO);
                 addHour(timeList, hour);
                 break;
             case 50:
-                timeList.add(QlockLanguage.ZEHN);
-                timeList.add(QlockLanguage.VOR);
+                timeList.add(QlockLanguage.MENOS);
+                timeList.add(QlockLanguage.DIEZ1);
                 addHour(timeList, hour);
                 break;
             case 55:
-                timeList.add(QlockLanguage.FÜNF1);
-                timeList.add(QlockLanguage.VOR);
+                timeList.add(QlockLanguage.MENOS);
+                timeList.add(QlockLanguage.CINCO1);
                 addHour(timeList, hour);
                 break;
         }
+
         return timeList;
     }
 
@@ -182,45 +182,38 @@ public class QlockGerman implements Qlock {
 
     private void addHour(List<QlockWord> timeList, final int HOUR) {
         if (HOUR == 12) {
-            timeList.add(QlockLanguage.EINS);
-        } else if (HOUR == 5) {
-            timeList.add(QlockLanguage.FÜNF2);
+            timeList.add(QlockLanguage.UNO);
+        } else if (HOUR == 10) {
+            timeList.add(QlockLanguage.DIEZ1);
         } else {
-            if (HOUR + 1 == 5) {
-                timeList.add(QlockLanguage.FÜNF2);
-            } else if (HOUR + 1 == 10) {
-                timeList.add(QlockLanguage.ZEHN1);
-            } else {
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(HOUR + 1)));
-            }
+            timeList.add(QlockLanguage.valueOf(LOOKUP.get(HOUR + 1)));
         }
     }
 
     private enum QlockLanguage implements QlockWord {
-        EINS(5, 0, 3),
-        ZWEI(5, 7, 10),
-        DREI(2, 0, 3),
-        VIER(6, 7, 10),
-        FÜNF(4, 7, 0),
-        FÜNF1(0, 7, 10),
-        FÜNF2(4, 7, 10),
-        SECHS(7, 0, 4),
-        SIEBEN(8, 0, 5),
-        ACHT(7, 7, 10),
-        NEUN(9, 3, 6),
-        ZEHN(1, 0, 3),
-        ZEHN1(9, 0, 3),
-        ELF(4, 5, 7),
-        ZWÖLF(8, 6, 10),
+        UNO(0, 8, 10),
+        DOS(1, 0, 2),
+        TRES(1, 4, 7),
+        CUATRO(2, 0, 5),
+        CINCO(2, 6, 10),
+        CINCO1(8, 6, 10),
+        SEIS(3, 0, 3),
+        SIETE(3, 5, 9),
+        OCHO(4, 0, 3),
+        NUEVE(4, 4, 8),
+        DIEZ(5, 2, 5),
+        DIEZ1(9, 0, 2),
+        ONCE(7, 5, 10),
+        DOCE(6, 0, 3),
+        SON(0, 1, 3),
         ES(0, 0, 1),
-        IST(0, 3, 5),
-        VOR(3, 0, 2),
-        NACH(3, 7, 10),
-        VIERTEL(2, 4, 10),
-        DREIVIERTEL(2, 0, 10),
-        HALB(4, 0, 3),
-        ZWANZIG(1, 4, 10),
-        UHR(9, 8, 10);
+        LAS(0, 5, 7),
+        Y(6, 5, 5),
+        MENOS(6, 6, 10),
+        CUARTO(9, 5, 10),
+        VEINTE(7, 1, 6),
+        VEINTICINCO(8, 0, 10),
+        MEDIA(9, 0, 4);
 
         private final int ROW;
         private final int START;
@@ -245,4 +238,3 @@ public class QlockGerman implements Qlock {
         }
     }
 }
-

@@ -1,22 +1,27 @@
 .qlocktwo {
-    -fx-skin         : "eu.hansolo.enzo.qlocktwo.QlockTwoSkin";
-    -qlock-background: black;
-    -qlock-on        : white;
-    -qlock-off       : rgb(64, 62, 65);
+    -fx-skin               : "eu.hansolo.enzo.qlocktwo.QlockTwoSkin";
+    -qlock-background      : black;
+    -qlock-on              : white;
+    -qlock-off             : rgb(64, 62, 65);
 }
 
 .qlocktwo .on {
-    -fx-fill            : -qlock-on;
-    -fx-background-color: -qlock-on;
-    -fx-scale-shape     : true;
-    -fx-shape           : "M 472.0 475.0 C 472.0 473.0 473.0 472.0 475.0 472.0 C 477.0 472.0 478.0 473.0 478.0 475.0 C 478.0 477.0 477.0 478.0 475.0 478.0 C 473.0 478.0 472.0 477.0 472.0 475.0 Z";
+    -fx-fill               : -qlock-on;
+    -fx-background-color   : -qlock-on;
+    -fx-scale-shape        : true;
+    -fx-text-alignment     : center;
+    -fx-font-smoothing-type: lcd;
+    -fx-shape              : "M 472.0 475.0 C 472.0 473.0 473.0 472.0 475.0 472.0 C 477.0 472.0 478.0 473.0 478.0 475.0 C 478.0 477.0 477.0 478.0 475.0 478.0 C 473.0 478.0 472.0 477.0 472.0 475.0 Z";
+    -fx-effect             : dropshadow(two-pass-box, rgba(255, 255, 255, 0.65), 3, 0, 0, 0);
 }
 
 .qlocktwo .off {
-    -fx-fill            : -qlock-off;
-    -fx-background-color: -qlock-off;
-    -fx-scale-shape     : true;
-    -fx-shape           : "M 472.0 475.0 C 472.0 473.0 473.0 472.0 475.0 472.0 C 477.0 472.0 478.0 473.0 478.0 475.0 C 478.0 477.0 477.0 478.0 475.0 478.0 C 473.0 478.0 472.0 477.0 472.0 475.0 Z";
+    -fx-fill               : -qlock-off;
+    -fx-background-color   : -qlock-off;
+    -fx-scale-shape        : true;
+    -fx-text-alignment     : center;
+    -fx-font-smoothing-type: lcd;
+    -fx-shape              : "M 472.0 475.0 C 472.0 473.0 473.0 472.0 475.0 472.0 C 477.0 472.0 478.0 473.0 478.0 475.0 C 478.0 477.0 477.0 478.0 475.0 478.0 C 473.0 478.0 472.0 477.0 472.0 475.0 Z";
 }
 
 .qlocktwo .background {
@@ -63,6 +68,16 @@
     -qlock-background: rgb(168, 175, 10);
     -qlock-on        : white;
     -qlock-off       : rgb(133, 139, 7);
+}
+.qlocktwo .dark-chocolate {
+    -qlock-background: rgb(60, 40, 15);
+    -qlock-on        : white;
+    -qlock-off       : rgb(100, 80, 66);
+}
+.qlocktwo .blue-candy {
+    -qlock-background: rgb(27, 157, 205);
+    -qlock-on        : white;
+    -qlock-off       : rgb(0, 129, 179);
 }
 
 

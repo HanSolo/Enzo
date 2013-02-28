@@ -16,8 +16,6 @@ import javafx.scene.text.TextBuilder;
 
 import java.util.Calendar;
 
-//import javafx.scene.control.SkinBase;
-
 
 public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
     private static final double DEFAULT_WIDTH  = 200;
@@ -118,8 +116,7 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         startY = DEFAULT_WIDTH * 0.132;
         stepX  = DEFAULT_WIDTH * 0.072;
         stepY  = DEFAULT_WIDTH * 0.0805;
-        font = Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, DEFAULT_WIDTH * 0.048);
-
+        font = Font.loadFont(getClass().getResourceAsStream("/resources/don.otf"), DEFAULT_WIDTH * 0.048);
         background = RegionBuilder.create().styleClass("background").build();
 
         p1 = RegionBuilder.create().styleClass("off").build();
@@ -132,7 +129,12 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         matrix = new Text[11][10];
         for (int y = 0 ; y < 10 ; y++) {
             for (int x = 0 ; x < 11 ; x++) {
-                matrix[x][y] = TextBuilder.create().textOrigin(VPos.CENTER).text(control.getQlock().getMatrix()[y][x]).font(font).styleClass("off").build();
+                matrix[x][y] = TextBuilder.create()
+                                          .textOrigin(VPos.CENTER)
+                                          .text(control.getQlock().getMatrix()[y][x])
+                                          .font(font)
+                                          .styleClass("off")
+                                          .build();
             }
         }
 
@@ -252,10 +254,10 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
                 matrix[col][word.getRow()].getStyleClass().setAll("on", control.getColor().STYLE_CLASS);
             }
         }
-        p1.getStyleClass().setAll(control.getQlock().isP1() ? "on" : "off");
-        p2.getStyleClass().setAll(control.getQlock().isP2() ? "on" : "off");
-        p3.getStyleClass().setAll(control.getQlock().isP3() ? "on" : "off");
-        p4.getStyleClass().setAll(control.getQlock().isP4() ? "on" : "off");
+        p1.getStyleClass().setAll(control.getQlock().isP1() ? "on" : "off", control.getColor().STYLE_CLASS);
+        p2.getStyleClass().setAll(control.getQlock().isP2() ? "on" : "off", control.getColor().STYLE_CLASS);
+        p3.getStyleClass().setAll(control.getQlock().isP3() ? "on" : "off", control.getColor().STYLE_CLASS);
+        p4.getStyleClass().setAll(control.getQlock().isP4() ? "on" : "off", control.getColor().STYLE_CLASS);
     }
 
 
@@ -295,7 +297,7 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         startY = size * 0.132;
         stepX  = size * 0.072;
         stepY  = size * 0.0805;
-        font = Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, size * 0.048);
+        font = Font.font("DINfun Pro", FontWeight.NORMAL, FontPosture.REGULAR, size * 0.048);
         for (int y = 0 ; y < 10 ; y++) {
             for (int x = 0 ; x < 11 ; x++) {
                 matrix[x][y].setFont(font);

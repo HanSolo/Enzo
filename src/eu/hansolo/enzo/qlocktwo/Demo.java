@@ -1,6 +1,7 @@
 package eu.hansolo.enzo.qlocktwo;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -23,7 +24,12 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        control.setLanguage(QlockTwo.Language.ENGLISH);
+        control.setLanguage(QlockTwo.Language.GERMAN);
+        control.setColor(QlockTwo.QlockColor.BLUE_CANDY);
+    }
+
+    @Override public void stop() {
+        Platform.exit();
     }
 
     public static void main(String[] args) {
