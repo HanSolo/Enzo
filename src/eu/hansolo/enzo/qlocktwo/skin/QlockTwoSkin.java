@@ -187,7 +187,6 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         for (int y = 0 ; y < 10 ; y++) {
             for (int x = 0 ; x < 11 ; x++) {
                 matrix[x][y] = LabelBuilder.create()
-                                          //.textOrigin(VPos.CENTER)
                                           .alignment(Pos.CENTER)
                                           .prefWidth(DEFAULT_WIDTH * 0.048)
                                           .prefHeight(DEFAULT_HEIGHT * 0.048)
@@ -404,7 +403,6 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         highlight.setPrefSize(0.8572706909179687 * width, 0.7135147094726563 * height);
         highlight.setTranslateX(0.14224906921386718 * width);
         highlight.setTranslateY(0.28614569091796876 * height);
-
     }
 }
 
