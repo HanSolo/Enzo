@@ -118,7 +118,7 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
     private int                        noOfSegments;
     private StringBuilder              lcdBackgroundTextBuilder;
     private StringBuilder              decBuffer;
-    private Group shadowGroup;
+    private Group                      shadowGroup;
 
 
     // ******************** Constructors **************************************
