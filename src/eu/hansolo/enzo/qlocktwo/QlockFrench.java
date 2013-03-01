@@ -92,38 +92,66 @@ public class QlockFrench implements Qlock {
         timeList.add(QlockLanguage.EST);
         switch (minute) {
             case 0:
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour == 12) {
+                    timeList.add(QlockLanguage.MIDI);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 break;
             case 5:
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour == 12) {
+                    timeList.add(QlockLanguage.MIDI);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.CINQ1);
                 break;
             case 10:
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour == 12) {
+                    timeList.add(QlockLanguage.MIDI);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.DIX1);
                 break;
             case 15:
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour == 12) {
+                    timeList.add(QlockLanguage.MIDI);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.ET);
                 timeList.add(QlockLanguage.QUART);
                 break;
             case 20:
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour == 12) {
+                    timeList.add(QlockLanguage.MIDI);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.VINGT);
                 break;
             case 25:
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour == 12) {
+                    timeList.add(QlockLanguage.MIDI);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.VINGT_CINQ);
                 break;
             case 30:
-                timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour == 12) {
+                    timeList.add(QlockLanguage.MIDI);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.ET1);
                 timeList.add(QlockLanguage.DEMIE);
                 break;
