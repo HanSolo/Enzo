@@ -105,5 +105,10 @@
     -qlock-on        : white;
     -qlock-off       : rgb(0, 129, 179);
 }
+.qlocktwo .stainless-steel {
+    -qlock-background: rgb(156, 156, 156);
+    -qlock-on        : white;
+    -qlock-off       : rgb(106, 106, 106);
+}
 
 

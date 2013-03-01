@@ -129,32 +129,42 @@ public class QlockFrench implements Qlock {
                 break;
             case 35:
                 addHour(timeList, hour);
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour != 11) {
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.VINGT_CINQ);
                 break;
             case 40:
                 addHour(timeList, hour);
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour != 11) {
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.VINGT);
                 break;
             case 45:
                 addHour(timeList, hour);
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour != 11) {
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.LE);
                 timeList.add(QlockLanguage.QUART);
                 break;
             case 50:
                 addHour(timeList, hour);
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour != 11) {
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.DIX1);
                 break;
             case 55:
                 addHour(timeList, hour);
-                timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                if (hour != 11) {
+                    timeList.add(hour == 1 ? QlockLanguage.HEURE : QlockLanguage.HEURES);
+                }
                 timeList.add(QlockLanguage.MOINS);
                 timeList.add(QlockLanguage.CINQ1);
                 break;
@@ -172,6 +182,8 @@ public class QlockFrench implements Qlock {
             timeList.add(QlockLanguage.UNE);
         } else if (HOUR == 5) {
             timeList.add(QlockLanguage.CINQ1);
+        } else if (HOUR == 11) {
+            timeList.add(QlockLanguage.MIDI);
         } else {
             timeList.add(QlockLanguage.valueOf(LOOKUP.get(HOUR + 1)));
         }

@@ -32,14 +32,17 @@ import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.qlocktwo.QlockTwo;
 import eu.hansolo.enzo.qlocktwo.QlockWord;
 import eu.hansolo.enzo.qlocktwo.behavior.QlockTwoBehavior;
+import eu.hansolo.enzo.tools.BrushedMetalPaint;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.LabelBuilder;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.RegionBuilder;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -67,8 +70,10 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
     private int                   oldMinute;
     private int                   timeZoneOffsetHour;
     private int                   timeZoneOffsetMinute;
+    private BrushedMetalPaint     texture;
     private Pane                  pane;
     private Region                background;
+    private ImageView             stainlessBackground;
     private Region                p1;
     private Region                p2;
     private Region                p3;
@@ -96,8 +101,10 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         oldMinute            = 0;
         timeZoneOffsetHour   = 0;
         timeZoneOffsetMinute = 0;
-        pane        = new Pane();
-        lastTimerCall    = System.nanoTime();
+        texture = new BrushedMetalPaint(Color.web("#888888"));
+        stainlessBackground = new ImageView();
+        pane                 = new Pane();
+        lastTimerCall        = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 1_000_000_000l) {
@@ -166,6 +173,9 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         font       = Font.loadFont(getClass().getResourceAsStream("/resources/din.otf"), DEFAULT_WIDTH * 0.048);
         background = RegionBuilder.create().styleClass("background", control.getColor().STYLE_CLASS).build();
 
+        stainlessBackground.setImage(texture.getImage(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        stainlessBackground.setVisible(control.getColor() == QlockTwo.QlockColor.STAINLESS_STEEL);
+
         p1 = RegionBuilder.create().styleClass("dot-off").build();
         p2 = RegionBuilder.create().styleClass("dot-off").build();
         p3 = RegionBuilder.create().styleClass("dot-off").build();
@@ -189,6 +199,7 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         }
 
         pane.getChildren().setAll(background,
+                                  stainlessBackground,
                                   p4,
                                   p3,
                                   p2,
@@ -228,6 +239,7 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
             resize();
         } else if ("COLOR".equals(PROPERTY)) {
             background.getStyleClass().setAll("background", control.getColor().STYLE_CLASS);
+            stainlessBackground.setVisible(control.getColor() == QlockTwo.QlockColor.STAINLESS_STEEL);
             for (int y = 0 ; y < 10 ; y++) {
                 for (int x = 0 ; x < 11 ; x++) {
                     matrix[x][y].getStyleClass().setAll("text-off", control.getColor().STYLE_CLASS);
@@ -353,9 +365,10 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
             height = width;
         }
 
-        background.setPrefSize(1.0 * width, 1.0 * height);
-        background.setTranslateX(0.0 * width);
-        background.setTranslateY(0.0 * height);
+        background.setPrefSize(width, height);
+        if (width != 0 && height != 0) {
+            stainlessBackground.setImage(texture.getImage(width, height));
+        }
 
         p4.setPrefSize(0.012 * width, 0.012 * height);
         p4.setTranslateX(0.044 * width);
