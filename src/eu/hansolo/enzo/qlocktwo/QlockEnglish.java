@@ -53,10 +53,6 @@ public class QlockEnglish implements Qlock {
         {"S", "E", "V", "E", "N", "T", "W", "E", "L", "V", "E"},
         {"T", "E", "N", "S", "E", "O'", "C", "L", "O", "C", "K"}
     };
-    private boolean p1;
-    private boolean p2;
-    private boolean p3;
-    private boolean p4;
     private final ConcurrentHashMap<Integer, String> LOOKUP;
     private List<QlockWord> timeList;
 
@@ -86,35 +82,6 @@ public class QlockEnglish implements Qlock {
         if (minute < 0) {
             minute += 60;
             hour--;
-        }
-
-        if (minute %5 == 0) {
-            p1 = false;
-            p2 = false;
-            p3 = false;
-            p4 = false;
-        }
-
-        if (minute %10 == 1 || minute %10 == 6) {
-            p1 = true;
-        }
-
-        if (minute %10 == 2 || minute %10 == 7) {
-            p1 = true;
-            p2 = true;
-        }
-
-        if (minute %10 == 3 || minute %10 == 8) {
-            p1 = true;
-            p2 = true;
-            p3 = true;
-        }
-
-        if (minute %10 == 4 || minute %10 == 9) {
-            p1 = true;
-            p2 = true;
-            p3 = true;
-            p4 = true;
         }
 
         minute -= minute%5;
@@ -189,22 +156,6 @@ public class QlockEnglish implements Qlock {
         }
 
         return timeList;
-    }
-
-    @Override public boolean isP1() {
-        return p1;
-    }
-
-    @Override public boolean isP2() {
-        return p2;
-    }
-
-    @Override public boolean isP3() {
-        return p3;
-    }
-
-    @Override public boolean isP4() {
-        return p4;
     }
 
     @Override public QlockTwo.Language getLanguage() {

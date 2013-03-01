@@ -42,6 +42,7 @@ public class Demo extends Application {
     private QlockTwo french;
     private QlockTwo spanish;
     private QlockTwo dutch;
+    private QlockTwo german1;
 
 
     @Override public void init() {
@@ -50,6 +51,7 @@ public class Demo extends Application {
         french  = QlockTwoBuilder.create().prefWidth(300).prefHeight(300).language(QlockTwo.Language.FRENCH).color(QlockTwo.QlockColor.CHERRY_CAKE).build();
         spanish = QlockTwoBuilder.create().prefWidth(300).prefHeight(300).language(QlockTwo.Language.SPANISH).color(QlockTwo.QlockColor.FROZEN_BLACKBERRY).build();
         dutch   = QlockTwoBuilder.create().prefWidth(300).prefHeight(300).language(QlockTwo.Language.DUTCH).color(QlockTwo.QlockColor.LIME_JUICE).build();
+        german1 = QlockTwoBuilder.create().secondsMode(true).prefWidth(300).prefHeight(300).language(QlockTwo.Language.GERMAN).color(QlockTwo.QlockColor.DARK_CHOCOLATE).build();
     }
 
     @Override public void start(Stage stage) {
@@ -61,6 +63,7 @@ public class Demo extends Application {
         pane.add(french, 2, 0);
         pane.add(spanish, 0, 1);
         pane.add(dutch, 1, 1);
+        pane.add(german1, 2, 1);
 
         Scene scene = new Scene(pane, Color.DARKGRAY);
 

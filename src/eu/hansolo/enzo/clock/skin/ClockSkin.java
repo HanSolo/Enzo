@@ -150,7 +150,7 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
         timer = new AnimationTimer() {
             @Override public void handle(final long NOW) {
                 if (NOW >= lastTimerCall + INTERVAL) {
-                    // Seconds
+                    // SecondsRight
                     if (control.isDiscreteSecond()) {
                         secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6);
                     } else {

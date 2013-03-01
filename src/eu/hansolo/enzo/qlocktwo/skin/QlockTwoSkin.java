@@ -30,8 +30,8 @@ package eu.hansolo.enzo.qlocktwo.skin;
 
 import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.qlocktwo.QlockTwo;
-import eu.hansolo.enzo.qlocktwo.behavior.QlockTwoBehavior;
 import eu.hansolo.enzo.qlocktwo.QlockWord;
+import eu.hansolo.enzo.qlocktwo.behavior.QlockTwoBehavior;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
@@ -48,37 +48,40 @@ import java.util.Calendar;
 
 
 public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
-    private static final double DEFAULT_WIDTH  = 200;
-    private static final double DEFAULT_HEIGHT = 200;
-    private static final double MINIMUM_WIDTH  = 50;
-    private static final double MINIMUM_HEIGHT = 50;
-    private static final double MAXIMUM_WIDTH  = 1024;
-    private static final double MAXIMUM_HEIGHT = 1024;
-    private static final double ASPECT_RATIO   = 1.0;
-    private QlockTwo       control;
-    private double         size;
-    private double         width;
-    private double         height;
-    private int            hour;
-    private int            minute;
-    private int            oldMinute;
-    private int            timeZoneOffsetHour;
-    private int            timeZoneOffsetMinute;
-    private Pane           pane;
-    private Region         background;
-    private Region         p1;
-    private Region         p2;
-    private Region         p3;
-    private Region         p4;
-    private Label[][]      matrix;
-    private Region         highlight;
-    private Font           font;
-    private double         startX;
-    private double         startY;
-    private double         stepX;
-    private double         stepY;
-    private long           lastTimerCall;
-    private AnimationTimer timer;
+    private static final double   DEFAULT_WIDTH  = 200;
+    private static final double   DEFAULT_HEIGHT = 200;
+    private static final double   MINIMUM_WIDTH  = 50;
+    private static final double   MINIMUM_HEIGHT = 50;
+    private static final double   MAXIMUM_WIDTH  = 1024;
+    private static final double   MAXIMUM_HEIGHT = 1024;
+    private static final double   ASPECT_RATIO   = 1.0;
+    private QlockTwo              control;
+    private double                size;
+    private double                width;
+    private double                height;
+    private int                   hour;
+    private int                   minute;
+    private int                   second;
+    private QlockTwo.SecondsLeft  secondLeft;
+    private QlockTwo.SecondsRight secondRight;
+    private int                   oldMinute;
+    private int                   timeZoneOffsetHour;
+    private int                   timeZoneOffsetMinute;
+    private Pane                  pane;
+    private Region                background;
+    private Region                p1;
+    private Region                p2;
+    private Region                p3;
+    private Region                p4;
+    private Label[][]             matrix;
+    private Region                highlight;
+    private Font                  font;
+    private double                startX;
+    private double                startY;
+    private double                stepX;
+    private double                stepY;
+    private long                  lastTimerCall;
+    private AnimationTimer        timer;
 
 
     // ******************** Constructors **************************************
@@ -87,6 +90,9 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         control              = CONTROL;
         hour                 = 0;
         minute               = 0;
+        second               = 0;
+        secondLeft           = QlockTwo.SecondsLeft.ZERO;
+        secondRight          = QlockTwo.SecondsRight.ZERO;
         oldMinute            = 0;
         timeZoneOffsetHour   = 0;
         timeZoneOffsetMinute = 0;
@@ -95,16 +101,32 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 1_000_000_000l) {
+                    Calendar cal = Calendar.getInstance();
+
                     // Hours
-                    hour = Calendar.getInstance().get(Calendar.HOUR) - timeZoneOffsetHour;// + ((java.util.Calendar.getInstance().get(java.util.Calendar.DST_OFFSET)) / 3600000);
+                    hour = cal.get(Calendar.HOUR) - timeZoneOffsetHour;// + ((java.util.Calendar.getInstance().get(java.util.Calendar.DST_OFFSET)) / 3600000);
 
                     // Minutes
-                    minute = Calendar.getInstance().get(Calendar.MINUTE) + timeZoneOffsetMinute;
+                    minute = cal.get(Calendar.MINUTE) + timeZoneOffsetMinute;
 
                     if (oldMinute < minute || (oldMinute == 59 && minute == 0)) {
                         updateClock();
                         oldMinute = minute;
                     }
+
+                    // SecondsRight
+                    if (control.isSecondsMode()) {
+                        second = cal.get(Calendar.SECOND);
+                        if (second < 10) {
+                            secondLeft  = QlockTwo.SecondsLeft.ZERO;
+                            secondRight = QlockTwo.SecondsRight.values()[second];
+                        } else {
+                            secondLeft  = QlockTwo.SecondsLeft.values()[Integer.parseInt(Integer.toString(second).substring(0, 1))];
+                            secondRight = QlockTwo.SecondsRight.values()[Integer.parseInt(Integer.toString(second).substring(1, 2))];
+                        }
+                        updateClock();
+                    }
+
                     lastTimerCall = now;
                 }
             }
@@ -189,6 +211,7 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
         registerChangeListener(control.prefHeightProperty(), "PREF_SIZE");
         registerChangeListener(control.colorProperty(), "COLOR");
         registerChangeListener(control.languageProperty(), "LANGUAGE");
+        registerChangeListener(control.highlightVisibleProperty(), "HIGHLIGHT");
 
         control.getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {
@@ -205,16 +228,23 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
             resize();
         } else if ("COLOR".equals(PROPERTY)) {
             background.getStyleClass().setAll("background", control.getColor().STYLE_CLASS);
-            p1.getStyleClass().setAll(control.getQlock().isP1() ? "on" : "off", control.getColor().STYLE_CLASS);
-            p2.getStyleClass().setAll(control.getQlock().isP2() ? "on" : "off", control.getColor().STYLE_CLASS);
-            p3.getStyleClass().setAll(control.getQlock().isP3() ? "on" : "off", control.getColor().STYLE_CLASS);
-            p4.getStyleClass().setAll(control.getQlock().isP4() ? "on" : "off", control.getColor().STYLE_CLASS);
+            for (int y = 0 ; y < 10 ; y++) {
+                for (int x = 0 ; x < 11 ; x++) {
+                    matrix[x][y].getStyleClass().setAll("text-off", control.getColor().STYLE_CLASS);
+                }
+            }
+            p1.getStyleClass().setAll("dot-off", control.getColor().STYLE_CLASS);
+            p2.getStyleClass().setAll("dot-off", control.getColor().STYLE_CLASS);
+            p3.getStyleClass().setAll("dot-off", control.getColor().STYLE_CLASS);
+            p4.getStyleClass().setAll("dot-off", control.getColor().STYLE_CLASS);
         } else if ("LANGUAGE".equals(PROPERTY)) {
             for (int y = 0 ; y < 10 ; y++) {
                 for (int x = 0 ; x < 11 ; x++) {
                     matrix[x][y].setText(control.getQlock().getMatrix()[y][x]);
                 }
             }
+        } else if ("HIGHLIGHT".equals(PROPERTY)) {
+            highlight.setVisible(control.isHighlightVisible());
         }
     }
 
@@ -257,21 +287,57 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
 
     // ******************** Update ********************************************
     private void updateClock() {
-        for (int y = 0 ; y < 10 ; y++) {
-            for (int x = 0 ; x < 11 ; x++) {
-                matrix[x][y].getStyleClass().setAll("text-off", control.getColor().STYLE_CLASS);
+        if (control.isSecondsMode()) {
+            for (int y = 0 ; y < 10 ; y++) {
+                for (int x = 0 ; x < 11 ; x++) {
+                    if (secondLeft.dots.containsKey(y) || secondRight.dots.containsKey(y)) {
+                        if (secondLeft.dots.containsKey(y) && secondLeft.dots.get(y).contains(x)) {
+                            matrix[x][y].getStyleClass().setAll("text-on", control.getColor().STYLE_CLASS);
+                        } else if (secondRight.dots.containsKey(y) && secondRight.dots.get(y).contains(x)) {
+                            matrix[x][y].getStyleClass().setAll("text-on", control.getColor().STYLE_CLASS);
+                        } else {
+                            matrix[x][y].getStyleClass().setAll("text-off", control.getColor().STYLE_CLASS);
+                        }
+                    } else {
+                        matrix[x][y].getStyleClass().setAll("text-off", control.getColor().STYLE_CLASS);
+                    }
+                }
             }
-        }
+        } else {
+            for (int y = 0 ; y < 10 ; y++) {
+                for (int x = 0 ; x < 11 ; x++) {
+                    matrix[x][y].getStyleClass().setAll("text-off", control.getColor().STYLE_CLASS);
+                }
+            }
 
-        for (QlockWord word : control.getQlock().getTime(minute, hour)) {
-            for (int col = word.getStart() ; col <= word.getStop() ; col++) {
-                matrix[col][word.getRow()].getStyleClass().setAll("text-on", control.getColor().STYLE_CLASS);
+            for (QlockWord word : control.getQlock().getTime(minute, hour)) {
+                for (int col = word.getStart() ; col <= word.getStop() ; col++) {
+                    matrix[col][word.getRow()].getStyleClass().setAll("text-on", control.getColor().STYLE_CLASS);
+                }
             }
         }
-        p1.getStyleClass().setAll(control.getQlock().isP1() ? "dot-on" : "dot-off", control.getColor().STYLE_CLASS);
-        p2.getStyleClass().setAll(control.getQlock().isP2() ? "dot-on" : "dot-off", control.getColor().STYLE_CLASS);
-        p3.getStyleClass().setAll(control.getQlock().isP3() ? "dot-on" : "dot-off", control.getColor().STYLE_CLASS);
-        p4.getStyleClass().setAll(control.getQlock().isP4() ? "dot-on" : "dot-off", control.getColor().STYLE_CLASS);
+        int min = minute > 60 ? minute - 60 : (minute < 0 ? minute + 60 : minute);
+
+        if (min %5 == 0) {
+            p1.getStyleClass().setAll("dot-off", control.getColor().STYLE_CLASS);
+            p2.getStyleClass().setAll("dot-off", control.getColor().STYLE_CLASS);
+            p3.getStyleClass().setAll("dot-off", control.getColor().STYLE_CLASS);
+            p4.getStyleClass().setAll("dot-off", control.getColor().STYLE_CLASS);
+        } else if (min %10 == 1 || min %10 == 6) {
+            p1.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+        } else if (min %10 == 2 || min %10 == 7) {
+            p1.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+            p2.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+        } else if (min %10 == 3 || min %10 == 8) {
+            p1.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+            p2.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+            p3.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+        } else if (min %10 == 4 || min %10 == 9) {
+            p1.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+            p2.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+            p3.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+            p4.getStyleClass().setAll("dot-on", control.getColor().STYLE_CLASS);
+        }
     }
 
 

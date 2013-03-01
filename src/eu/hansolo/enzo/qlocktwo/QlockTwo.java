@@ -34,7 +34,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -76,9 +78,246 @@ public class QlockTwo extends Control {
             this.STYLE_CLASS = STYLE_CLASS;
         }
     }
+    public enum SecondsLeft {
+        ZERO(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(  1,2,3));
+                put(3, Arrays.asList(0,      4));
+                put(4, Arrays.asList(0,      4));
+                put(5, Arrays.asList(0,      4));
+                put(6, Arrays.asList(0,      4));
+                put(7, Arrays.asList(0,      4));
+                put(8, Arrays.asList(  1,2,3));
+            };
+        }),
+        ONE(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(  2));
+                put(3, Arrays.asList(1,2));
+                put(4, Arrays.asList(  2));
+                put(5, Arrays.asList(  2));
+                put(6, Arrays.asList(  2));
+                put(7, Arrays.asList(  2));
+                put(8, Arrays.asList(1,2,3));
+            };
+        }),
+        TWO(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(  1,2,3));
+                put(3, Arrays.asList(0,      4));
+                put(4, Arrays.asList(        4));
+                put(5, Arrays.asList(      3));
+                put(6, Arrays.asList(    2));
+                put(7, Arrays.asList(  1));
+                put(8, Arrays.asList(0,1,2,3,4));
+            };
+        }),
+        THREE(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(0,1,2,3,4));
+                put(3, Arrays.asList(      3));
+                put(4, Arrays.asList(    2));
+                put(5, Arrays.asList(      3));
+                put(6, Arrays.asList(        4));
+                put(7, Arrays.asList(0,      4));
+                put(8, Arrays.asList(  1,2,3));
+            };
+        }),
+        FOUR(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(      3));
+                put(3, Arrays.asList(    2,3));
+                put(4, Arrays.asList(  1,  3));
+                put(5, Arrays.asList(0,    3));
+                put(6, Arrays.asList(0,1,2,3,4));
+                put(7, Arrays.asList(      3));
+                put(8, Arrays.asList(      3));
+            };
+        }),
+        FIVE(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(0,1,2,3,4));
+                put(3, Arrays.asList(0));
+                put(4, Arrays.asList(0,1,2,3));
+                put(5, Arrays.asList(        4));
+                put(6, Arrays.asList(        4));
+                put(7, Arrays.asList(0,      4));
+                put(8, Arrays.asList(  1,2,3));
+            };
+        }),
+        SIX(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(    2,3));
+                put(3, Arrays.asList(  1));
+                put(4, Arrays.asList(0));
+                put(5, Arrays.asList(0,1,2,3));
+                put(6, Arrays.asList(0,      4));
+                put(7, Arrays.asList(0,      4));
+                put(8, Arrays.asList(  1,2,3));
+            };
+        }),
+        SEVEN(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(0,1,2,3,4));
+                put(3, Arrays.asList(        4));
+                put(4, Arrays.asList(      3));
+                put(5, Arrays.asList(    2));
+                put(6, Arrays.asList(  1));
+                put(7, Arrays.asList(  1));
+                put(8, Arrays.asList(  1));
+            };
+        }),
+        EIGHT(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(  1,2,3));
+                put(3, Arrays.asList(0,      4));
+                put(4, Arrays.asList(0,      4));
+                put(5, Arrays.asList(  1,2,3));
+                put(6, Arrays.asList(0,      4));
+                put(7, Arrays.asList(0,      4));
+                put(8, Arrays.asList(  1,2,3));
+            };
+        }),
+        NINE(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(  1,2,3));
+                put(3, Arrays.asList(0,      4));
+                put(4, Arrays.asList(0,      4));
+                put(5, Arrays.asList(  1,2,3,4));
+                put(6, Arrays.asList(        4));
+                put(7, Arrays.asList(      3));
+                put(8, Arrays.asList(  1,2));
+            };
+        });
+
+        public Map<Integer, List<Integer>> dots;
+
+        private SecondsLeft(final HashMap<Integer, List<Integer>> DOTS) {
+            dots = DOTS;
+        }
+    }
+    public enum SecondsRight {
+        ZERO(new HashMap<Integer,List<Integer>>() {
+            {
+                put(2, Arrays.asList(  7,8,9));
+                put(3, Arrays.asList(6,      10));
+                put(4, Arrays.asList(6,      10));
+                put(5, Arrays.asList(6,      10));
+                put(6, Arrays.asList(6,      10));
+                put(7, Arrays.asList(6,      10));
+                put(8, Arrays.asList(  7,8,9));
+            };
+        }),
+        ONE(new HashMap<Integer,List<Integer>>() {
+            {
+                put(2, Arrays.asList(  8));
+                put(3, Arrays.asList(7,8));
+                put(4, Arrays.asList(  8));
+                put(5, Arrays.asList(  8));
+                put(6, Arrays.asList(  8));
+                put(7, Arrays.asList(  8));
+                put(8, Arrays.asList(7,8,9));
+            };
+        }),
+        TWO(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(  7,8,9));
+                put(3, Arrays.asList(6,      10));
+                put(4, Arrays.asList(        10));
+                put(5, Arrays.asList(      9));
+                put(6, Arrays.asList(    8));
+                put(7, Arrays.asList(  7));
+                put(8, Arrays.asList(6,7,8,9,10));
+            };
+        }),
+        THREE(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(6,7,8,9,10));
+                put(3, Arrays.asList(      9));
+                put(4, Arrays.asList(    8));
+                put(5, Arrays.asList(      9));
+                put(6, Arrays.asList(        10));
+                put(7, Arrays.asList(6,      10));
+                put(8, Arrays.asList(  7,8,9));
+            };
+        }),
+        FOUR(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(      9));
+                put(3, Arrays.asList(    8,9));
+                put(4, Arrays.asList(  7,  9));
+                put(5, Arrays.asList(6,    9));
+                put(6, Arrays.asList(6,7,8,9,10));
+                put(7, Arrays.asList(      9));
+                put(8, Arrays.asList(      9));
+            };
+        }),
+        FIVE(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(6,7,8,9,10));
+                put(3, Arrays.asList(6));
+                put(4, Arrays.asList(6,7,8,9));
+                put(5, Arrays.asList(        10));
+                put(6, Arrays.asList(        10));
+                put(7, Arrays.asList(6,      10));
+                put(8, Arrays.asList(  7,8,9));
+            };
+        }),
+        SIX(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(    8,9));
+                put(3, Arrays.asList(  7));
+                put(4, Arrays.asList(6));
+                put(5, Arrays.asList(6,7,8,9));
+                put(6, Arrays.asList(6,      10));
+                put(7, Arrays.asList(6,      10));
+                put(8, Arrays.asList(  7,8,9));
+            };
+        }),
+        SEVEN(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(6,7,8,9,10));
+                put(3, Arrays.asList(        10));
+                put(4, Arrays.asList(      9));
+                put(5, Arrays.asList(    8));
+                put(6, Arrays.asList(  7));
+                put(7, Arrays.asList(  7));
+                put(8, Arrays.asList(  7));
+            };
+        }),
+        EIGHT(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(  7,8,9));
+                put(3, Arrays.asList(6,      10));
+                put(4, Arrays.asList(6,      10));
+                put(5, Arrays.asList(  7,8,9));
+                put(6, Arrays.asList(6,      10));
+                put(7, Arrays.asList(6,      10));
+                put(8, Arrays.asList(  7,8,9));
+            };
+        }),
+        NINE(new HashMap<Integer, List<Integer>>() {
+            {
+                put(2, Arrays.asList(  7,8,9));
+                put(3, Arrays.asList(6,      10));
+                put(4, Arrays.asList(6,      10));
+                put(5, Arrays.asList(  7,8,9,10));
+                put(6, Arrays.asList(        10));
+                put(7, Arrays.asList(      9));
+                put(8, Arrays.asList(  7,8));
+            };
+        });
+
+        public Map<Integer, List<Integer>> dots;
+
+        private SecondsRight(final HashMap<Integer, List<Integer>> DOTS) {
+            dots = DOTS;
+        }
+    }
     private ObjectProperty<QlockColor> color;
     private ObjectProperty<Language>   language;
     private Qlock                      qlock;
+    private BooleanProperty            secondsMode;
     private BooleanProperty            highlightVisible;
 
 
@@ -88,6 +327,7 @@ public class QlockTwo extends Control {
         color            = new SimpleObjectProperty<>(QlockColor.BLACK_ICE_TEA);
         qlock            = new QlockGerman();
         language         = new SimpleObjectProperty<>(qlock.getLanguage());
+        secondsMode      = new SimpleBooleanProperty(false);
         highlightVisible = new SimpleBooleanProperty(true);
     }
 
@@ -138,6 +378,16 @@ public class QlockTwo extends Control {
         return language;
     }
 
+    public final boolean isSecondsMode() {
+        return secondsMode.get();
+    }
+    public final void setSecondsMode(final boolean SECONDS_MODE) {
+        secondsMode.set(SECONDS_MODE);
+    }
+    public final BooleanProperty secondsModeProperty() {
+        return secondsMode;
+    }
+
     public final boolean isHighlightVisible() {
         return highlightVisible.get();
     }
@@ -154,4 +404,3 @@ public class QlockTwo extends Control {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
     }
 }
-

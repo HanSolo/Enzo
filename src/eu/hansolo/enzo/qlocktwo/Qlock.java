@@ -42,13 +42,5 @@ public interface Qlock {
 
     public List<QlockWord> getTime(final int MINUTE, final int HOUR);
 
-    public boolean isP1();
-
-    public boolean isP2();
-
-    public boolean isP3();
-
-    public boolean isP4();
-
     public QlockTwo.Language getLanguage();
 }

@@ -63,6 +63,11 @@ public class QlockTwoBuilder<B extends QlockTwoBuilder<B>> extends ControlBuilde
         return this;
     }
 
+    public final QlockTwoBuilder secondsMode(final boolean SECONDS_MODE) {
+        properties.put("secondsMode", new SimpleBooleanProperty(SECONDS_MODE));
+        return this;
+    }
+
     public final QlockTwoBuilder highlightVisible(final boolean HIGHLIGHT_VISIBLE) {
         properties.put("highlightVisible", new SimpleBooleanProperty(HIGHLIGHT_VISIBLE));
         return this;
@@ -95,6 +100,8 @@ public class QlockTwoBuilder<B extends QlockTwoBuilder<B>> extends ControlBuilde
                 CONTROL.setColor(((ObjectProperty<QlockTwo.QlockColor>) properties.get(key)).get());
             } else if ("language".equals(key)) {
                 CONTROL.setLanguage(((ObjectProperty<QlockTwo.Language>) properties.get(key)).get());
+            } else if ("secondsMode".equals(key)) {
+                CONTROL.setSecondsMode(((BooleanProperty) properties.get(key)).get());
             } else if ("highlightVisible".equals(key)) {
                 CONTROL.setHighlightVisible(((BooleanProperty) properties.get(key)).get());
             } else if("prefWidth".equals(key)) {
