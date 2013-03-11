@@ -499,7 +499,7 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
                 break;
             case STANDARD:
             default:
-                lcdValueFont = Font.font("Verdana", FontWeight.NORMAL, (0.5 * height));
+                lcdValueFont = Font.font("Arial", FontWeight.NORMAL, (0.5 * height));
                 break;
         }
         lcdBackgroundText.setFont(lcdValueFont);
@@ -507,7 +507,7 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
         lcdText.setFont(lcdValueFont);
         lcdUnitFont  = Font.font(control.getUnitFont(), FontWeight.NORMAL, (0.26 * height));
         lcdTitleFont = Font.font(control.getTitleFont(), FontWeight.BOLD, (0.1666666667 * height));
-        lcdSmallFont = Font.font("Verdana", FontWeight.NORMAL, (0.1666666667 * height));
+        lcdSmallFont = Font.font("Arial", FontWeight.NORMAL, (0.1666666667 * height));
     }
 
     private void updateTrend() {
@@ -686,7 +686,7 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
         height      = control.getHeight();
         if (control.isKeepAspect()) {
             if (aspectRatio * width > height) {
-                width  = 1 / (aspectRatio / height);
+                width = 1 / (aspectRatio / height);
             } else if (1 / (aspectRatio / height) > width) {
                 height = aspectRatio * width;
             }

@@ -118,7 +118,7 @@ public class QlockGerman implements Qlock {
             case 25:
                 timeList.add(QlockLanguage.FÜNF1);
                 timeList.add(QlockLanguage.VOR);
-                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.HALB);
+                timeList.add(hour == 9 ? QlockLanguage.ZEHN1 : QlockLanguage.HALB);
                 addHour(timeList, hour);
                 break;
             case 30:

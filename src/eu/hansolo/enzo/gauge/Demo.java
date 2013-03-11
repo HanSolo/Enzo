@@ -71,9 +71,11 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
+        control.setStyle("-fx-base: white;");
         //control.setStyle("-fx-background: rgb(220, 220, 220);");
-        //control.setStyle("-fx-gauge-needle: yellow;");
-        //control.setValue(45);
+        control.setNeedleType(Radial.NeedleType.SCIENTIFIC);
+        control.setStyle("-fx-gauge-needle: yellow;");
+        control.setValue(45);
 
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes);

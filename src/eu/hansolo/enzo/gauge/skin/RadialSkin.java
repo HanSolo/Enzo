@@ -41,6 +41,7 @@ import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadowBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.RegionBuilder;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -102,10 +103,9 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
 
     private void initGraphics() {
         background = new Region();
-        background.getStyleClass().setAll("background");
+        background.getStyleClass().setAll("radial", "background");
 
-        ticks = new Region();
-        ticks.getStyleClass().setAll("ticks");
+        ticks = RegionBuilder.create().styleClass("ticks").build();
 
         needle = new Region();
         changeNeedle();

@@ -31,6 +31,7 @@
  *****************************************************************************/
 .radial {
     -fx-skin             : "eu.hansolo.enzo.gauge.skin.RadialSkin";
+    -fx-background       : #515151;
     -fx-gauge-outer-frame: ladder(-fx-base, derive(-fx-base,30%) 40%, derive(-fx-base,-30%) 41%);
     -fx-gauge-main-frame : ladder(-fx-base, derive(-fx-base,40%) 40%, derive(-fx-base,-40%) 41%);
     -fx-gauge-inner-frame: ladder(-fx-base, derive(-fx-base,50%) 40%, derive(-fx-base,-50%) 41%);
