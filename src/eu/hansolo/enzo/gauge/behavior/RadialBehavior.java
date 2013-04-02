@@ -42,6 +42,7 @@ import eu.hansolo.enzo.gauge.Radial;
 
 public class RadialBehavior extends BehaviorBase<Radial> {
 
+
     // ******************** Constructors **************************************
     public RadialBehavior(final Radial CONTROL) {
         super(CONTROL);
