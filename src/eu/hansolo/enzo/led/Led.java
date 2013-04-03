@@ -67,13 +67,19 @@ public class Led extends Control {
     public static final String STYLE_CLASS_PURPLE  = "led-purple";
     public static final String STYLE_CLASS_GRAY    = "led-gray";
 
+    private Color                 defaultColor = Color.RED;
     private ObjectProperty<Color> color;
+    private Type                  defaultType = Type.ROUND;
     private ObjectProperty<Type>  type;
+    private boolean               defaultOn = false;
     private BooleanProperty       on;
+    private boolean               defaultBlink = false;
     private BooleanProperty       blink;
+    private boolean               defaultFrameVisible = true;
     private BooleanProperty       frameVisible;
     private boolean               toggle;
     private long                  lastTimerCall;
+    private long                  defaultInterval = 500_000_000l;
     private LongProperty          interval;
     private AnimationTimer        timer;
 
@@ -81,12 +87,6 @@ public class Led extends Control {
     // ******************** Constructors **************************************
     public Led() {
         getStyleClass().add("led");
-        color         = new SimpleObjectProperty<>(Color.RED);
-        type          = new SimpleObjectProperty<>(Type.ROUND);
-        on            = new SimpleBooleanProperty(false);
-        blink         = new SimpleBooleanProperty(false);
-        frameVisible  = new SimpleBooleanProperty(true);
-        interval      = new SimpleLongProperty(500_000_000);
         toggle        = false;
         lastTimerCall = System.nanoTime();
         timer         = new AnimationTimer() {
@@ -102,41 +102,67 @@ public class Led extends Control {
 
 
     // ******************** Methods *******************************************
-    public final Color getColor() {
-        return color.get();
+    public Color getColor() {
+        return (null == color) ? defaultColor : color.get();
     }
-    public final void setColor(final Color COLOR) {
-        color.set(COLOR);
+    public void setColor(final Color COLOR) {
+        if (null == color) {
+            defaultColor = COLOR;
+        } else {
+            color.set(COLOR);
+        }
     }
-    public final ObjectProperty<Color> colorProperty() {
+    public ObjectProperty colorProperty() {
+        if (null == color) {
+            color = new SimpleObjectProperty<>(this, "color", defaultColor);
+        }
         return color;
     }
 
     public final Type getType() {
-        return type.get();
+        return (null == type) ? defaultType : type.get();
     }
     public final void setType(final Type TYPE) {
-        type.set(TYPE);
+        if (null == type) {
+            defaultType = TYPE;
+        } else {
+            type.set(TYPE);
+        }
     }
     public final ObjectProperty<Type> typeProperty() {
+        if (null == type) {
+            type = new SimpleObjectProperty<>(this, "type", defaultType);
+        }
         return type;
     }
 
     public final boolean isOn() {
-        return on.get();
+        return (null == on) ? defaultOn : on.get();
     }
     public final void setOn(final boolean ON) {
-        on.set(ON);
+        if (null == on) {
+            defaultOn = ON;
+        } else {
+            on.set(ON);
+        }
     }
     public final BooleanProperty onProperty() {
+        if (null == on) {
+            on = new SimpleBooleanProperty(this, "on", defaultOn);
+        }
         return on;
     }
 
     public final boolean isBlinking() {
-        return blink.get();
+        return (null == blink) ? defaultBlink : blink.get();
     }
     public final void setBlink(final boolean BLINK) {
-        blink.set(BLINK);
+        defaultBlink = BLINK;
+        if (null == blink) {
+            defaultBlink = BLINK;
+        } else {
+            blink.set(BLINK);
+        }
         if (BLINK) {
             timer.start();
         } else {
@@ -145,26 +171,43 @@ public class Led extends Control {
         }
     }
     public final BooleanProperty blinkProperty() {
+        if (null == blink) {
+            blink = new SimpleBooleanProperty(this, "blink", defaultBlink);
+        }
         return blink;
     }
 
     public final long getInterval() {
-        return interval.get();
+        return (null == interval) ? defaultInterval : interval.get();
     }
     public final void setInterval(final long INTERVAL) {
-        interval.set(clamp(50_000_000l, 5_000_000_000l, INTERVAL));
+        if (null == interval) {
+            defaultInterval = clamp(50_000_000l, 5_000_000_000l, INTERVAL);
+        } else {
+            interval.set(clamp(50_000_000l, 5_000_000_000l, INTERVAL));
+        }
     }
     public final LongProperty intervalProperty() {
+        if (null == interval) {
+            interval = new SimpleLongProperty(this, "interval", defaultInterval);
+        }
         return interval;
     }
 
     public final boolean isFrameVisible() {
-        return frameVisible.get();
+        return (null == frameVisible) ? defaultFrameVisible : frameVisible.get();
     }
     public final void setFrameVisible(final boolean FRAME_VISIBLE) {
-        frameVisible.set(FRAME_VISIBLE);
+        if (null == frameVisible) {
+            defaultFrameVisible = FRAME_VISIBLE;
+        } else {
+            frameVisible.set(FRAME_VISIBLE);
+        }
     }
     public final BooleanProperty frameVisibleProperty() {
+        if (null == frameVisible) {
+            frameVisible = new SimpleBooleanProperty(this, "frameVisible", defaultFrameVisible);
+        }
         return frameVisible;
     }
 

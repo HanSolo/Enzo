@@ -292,7 +292,6 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
     private void registerListeners() {
         registerChangeListener(control.widthProperty(), "RESIZE");
         registerChangeListener(control.heightProperty(), "RESIZE");
-        registerChangeListener(control.keepAspectProperty(), "RESIZE");
         registerChangeListener(control.titleProperty(), "UPDATE");
         registerChangeListener(control.unitProperty(), "UPDATE");
         registerChangeListener(control.lowerRightTextProperty(), "UPDATE");
@@ -316,7 +315,6 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
         registerChangeListener(control.animationDurationProperty(), "ANIMATION_DURATION");
         registerChangeListener(control.thresholdExceededProperty(), "THRESHOLD_EXCEEDED");
         registerChangeListener(control.trendProperty(), "TREND");
-        registerChangeListener(control.thresholdExceededProperty(), "THRESHOLD_EXCEEDED");
         registerChangeListener(control.valueVisibleProperty(), "VALUE_VISIBLE");
         registerChangeListener(control.unitVisibleProperty(), "UNIT_VISIBLE");
         registerChangeListener(control.lowerCenterTextVisibleProperty(), "LOWER_CENTER_VISIBLE");

@@ -48,12 +48,13 @@ import javafx.stage.Stage;
 
 public class Demo extends Application {
     private static int noOfNodes = 0;
-    private Radial     control;
+    private Gauge      control;
 
     @Override public void init() {
-        control = RadialBuilder.create()
-                               .needleType(Radial.NeedleType.STANDARD)
+        control = GaugeBuilder.create()
+                               .needleType(Gauge.NeedleType.STANDARD)
                                .title("Title")
+                               .unit("Unit")
                                .animated(true)
                                .build();
     }
@@ -63,22 +64,22 @@ public class Demo extends Application {
         pane.setPadding(new Insets(5, 5, 5, 5));
         pane.getChildren().add(control);
 
-        final Scene scene = new Scene(pane, 400, 400, Color.DARKGRAY);
+        final Scene scene = new Scene(pane, 400, 400, Color.BLACK);
 
         //scene.setFullScreen(true);
 
-        stage.setTitle("Title");
+        stage.setTitle("test");
         stage.setScene(scene);
         stage.show();
 
-        control.setStyle("-fx-base: white;");
-        //control.setStyle("-fx-background: rgb(220, 220, 220);");
-        control.setNeedleType(Radial.NeedleType.SCIENTIFIC);
-        control.setStyle("-fx-gauge-needle: yellow;");
-        control.setValue(45);
-
+        //control.setStyle("-base: darkgray;");
+        //control.setStyle("-needle: blue;");
+        //control.setStyle("-background: red;");
+        //control.getGaugeModel().setValue(45);
+        control.getGaugeModel().setStartAngle(300);
+        control.getGaugeModel().setAngleRange(300);
         calcNoOfNodes(scene.getRoot());
-        System.out.println(noOfNodes);
+        System.out.println(noOfNodes + " Nodes in SceneGraph");
 
     }
 

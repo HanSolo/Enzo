@@ -32,6 +32,8 @@ import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -122,55 +124,99 @@ public class Lcd extends Control {
 
     private boolean                      initialized;
     private boolean                      firstTime;
-    private boolean                      _keepAspect;
-    private BooleanProperty              keepAspect;
+    private boolean                      keepAspect;
+    private boolean                      defaultTextMode = false;
     private BooleanProperty              textMode;
+    private String                       defaultText = "";
     private StringProperty               text;
     private DoubleProperty               value;
     private DoubleProperty               currentValue;
-    private DoubleProperty               minValue;
-    private DoubleProperty               maxValue;
     private DoubleProperty               formerValue;
+    private double                       defaultMinValue = 0.0;
+    private DoubleProperty               minValue;
+    private double                       defaultMaxValue = 100.0;
+    private DoubleProperty               maxValue;
+    private boolean                      defaultValueAnimationEnabled = true;
     private BooleanProperty              valueAnimationEnabled;
+    private double                       defaultAnimationDuration = 800;
     private DoubleProperty               animationDuration;
+    private double                       defaultMinMeasuredValue = 100;
     private DoubleProperty               minMeasuredValue;
+    private double                       defaultMaxMeasuredValue = 0;
     private DoubleProperty               maxMeasuredValue;
+    private int                          defaultMinMeasuredValueDecimals = 2;
     private IntegerProperty              minMeasuredValueDecimals;
+    private int                          defaultMaxMeasuredValueDecimals = 2;
     private IntegerProperty              maxMeasuredValueDecimals;
+    private double                       defaultThreshold = 50.0;
     private DoubleProperty               threshold;
+    private boolean                      defaultThresholdBehaviorInverted = false;
     private BooleanProperty              thresholdBehaviorInverted;
+    private boolean                      defaultThresholdExceeded = false;
     private BooleanProperty              thresholdExceeded;
+    private String                       defaultTitle = "";
     private StringProperty               title;
+    private String                       defaultUnit = "";
     private StringProperty               unit;
+    private String                       defaultLowerCenterText = "";
     private StringProperty               lowerCenterText;
+    private boolean                      defaultLowerCenterCenterTextVisible = false;
     private BooleanProperty              lowerCenterTextVisible;
+    private String                       defaultLowerRightText = "";
     private StringProperty               lowerRightText;
+    private boolean                      defaultLowerRightTextVisible = false;
     private BooleanProperty              lowerRightTextVisible;
+    private String                       defaultUpperLeftText = "";
     private StringProperty               upperLeftText;
+    private boolean                      defaultUpperLeftTextVisible = false;
     private BooleanProperty              upperLeftTextVisible;
+    private String                       defaultUpperRightText = "";
     private StringProperty               upperRightText;
+    private boolean                      defaultUpperRightTextVisible = false;
     private BooleanProperty              upperRightTextVisible;
+    private NumberSystem                 defaultNumberSystem = NumberSystem.DECIMAL;
     private ObjectProperty<NumberSystem> numberSystem;
+    private Trend                        defaultTrend = Trend.UNKNOWN;
     private ObjectProperty<Trend>        trend;
+    private double                       defaultBatteryCharge = 0.0;
     private DoubleProperty               batteryCharge;
+    private boolean                      defaultValueVisible = true;
     private BooleanProperty              valueVisible;
+    private boolean                      defaultMinMeasuredValueVisible = false;
     private BooleanProperty              minMeasuredValueVisible;
+    private boolean                      defaultMaxMeasuredValueVisible = false;
     private BooleanProperty              maxMeasuredValueVisible;
+    private boolean                      defaultFormerValueVisible = false;
     private BooleanProperty              formerValueVisible;
+    private boolean                      defaultThresholdVisible = false;
     private BooleanProperty              thresholdVisible;
+    private String                       defaultUnitFont = "Verdana";
     private StringProperty               unitFont;
+    private String                       defaultTitleFont = "Verdana";
     private StringProperty               titleFont;
+    private LcdFont                      defaultValueFont = LcdFont.LCD;
     private ObjectProperty<LcdFont>      valueFont;
+    private int                          defaultDecimals = 0;
     private IntegerProperty              decimals;
+    private boolean                      defaultNumberSystemVisible = false;
     private BooleanProperty              numberSystemVisible;
+    private boolean                      defaultBlinking = false;
     private BooleanProperty              blinking;
+    private boolean                      defaultBackgroundVisible = true;
     private BooleanProperty              backgroundVisible;
+    private boolean                      defaultCrystalOverlayVisible = false;
     private BooleanProperty              crystalOverlayVisible;
+    private boolean                      defaultForegroundShadowVisible = false;
     private BooleanProperty              foregroundShadowVisible;
+    private boolean                      defaultTitleVisible = true;
     private BooleanProperty              titleVisible;
+    private boolean                      defaultUnitVisible = true;
     private BooleanProperty              unitVisible;
+    private boolean                      defaultTrendVisible = false;
     private BooleanProperty              trendVisible;
+    private boolean                      defaultBatteryVisible = false;
     private BooleanProperty              batteryVisible;
+    private boolean                      defaultAlarmVisible = false;
     private BooleanProperty              alarmVisible;
     private Transition                   toValueAnimation;
     private boolean                      toggleValue;
@@ -184,61 +230,12 @@ public class Lcd extends Control {
     // ******************** Constructors **************************************
     public Lcd() {
         getStyleClass().add("lcd");
-        initialized               = false;
-        firstTime                 = true;
-        _keepAspect               = true;
-        textMode                  = new SimpleBooleanProperty(false);
-        text                      = new SimpleStringProperty("");
         value                     = new SimpleDoubleProperty(0);
         currentValue              = new SimpleDoubleProperty(0);
-        minValue                  = new SimpleDoubleProperty(0);
-        maxValue                  = new SimpleDoubleProperty(100);
         formerValue               = new SimpleDoubleProperty(0);
-        valueAnimationEnabled     = new SimpleBooleanProperty(true);
-        animationDuration         = new SimpleDoubleProperty(800);
-        minMeasuredValue          = new SimpleDoubleProperty(100);
-        maxMeasuredValue          = new SimpleDoubleProperty(0);
-        minMeasuredValueDecimals  = new SimpleIntegerProperty(2);
-        maxMeasuredValueDecimals  = new SimpleIntegerProperty(2);
-        threshold                 = new SimpleDoubleProperty(50);
-        thresholdBehaviorInverted = new SimpleBooleanProperty(false);
-        thresholdExceeded         = new SimpleBooleanProperty(false);
-        title                     = new SimpleStringProperty("");
-        unit                      = new SimpleStringProperty("");
-        lowerCenterText           = new SimpleStringProperty("");
-        lowerCenterTextVisible    = new SimpleBooleanProperty(false);
-        lowerRightText            = new SimpleStringProperty("");
-        lowerRightTextVisible     = new SimpleBooleanProperty(false);
-        upperLeftText             = new SimpleStringProperty("");
-        upperLeftTextVisible      = new SimpleBooleanProperty(false);
-        upperRightText            = new SimpleStringProperty("");
-        upperRightTextVisible     = new SimpleBooleanProperty(false);
-        numberSystem              = new SimpleObjectProperty<>(NumberSystem.DECIMAL);
-        trend                     = new SimpleObjectProperty<>(Trend.UNKNOWN);
-        batteryCharge             = new SimpleDoubleProperty(0);
-        valueVisible              = new SimpleBooleanProperty(true);
-        minMeasuredValueVisible   = new SimpleBooleanProperty(false);
-        maxMeasuredValueVisible   = new SimpleBooleanProperty(false);
-        formerValueVisible        = new SimpleBooleanProperty(false);
-        thresholdVisible          = new SimpleBooleanProperty(false);
-        backgroundVisible         = new SimpleBooleanProperty(true);
-        crystalOverlayVisible     = new SimpleBooleanProperty(false);
-        foregroundShadowVisible   = new SimpleBooleanProperty(false);
-        titleFont                 = new SimpleStringProperty("Verdana");
-        unitFont                  = new SimpleStringProperty("Verdana");
-        unitVisible               = new SimpleBooleanProperty(false);
-        unitFont                  = new SimpleStringProperty("Verdana");
-        titleFont                 = new SimpleStringProperty("Verdana");
-        valueFont                 = new SimpleObjectProperty<>(LcdFont.LCD);
-        decimals                  = new SimpleIntegerProperty(0);
-        numberSystemVisible       = new SimpleBooleanProperty(false);
-        blinking                  = new SimpleBooleanProperty(false);
-        backgroundVisible         = new SimpleBooleanProperty(true);
-        titleVisible              = new SimpleBooleanProperty(true);
-        unitVisible               = new SimpleBooleanProperty(true);
-        trendVisible              = new SimpleBooleanProperty(false);
-        batteryVisible            = new SimpleBooleanProperty(false);
-        alarmVisible              = new SimpleBooleanProperty(false);
+        initialized               = false;
+        firstTime                 = true;
+        keepAspect                = true;
         toggleValue               = false;
         toggleThreshold           = false;
         interval                  = 500_000_000l;
@@ -248,7 +245,7 @@ public class Lcd extends Control {
             @Override public void handle(final long NOW) {
                 if (isBlinking() && NOW > lastBlinkTimerCall + interval) {
                     toggleValue ^= true;
-                    valueVisible.set(toggleValue);
+                    setValueVisible(toggleValue);
                     lastBlinkTimerCall = NOW;
                 }
                 if (isThresholdExceeded() && NOW > lastThresholdTimerCall + interval) {
@@ -295,8 +292,8 @@ public class Lcd extends Control {
                 }
             }
         });
-        currentValue.addListener(new ChangeListener<Number>() {
-            @Override public void changed(final ObservableValue<? extends Number> ov, final Number oldValue, final Number newValue) {
+        currentValueProperty().addListener(new InvalidationListener() {
+            @Override public void invalidated(Observable observable) {
                 if (Double.compare(currentValue.get(), getMinMeasuredValue()) < 0 && !firstTime) {
                     setMinMeasuredValue(currentValue.get());
                 }
@@ -311,20 +308,10 @@ public class Lcd extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
-        return keepAspect != null ? keepAspect.get() : _keepAspect;
+        return keepAspect;
     }
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
-        if (keepAspect != null) {
-            keepAspect.set(KEEP_ASPECT);
-        } else {
-            _keepAspect = KEEP_ASPECT;
-        }
-    }
-    public final BooleanProperty keepAspectProperty() {
-        if (keepAspect == null) {
-            keepAspect = new SimpleBooleanProperty(this, "keepAspect", _keepAspect);
-        }
-        return keepAspect;
+        keepAspect = KEEP_ASPECT;
     }
 
     @Override public boolean isResizable() {
@@ -332,22 +319,36 @@ public class Lcd extends Control {
     }
 
     public final boolean isTextMode() {
-        return textMode.get();
+        return null == textMode ? defaultTextMode : textMode.get();
     }
     public final void setTextMode(final boolean TEXT_MODE) {
-        textMode.set(TEXT_MODE);
+        if (null == textMode) {
+            defaultTextMode = TEXT_MODE;
+        } else {
+            textMode.set(TEXT_MODE);
+        }
     }
     public final BooleanProperty textModeProperty() {
+        if (null == textMode) {
+            textMode = new SimpleBooleanProperty(this, "textMode", defaultTextMode);
+        }
         return textMode;
     }
 
     public final String getText() {
-        return text.get();
+        return null == text ? defaultText : text.get();
     }
     public final void setText(final String TEXT) {
-        text.set(TEXT);
+        if (null == text) {
+            defaultText = TEXT;
+        } else {
+            text.set(TEXT);
+        }
     }
     public final StringProperty textProperty() {
+        if (null == text) {
+            text = new SimpleStringProperty(this, "text", defaultText);
+        }
         return text;
     }
 
@@ -377,56 +378,99 @@ public class Lcd extends Control {
     }
 
     public final boolean isValueAnimationEnabled() {
-        return valueAnimationEnabled.get();
+        return null == valueAnimationEnabled ? defaultValueAnimationEnabled : valueAnimationEnabled.get();
     }
     public final void setValueAnimationEnabled(final boolean VALUE_ANIMATION_ENABLED) {
-        valueAnimationEnabled.set(VALUE_ANIMATION_ENABLED);
+        if (null == valueAnimationEnabled) {
+            defaultValueAnimationEnabled = VALUE_ANIMATION_ENABLED;
+        } else {
+            valueAnimationEnabled.set(VALUE_ANIMATION_ENABLED);
+        }
     }
     public final BooleanProperty valueAnimationEnabledProperty() {
+        if (null == valueAnimationEnabled) {
+            valueAnimationEnabled = new SimpleBooleanProperty(this, "valueAnimationEnabled", defaultValueAnimationEnabled);
+        }
         return valueAnimationEnabled;
     }
 
     public final double getAnimationDuration() {
-        return animationDuration.get();
+        return null == animationDuration ? defaultAnimationDuration : animationDuration.get();
     }
     public final void setAnimationDuration(final double ANIMATION_DURATION) {
-        animationDuration.set(ANIMATION_DURATION);
+        if (null == animationDuration) {
+            defaultAnimationDuration = ANIMATION_DURATION;
+        } else {
+            animationDuration.set(ANIMATION_DURATION);
+        }
     }
     public final DoubleProperty animationDurationProperty() {
+        if (null == animationDuration) {
+            animationDuration = new SimpleDoubleProperty(this, "animationDuration", defaultAnimationDuration);
+        }
         return animationDuration;
     }
 
     public final double getMinValue() {
-        return minValue.get();
+        return null == minValue ? defaultMinValue : minValue.get();
     }
     public final void setMinValue(final double MIN_VALUE) {
-        minValue.set(MIN_VALUE);
+        if (null == minValue) {
+            defaultMinValue = MIN_VALUE;
+        } else {
+            minValue.set(MIN_VALUE);
+        }
     }
     public final DoubleProperty minValueProperty() {
+        if (null == minValue) {
+            minValue = new SimpleDoubleProperty(this, "minValue", defaultMinValue);
+        }
         return minValue;
     }
 
     public final double getMaxValue() {
-        return maxValue.get();
+        return null == maxValue ? defaultMaxValue : maxValue.get();
     }
     public final void setMaxValue(final double MAX_VALUE) {
-        maxValue.set(MAX_VALUE);
+        if (null == maxValue) {
+            defaultMaxValue = MAX_VALUE;
+        } else {
+            maxValue.set(MAX_VALUE);
+        }
     }
     public final DoubleProperty maxValueProperty() {
+        if (null == maxValue) {
+            maxValue = new SimpleDoubleProperty(this, "maxValue", defaultMaxValue);
+        }
         return maxValue;
     }
 
     public final double getRange() {
-        return maxValue.subtract(minValue).get();
+        if (null == maxValue && null != minValue) {
+            return defaultMaxValue - minValue.get();
+        } else if (null != maxValue && null == minValue) {
+            return maxValue.get() - defaultMinValue;
+        } else if (null == maxValue && null == minValue) {
+            return defaultMaxValue - defaultMinValue;
+        } else {
+            return maxValue.subtract(minValue).get();
+        }
     }
 
     public final double getMinMeasuredValue() {
-        return minMeasuredValue.get();
+        return null == minMeasuredValue ? defaultMinMeasuredValue : minMeasuredValue.get();
     }
     public final void setMinMeasuredValue(final double MIN_MEASURED_VALUE) {
-        minMeasuredValue.set(MIN_MEASURED_VALUE);
+        if (null == minMeasuredValue) {
+            defaultMinMeasuredValue = MIN_MEASURED_VALUE;
+        } else {
+            minMeasuredValue.set(MIN_MEASURED_VALUE);
+        }
     }
     public final DoubleProperty minMeasuredValueProperty() {
+        if (null == minMeasuredValue) {
+            minMeasuredValue = new SimpleDoubleProperty(this, "minMeasuredValue", defaultMinMeasuredValue);
+        }
         return minMeasuredValue;
     }
     public final void resetMinMeasuredValue() {
@@ -434,12 +478,19 @@ public class Lcd extends Control {
     }
 
     public final double getMaxMeasuredValue() {
-        return maxMeasuredValue.get();
+        return null == maxMeasuredValue ? defaultMinMeasuredValue : maxMeasuredValue.get();
     }
     public final void setMaxMeasuredValue(final double MAX_MEASURED_VALUE) {
-        maxMeasuredValue.set(MAX_MEASURED_VALUE);
+        if (null == maxMeasuredValue) {
+            defaultMaxMeasuredValue = MAX_MEASURED_VALUE;
+        } else {
+            maxMeasuredValue.set(MAX_MEASURED_VALUE);
+        }
     }
     public final DoubleProperty maxMeasuredValueProperty() {
+        if (null == maxMeasuredValue) {
+            maxMeasuredValue = new SimpleDoubleProperty(this, "maxMeasuredValue", defaultMaxMeasuredValue);
+        }
         return maxMeasuredValue;
     }
     public final void resetMaxMeasuredValue() {
@@ -452,381 +503,641 @@ public class Lcd extends Control {
     }
 
     public final double getThreshold() {
-        return threshold.get();
+        return null == threshold ? defaultThreshold : threshold.get();
     }
     public final void setThreshold(final double THRESHOLD) {
-        threshold.set(clamp(getMinValue(), getMaxValue(), THRESHOLD));
+        if (null == threshold) {
+            defaultThreshold = clamp(getMinValue(), getMaxValue(), THRESHOLD);
+        } else {
+            threshold.set(clamp(getMinValue(), getMaxValue(), THRESHOLD));
+        }
         validateThreshold();
     }
     public final ReadOnlyDoubleProperty thresholdProperty() {
+        if (null == threshold) {
+            threshold = new SimpleDoubleProperty(this, "threshold", defaultThreshold);
+        }
         return threshold;
     }
 
     public final boolean isThresholdBehaviorInverted() {
-        return thresholdBehaviorInverted.get();
+        return null == thresholdBehaviorInverted ? defaultThresholdBehaviorInverted : thresholdBehaviorInverted.get();
     }
     public final void setThresholdBehaviorInverted(final boolean THRESHOLD_BEHAVIOR_INVERTED) {
-        thresholdBehaviorInverted.set(THRESHOLD_BEHAVIOR_INVERTED);        
+        if (null == thresholdBehaviorInverted) {
+            defaultThresholdBehaviorInverted = THRESHOLD_BEHAVIOR_INVERTED;
+        } else {
+            thresholdBehaviorInverted.set(THRESHOLD_BEHAVIOR_INVERTED);
+        }
     }
     public final BooleanProperty thresholdBehaviorInvertedProperty() {
+        if (null == thresholdBehaviorInverted) {
+            thresholdBehaviorInverted = new SimpleBooleanProperty(this, "thresholdBehaviorInverted", defaultThresholdBehaviorInverted);
+        }
         return thresholdBehaviorInverted;
     }
 
     public final boolean isThresholdExceeded() {
-        return thresholdExceeded.get();
+        return null == thresholdExceeded ? defaultThresholdExceeded : thresholdExceeded.get();
     }
     public final void setThresholdExceeded(final boolean THRESHOLD_EXCEEDED) {
-        thresholdExceeded.set(THRESHOLD_EXCEEDED);        
+        if (null == thresholdExceeded) {
+            defaultThresholdExceeded = THRESHOLD_EXCEEDED;
+        } else {
+            thresholdExceeded.set(THRESHOLD_EXCEEDED);
+        }
     }
     public final BooleanProperty thresholdExceededProperty() {
+        if (null == thresholdExceeded) {
+            thresholdExceeded = new SimpleBooleanProperty(this, "thresholdExceeded", defaultThresholdExceeded);
+        }
         return thresholdExceeded;
     }
 
     public final String getTitle() {
-        return title.get();
+        return null == title ? defaultTitle : title.get();
     }
     public final void setTitle(final String TITLE) {
-        title.set(TITLE);
+        if (null == title) {
+            defaultTitle = TITLE;
+        } else {
+            title.set(TITLE);
+        }
     }
     public final StringProperty titleProperty() {
+        if (null == title) {
+            title = new SimpleStringProperty(this, "title", defaultTitle);
+        }
         return title;
     }
 
     public final String getUnit() {
-        return unit.get();
+        return null == unit ? defaultUnit : unit.get();
     }
     public final void setUnit(final String UNIT) {
-        unit.set(UNIT);
-        
+        if (null == unit) {
+            defaultUnit = UNIT;
+        } else {
+            unit.set(UNIT);
+        }
     }
     public final StringProperty unitProperty() {
+        if (null == unit) {
+            unit = new SimpleStringProperty(this, "unit", defaultUnit);
+        }
         return unit;
     }
 
     public final String getLowerCenterText() {
-        return lowerCenterText.get();
+        return null == lowerCenterText ? defaultLowerCenterText : lowerCenterText.get();
     }
     public final void setLowerCenterText(final String LOWER_CENTER_TEXT) {
-        lowerCenterText.set(LOWER_CENTER_TEXT);
+        if (null == lowerCenterText) {
+            defaultLowerCenterText = LOWER_CENTER_TEXT;
+        } else {
+            lowerCenterText.set(LOWER_CENTER_TEXT);
+        }
     }
     public final StringProperty lowerCenterTextProperty() {
+        if (null == lowerCenterText) {
+            lowerCenterText = new SimpleStringProperty(this, "lowerCenterText", defaultLowerCenterText);
+        }
         return lowerCenterText;
     }
 
     public final boolean isLowerCenterTextVisible() {
-        return lowerCenterTextVisible.get();
+        return null == lowerCenterTextVisible ? defaultLowerCenterCenterTextVisible : lowerCenterTextVisible.get();
     }
     public final void setLowerCenterTextVisible(final boolean LOWER_CENTER_TEXT_VISIBLE) {
-        lowerCenterTextVisible.set(LOWER_CENTER_TEXT_VISIBLE);
+        if (null == lowerCenterTextVisible) {
+            defaultLowerCenterCenterTextVisible = LOWER_CENTER_TEXT_VISIBLE;
+        } else {
+            lowerCenterTextVisible.set(LOWER_CENTER_TEXT_VISIBLE);
+        }
     }
     public final BooleanProperty lowerCenterTextVisibleProperty() {
+        if (null == lowerCenterTextVisible) {
+            lowerCenterTextVisible = new SimpleBooleanProperty(this, "lowerCenterTextVisible", defaultLowerCenterCenterTextVisible);
+        }
         return lowerCenterTextVisible;
     }
 
     public final String getLowerRightText() {
-        return lowerRightText.get();
+        return null == lowerRightText ? defaultLowerRightText : lowerRightText.get();
     }
     public final void setLowerRightText(final String LOWER_RIGHT_TEXT) {
-        lowerRightText.set(LOWER_RIGHT_TEXT);
+        if (null == lowerRightText) {
+            defaultLowerRightText = LOWER_RIGHT_TEXT;
+        } else {
+            lowerRightText.set(LOWER_RIGHT_TEXT);
+        }
     }
     public final StringProperty lowerRightTextProperty() {
+        if (null == lowerRightText) {
+            lowerRightText = new SimpleStringProperty(this, "lowerRightText", defaultLowerRightText);
+        }
         return lowerRightText;
     }
 
     public final boolean isLowerRightTextVisible() {
-        return lowerRightTextVisible.get();
+        return null == lowerRightTextVisible ? defaultLowerRightTextVisible : lowerRightTextVisible.get();
     }
     public final void setLowerRightTextVisible(final boolean LOWER_RIGHT_TEXT_VISIBLE) {
-        lowerRightTextVisible.set(LOWER_RIGHT_TEXT_VISIBLE);
+        if (null == lowerRightTextVisible) {
+            defaultLowerRightTextVisible = LOWER_RIGHT_TEXT_VISIBLE;
+        } else {
+            lowerRightTextVisible.set(LOWER_RIGHT_TEXT_VISIBLE);
+        }
     }
     public final BooleanProperty lowerRightTextVisibleProperty() {
+        if (null == lowerRightTextVisible) {
+            lowerRightTextVisible = new SimpleBooleanProperty(this, "lowerRightTextVisible", defaultLowerRightTextVisible);
+        }
         return lowerRightTextVisible;
     }
 
     public final String getUpperLeftText() {
-        return upperLeftText.get();
+        return null == upperLeftText ? defaultUpperLeftText : upperLeftText.get();
     }
     public final void setUpperLeftText(final String UPPER_LEFT_TEXT) {
-        upperLeftText.set(UPPER_LEFT_TEXT);
+        if (null == upperLeftText) {
+            defaultUpperLeftText = UPPER_LEFT_TEXT;
+        } else {
+            upperLeftText.set(UPPER_LEFT_TEXT);
+        }
     }
     public final StringProperty upperLeftTextProperty() {
+        if (null == upperLeftText) {
+            upperLeftText = new SimpleStringProperty(this, "upperLeftText", defaultUpperLeftText);
+        }
         return upperLeftText;
     }
 
     public final boolean isUpperLeftTextVisible() {
-        return upperLeftTextVisible.get();
+        return null == upperLeftTextVisible ? defaultUpperLeftTextVisible : upperLeftTextVisible.get();
     }
     public final void setUpperLeftTextVisible(final boolean UPPER_LEFT_TEXT_VISIBLE) {
-        upperLeftTextVisible.set(UPPER_LEFT_TEXT_VISIBLE);
+        if (null == upperLeftTextVisible) {
+            defaultUpperLeftTextVisible = UPPER_LEFT_TEXT_VISIBLE;
+        } else {
+            upperLeftTextVisible.set(UPPER_LEFT_TEXT_VISIBLE);
+        }
     }
     public final BooleanProperty upperLeftTextVisibleProperty() {
+        if (null == upperLeftTextVisible) {
+            upperLeftTextVisible = new SimpleBooleanProperty(this, "upperLeftTextVisible", defaultUpperLeftTextVisible);
+        }
         return upperLeftTextVisible;
     }
 
     public final String getUpperRightText() {
-        return upperRightText.get();
+        return null == upperRightText ? defaultUpperRightText : upperRightText.get();
     }
     public final void setUpperRightText(final String UPPER_RIGHT_TEXT) {
-        upperRightText.set(UPPER_RIGHT_TEXT);
+        if (null == upperRightText) {
+            defaultUpperRightText = UPPER_RIGHT_TEXT;
+        } else {
+            upperRightText.set(UPPER_RIGHT_TEXT);
+        }
     }
     public final StringProperty upperRightTextProperty() {
+        if (null == upperRightText) {
+            upperRightText = new SimpleStringProperty(this, "upperRightText", defaultUpperRightText);
+        }
         return upperRightText;
     }
 
     public final boolean isUpperRightTextVisible() {
-        return upperRightTextVisible.get();
+        return null == upperRightTextVisible ? defaultUpperRightTextVisible : upperRightTextVisible.get();
     }
     public final void setUpperRightTextVisible(final boolean UPPER_RIGHT_TEXT_VISIBLE) {
-        upperRightTextVisible.set(UPPER_RIGHT_TEXT_VISIBLE);
+        if (null == upperRightTextVisible) {
+            defaultUpperRightTextVisible = UPPER_RIGHT_TEXT_VISIBLE;
+        } else {
+            upperRightTextVisible.set(UPPER_RIGHT_TEXT_VISIBLE);
+        }
     }
     public final BooleanProperty upperRightTextVisibleProperty() {
+        if (null == upperRightTextVisible) {
+            upperRightTextVisible = new SimpleBooleanProperty(this, "upperRightTextVisible", defaultUpperRightTextVisible);
+        }
         return upperRightTextVisible;
     }
 
     public final NumberSystem getNumberSystem() {
-        return numberSystem.get();
+        return null == numberSystem ? defaultNumberSystem : numberSystem.get();
     }
     public final void setNumberSystem(final NumberSystem NUMBER_SYSTEM) {
-        numberSystem.set(NUMBER_SYSTEM);       
+        if (null == numberSystem) {
+            defaultNumberSystem = NUMBER_SYSTEM;
+        } else {
+            numberSystem.set(NUMBER_SYSTEM);
+        }
     }
-    public final ObjectProperty numberSystemProperty() {
+    public final ObjectProperty<NumberSystem> numberSystemProperty() {
+        if (null == numberSystem) {
+            numberSystem = new SimpleObjectProperty<>(this, "numberSystem", defaultNumberSystem);
+        }
         return numberSystem;
     }
 
     public final Trend getTrend() {
-        return trend.get();
+        return null == trend ? defaultTrend : trend.get();
     }
     public final void setTrend(final Trend TREND) {
-        trend.set(TREND);        
+        if (null == trend ) {
+            defaultTrend = TREND;
+        } else {
+            trend.set(TREND);
+        }
     }
     public final ObjectProperty<Trend> trendProperty() {
+        if (null == trend) {
+            trend = new SimpleObjectProperty<>(this, "trend", defaultTrend);
+        }
         return trend;
     }
 
     public final double getBatteryCharge() {
-        return batteryCharge.get();
+        return null == batteryCharge ? defaultBatteryCharge : batteryCharge.get();
     }
     public final void setBatteryCharge(final double BATTERY_CHARGE) {
-        batteryCharge.set(clamp(0.0, 1.0, BATTERY_CHARGE));
+        if (null == batteryCharge) {
+            defaultBatteryCharge = clamp(0.0, 1.0, BATTERY_CHARGE);
+        } else {
+            batteryCharge.set(clamp(0.0, 1.0, BATTERY_CHARGE));
+        }
     }
     public final DoubleProperty batteryChargeProperty() {
+        if (null == batteryCharge) {
+            batteryCharge = new SimpleDoubleProperty(this, "batteryCharge", defaultBatteryCharge);
+        }
         return batteryCharge;
     }
 
     public final boolean isValueVisible() {
-        return valueVisible.get();
+        return null == valueVisible ? defaultValueVisible : valueVisible.get();
+    }
+    private final void setValueVisible(final boolean VALUE_VISIBLE) {
+        if (null == valueVisible) {
+            defaultValueVisible = VALUE_VISIBLE;
+        } else {
+            valueVisible.set(VALUE_VISIBLE);
+        }
     }
     public final ReadOnlyBooleanProperty valueVisibleProperty() {
+        if (null == valueVisible) {
+            valueVisible = new SimpleBooleanProperty(this, "valueVisible", defaultValueVisible);
+        }
         return valueVisible;
     }
 
     public final boolean isMinMeasuredValueVisible() {
-        return minMeasuredValueVisible.get();
+        return null == minMeasuredValueVisible ? defaultMinMeasuredValueVisible : minMeasuredValueVisible.get();
     }
     public final void setMinMeasuredValueVisible(final boolean MIN_MEASURED_VALUE_VISIBLE) {
-        minMeasuredValueVisible.set(MIN_MEASURED_VALUE_VISIBLE);
+        if (null == minMeasuredValueVisible) {
+            defaultMinMeasuredValueVisible = MIN_MEASURED_VALUE_VISIBLE;
+        } else {
+            minMeasuredValueVisible.set(MIN_MEASURED_VALUE_VISIBLE);
+        }
     }
     public final BooleanProperty minMeasuredValueVisibleProperty() {
+        if (null == minMeasuredValueVisible) {
+            minMeasuredValueVisible = new SimpleBooleanProperty(this, "minMeasuredValueVisible", defaultMinMeasuredValueVisible);
+        }
         return minMeasuredValueVisible;
     }
 
     public final boolean isMaxMeasuredValueVisible() {
-        return maxMeasuredValueVisible.get();
+        return null == maxMeasuredValueVisible ? defaultMaxMeasuredValueVisible : maxMeasuredValueVisible.get();
     }
     public final void setMaxMeasuredValueVisible(final boolean MAX_MEASURED_VALUE_VISIBLE) {
-        maxMeasuredValueVisible.set(MAX_MEASURED_VALUE_VISIBLE);
+        if (null == maxMeasuredValueVisible) {
+            defaultMaxMeasuredValueVisible = MAX_MEASURED_VALUE_VISIBLE;
+        } else {
+            maxMeasuredValueVisible.set(MAX_MEASURED_VALUE_VISIBLE);
+        }
     }
     public final BooleanProperty maxMeasuredValueVisibleProperty() {
+        if (null == maxMeasuredValueVisible) {
+            maxMeasuredValueVisible = new SimpleBooleanProperty(this, "maxMeasureValueVisible", defaultMaxMeasuredValueVisible);
+        }
         return maxMeasuredValueVisible;
     }
 
     public final boolean isThresholdVisible() {
-        return thresholdVisible.get();
+        return null == thresholdVisible ? defaultThresholdVisible : thresholdVisible.get();
     }
     public final void setThresholdVisible(final boolean THRESHOLD_VISIBLE) {
-        thresholdVisible.set(THRESHOLD_VISIBLE);
-        
+        if (null == thresholdVisible) {
+            defaultThresholdVisible = THRESHOLD_VISIBLE;
+        } else {
+            thresholdVisible.set(THRESHOLD_VISIBLE);
+        }
     }
     public final BooleanProperty thresholdVisibleProperty() {
+        if (null == thresholdVisible) {
+            thresholdVisible = new SimpleBooleanProperty(this, "thresholdVisible", defaultThresholdVisible);
+        }
         return thresholdVisible;
     }
 
     public final boolean isBackgroundVisible() {
-        return backgroundVisible.get();
+        return null == backgroundVisible ? defaultBackgroundVisible : backgroundVisible.get();
     }
     public final void setBackgroundVisible(final boolean BACKGROUND_VISIBLE) {
-        backgroundVisible.set(BACKGROUND_VISIBLE);        
+        if (null == backgroundVisible) {
+            defaultBackgroundVisible = BACKGROUND_VISIBLE;
+        } else {
+            backgroundVisible.set(BACKGROUND_VISIBLE);
+        }
     }
     public final BooleanProperty backgroundVisibleProperty() {
+        if (null == backgroundVisible) {
+            backgroundVisible = new SimpleBooleanProperty(this, "backgroundVisible", defaultBackgroundVisible);
+        }
         return backgroundVisible;
     }
 
     public final boolean isCrystalOverlayVisible() {
-        return crystalOverlayVisible.get();
+        return null == crystalOverlayVisible ? defaultCrystalOverlayVisible : crystalOverlayVisible.get();
     }
     public final void setCrystalOverlayVisible(final boolean CRYSTAL_OVERLAY_VISIBLE) {
-        crystalOverlayVisible.set(CRYSTAL_OVERLAY_VISIBLE);
+        if (null == crystalOverlayVisible) {
+            defaultCrystalOverlayVisible = CRYSTAL_OVERLAY_VISIBLE;
+        } else {
+            crystalOverlayVisible.set(CRYSTAL_OVERLAY_VISIBLE);
+        }
     }
     public final BooleanProperty crystalOverlayVisibleProperty() {
+        if (null == crystalOverlayVisible) {
+            crystalOverlayVisible = new SimpleBooleanProperty(this, "crystalOverlayVisible", defaultCrystalOverlayVisible);
+        }
         return crystalOverlayVisible;
     }
 
     public final boolean isForegroundShadowVisible() {
-        return foregroundShadowVisible.get();
+        return null == foregroundShadowVisible ? defaultForegroundShadowVisible : foregroundShadowVisible.get();
     }
     public final void setForegroundShadowVisible(final boolean FOREGROUND_SHADOW_VISIBLE) {
-        foregroundShadowVisible.set(FOREGROUND_SHADOW_VISIBLE);
+        if (null == foregroundShadowVisible) {
+            defaultForegroundShadowVisible = FOREGROUND_SHADOW_VISIBLE;
+        } else {
+            foregroundShadowVisible.set(FOREGROUND_SHADOW_VISIBLE);
+        }
     }
     public final BooleanProperty foregroundShadowVisibleProperty() {
+        if (null == foregroundShadowVisible) {
+            foregroundShadowVisible = new SimpleBooleanProperty(this, "foregroundShadowVisible", defaultForegroundShadowVisible);
+        }
         return foregroundShadowVisible;
     }
 
     public final String getTitleFont() {
-        return titleFont.get();
+        return null == titleFont ? defaultTitleFont : titleFont.get();
     }
     public final void setTitleFont(final String TITLE_FONT) {
-        titleFont.set(TITLE_FONT);
+        if (null == titleFont) {
+            defaultTitleFont = TITLE_FONT;
+        } else {
+            titleFont.set(TITLE_FONT);
+        }
     }
     public final StringProperty titleFontProperty() {
+        if (null == titleFont) {
+            titleFont = new SimpleStringProperty(this, "titleFont", defaultTitleFont);
+        }
         return titleFont;
     }
 
     public final String getUnitFont() {
-        return unitFont.get();
+        return null == unitFont ? defaultUnitFont : unitFont.get();
     }
     public final void setUnitFont(final String UNIT_FONT) {
-        unitFont.set(UNIT_FONT);        
+        if (null == unitFont) {
+            defaultUnitFont = UNIT_FONT;
+        } else {
+            unitFont.set(UNIT_FONT);
+        }
     }
     public final StringProperty unitFontProperty() {
+        if (null == unitFont) {
+            unitFont = new SimpleStringProperty(this, "unitFont", defaultUnitFont);
+        }
         return unitFont;
     }
     
     public final LcdFont getValueFont() {
-        return valueFont.get();
+        return null == valueFont ? defaultValueFont : valueFont.get();
     }
     public final void setValueFont(final LcdFont VALUE_FONT) {
-        valueFont.set(VALUE_FONT);        
+        if (null == valueFont) {
+            defaultValueFont = VALUE_FONT;
+        } else {
+            valueFont.set(VALUE_FONT);
+        }
     }
     public final ObjectProperty<LcdFont> valueFontProperty() {
+        if (null == valueFont) {
+            valueFont = new SimpleObjectProperty<>(this, "valueFont", defaultValueFont);
+        }
         return valueFont;
     }
 
     public final int getDecimals() {
-        return decimals.get();
+        return null == decimals ? defaultDecimals : decimals.get();
     }
     public final void setDecimals(final int DECIMALS) {
         final int dec = DECIMALS > 5 ? 5 : (DECIMALS < 0 ? 0 : DECIMALS);
-        decimals.set(dec);
+        if (null == decimals) {
+            defaultDecimals = dec;
+        } else {
+            decimals.set(dec);
+        }
     }
     public final IntegerProperty decimalsProperty() {
+        if (null == decimals) {
+            decimals = new SimpleIntegerProperty(this, "decimals", defaultDecimals);
+        }
         return decimals;
     }
 
     public final boolean isNumberSystemVisible() {
-        return numberSystemVisible.get();
+        return null == numberSystemVisible ? defaultNumberSystemVisible : numberSystemVisible.get();
     }
     public final void setNumberSystemVisible(final boolean NUMBER_SYSTEM_VISIBLE) {
-        numberSystemVisible.set(NUMBER_SYSTEM_VISIBLE);        
+        if (null == numberSystemVisible) {
+            defaultNumberSystemVisible = NUMBER_SYSTEM_VISIBLE;
+        } else {
+            numberSystemVisible.set(NUMBER_SYSTEM_VISIBLE);
+        }
     }
     public final BooleanProperty numberSystemVisibleProperty() {
+        if (null == numberSystemVisible) {
+            numberSystemVisible = new SimpleBooleanProperty(this, "numberSystemVisible", defaultNumberSystemVisible);
+        }
         return numberSystemVisible;
     }
 
     public final boolean isBlinking() {
-        return blinking.get();
+        return null == blinking ? defaultBlinking : blinking.get();
     }
     public final void setBlinking(final boolean BLINKING) {
-        blinking.set(BLINKING);
+        if (null == blinking) {
+            defaultBlinking = BLINKING;
+        } else {
+            blinking.set(BLINKING);
+        }
         if (BLINKING) {
             timer.start();
         } else {
             timer.stop();
-            valueVisible.set(true);
+            setValueVisible(true);
         }
     }
     public final BooleanProperty blinkingProperty() {
+        if (null == blinking) {
+            blinking = new SimpleBooleanProperty(this, "blinking", defaultBlinking);
+        }
         return blinking;
     }
 
     public final boolean isTitleVisible() {
-        return titleVisible.get();
+        return null == titleVisible ? defaultTitleVisible : titleVisible.get();
     }
     public final void setTitleVisible(final boolean TITLE_VISIBLE) {
-        titleVisible.set(TITLE_VISIBLE);
+        if (null == titleVisible) {
+            defaultTitleVisible = TITLE_VISIBLE;
+        } else {
+            titleVisible.set(TITLE_VISIBLE);
+        }
     }
     public final BooleanProperty titleVisibleProperty() {
+        if (null == titleVisible) {
+            titleVisible = new SimpleBooleanProperty(this, "titleVisible", defaultTitleVisible);
+        }
         return titleVisible;
     }
 
     public final boolean isUnitVisible() {
-        return unitVisible.get();
+        return null == unitVisible ? defaultUnitVisible : unitVisible.get();
     }
     public final void setUnitVisible(final boolean UNIT_VISIBLE) {
-        unitVisible.set(UNIT_VISIBLE);
+        if (null == unitVisible) {
+            defaultUnitVisible = UNIT_VISIBLE;
+        } else {
+            unitVisible.set(UNIT_VISIBLE);
+        }
     }
     public final BooleanProperty unitVisibleProperty() {
+        if (null == unitVisible) {
+            unitVisible = new SimpleBooleanProperty(this, "unitVisible", defaultUnitVisible);
+        }
         return unitVisible;
     }
 
     public final boolean isTrendVisible() {
-        return trendVisible.get();
+        return null == trendVisible ? defaultTrendVisible : trendVisible.get();
     }
     public final void setTrendVisible(final boolean TREND_VISIBLE) {
-        trendVisible.set(TREND_VISIBLE);
+        if (null == trendVisible) {
+            defaultTrendVisible = TREND_VISIBLE;
+        } else {
+            trendVisible.set(TREND_VISIBLE);
+        }
     }
     public final BooleanProperty trendVisibleProperty() {
+        if (null == trendVisible) {
+            trendVisible = new SimpleBooleanProperty(this, "trendVisible", defaultTrendVisible);
+        }
         return trendVisible;
     }
 
     public final boolean isBatteryVisible() {
-        return batteryVisible.get();
+        return null == batteryVisible ? defaultBatteryVisible : batteryVisible.get();
     }
     public final void setBatteryVisible(final boolean BATTERY_VISIBLE) {
-        batteryVisible.set(BATTERY_VISIBLE);
+        if (null == batteryVisible) {
+            defaultBatteryVisible = BATTERY_VISIBLE;
+        } else {
+            batteryVisible.set(BATTERY_VISIBLE);
+        }
     }
     public final BooleanProperty batteryVisibleProperty() {
+        if (null == batteryVisible) {
+            batteryVisible = new SimpleBooleanProperty(this, "batteryVisible", defaultBatteryVisible);
+        }
         return batteryVisible;
     }
 
     public final boolean isAlarmVisible() {
-        return alarmVisible.get();
+        return null == alarmVisible ? defaultAlarmVisible : alarmVisible.get();
     }
     public final void setAlarmVisible(final boolean ALARM_VISIBLE) {
-        alarmVisible.set(ALARM_VISIBLE);
+        if (null == alarmVisible) {
+            defaultAlarmVisible = ALARM_VISIBLE;
+        } else {
+            alarmVisible.set(ALARM_VISIBLE);
+        }
     }
     public final BooleanProperty alarmVisibleProperty() {
+        if (null == alarmVisible) {
+            alarmVisible = new SimpleBooleanProperty(this, "alarmVisible", defaultAlarmVisible);
+        }
         return alarmVisible;
     }
 
     public final boolean isFormerValueVisible() {
-        return formerValueVisible.get();
+        return null == formerValueVisible ? defaultFormerValueVisible : formerValueVisible.get();
     }
     public final void setFormerValueVisible(final boolean FORMER_VALUE_VISIBLE) {
-        formerValueVisible.set(FORMER_VALUE_VISIBLE);
+        if (null == formerValueVisible) {
+            defaultFormerValueVisible = FORMER_VALUE_VISIBLE;
+        } else {
+            formerValueVisible.set(FORMER_VALUE_VISIBLE);
+        }
     }
     public final BooleanProperty formerValueVisibleProperty() {
+        if (null == formerValueVisible) {
+            formerValueVisible = new SimpleBooleanProperty(this, "formerValueVisible", defaultFormerValueVisible);
+        }
         return formerValueVisible;
     }
 
     public final int getMinMeasuredValueDecimals() {
-        return minMeasuredValueDecimals.get();
+        return null == minMeasuredValueDecimals ? defaultMinMeasuredValueDecimals : minMeasuredValueDecimals.get();
     }
     public final void setMinMeasuredValueDecimals(final int MIN_MEASURED_VALUE_DECIMALS) {
         final int DECIMALS = MIN_MEASURED_VALUE_DECIMALS > 5 ? 5 : (MIN_MEASURED_VALUE_DECIMALS < 0 ? 0 : MIN_MEASURED_VALUE_DECIMALS);
-        minMeasuredValueDecimals.set(DECIMALS);
+        if (null == minMeasuredValueDecimals) {
+            defaultMinMeasuredValueDecimals = MIN_MEASURED_VALUE_DECIMALS;
+        } else {
+            minMeasuredValueDecimals.set(DECIMALS);
+        }
     }
     public final IntegerProperty minMeasuredValueDecimalsProperty() {
+        if (null == minMeasuredValueDecimals) {
+            minMeasuredValueDecimals = new SimpleIntegerProperty(this, "minMeasuredValueDecimals", defaultMinMeasuredValueDecimals);
+        }
         return maxMeasuredValueDecimals;
     }
 
     public final int getMaxMeasuredValueDecimals() {
-        return maxMeasuredValueDecimals.get();
+        return null == maxMeasuredValueDecimals ? defaultMaxMeasuredValueDecimals : maxMeasuredValueDecimals.get();
     }
     public final void setMaxMeasuredValueDecimals(final int MAX_MEASURED_VALUE_DECIMALS) {
         final int DECIMALS = MAX_MEASURED_VALUE_DECIMALS > 5 ? 5 : (MAX_MEASURED_VALUE_DECIMALS < 0 ? 0 : MAX_MEASURED_VALUE_DECIMALS);
-        maxMeasuredValueDecimals.set(DECIMALS);
+        if (null == maxMeasuredValueDecimals) {
+            defaultMaxMeasuredValueDecimals = MAX_MEASURED_VALUE_DECIMALS;
+        } else {
+            maxMeasuredValueDecimals.set(DECIMALS);
+        }
     }
     public final IntegerProperty maxMeasuredValueDecimalsProperty() {
+        if (null == maxMeasuredValueDecimals) {
+            maxMeasuredValueDecimals = new SimpleIntegerProperty(this, "maxMeasuredValueDecimals", defaultMaxMeasuredValueDecimals);
+        }
         return maxMeasuredValueDecimals;
     }
 

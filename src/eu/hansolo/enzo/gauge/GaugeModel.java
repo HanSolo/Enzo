@@ -6,6 +6,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
+import javafx.scene.paint.Color;
 
 
 /**
@@ -16,20 +17,23 @@ import javafx.event.EventType;
  */
 public class GaugeModel {
 
-    private double           value;
-    private double           minValue;
-    private double           maxValue;
-    private double           threshold;
-    private double           minMeasuredValue;
-    private double           maxMeasuredValue;
-    private int              noOfDecimals;
-    private String           title;
-    private String           unit;
-    private boolean          animated;
-    private double           angleRange;
-    private double           rotationOffset;
-    private Gauge.NeedleType needleType;
-
+    private double                     value;
+    private double                     minValue;
+    private double                     maxValue;
+    private double                     threshold;
+    private double                     minMeasuredValue;
+    private double                     maxMeasuredValue;
+    private int                        noOfDecimals;
+    private String                     title;
+    private String                     unit;
+    private boolean                    animated;
+    private boolean                    alwaysRound;
+    private double                     startAngle;
+    private double                     angleRange;
+    private Gauge.NeedleType           needleType;
+    private Color                      needleColor;
+    private Gauge.TickLabelOrientation tickLabelOrientation;
+    private Gauge.NumberFormat         numberFormat;
 
 
     // ******************** Constructors **************************************
@@ -44,8 +48,9 @@ public class GaugeModel {
         title            = "";
         unit             = "";
         animated         = true;
+        alwaysRound      = false;
+        startAngle       = 150;
         angleRange       = 300;
-        rotationOffset   = 150;
         needleType       = Gauge.NeedleType.STANDARD;
     }
 
@@ -117,7 +122,6 @@ public class GaugeModel {
     public void resetMinMeasuredValue() {
         setMinMeasuredValue(value);
     }
-
     public void resetMaxMeasuredValue() {
         setMaxMeasuredValue(value);
     }
@@ -154,6 +158,22 @@ public class GaugeModel {
         fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.ANIMATED));
     }
 
+    public boolean isAlwaysRound() {
+        return alwaysRound;
+    }
+    public void setAlwaysRound(final boolean ALWAYS_ROUND) {
+        alwaysRound = ALWAYS_ROUND;
+        fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.ALWAYS_ROUND_CHANGED));
+    }
+
+    public double getStartAngle() {
+        return startAngle;
+    }
+    public void setStartAngle(final double START_ANGLE) {
+        startAngle = clamp(0, 360, START_ANGLE);
+        fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.START_ANGLE_CHANGED));
+    }
+
     public double getAngleRange() {
         return angleRange;
     }
@@ -162,21 +182,37 @@ public class GaugeModel {
         fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.ANGLE_RANGE_CHANGED));
     }
 
-    public double getRotationOffset() {
-        return rotationOffset;
-    }
-    public void setRotationOffset(final double ROTATION_OFFSET) {
-        rotationOffset = clamp(0, 360, ROTATION_OFFSET);
-        fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.ROTATION_OFFSET_CHANGED));
-    }
-
     // Properties related to visualization
     public Gauge.NeedleType getNeedleType() {
         return needleType;
     }
     public void setNeedleType(final Gauge.NeedleType NEEDLE_TYPE) {
         needleType = NEEDLE_TYPE;
-        fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.NEEDLE_TYPE_CHANGE));
+        fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.NEEDLE_TYPE_CHANGED));
+    }
+
+    public Color getNeedleColor() {
+        return needleColor;
+    }
+    public void setNeedleColor(final Color NEEDLE_COLOR) {
+        needleColor = NEEDLE_COLOR;
+        fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.NEEDLE_COLOR_CHANGED));
+    }
+
+    public Gauge.TickLabelOrientation getTickLabelOrientation() {
+        return tickLabelOrientation;
+    }
+    public void setTickLabelOrientation(final Gauge.TickLabelOrientation TICK_LABEL_ORIENTATION) {
+        tickLabelOrientation = TICK_LABEL_ORIENTATION;
+        fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.TICK_LABEL_ORIENTATION_CHANGED));
+    }
+
+    public Gauge.NumberFormat getNumberFormat() {
+        return numberFormat;
+    }
+    public void setNumberFormat(final Gauge.NumberFormat NUMBER_FORMAT) {
+        numberFormat = NUMBER_FORMAT;
+        fireGaugeModelEvent(new GaugeModelEvent(this, null, GaugeModelEvent.NUMBER_FORMAT_CHANGED));
     }
 
 
@@ -219,21 +255,25 @@ public class GaugeModel {
 
     // ******************** Inner Classes *************************************
     public static class GaugeModelEvent extends Event {
-        public static final EventType<GaugeModelEvent> VALUE_CHANGED              = new EventType(ANY, "VALUE_CHANGED");
-        public static final EventType<GaugeModelEvent> MIN_VALUE_CHANGED          = new EventType(ANY, "MIN_VALUE_CHANGED");
-        public static final EventType<GaugeModelEvent> MAX_VALUE_CHANGED          = new EventType(ANY, "MAX_VALUE_CHANGED");
-        public static final EventType<GaugeModelEvent> THRESHOLD_CHANGED          = new EventType(ANY, "THRESHOLD_CHANGED");
-        public static final EventType<GaugeModelEvent> THRESHOLD_EXCEEDED         = new EventType(ANY, "THRESHOLD_EXCEEDED");
-        public static final EventType<GaugeModelEvent> THRESHOLD_UNDERRUN         = new EventType(ANY, "THRESHOLD_UNDERRUN");
-        public static final EventType<GaugeModelEvent> MIN_MEASURED_VALUE_CHANGE  = new EventType(ANY, "MIN_MEASURED_VALUE_CHANGED");
-        public static final EventType<GaugeModelEvent> MAX_MEASURED_VALUE_CHANGED = new EventType(ANY, "MAX_MEASURED_VALUE_CHANGED");
-        public static final EventType<GaugeModelEvent> NO_OF_DECIMALS_CHANGED     = new EventType(ANY, "NO_OF_DECIMALS_CHANGED");
-        public static final EventType<GaugeModelEvent> TITLE_CHANGED              = new EventType(ANY, "TITLE_CHANGED");
-        public static final EventType<GaugeModelEvent> UNIT_CHANGED               = new EventType(ANY, "UNIT_CHANGED");
-        public static final EventType<GaugeModelEvent> ANIMATED                   = new EventType(ANY, "ANIMATED");
-        public static final EventType<GaugeModelEvent> ANGLE_RANGE_CHANGED        = new EventType(ANY, "ANGLE_RANGE_CHANGED");
-        public static final EventType<GaugeModelEvent> ROTATION_OFFSET_CHANGED    = new EventType(ANY, "ROTATION_OFFSET_CHANGED");
-        public static final EventType<GaugeModelEvent> NEEDLE_TYPE_CHANGE         = new EventType(ANY, "NEEDLE_TYPE_CHANGED");
+        public static final EventType<GaugeModelEvent> VALUE_CHANGED                  = new EventType(ANY, "valueChanged");
+        public static final EventType<GaugeModelEvent> MIN_VALUE_CHANGED              = new EventType(ANY, "minValueChanged");
+        public static final EventType<GaugeModelEvent> MAX_VALUE_CHANGED              = new EventType(ANY, "maxValueChanged");
+        public static final EventType<GaugeModelEvent> THRESHOLD_CHANGED              = new EventType(ANY, "thresholdChanged");
+        public static final EventType<GaugeModelEvent> THRESHOLD_EXCEEDED             = new EventType(ANY, "thresholdExceeded");
+        public static final EventType<GaugeModelEvent> THRESHOLD_UNDERRUN             = new EventType(ANY, "thresholdUnderrun");
+        public static final EventType<GaugeModelEvent> MIN_MEASURED_VALUE_CHANGE      = new EventType(ANY, "minMeasuredValueChanged");
+        public static final EventType<GaugeModelEvent> MAX_MEASURED_VALUE_CHANGED     = new EventType(ANY, "maxMeasuredValueChanged");
+        public static final EventType<GaugeModelEvent> NO_OF_DECIMALS_CHANGED         = new EventType(ANY, "noOfDecimalsChanged");
+        public static final EventType<GaugeModelEvent> TITLE_CHANGED                  = new EventType(ANY, "titleChanged");
+        public static final EventType<GaugeModelEvent> UNIT_CHANGED                   = new EventType(ANY, "unitChanged");
+        public static final EventType<GaugeModelEvent> ANIMATED                       = new EventType(ANY, "animatedChanged");
+        public static final EventType<GaugeModelEvent> START_ANGLE_CHANGED            = new EventType(ANY, "startAngleChanged");
+        public static final EventType<GaugeModelEvent> ANGLE_RANGE_CHANGED            = new EventType(ANY, "angleRangeChanged");
+        public static final EventType<GaugeModelEvent> NEEDLE_TYPE_CHANGED            = new EventType(ANY, "needleTypeChanged");
+        public static final EventType<GaugeModelEvent> NEEDLE_COLOR_CHANGED           = new EventType(ANY, "needleColorChanged");
+        public static final EventType<GaugeModelEvent> TICK_LABEL_ORIENTATION_CHANGED = new EventType(ANY, "tickLabelOrientationChanged");
+        public static final EventType<GaugeModelEvent> NUMBER_FORMAT_CHANGED          = new EventType(ANY, "numberFormatChanged");
+        public static final EventType<GaugeModelEvent> ALWAYS_ROUND_CHANGED           = new EventType(ANY, "alwaysRoundChanged");
 
 
         // ******************* Constructors ***************************************

@@ -199,14 +199,16 @@ public class Led extends Control {
         }
     }
 
+    private boolean                  defaultOn = false;
     private BooleanProperty          on;
+    private boolean                  defaultBlinking = false;
     private BooleanProperty          blinking;
-    private boolean                  _frameVisible;
+    private boolean                  defaultFrameVisible = true;
     private BooleanProperty          frameVisible;
+    private LedColor                 defaultColor = LedColor.RED;
     private ObjectProperty<LedColor> color;
-    private boolean                  _keepAspect;
-    private BooleanProperty          keepAspect;
-    private long                     _interval;
+    private boolean                  keepAspect;
+    private long                     defaultInterval = 500_000_000l;
     private LongProperty             interval;
     private long                     lastTimerCall;
     private boolean                  toggle;
@@ -216,12 +218,6 @@ public class Led extends Control {
     // ******************** Constructors **************************************
     public Led() {
         getStyleClass().add("led");
-        on            = new SimpleBooleanProperty(false);
-        blinking      = new SimpleBooleanProperty(false);
-        _frameVisible = true;
-        color         = new SimpleObjectProperty<>(LedColor.RED);
-        _keepAspect   = true;
-        _interval     = 500_000_000l;
         lastTimerCall = System.nanoTime();
         toggle        = false;
         timer         = new AnimationTimer() {
@@ -239,20 +235,10 @@ public class Led extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
-        return keepAspect != null ? keepAspect.get() : _keepAspect;
+        return keepAspect;
     }
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
-        if (keepAspect != null) {
-            keepAspect.set(KEEP_ASPECT);
-        } else {
-            _keepAspect = KEEP_ASPECT;
-        }
-    }
-    public final BooleanProperty keepAspectProperty() {
-        if (keepAspect == null) {
-            keepAspect = new SimpleBooleanProperty(this, "keepAspect", _keepAspect);
-        }
-        return keepAspect;
+        keepAspect = KEEP_ASPECT;
     }
 
     @Override public boolean isResizable() {
@@ -260,20 +246,31 @@ public class Led extends Control {
     }
     
     public final boolean isOn() {
-        return on.get();
+        return on == null ? defaultOn : on.get();
     }
     public final void setOn(final boolean ON) {
-        on.set(ON);
+        if (null == on) {
+            defaultOn = ON;
+        } else {
+            on.set(ON);
+        }
     }
     public final BooleanProperty onProperty() {
+        if (null == on) {
+            on = new SimpleBooleanProperty(this, "on", defaultOn);
+        }
         return on;
     }
 
     public final boolean isBlinking() {
-        return blinking.get();
+        return null == blinking ? defaultBlinking : blinking.get();
     }
     public final void setBlinking(final boolean BLINKING) {
-        blinking.set(BLINKING);
+        if (null == blinking) {
+            defaultBlinking = BLINKING;
+        } else {
+            blinking.set(BLINKING);
+        }
         if (BLINKING) {
             timer.start();
         } else {
@@ -281,50 +278,61 @@ public class Led extends Control {
         }
     }
     public final BooleanProperty blinkingProperty() {
+        if (null == blinking) {
+            blinking = new SimpleBooleanProperty(this, "blinking", defaultBlinking);
+        }
         return blinking;
     }
 
     public final long getInterval() {
-        return interval != null ? interval.get() : _interval;
+        return null == interval ? defaultInterval : interval.get();
     }
     public final void setInterval(final long INTERVAL) {
-        if (interval != null) {
-            interval.set(clamp(50_000_000l, 5_000_000_000l, INTERVAL));
+        if (null == interval) {
+            defaultInterval = clamp(50_000_000l, 5_000_000_000l, INTERVAL);
         } else {
-            _interval = clamp(50_000_000l, 5_000_000_000l, INTERVAL);
+            interval.set(clamp(50_000_000l, 5_000_000_000l, INTERVAL));
         }
     }
     public final LongProperty intervalProperty() {
         if (interval == null) {
-            interval = new SimpleLongProperty(this, "interval", _interval);
+            interval = new SimpleLongProperty(this, "interval", defaultInterval);
         }
         return interval;
     }
 
     public final boolean isFrameVisible() {
-        return frameVisible != null ? frameVisible.get() : _frameVisible;
+        return frameVisible == null ? defaultFrameVisible : frameVisible.get();
     }
     public final void setFrameVisible(final boolean FRAME_VISIBLE) {
-        if (frameVisible != null) {
-            frameVisible.set(FRAME_VISIBLE);
+        if (frameVisible == null) {
+            defaultFrameVisible = FRAME_VISIBLE;
         } else {
-            _frameVisible = FRAME_VISIBLE;
+            frameVisible.set(FRAME_VISIBLE);
         }
+
     }
     public final BooleanProperty frameVisibleProperty() {
         if (frameVisible == null) {
-            frameVisible = new SimpleBooleanProperty(this, "frameVisible", _frameVisible);
+            frameVisible = new SimpleBooleanProperty(this, "frameVisible", defaultFrameVisible);
         }
         return frameVisible;
     }
 
     public final LedColor getColor() {
-        return color.get();
+        return null == color ? defaultColor : color.get();
     }
     public final void setColor(final LedColor LED_COLOR) {
-        color.set(LED_COLOR);
+        if (null == color) {
+            defaultColor = LED_COLOR;
+        } else {
+            color.set(LED_COLOR);
+        }
     }
     public final ObjectProperty<LedColor> colorProperty() {
+        if (null == color) {
+            color = new SimpleObjectProperty<>(this, "color", defaultColor);
+        }
         return color;
     }
 
