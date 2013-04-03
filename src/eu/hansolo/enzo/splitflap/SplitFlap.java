@@ -1,10 +1,8 @@
 package eu.hansolo.enzo.splitflap;
 
 import eu.hansolo.enzo.splitflap.skin.SplitFlapSkin;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -41,10 +39,12 @@ public class SplitFlap extends Control {
     }
     private static final FlipEvent       FLIP_FORWARD = new FlipEvent(FlipEvent.FLIP_FORWARD);
     private static final FlipEvent       FIP_BACKWARD = new FlipEvent(FlipEvent.FLIP_BACKWARD);
-    private boolean                      _keepAspect;
-    private BooleanProperty              keepAspect;
+    private boolean                      keepAspect;
+    private double                       defaultFlipTime = 500;
     private DoubleProperty               flipTime;
+    private Color                        defaultTextColor = Color.WHITE;
     private ObjectProperty<Color>        textColor;
+    private String                       defaultText = "";
     private StringProperty               text;
     private ArrayList<String>            selectedSet;
     private ObjectProperty<CharacterSet> characterSet;
@@ -60,16 +60,14 @@ public class SplitFlap extends Control {
 
     public SplitFlap(final CharacterSet CHARACTER_SET, final String TEXT) {
         getStyleClass().add("split-flap");
-        _keepAspect            = true;
-        flipTime               = new SimpleDoubleProperty(500);
-        textColor              = new SimpleObjectProperty<>(Color.WHITE);
+        keepAspect             = true;
         selectedSet            = new ArrayList<>(64);
         characterSet           = new SimpleObjectProperty<>(CHARACTER_SET);
         selectedSet.addAll(Arrays.asList(characterSet.get().selection));
         currentSelectionIndex  = 0;
         nextSelectionIndex     = 1;
         previousSelectionIndex = characterSet.get().selection.length - 1;
-        text                   = new SimpleStringProperty(TEXT);
+        defaultText            = TEXT;
     }
 
 
@@ -81,57 +79,72 @@ public class SplitFlap extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
-        return keepAspect != null ? keepAspect.get() : _keepAspect;
+        return keepAspect;
     }
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
-        if (keepAspect != null) {
-            keepAspect.set(KEEP_ASPECT);
-        } else {
-            _keepAspect = KEEP_ASPECT;
-        }
-    }
-    public final BooleanProperty keepAspectProperty() {
-        if (keepAspect == null) {
-            keepAspect = new SimpleBooleanProperty(this, "keepAspect", _keepAspect);
-        }
-        return keepAspect;
+        keepAspect = KEEP_ASPECT;
     }
 
     public final double getFlipTime() {
-        return flipTime.get();
+        return null == flipTime ? defaultFlipTime : flipTime.get();
     }
     public final void setFlipTime(final double FLIP_TIME) {
-        flipTime.set(FLIP_TIME);
+        if (null == flipTime) {
+            defaultFlipTime = FLIP_TIME;
+        } else {
+            flipTime.set(FLIP_TIME);
+        }
     }
     public final DoubleProperty flipTimeProperty() {
+        if (null == flipTime) {
+            flipTime = new SimpleDoubleProperty(this, "flipTime", defaultFlipTime);
+        }
         return flipTime;
     }
 
     public final Color getTextColor() {
-        return textColor.get();
+        return null == textColor ? defaultTextColor : textColor.get();
     }
     public final void setTextColor(final Color TEXT_COLOR) {
-        textColor.set(TEXT_COLOR);
+        if (null == textColor) {
+            defaultTextColor = TEXT_COLOR;
+        } else {
+            textColor.set(TEXT_COLOR);
+        }
     }
     public final ObjectProperty<Color> textColorProperty() {
+        if (null == textColor) {
+            textColor = new SimpleObjectProperty<>(this, "textColor", defaultTextColor);
+        }
         return textColor;
     }
 
     public final String getText() {
-        return text.get();
+        return null == text ? defaultText : text.get();
     }
     public final void setText(final String TEXT) {
         if(!TEXT.isEmpty() || selectedSet.contains(TEXT.substring(0,1))) {
-            text.set(TEXT.substring(0,1));
+            if (null == text) {
+                defaultText = TEXT.substring(0, 1);
+            } else {
+                text.set(TEXT.substring(0,1));
+            }
             currentSelectionIndex = selectedSet.indexOf(TEXT.substring(0,1));
             nextSelectionIndex    = currentSelectionIndex + 1 > selectedSet.size() ? 0 : currentSelectionIndex + 1;
         } else {
-            text.set(selectedSet.get(0));
+            if (null == text) {
+                defaultText = selectedSet.get(0);
+            } else {
+                text.set(selectedSet.get(0));
+            }
             currentSelectionIndex = 0;
             nextSelectionIndex    = currentSelectionIndex + 1 > selectedSet.size() ? 0 : currentSelectionIndex + 1;
         }
     }
     public final StringProperty textProperty() {
+        if (null == text) {
+            text = new SimpleStringProperty(this, "text", defaultText);
+        }
         return text;
     }
     public final String getNextText() {
