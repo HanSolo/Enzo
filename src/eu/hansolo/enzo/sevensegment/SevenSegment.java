@@ -63,18 +63,18 @@ public class SevenSegment extends Control {
         F,
         G,
         DOT
-    };
+    }
     public static enum                   SegmentStyle {
-        OFF("sevensegment-off"),
-        RED("sevensegment-red"),
-        GREEN("sevensegment-green"),
-        BLUE("sevensegment-blue"),
-        YELLOW("sevensegment-yellow"),
-        ORANGE("sevensegment-orange"),
-        CYAN("sevensegment-cyan"),
-        MAGENTA("sevensegment-magenta"),
-        WHITE("sevensegment-white"),
-        BLACK("sevensegment-black");
+        OFF(STYLE_CLASS_OFF),
+        RED(STYLE_CLASS_RED),
+        GREEN(STYLE_CLASS_GREEN),
+        BLUE(STYLE_CLASS_BLUE),
+        YELLOW(STYLE_CLASS_YELLOW),
+        ORANGE(STYLE_CLASS_ORANGE),
+        CYAN(STYLE_CLASS_CYAN),
+        MAGENTA(STYLE_CLASS_MAGENTA),
+        WHITE(STYLE_CLASS_WHITE),
+        BLACK(STYLE_CLASS_BLACK);
 
         public final String CLASS;
 
@@ -82,10 +82,12 @@ public class SevenSegment extends Control {
             CLASS = CLASS_NAME;
         }
     }
-    private boolean                      _keepAspect;
-    private BooleanProperty              keepAspect;
+    private boolean                      keepAspect;
+    private String                       defaultCharacter = " ";
     private StringProperty               character;
+    private boolean                      defaultDotOn = false;
     private BooleanProperty              dotOn;
+    private SegmentStyle                 defaultSegmentStyle;
     private ObjectProperty<SegmentStyle> segmentStyle;
     private Map<Integer, List<Segment>>  mapping;
 
@@ -117,11 +119,10 @@ public class SevenSegment extends Control {
 
     public SevenSegment(final String CHARACTER, final SegmentStyle SEGMENT_STYLE) {
         getStyleClass().add("seven-segment");
-        _keepAspect  = true;
-        character    = new SimpleStringProperty(CHARACTER.substring(0, 1));
-        dotOn        = new SimpleBooleanProperty(false);
-        segmentStyle = new SimpleObjectProperty<>(SEGMENT_STYLE);
-        mapping      = new HashMap<>(48);
+        keepAspect          = true;
+        defaultCharacter    = CHARACTER.substring(0, 1);
+        defaultSegmentStyle = SEGMENT_STYLE;
+        mapping             = new HashMap<>(48);
         initMapping();
     }
 
@@ -155,55 +156,74 @@ public class SevenSegment extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isKeepAspect() {
-        return keepAspect != null ? keepAspect.get() : _keepAspect;
+        return keepAspect;
     }
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
-        if (keepAspect != null) {
-            keepAspect.set(KEEP_ASPECT);
-        } else {
-            _keepAspect = KEEP_ASPECT;
-        }
-    }
-    public final BooleanProperty keepAspectProperty() {
-        if (keepAspect == null) {
-            keepAspect = new SimpleBooleanProperty(this, "keepAspect", _keepAspect);
-        }
-        return keepAspect;
+        keepAspect = KEEP_ASPECT;
     }
 
     public final String getCharacter() {
-        return character.get();
+        return null == character ? defaultCharacter : character.get();
     }
     public final void setCharacter(final String CHARACTER) {
-        character.set(CHARACTER.substring(0, 1));
+        if (null == character) {
+            defaultCharacter = CHARACTER.substring(0, 1);
+        } else {
+            character.set(CHARACTER.substring(0, 1));
+        }
     }
     public final void setCharacter(final Character CHARACTER) {
-        character.set(String.valueOf(CHARACTER));
+        if (null == character) {
+            defaultCharacter = String.valueOf(CHARACTER);
+        } else {
+            character.set(String.valueOf(CHARACTER));
+        }
     }
     public final void setCharacter(final int CHARACTER) {
-        character.set(Integer.toString(CHARACTER < 0 ? 0 : (CHARACTER > 9 ? 9 : CHARACTER)));
+        if (null == character) {
+            defaultCharacter = Integer.toString(CHARACTER < 0 ? 0 : (CHARACTER > 9 ? 9 : CHARACTER));
+        } else {
+            character.set(Integer.toString(CHARACTER < 0 ? 0 : (CHARACTER > 9 ? 9 : CHARACTER)));
+        }
     }
     public final ReadOnlyStringProperty characterProperty() {
+        if (null == character) {
+            character = new SimpleStringProperty(this, "character", defaultCharacter);
+        }
         return character;
     }
 
     public final boolean isDotOn() {
-        return dotOn.get();
+        return null == dotOn ? defaultDotOn : dotOn.get();
     }
     public final void setDotOn(final boolean DOT_ON) {
-        dotOn.set(DOT_ON);
+        if (null == dotOn) {
+            defaultDotOn = DOT_ON;
+        } else {
+            dotOn.set(DOT_ON);
+        }
     }
     public final BooleanProperty dotOnProperty() {
+        if (null == dotOn) {
+            dotOn = new SimpleBooleanProperty(this, "dotOn", defaultDotOn);
+        }
         return dotOn;
     }
 
     public final SegmentStyle getSegmentStyle() {
-        return segmentStyle.get();
+        return null == segmentStyle ? defaultSegmentStyle : segmentStyle.get();
     }
     public final void setSegmentStyle(final SegmentStyle SEGMENT_STYLE) {
-        segmentStyle.set(SEGMENT_STYLE);
+        if (null == segmentStyle) {
+            defaultSegmentStyle = SEGMENT_STYLE;
+        } else {
+            segmentStyle.set(SEGMENT_STYLE);
+        }
     }
     public final ObjectProperty<SegmentStyle> segmentStyleProperty() {
+        if (null == segmentStyle) {
+            segmentStyle = new SimpleObjectProperty<>(this, "segmentStyle", defaultSegmentStyle);
+        }
         return segmentStyle;
     }
 

@@ -29,8 +29,10 @@
 package eu.hansolo.enzo.simpleindicator;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.ControlBuilder;
@@ -62,6 +64,11 @@ public class SimpleIndicatorBuilder<B extends SimpleIndicatorBuilder<B>> extends
         return this;
     }
 
+    public final SimpleIndicatorBuilder indicatorStyle(final SimpleIndicator.IndicatorStyle INDICATOR_STYLE) {
+        properties.put("indicatorStyle", new SimpleObjectProperty<SimpleIndicator.IndicatorStyle>(INDICATOR_STYLE));
+        return this;
+    }
+
     @Override public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B)this;
@@ -87,6 +94,8 @@ public class SimpleIndicatorBuilder<B extends SimpleIndicatorBuilder<B>> extends
         for (String key : properties.keySet()) {
             if("styleClass".equals(key)) {
                 CONTROL.getStyleClass().setAll("indicator", ((StringProperty) properties.get(key)).get());
+            }else if ("indicatorStyle".equals(key)) {
+                CONTROL.setIndicatorStyle(((ObjectProperty<SimpleIndicator.IndicatorStyle>) properties.get(key)).get());
             } else if ("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if ("prefHeight".equals(key)) {

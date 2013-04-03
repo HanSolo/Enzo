@@ -58,9 +58,11 @@ public class Demo extends Application {
                 if (NOW > lastTimerCall + 1_000_000_000l) {
                     toggle ^= true;
                     if (toggle) {
-                        control.getStyleClass().setAll("indicator", SimpleIndicator.STYLE_CLASS_PURPLE);
+                        //control.getStyleClass().setAll("indicator", SimpleIndicator.STYLE_CLASS_PURPLE);
+                        control.setIndicatorStyle(SimpleIndicator.IndicatorStyle.PURPLE);
                     } else {
-                        control.getStyleClass().setAll("indicator", SimpleIndicator.STYLE_CLASS_MAGENTA);
+                        //control.getStyleClass().setAll("indicator", SimpleIndicator.STYLE_CLASS_MAGENTA);
+                        control.setIndicatorStyle(SimpleIndicator.IndicatorStyle.MAGENTA);
                     }
                     lastTimerCall = NOW;
                 }

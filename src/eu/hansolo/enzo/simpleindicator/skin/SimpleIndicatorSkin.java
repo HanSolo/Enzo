@@ -107,6 +107,7 @@ public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, Simpl
     private void registerListeners() {
         registerChangeListener(control.widthProperty(), "RESIZE");
         registerChangeListener(control.heightProperty(), "RESIZE");
+        registerChangeListener(control.indicatorStyleProperty(), "UPDATE");
     }
 
 
@@ -115,6 +116,8 @@ public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, Simpl
         super.handleControlPropertyChanged(PROPERTY);
         if ("RESIZE".equals(PROPERTY)) {
             resize();
+        } else if ("UPDATE".equals(PROPERTY)) {
+            update();
         }
     }
 
@@ -156,6 +159,11 @@ public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, Simpl
 
 
     // ******************** Private Methods ***********************************
+    private void update() {
+        control.getStyleClass().setAll("indicator", control.getIndicatorStyle().CLASS);
+        System.out.println(control.getIndicatorStyle());
+    }
+
     private void resize() {
         size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
 
