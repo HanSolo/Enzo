@@ -62,6 +62,12 @@ public class Demo extends Application {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + interval) {
                     Color color = colors[RND.nextInt(5)];
+                    seg1.setColor(color);
+                    seg2.setColor(color);
+                    seg3.setColor(color);
+                    seg4.setColor(color);
+                    seg5.setColor(color);
+                    seg6.setColor(color);
                     seg7.setColor(color);
                     seg8.setColor(color);
                     seg9.setColor(color);

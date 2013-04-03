@@ -25,12 +25,17 @@ public class SquareMatrixSegment extends Control {
         D06, D16, D26, D36, D46, D56, D66,
         D07, D17, D27, D37, D47, D57, D67
     }
+    private Color                                   defaultColor = Color.RED;
     private ObjectProperty<Color>                   color;
+    private String                                  defaultCharacter = " ";
     private StringProperty                          character;
     private Map<Integer, List<Dot>>                 mapping;
     private ObjectProperty<Map<Integer, List<Dot>>> customDotMapping;
+    private boolean                                 defaultBackgroundVisible = true;
     private BooleanProperty                         backgroundVisible;
+    private boolean                                 defaultHighlightsVisible = true;
     private BooleanProperty                         highlightsVisible;
+    private boolean                                 defaultGlowEnabled = true;
     private BooleanProperty                         glowEnabled;
 
 
@@ -49,12 +54,9 @@ public class SquareMatrixSegment extends Control {
 
     public SquareMatrixSegment(final String CHARACTER, final Color COLOR) {
         getStyleClass().add("square-matrix-segment");
-        color             = new SimpleObjectProperty<>(COLOR);
-        character         = new SimpleStringProperty(CHARACTER);
+        defaultColor      = COLOR;
+        defaultCharacter  = CHARACTER;
         mapping           = new HashMap<>(72);
-        backgroundVisible = new SimpleBooleanProperty(true);
-        highlightsVisible = new SimpleBooleanProperty(true);
-        glowEnabled       = new SimpleBooleanProperty(true);
 
         initMapping();
     }
@@ -138,25 +140,43 @@ public class SquareMatrixSegment extends Control {
     }
 
     public final Color getColor() {
-        return color.get();
+        return null == color ? defaultColor : color.get();
     }
     public final void setColor(final Color COLOR) {
-        color.set(COLOR);
+        if (null == color) {
+            defaultColor = COLOR;
+        } else {
+            color.set(COLOR);
+        }
     }
     public final ObjectProperty<Color> colorProperty() {
+        if (null == color) {
+            color = new SimpleObjectProperty<>(this, "color", defaultColor);
+        }
         return color;
     }
 
     public final String getCharacter() {
-        return character.get();
+        return null == character ? defaultCharacter : character.get();
     }
     public final void setCharacter(final String CHARACTER) {
-        character.set(CHARACTER);
+        if (null == character) {
+            defaultCharacter = CHARACTER;
+        } else {
+            character.set(CHARACTER);
+        }
     }
     public final void setCharacter(final Character CHARACTER) {
-        character.set(String.valueOf(CHARACTER));
+        if (null == character) {
+            defaultCharacter = String.valueOf(CHARACTER);
+        } else {
+            character.set(String.valueOf(CHARACTER));
+        }
     }
     public final StringProperty characterProperty() {
+        if (null == character) {
+            character = new SimpleStringProperty(this, "character", defaultCharacter);
+        }
         return character;
     }
 
@@ -221,32 +241,53 @@ public class SquareMatrixSegment extends Control {
     }
 
     public final boolean isBackgroundVisible() {
-        return backgroundVisible.get();
+        return null == backgroundVisible ? defaultBackgroundVisible : backgroundVisible.get();
     }
     public final void setBackgroundVisible(final boolean BACKGROUND_VISIBLE) {
-        backgroundVisible.set(BACKGROUND_VISIBLE);
+        if (null == backgroundVisible) {
+            defaultBackgroundVisible = BACKGROUND_VISIBLE;
+        } else {
+            backgroundVisible.set(BACKGROUND_VISIBLE);
+        }
     }
     public final BooleanProperty backgroundVisibleProperty() {
+        if (null == backgroundVisible) {
+            backgroundVisible = new SimpleBooleanProperty(this, "backgroundVisible", defaultBackgroundVisible);
+        }
         return backgroundVisible;
     }
 
     public final boolean isHighlightsVisible() {
-        return highlightsVisible.get();
+        return null == highlightsVisible ? defaultHighlightsVisible : highlightsVisible.get();
     }
     public final void setHighlightsVisible(final boolean HIGHLIGHTS_VISIBLE) {
-        highlightsVisible.set(HIGHLIGHTS_VISIBLE);
+        if (null == highlightsVisible) {
+            defaultHighlightsVisible = HIGHLIGHTS_VISIBLE;
+        } else {
+            highlightsVisible.set(HIGHLIGHTS_VISIBLE);
+        }
     }
     public final BooleanProperty highlightsVisibleProperty() {
+        if (null == highlightsVisible) {
+            highlightsVisible = new SimpleBooleanProperty(this, "highlightsVisible", defaultHighlightsVisible);
+        }
         return highlightsVisible;
     }
 
     public final boolean isGlowEnabled() {
-        return glowEnabled.get();
+        return null == glowEnabled ? defaultGlowEnabled : glowEnabled.get();
     }
     public final void setGlowEnabled(final boolean GLOW_ENABLED) {
-        glowEnabled.set(GLOW_ENABLED);
+        if (null == glowEnabled) {
+            defaultGlowEnabled = GLOW_ENABLED;
+        } else {
+            glowEnabled.set(GLOW_ENABLED);
+        }
     }
     public final BooleanProperty glowEnabledProperty() {
+        if (null == glowEnabled) {
+            glowEnabled = new SimpleBooleanProperty(this, "glowEnabled", defaultGlowEnabled);
+        }
         return glowEnabled;
     }
     
