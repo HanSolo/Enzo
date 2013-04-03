@@ -32,16 +32,19 @@ import eu.hansolo.enzo.led.Led;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
 
-import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -51,29 +54,29 @@ import java.util.LinkedList;
  * Time: 11:29
  */
 public class LedBargraph extends Control {
-    private ObjectProperty<Led.Type>          ledType;
-    private BooleanProperty                   frameVisible;
-    private DoubleProperty                    ledSize;
-    private ObjectProperty<Orientation>       orientation;
-    private IntegerProperty                   noOfLeds;
-    private ObjectProperty<LinkedList<Color>> ledColors;
-    private BooleanProperty                   peakValueVisible;
-    private DoubleProperty                    value;
+    private Led.Type                    defaultLedType = Led.Type.ROUND;
+    private ObjectProperty<Led.Type>    ledType;
+    private boolean                     defaultFrameVisible = false;
+    private BooleanProperty             frameVisible;
+    private double                      defaultLedSize = 16;
+    private DoubleProperty              ledSize;
+    private Orientation                 defaultOrientation = Orientation.HORIZONTAL;
+    private ObjectProperty<Orientation> orientation;
+    private int                         defaultNoOfLeds = 16;
+    private IntegerProperty             noOfLeds;
+    private ListProperty<Color>         ledColors;
+    private boolean                     defaultPeakValueVisible = false;
+    private BooleanProperty             peakValueVisible;
+    private DoubleProperty              value;
 
 
     // ******************** Constructors **************************************
     public LedBargraph() {
         getStyleClass().add("bargraph");
-        ledType          = new SimpleObjectProperty<>(Led.Type.ROUND);
-        frameVisible     = new SimpleBooleanProperty(false);
-        ledSize          = new SimpleDoubleProperty(16);
-        orientation      = new SimpleObjectProperty<>(Orientation.HORIZONTAL);
-        noOfLeds         = new SimpleIntegerProperty(16);
-        ledColors        = new SimpleObjectProperty<>(new LinkedList<Color>());
-        peakValueVisible = new SimpleBooleanProperty(false);
-        value            = new SimpleDoubleProperty(0);
+        ledColors        = new SimpleListProperty(this, "ledColors", FXCollections.<Color>observableArrayList());
+        value            = new SimpleDoubleProperty(this, "value", 0);
 
-        for (int i = 0 ; i < noOfLeds.get() ; i++) {
+        for (int i = 0 ; i < getNoOfLeds() ; i++) {
             if (i < 11) {
                 ledColors.get().add(Color.LIME);
             } else if (i > 10 && i < 13) {
@@ -87,48 +90,76 @@ public class LedBargraph extends Control {
 
     // ******************** Methods *******************************************
     public final Led.Type getLedType() {
-        return ledType.get();
+        return null == ledType ? defaultLedType : ledType.get();
     }
     public final void setLedType(final Led.Type LED_TYPE) {
-        ledType.set(LED_TYPE);
+        if (null == ledType) {
+            defaultLedType = LED_TYPE;
+        } else {
+            ledType.set(LED_TYPE);
+        }
     }
     public final ObjectProperty<Led.Type> ledTypeProperty() {
+        if (null == ledType) {
+            ledType = new SimpleObjectProperty<>(this, "ledType", defaultLedType);
+        }
         return ledType;
     }
 
     public final boolean isFrameVisible() {
-        return frameVisible.get();
+        return null == frameVisible ? defaultFrameVisible : frameVisible.get();
     }
     public final void setFrameVisible(final boolean FRAME_VISIBLE) {
-        frameVisible.set(FRAME_VISIBLE);
+        if (null == frameVisible) {
+            defaultFrameVisible = FRAME_VISIBLE;
+        } else {
+            frameVisible.set(FRAME_VISIBLE);
+        }
     }
     public final BooleanProperty frameVisibleProperty() {
+        if (null == frameVisible) {
+            frameVisible = new SimpleBooleanProperty(this, "frameVisible", defaultFrameVisible);
+        }
         return frameVisible;
     }
 
     public final double getLedSize() {
-        return ledSize.get();
+        return null == ledSize ? defaultLedSize : ledSize.get();
     }
     public final void setLedSize(final double LED_SIZE) {
         double size = LED_SIZE < 10 ? 10 : (LED_SIZE > 50 ? 50 : LED_SIZE);
-        ledSize.set(size);
+        if (null == ledSize) {
+            defaultLedSize = size;
+        } else {
+            ledSize.set(size);
+        }
     }
     public final DoubleProperty ledSizeProperty() {
+        if (null == ledSize) {
+            ledSize = new SimpleDoubleProperty(this, "ledSize", defaultLedSize);
+        }
         return ledSize;
     }
 
     public final Orientation getOrientation() {
-        return orientation.get();
+        return null == orientation ? defaultOrientation : orientation.get();
     }
     public final void setOrientation(final Orientation ORIENTATION) {
-        orientation.set(ORIENTATION);
+        if (null == orientation) {
+            defaultOrientation = ORIENTATION;
+        } else {
+            orientation.set(ORIENTATION);
+        }
     }
     public final ObjectProperty<Orientation> orientationProperty() {
+        if (null == orientation) {
+            orientation = new SimpleObjectProperty<>(this, "orientation", defaultOrientation);
+        }
         return orientation;
     }
 
     public final int getNoOfLeds() {
-        return noOfLeds.get();
+        return null == noOfLeds ? defaultNoOfLeds : noOfLeds.get();
     }
     public final void setNoOfLeds(final int NO_OF_LEDS) {
         int amount = NO_OF_LEDS < 5 ? 5 : NO_OF_LEDS;
@@ -137,19 +168,26 @@ public class LedBargraph extends Control {
                 ledColors.get().add(Color.RED);
             }
         }
-        noOfLeds.set(amount);
+        if (null == noOfLeds) {
+            defaultNoOfLeds = amount;
+        } else {
+            noOfLeds.set(amount);
+        }
     }
     public final IntegerProperty noOfLedsProperty() {
+        if (null == noOfLeds) {
+            noOfLeds = new SimpleIntegerProperty(this, "noOfLeds", defaultNoOfLeds);
+        }
         return noOfLeds;
     }
 
-    public final LinkedList<Color> getLedColors() {
+    public final List<Color> getLedColors() {
         return ledColors.get();
     }
-    public final void setLedColors(final LinkedList<Color> LED_COLORS) {
-        ledColors.set(LED_COLORS);
+    public final void setLedColors(final List<Color> LED_COLORS) {
+        ledColors.get().setAll(LED_COLORS);
     }
-    public final ObjectProperty<LinkedList<Color>> ledColorsProperty() {
+    public final ListProperty<Color> ledColorsProperty() {
         return ledColors;
     }
 
@@ -157,8 +195,8 @@ public class LedBargraph extends Control {
         Color ledColor;
         if (INDEX < 0) {
             ledColor = ledColors.get().get(0);
-        } else if (INDEX > noOfLeds.get() - 1) {
-            ledColor = ledColors.get().get(noOfLeds.get() - 1);
+        } else if (INDEX > getNoOfLeds() - 1) {
+            ledColor = ledColors.get().get(getNoOfLeds() - 1);
         } else {
             ledColor = ledColors.get().get(INDEX);
         }
@@ -176,12 +214,19 @@ public class LedBargraph extends Control {
     }
 
     public final boolean isPeakValueVisible() {
-        return peakValueVisible.get();
+        return null == peakValueVisible ? defaultPeakValueVisible : peakValueVisible.get();
     }
     public final void setPeakValueVisible(final boolean PEAK_VALUE_VISIBLE) {
-        peakValueVisible.set(PEAK_VALUE_VISIBLE);
+        if (null == peakValueVisible) {
+            defaultPeakValueVisible = PEAK_VALUE_VISIBLE;
+        } else {
+            peakValueVisible.set(PEAK_VALUE_VISIBLE);
+        }
     }
     public final BooleanProperty peakValueVisibleProperty() {
+        if (null == peakValueVisible) {
+            peakValueVisible = new SimpleBooleanProperty(this, "peakValueVisible", defaultPeakValueVisible);
+        }
         return peakValueVisible;
     }
 
