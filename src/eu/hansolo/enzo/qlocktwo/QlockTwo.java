@@ -315,21 +315,25 @@ public class QlockTwo extends Control {
             dots = DOTS;
         }
     }
+    private QlockColor                 defaultColor;
     private ObjectProperty<QlockColor> color;
+    private Language                   defaultLanguage;
     private ObjectProperty<Language>   language;
     private Qlock                      qlock;
+    private boolean                    defaultSecondsMode;
     private BooleanProperty            secondsMode;
+    private boolean                    defaultHighlightVisible;
     private BooleanProperty            highlightVisible;
 
 
     // ******************** Constructors **************************************
     public QlockTwo() {
         getStyleClass().add("qlocktwo");
-        color            = new SimpleObjectProperty<>(QlockColor.BLACK_ICE_TEA);
-        qlock            = new QlockGerman();
-        language         = new SimpleObjectProperty<>(qlock.getLanguage());
-        secondsMode      = new SimpleBooleanProperty(false);
-        highlightVisible = new SimpleBooleanProperty(true);
+        defaultColor            = QlockColor.BLACK_ICE_TEA;
+        qlock                   = new QlockGerman();
+        defaultLanguage         = qlock.getLanguage();
+        defaultSecondsMode      = false;
+        defaultHighlightVisible = true;
     }
 
 
@@ -343,17 +347,24 @@ public class QlockTwo extends Control {
     }
 
     public final QlockColor getColor() {
-        return color.get();
+        return null == color ? defaultColor : color.get();
     }
     public final void setColor(final QlockColor COLOR) {
-        color.set(COLOR);
+        if (null == color) {
+            defaultColor = COLOR;
+        } else {
+            color.set(COLOR);
+        }
     }
     public final ObjectProperty<QlockColor> colorProperty() {
+        if (null == color) {
+            color = new SimpleObjectProperty<>(this, "color", defaultColor);
+        }
         return color;
     }
 
     public final Language getLanguage() {
-        return language.get();
+        return null == language ? defaultLanguage : language.get();
     }
     public final void setLanguage(final Language LANGUAGE) {
         switch(LANGUAGE) {
@@ -373,29 +384,50 @@ public class QlockTwo extends Control {
                 qlock = new QlockSpanish();
                 break;
         }
-        language.set(LANGUAGE);
+        if (null == language) {
+            defaultLanguage = LANGUAGE;
+        } else {
+            language.set(LANGUAGE);
+        }
     }
     public final ObjectProperty<Language> languageProperty() {
+        if (null == language) {
+            language = new SimpleObjectProperty<>(this, "language", defaultLanguage);
+        }
         return language;
     }
 
     public final boolean isSecondsMode() {
-        return secondsMode.get();
+        return null == secondsMode ? defaultSecondsMode : secondsMode.get();
     }
     public final void setSecondsMode(final boolean SECONDS_MODE) {
-        secondsMode.set(SECONDS_MODE);
+        if (null == secondsMode) {
+            defaultSecondsMode = SECONDS_MODE;
+        } else {
+            secondsMode.set(SECONDS_MODE);
+        }
     }
     public final BooleanProperty secondsModeProperty() {
+        if (null == secondsMode) {
+            secondsMode = new SimpleBooleanProperty(this, "secondsMode", defaultSecondsMode);
+        }
         return secondsMode;
     }
 
     public final boolean isHighlightVisible() {
-        return highlightVisible.get();
+        return null == highlightVisible ? defaultHighlightVisible : highlightVisible.get();
     }
     public final void setHighlightVisible(final boolean HIGHLIGHT_VISIBLE) {
-        highlightVisible.set(HIGHLIGHT_VISIBLE);
+        if (null == highlightVisible) {
+            defaultHighlightVisible = HIGHLIGHT_VISIBLE;
+        } else {
+            highlightVisible.set(HIGHLIGHT_VISIBLE);
+        }
     }
     public final BooleanProperty highlightVisibleProperty() {
+        if (null == highlightVisible) {
+            highlightVisible = new SimpleBooleanProperty(this, "highlightVisible", defaultHighlightVisible);
+        }
         return highlightVisible;
     }
 
