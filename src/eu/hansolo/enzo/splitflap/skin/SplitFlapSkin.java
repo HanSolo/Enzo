@@ -32,7 +32,6 @@ import java.util.ArrayList;
 
 
 public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior> {
-    private static final FlipEvent FLIP_FINISHED = new FlipEvent(FlipEvent.FLIP_FINISHED);
     private static final double DEFAULT_WIDTH  = 112;
     private static final double DEFAULT_HEIGHT = 189;
     private static final double MINIMUM_WIDTH  = 5;
@@ -40,6 +39,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     private static final double MAXIMUM_WIDTH  = 1024;
     private static final double MAXIMUM_HEIGHT = 1024;
     private static double       aspectRatio;
+    private final FlipEvent     FLIP_FINISHED;
     private SplitFlap           control;
     private ArrayList<String>   selectedSet;
     private int                 currentSelectionIndex;
@@ -83,6 +83,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     public SplitFlapSkin(final SplitFlap CONTROL) {
         super(CONTROL, new SplitFlapBehavior(CONTROL));
         control               = CONTROL;
+        FLIP_FINISHED         = new FlipEvent(this, control, FlipEvent.FLIP_FINISHED);
         selectedSet           = control.getSelectedSet();
         currentSelectionIndex = control.getSelectedSet().indexOf(control.getText());
         nextSelectionIndex    = currentSelectionIndex + 1 > control.getSelectedSet().size() ? 0 : currentSelectionIndex + 1;

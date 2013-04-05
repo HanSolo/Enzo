@@ -37,8 +37,8 @@ public class SplitFlap extends Control {
         }
 
     }
-    private static final FlipEvent       FLIP_FORWARD = new FlipEvent(FlipEvent.FLIP_FORWARD);
-    private static final FlipEvent       FIP_BACKWARD = new FlipEvent(FlipEvent.FLIP_BACKWARD);
+    private final FlipEvent              FLIP_FORWARD = new FlipEvent(this, null, FlipEvent.FLIP_FORWARD);
+    private final FlipEvent              FIP_BACKWARD = new FlipEvent(this, null, FlipEvent.FLIP_BACKWARD);
     private boolean                      keepAspect;
     private double                       defaultFlipTime = 500;
     private DoubleProperty               flipTime;

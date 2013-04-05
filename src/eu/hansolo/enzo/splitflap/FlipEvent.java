@@ -17,11 +17,8 @@ public class FlipEvent extends Event {
     public static final EventType<FlipEvent> FLIP_FINISHED = new EventType(ANY, "FLIP_FINISHED");
 
 
-    public FlipEvent(EventType<? extends Event> TYPE) {
-        super(TYPE);
-    }
-
-    public FlipEvent(final Object SOURCE, final EventTarget TARGET, EventType<? extends Event> TYPE) {
+    // ******************** Constructors **************************************
+    public FlipEvent(final Object SOURCE, final EventTarget TARGET, EventType<FlipEvent> TYPE) {
         super(SOURCE, TARGET, TYPE);
     }
 }
