@@ -46,60 +46,92 @@ public class Clock extends Control {
         DB,
         BRAUN
     }
+    private boolean                defaultDiscreteSecond;
     private BooleanProperty        discreteSecond;
+    private boolean                defaultSecondPointerVisible;
     private BooleanProperty        secondPointerVisible;
+    private boolean                defaultNightMode;
     private BooleanProperty        nightMode;
+    private Design                 defaultDesign;
     private ObjectProperty<Design> design;
 
 
     // ******************** Constructors **************************************
     public Clock() {
         getStyleClass().add("clock");
-        discreteSecond       = new SimpleBooleanProperty(false);
-        secondPointerVisible = new SimpleBooleanProperty(true);
-        nightMode            = new SimpleBooleanProperty(false);
-        design               = new SimpleObjectProperty<>(Design.IOS6);
+        defaultDiscreteSecond       = false;
+        defaultSecondPointerVisible = true;
+        defaultNightMode            = false;
+        defaultDesign               = Design.IOS6;
     }
 
 
     // ******************** Methods *******************************************
     public final boolean isDiscreteSecond() {
-        return discreteSecond.get();
+        return null == discreteSecond ? defaultDiscreteSecond : discreteSecond.get();
     }
     public final void setDiscreteSecond(final boolean DISCRETE_SECOND) {
-        discreteSecond.set(DISCRETE_SECOND);
+        if (null == discreteSecond) {
+            defaultDiscreteSecond = DISCRETE_SECOND;
+        } else {
+            discreteSecond.set(DISCRETE_SECOND);
+        }
     }
     public final BooleanProperty discreteSecondProperty() {
+        if (null == discreteSecond) {
+            discreteSecond = new SimpleBooleanProperty(this, "discreteSecond", defaultDiscreteSecond);
+        }
         return discreteSecond;
     }
 
     public final boolean isSecondPointerVisible() {
-        return secondPointerVisible.get();
+        return null == secondPointerVisible ? defaultSecondPointerVisible : secondPointerVisible.get();
     }
     public final void setSecondPointerVisible(final boolean SECOND_POINTER_VISIBLE) {
-        secondPointerVisible.set(SECOND_POINTER_VISIBLE);
+        if (null == secondPointerVisible) {
+            defaultSecondPointerVisible = SECOND_POINTER_VISIBLE;
+        } else {
+            secondPointerVisible.set(SECOND_POINTER_VISIBLE);
+        }
     }
     public final BooleanProperty secondPointerVisibleProperty() {
+        if (null == secondPointerVisible) {
+            secondPointerVisible = new SimpleBooleanProperty(this, "secondPointerVisible", defaultSecondPointerVisible);
+        }
         return secondPointerVisible;
     }
 
     public final boolean isNightMode() {
-        return nightMode.get();
+        return null == nightMode ? defaultNightMode : nightMode.get();
     }
     public final void setNightMode(final boolean NIGHT_MODE) {
-        nightMode.set(NIGHT_MODE);
+        if (null == nightMode) {
+            defaultNightMode = NIGHT_MODE;
+        } else {
+            nightMode.set(NIGHT_MODE);
+        }
     }
     public final BooleanProperty nightModeProperty() {
+        if (null == nightMode) {
+            nightMode = new SimpleBooleanProperty(this, "nightMode", defaultNightMode);
+        }
         return nightMode;
     }
 
     public final Design getDesign() {
-        return design.get();
+        return null == design ? defaultDesign : design.get();
     }
     public final void setDesign(final Design DESIGN) {
-        design.set(DESIGN);
+        if (null == design) {
+            defaultDesign = DESIGN;
+        } else {
+            design.set(DESIGN);
+        }
     }
     public final ObjectProperty<Design> designProperty() {
+        if (null == design) {
+            design = new SimpleObjectProperty<>(this, "design", defaultDesign);
+        }
         return design;
     }
 
