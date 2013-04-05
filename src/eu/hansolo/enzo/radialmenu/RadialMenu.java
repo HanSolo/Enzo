@@ -249,11 +249,9 @@ public class RadialMenu extends Pane {
     private void registerListeners() {
         widthProperty().addListener((ov, oldWidth, newWidth) -> {
             if (oldWidth.doubleValue() != newWidth.doubleValue()) isDirty = true;
-            resize();
         });
         heightProperty().addListener((ov, oldHeight, newHeight) -> {
             if (oldHeight.doubleValue() != newHeight.doubleValue()) isDirty = true;
-            resize();
         });
     }
 
