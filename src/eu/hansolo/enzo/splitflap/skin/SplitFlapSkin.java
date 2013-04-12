@@ -14,6 +14,7 @@ import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.VPos;
+import javafx.scene.CacheHint;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlurType;
@@ -22,6 +23,9 @@ import javafx.scene.effect.InnerShadowBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
@@ -44,7 +48,6 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     private ArrayList<String>   selectedSet;
     private int                 currentSelectionIndex;
     private int                 nextSelectionIndex;
-    private double              size;
     private double              width;
     private double              height;
     private double              flapHeight;
@@ -66,6 +69,8 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     private GraphicsContext     ctxTextFront;
     private Canvas              flapTextBack;
     private GraphicsContext     ctxTextBack;
+    private LinearGradient      upperTextFill;
+    private LinearGradient      lowerTextFill;
     private Font                font;
     private Rotate              rotateFlap;
     private Timeline            timeline;
@@ -121,10 +126,10 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
     private void initGraphics() {
         fixtureRight = new Region();
-        fixtureRight.getStyleClass().setAll("fixture-right");
+        fixtureRight.getStyleClass().setAll(control.isDarkFixture() ? "fixture-dark" : "fixture");
 
         fixtureLeft = new Region();
-        fixtureLeft.getStyleClass().setAll("fixture-left");
+        fixtureLeft.getStyleClass().setAll(control.isDarkFixture() ? "fixture-dark" : "fixture");
 
         innerShadow = InnerShadowBuilder.create()
                                         .offsetY(-0.01 * flapHeight)
@@ -161,7 +166,13 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         //font = Font.font("Bebas Neue", DEFAULT_HEIGHT);
         font = Font.loadFont(getClass().getResourceAsStream("/resources/bebasneue.otf"), DEFAULT_HEIGHT);
 
+        upperTextFill = new LinearGradient(0, 0,
+                                           0, flapHeight,
+                                           false, CycleMethod.NO_CYCLE,
+                                           new Stop(0.0, control.getTextColor()),
+                                           new Stop(1.0, control.getTextColor().darker()));
         upperBackgroundText    = new Canvas();
+        upperBackgroundText.setEffect(innerShadow);
         ctxUpperBackgroundText = upperBackgroundText.getGraphicsContext2D();
         ctxUpperBackgroundText.setTextBaseline(VPos.CENTER);
         ctxUpperBackgroundText.setTextAlign(TextAlignment.CENTER);
@@ -170,7 +181,13 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         lowerBackground.getStyleClass().setAll("flap-lower");
         lowerBackground.setEffect(innerHighlight);
 
+        lowerTextFill = new LinearGradient(0, 0.5079365079365079 * DEFAULT_HEIGHT,
+                                           0, 0.5079365079365079 * DEFAULT_HEIGHT + flapHeight,
+                                           false, CycleMethod.NO_CYCLE,
+                                           new Stop(0.0, control.getTextColor().darker()),
+                                           new Stop(1.0, control.getTextColor()));
         lowerBackgroundText    = new Canvas();
+        lowerBackgroundText.setEffect(innerHighlight);
         ctxLowerBackgroundText = lowerBackgroundText.getGraphicsContext2D();
         ctxLowerBackgroundText.setTextBaseline(VPos.CENTER);
         ctxLowerBackgroundText.setTextAlign(TextAlignment.CENTER);
@@ -181,17 +198,19 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         flap.getTransforms().add(rotateFlap);
 
         flapTextFront = new Canvas();
+        flapTextFront.setEffect(innerShadow);
+        flapTextFront.getTransforms().add(rotateFlap);
         ctxTextFront  = flapTextFront.getGraphicsContext2D();
         ctxTextFront.setTextBaseline(VPos.CENTER);
         ctxTextFront.setTextAlign(TextAlignment.CENTER);
-        flapTextFront.getTransforms().add(rotateFlap);
 
         flapTextBack  = new Canvas();
+        flapTextBack.setEffect(reversedInnerHighlight);
+        flapTextBack.getTransforms().add(rotateFlap);
+        flapTextBack.setVisible(false);
         ctxTextBack   = flapTextBack.getGraphicsContext2D();
         ctxTextBack.setTextBaseline(VPos.CENTER);
         ctxTextBack.setTextAlign(TextAlignment.CENTER);
-        flapTextBack.getTransforms().add(rotateFlap);
-        flapTextBack.setVisible(false);
 
         pane.getChildren().setAll(fixtureRight,
                                   fixtureLeft,
@@ -213,7 +232,9 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         registerChangeListener(control.prefWidthProperty(), "PREF_SIZE");
         registerChangeListener(control.prefHeightProperty(), "PREF_SIZE");
         registerChangeListener(control.textProperty(), "TEXT");
+        registerChangeListener(control.textColorProperty(), "TEXT_COLOR");
         registerChangeListener(control.characterSetProperty(), "CHARACTER_SET");
+        registerChangeListener(control.darkFixtureProperty(), "DARK_FIXTURE");
 
         control.getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {
@@ -263,11 +284,16 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
             aspectRatio = control.getPrefHeight() / control.getPrefWidth();
         } else if ("TEXT".equals(PROPERTY)) {
             flipForward();
+        } else if ("TEXT_COLOR".equals(PROPERTY)) {
+            refreshTextCtx();
         } else if ("CHARACTER_SET".equals(PROPERTY)) {
             selectedSet.clear();
             for (String text : control.getSelectedSet()) {
                 selectedSet.add(text);
             }
+        } else if ("DARK_FIXTURE".equals(PROPERTY)) {
+            fixtureLeft.getStyleClass().setAll(control.isDarkFixture() ? "fixture-left-dark" : "fixture-left");
+            fixtureRight.getStyleClass().setAll(control.isDarkFixture() ? "fixture-right-dark" : "fixture-right");
         }
     }
 
@@ -282,7 +308,6 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         }
         return super.computePrefWidth(prefHeight);
     }
-
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = DEFAULT_WIDTH;
         if (PREF_WIDTH != -1) {
@@ -294,7 +319,6 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
         return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
     }
-
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
         return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
     }
@@ -302,14 +326,15 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
         return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
     }
-
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
         return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
     }
 
     public void flipForward() {
         timeline.stop();
-
+        flap.setCacheShape(true);
+        flap.setCache(true);
+        flap.setCacheHint(CacheHint.SPEED);
         currentSelectionIndex++;
         if (currentSelectionIndex >= selectedSet.size()) {
             currentSelectionIndex = 0;
@@ -323,7 +348,6 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         timeline.getKeyFrames().setAll(keyFrame);
         timeline.play();
     }
-
     public void flipBackward() {
         timeline.stop();
         keyValueFlap = new KeyValue(rotateFlap.angleProperty(), -180, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
@@ -336,24 +360,43 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         double flapWidth  = flapTextFront.getWidth();
         double flapHeight = flapTextFront.getHeight();
 
+        upperTextFill = new LinearGradient(0, 0,
+                                           0, flapHeight,
+                                           false, CycleMethod.NO_CYCLE,
+                                           new Stop(0.0, control.getTextColor().deriveColor(0.0, 1.0, 0.75, 1.0)),
+                                           new Stop(0.97, control.getTextColor()),
+                                           new Stop(1.0, control.getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0)));
+
+        lowerTextFill = new LinearGradient(0, 0,
+                                           0, flapHeight,
+                                           false, CycleMethod.NO_CYCLE,
+                                           new Stop(0.0, control.getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0)),
+                                           new Stop(0.03, control.getTextColor()),
+                                           new Stop(1.0, control.getTextColor()));
+
         // set the text on the upper background
         ctxUpperBackgroundText.clearRect(0, 0, flapWidth, flapHeight);
-        ctxUpperBackgroundText.setFill(control.getTextColor());
+        ctxUpperBackgroundText.setFill(upperTextFill);
         ctxUpperBackgroundText.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, height * 0.55);
 
         // set the text on the lower background
         ctxLowerBackgroundText.clearRect(0, 0, flapWidth, flapHeight);
-        ctxLowerBackgroundText.setFill(control.getTextColor());
+        ctxLowerBackgroundText.setFill(lowerTextFill);
         ctxLowerBackgroundText.fillText(selectedSet.get(currentSelectionIndex), width * 0.5, height * 0.041);
 
         // set the text on the flap front
         ctxTextFront.clearRect(0, 0, flapWidth, flapHeight);
-        ctxTextFront.setFill(control.getTextColor());
+        ctxTextFront.setFill(upperTextFill);
         ctxTextFront.fillText(selectedSet.get(currentSelectionIndex), width * 0.5, height * 0.55);
 
         // set the text on the flap back
         ctxTextBack.clearRect(0, 0, flapWidth, flapHeight);
-        ctxTextBack.setFill(control.getTextColor());
+        ctxTextBack.setFill(new LinearGradient(0, 0,
+                                               0, -flapHeight,
+                                               false, CycleMethod.NO_CYCLE,
+                                               new Stop(0.0, control.getTextColor()),
+                                               new Stop(0.97, control.getTextColor()),
+                                               new Stop(1.0, control.getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0))));
         ctxTextBack.save();
         ctxTextBack.scale(1,-1);
         ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.45);
@@ -363,7 +406,6 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
     // ******************** Resizing ******************************************
     private void resize() {
-        size   = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
         width  = control.getWidth();
         height = control.getHeight();
         if (control.isKeepAspect()) {
@@ -373,6 +415,11 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
                 height = aspectRatio * width;
             }
         }
+
+        // Autocenter the control
+        //control.setTranslateX((control.getWidth() - width) * 0.5);
+        //control.setTranslateY((control.getHeight() - height) * 0.5);
+
         flapHeight = 0.49206349206349204 * height;
 
         fixtureRight.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
@@ -386,7 +433,8 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         lowerBackground.setPrefSize(width, flapHeight);
         lowerBackground.setTranslateY(0.5079365079365079 * height);
 
-        font = Font.font("Bebas Neue", height);
+        font = Font.font("Bebas Neue", height * 0.9);
+        //font = Font.loadFont(getClass().getResourceAsStream("/resources/droidsansmono.ttf"), (0.8 * height));
 
         upperBackgroundText.setWidth(width);
         upperBackgroundText.setHeight(flapHeight);

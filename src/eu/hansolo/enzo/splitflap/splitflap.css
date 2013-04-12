@@ -8,7 +8,7 @@
                                           rgb(40, 41, 35) 100%);
 }
 
-.split-flap .fixture-right {
+.split-flap .fixture {
     -fx-background-color : linear-gradient(from 55% 0% to 55% 100%,
                                            rgb(56, 56, 56) 0%,
                                            rgb(156, 156, 156) 18%,
@@ -26,7 +26,7 @@
     -fx-scale-shape      : true;
     -fx-shape            : "M 103.0 79.0 H 112.0 V 110.0 H 103.0 V 79.0 Z";
 }
-.split-flap .fixture-right .dark {
+.split-flap .fixture-dark {
     -fx-background-color : linear-gradient(from 55% 0% to 55% 100%,
                                            rgb(26, 26, 26) 0%,
                                            rgb(86, 86, 86) 18%,
@@ -34,52 +34,15 @@
                                            rgb(24, 24, 24) 89%,
                                            rgb(25, 25, 25) 100%),
                            linear-gradient(from 57% 0% to 57% 100%,
-                                           rgb(116, 116, 116) 0%,
-                                           rgb(213, 213, 213) 13%,
-                                           rgb(56, 56, 56) 66%,
-                                           rgb(64, 64, 64) 73%,
-                                           rgb(109, 109, 109) 90%,
-                                           rgb(83, 83, 83) 100%);
+                                           rgb(66, 66, 66) 0%,
+                                           rgb(153, 153, 153) 13%,
+                                           rgb(6, 6, 6) 66%,
+                                           rgb(14, 14, 14) 73%,
+                                           rgb(39, 39, 39) 90%,
+                                           rgb(23, 23, 23) 100%);
     -fx-background-insets: 0, 1;
     -fx-scale-shape      : true;
     -fx-shape            : "M 103.0 79.0 H 112.0 V 110.0 H 103.0 V 79.0 Z";
-}
-
-.split-flap .fixture-left {
-    -fx-background-color : linear-gradient(from 55% 0% to 55% 100%,
-                                           rgb(56, 56, 56) 0%,
-                                           rgb(156, 156, 156) 18%,
-                                           rgb(47, 47, 47) 65%,
-                                           rgb(84, 86, 85) 89%,
-                                           rgb(55, 55, 55) 100%),
-                           linear-gradient(from 57% 0% to 57% 100%,
-                                           rgb(116, 116, 116) 0%,
-                                           rgb(213, 213, 213) 13%,
-                                           rgb(56, 56, 56) 66%,
-                                           rgb(64, 64, 64) 73%,
-                                           rgb(109, 109, 109) 90%,
-                                           rgb(83, 83, 83) 100%);
-    -fx-background-insets: 0, 1;
-    -fx-scale-shape      : true;
-    -fx-shape            : "M 0.0 79.0 H 9.0 V 110.0 H 0.0 V 79.0 Z";
-}
-.split-flap .fixture-left .dark {
-    -fx-background-color : linear-gradient(from 55% 0% to 55% 100%,
-                                           rgb(26, 26, 26) 0%,
-                                           rgb(86, 86, 86) 18%,
-                                           rgb(17, 17, 17) 65%,
-                                           rgb(24, 24, 24) 89%,
-                                           rgb(25, 25, 25) 100%),
-                           linear-gradient(from 57% 0% to 57% 100%,
-                                           rgb(116, 116, 116) 0%,
-                                           rgb(213, 213, 213) 13%,
-                                           rgb(56, 56, 56) 66%,
-                                           rgb(64, 64, 64) 73%,
-                                           rgb(109, 109, 109) 90%,
-                                           rgb(83, 83, 83) 100%);
-    -fx-background-insets: 0, 1;
-    -fx-scale-shape      : true;
-    -fx-shape            : "M 0.0 79.0 H 9.0 V 110.0 H 0.0 V 79.0 Z";
 }
 
 .split-flap .flap-upper {
