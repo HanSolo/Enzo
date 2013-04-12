@@ -47,6 +47,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     private double              size;
     private double              width;
     private double              height;
+    private double              flapHeight;
     private Pane                pane;
     private Region              fixtureRight;
     private Region              fixtureLeft;
@@ -84,6 +85,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         aspectRatio           = DEFAULT_HEIGHT / DEFAULT_WIDTH;
         pane                  = new Pane();
         rotateFlap            = RotateBuilder.create().axis(Rotate.X_AXIS).angle(0).build();
+        flapHeight            = 0.49206349206349204 * DEFAULT_HEIGHT;
         timeline              = new Timeline();
         init();
         initGraphics();
@@ -118,7 +120,6 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     }
 
     private void initGraphics() {
-
         fixtureRight = new Region();
         fixtureRight.getStyleClass().setAll("fixture-right");
 
@@ -126,28 +127,30 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         fixtureLeft.getStyleClass().setAll("fixture-left");
 
         innerShadow = InnerShadowBuilder.create()
-                                        .radius(3.0 / 112.0 * DEFAULT_WIDTH)
-                                        .color(Color.BLACK)
-                                        .blurType(BlurType.GAUSSIAN)
+                                        .offsetY(-0.01 * flapHeight)
+                                        .radius(0.01 * flapHeight)
+                                        .color(Color.rgb(0, 0, 0, 0.65))
+                                        .blurType(BlurType.TWO_PASS_BOX)
                                         .build();
         innerHighlight = InnerShadowBuilder.create()
-                                           .offsetY(1.0)
-                                           .radius(2.0 / 112.0 * DEFAULT_WIDTH)
-                                           .color(Color.WHITE)
-                                           .blurType(BlurType.GAUSSIAN)
+                                           .offsetY(0.01 * flapHeight)
+                                           .radius(0.01 * flapHeight)
+                                           .color(Color.rgb(255, 255, 255, 0.65))
+                                           .blurType(BlurType.TWO_PASS_BOX)
                                            .input(innerShadow)
                                            .build();
 
         reversedInnerShadow = InnerShadowBuilder.create()
-                                                .radius(3.0 / 112.0 * DEFAULT_WIDTH)
-                                                .color(Color.BLACK)
-                                                .blurType(BlurType.GAUSSIAN)
+                                                .offsetY(-0.01 * 0.4920634921 * height)
+                                                .radius(0.01 * 0.4920634921 * height)
+                                                .color(Color.rgb(0, 0, 0, 0.65))
+                                                .blurType(BlurType.TWO_PASS_BOX)
                                                 .build();
         reversedInnerHighlight = InnerShadowBuilder.create()
-                                                   .offsetY(-1.0)
-                                                   .radius(2.0 / 112.0 * DEFAULT_WIDTH)
-                                                   .color(Color.WHITE)
-                                                   .blurType(BlurType.GAUSSIAN)
+                                                   .offsetY(0.01 * 0.4920634921 * height)
+                                                   .radius(0.01 * 0.4920634921 * height)
+                                                   .color(Color.rgb(255, 255, 255, 0.65))
+                                                   .blurType(BlurType.TWO_PASS_BOX)
                                                    .input(innerShadow)
                                                    .build();
 
@@ -370,6 +373,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
                 height = aspectRatio * width;
             }
         }
+        flapHeight = 0.49206349206349204 * height;
 
         fixtureRight.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
         fixtureRight.setTranslateX(0.9196428571428571 * width);
@@ -378,25 +382,25 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         fixtureLeft.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
         fixtureLeft.setTranslateY(0.41798941798941797 * height);
 
-        upperBackground.setPrefSize(width, 0.49206349206349204 * height);
-        lowerBackground.setPrefSize(width, 0.49206349206349204 * height);
+        upperBackground.setPrefSize(width, flapHeight);
+        lowerBackground.setPrefSize(width, flapHeight);
         lowerBackground.setTranslateY(0.5079365079365079 * height);
 
         font = Font.font("Bebas Neue", height);
 
         upperBackgroundText.setWidth(width);
-        upperBackgroundText.setHeight(0.49206349206349204 * height);
+        upperBackgroundText.setHeight(flapHeight);
         lowerBackgroundText.setWidth(width);
-        lowerBackgroundText.setHeight(0.49206349206349204 * height);
+        lowerBackgroundText.setHeight(flapHeight);
         lowerBackgroundText.setTranslateY(0.5079365079365079 * height);
 
-        flap.setPrefSize(width, 0.49206349206349204 * height);
+        flap.setPrefSize(width, flapHeight);
         rotateFlap.setPivotY(height * 0.5);
 
         flapTextFront.setWidth(width);
-        flapTextFront.setHeight(0.49206349206349204 * height);
+        flapTextFront.setHeight(flapHeight);
         flapTextBack.setWidth(width);
-        flapTextBack.setHeight(0.49206349206349204 * height);
+        flapTextBack.setHeight(flapHeight);
 
         ctxUpperBackgroundText.setFont(font);
         ctxLowerBackgroundText.setFont(font);
@@ -405,10 +409,14 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
         refreshTextCtx();
 
-        innerShadow.setRadius(3.0 / 112.0 * size);
-        innerHighlight.setRadius(2.0 / 112.0 * size);
+        innerShadow.setOffsetY(-0.01 * flapHeight);
+        innerShadow.setRadius(0.01 * flapHeight);
+        innerHighlight.setOffsetY(0.01 * flapHeight);
+        innerHighlight.setRadius(0.01 * flapHeight);
 
-        reversedInnerShadow.setRadius(3.0 / 112 * size);
-        reversedInnerHighlight.setRadius(2.0 / 112.0 * size);
+        reversedInnerShadow.setOffsetY(-0.01 * 0.4920634921 * height);
+        reversedInnerShadow.setRadius(0.01 * 0.4920634921 * height);
+        reversedInnerHighlight.setOffsetY(0.01 * 0.4920634921 * height);
+        reversedInnerHighlight.setRadius(0.01 * 0.4920634921 * height);
     }
 }
