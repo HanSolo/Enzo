@@ -48,14 +48,8 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     private double              width;
     private double              height;
     private Pane                pane;
-    private Region              fixtureRightFrame;
-    private Region              fixtureRightMain;
-    private Region              fixtureRightFrameDark;
-    private Region              fixtureRightMainDark;
-    private Region              fixtureLeftFrame;
-    private Region              fixtureLeftMain;
-    private Region              fixtureLeftFrameDark;
-    private Region              fixtureLeftMainDark;
+    private Region              fixtureRight;
+    private Region              fixtureLeft;
     private InnerShadow         innerShadow;
     private InnerShadow         innerHighlight;
     private InnerShadow         reversedInnerShadow;
@@ -125,36 +119,11 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
     private void initGraphics() {
 
-        fixtureRightFrame = new Region();
-        fixtureRightFrame.getStyleClass().setAll("fixture-right-frame");
+        fixtureRight = new Region();
+        fixtureRight.getStyleClass().setAll("fixture-right");
 
-
-        fixtureRightMain = new Region();
-        fixtureRightMain.getStyleClass().setAll("fixture-right-main");
-
-
-        fixtureRightFrameDark = new Region();
-        fixtureRightFrameDark.getStyleClass().setAll("fixture-right-frame-dark");
-
-
-        fixtureRightMainDark = new Region();
-        fixtureRightMainDark.getStyleClass().setAll("fixture-right-main-dark");
-
-
-        fixtureLeftFrame = new Region();
-        fixtureLeftFrame.getStyleClass().setAll("fixture-left-frame");
-
-
-        fixtureLeftMain = new Region();
-        fixtureLeftMain.getStyleClass().setAll("fixture-left-main");
-
-
-        fixtureLeftFrameDark = new Region();
-        fixtureLeftFrameDark.getStyleClass().setAll("fixture-left-frame-dark");
-
-
-        fixtureLeftMainDark = new Region();
-        fixtureLeftMainDark.getStyleClass().setAll("fixture-left-main-dark");
+        fixtureLeft = new Region();
+        fixtureLeft.getStyleClass().setAll("fixture-left");
 
         innerShadow = InnerShadowBuilder.create()
                                         .radius(3.0 / 112.0 * DEFAULT_WIDTH)
@@ -221,14 +190,8 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         flapTextBack.getTransforms().add(rotateFlap);
         flapTextBack.setVisible(false);
 
-        pane.getChildren().setAll(fixtureRightFrame,
-                                  fixtureRightMain,
-                                  fixtureRightFrameDark,
-                                  fixtureRightMainDark,
-                                  fixtureLeftFrame,
-                                  fixtureLeftMain,
-                                  fixtureLeftFrameDark,
-                                  fixtureLeftMainDark,
+        pane.getChildren().setAll(fixtureRight,
+                                  fixtureLeft,
                                   upperBackground,
                                   lowerBackground,
                                   upperBackgroundText,
@@ -408,35 +371,12 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
             }
         }
 
-        fixtureRightFrame.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
-        fixtureRightFrame.setTranslateX(0.9196428571428571 * width);
-        fixtureRightFrame.setTranslateY(0.41798941798941797 * height);
+        fixtureRight.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
+        fixtureRight.setTranslateX(0.9196428571428571 * width);
+        fixtureRight.setTranslateY(0.41798941798941797 * height);
 
-        fixtureRightMain.setPrefSize(0.0625 * width, 0.15343915343915343 * height);
-        fixtureRightMain.setTranslateX(0.9285714285714286 * width);
-        fixtureRightMain.setTranslateY(0.42328042328042326 * height);
-
-        fixtureRightFrameDark.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
-        fixtureRightFrameDark.setTranslateX(0.9196428571428571 * width);
-        fixtureRightFrameDark.setTranslateY(0.41798941798941797 * height);
-
-        fixtureRightMainDark.setPrefSize(0.0625 * width, 0.15343915343915343 * height);
-        fixtureRightMainDark.setTranslateX(0.9285714285714286 * width);
-        fixtureRightMainDark.setTranslateY(0.42328042328042326 * height);
-
-        fixtureLeftFrame.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
-        fixtureLeftFrame.setTranslateY(0.41798941798941797 * height);
-
-        fixtureLeftMain.setPrefSize(0.0625 * width, 0.15343915343915343 * height);
-        fixtureLeftMain.setTranslateX(0.008928571428571428 * width);
-        fixtureLeftMain.setTranslateY(0.42328042328042326 * height);
-
-        fixtureLeftFrameDark.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
-        fixtureLeftFrameDark.setTranslateY(0.41798941798941797 * height);
-
-        fixtureLeftMainDark.setPrefSize(0.0625 * width, 0.15343915343915343 * height);
-        fixtureLeftMainDark.setTranslateX(0.008928571428571428 * width);
-        fixtureLeftMainDark.setTranslateY(0.42328042328042326 * height);
+        fixtureLeft.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
+        fixtureLeft.setTranslateY(0.41798941798941797 * height);
 
         upperBackground.setPrefSize(width, 0.49206349206349204 * height);
         lowerBackground.setPrefSize(width, 0.49206349206349204 * height);
@@ -471,5 +411,4 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         reversedInnerShadow.setRadius(3.0 / 112 * size);
         reversedInnerHighlight.setRadius(2.0 / 112.0 * size);
     }
-
 }

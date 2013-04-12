@@ -12,9 +12,9 @@ import javafx.event.EventType;
  * Time: 09:30
  */
 public class FlipEvent extends Event {
-    public static final EventType<FlipEvent> FLIP_FORWARD  = new EventType(ANY, "FLIP_FORWARD");
-    public static final EventType<FlipEvent> FLIP_BACKWARD = new EventType(ANY, "FLIP_BACKWARD");
-    public static final EventType<FlipEvent> FLIP_FINISHED = new EventType(ANY, "FLIP_FINISHED");
+    public static final EventType<FlipEvent> FLIP_FORWARD  = new EventType(ANY, "flipForward");
+    public static final EventType<FlipEvent> FLIP_BACKWARD = new EventType(ANY, "flipBackward");
+    public static final EventType<FlipEvent> FLIP_FINISHED = new EventType(ANY, "flipFinished");
 
 
     // ******************** Constructors **************************************

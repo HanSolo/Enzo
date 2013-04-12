@@ -3,11 +3,13 @@ package eu.hansolo.enzo.splitflap;
 import eu.hansolo.enzo.splitflap.skin.SplitFlapSkin;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
 
@@ -72,9 +74,37 @@ public class SplitFlap extends Control {
 
 
     // ******************** Event handling ************************************
-    public final void setOnFlipForward(EventHandler<FlipEvent> value) { addEventHandler(FlipEvent.FLIP_FORWARD, value); }
-    public final void setOnFlipBackward(EventHandler<FlipEvent> value) { addEventHandler(FlipEvent.FLIP_BACKWARD, value); }
-    public final void setOnFlipFinished(EventHandler<FlipEvent> value) { addEventHandler(FlipEvent.FLIP_FINISHED, value); }
+    public final ObjectProperty<EventHandler<FlipEvent>> onFlipForwardProperty() { return onFlipForward; }
+    public final void setOnFlipForward(EventHandler<FlipEvent> value) { onFlipForwardProperty().set(value); }
+    public final EventHandler<FlipEvent> getOnFlipForward() { return onFlipForwardProperty().get(); }
+    private ObjectProperty<EventHandler<FlipEvent>> onFlipForward = new ObjectPropertyBase<EventHandler<FlipEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onFlipForward";}
+    };
+
+    public final ObjectProperty<EventHandler<FlipEvent>> onFlipBackwardProperty() { return onFlipBackward; }
+    public final void setOnFlipBackward(EventHandler<FlipEvent> value) { onFlipBackwardProperty().set(value); }
+    public final EventHandler<FlipEvent> getOnFlipBackward() { return onFlipBackwardProperty().get(); }
+    private ObjectProperty<EventHandler<FlipEvent>> onFlipBackward = new ObjectPropertyBase<EventHandler<FlipEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onFlipBackward";}
+    };
+
+    public void fireFlipEvent(final FlipEvent EVENT) {
+        final EventHandler<FlipEvent> HANDLER;
+        final EventType               TYPE    = EVENT.getEventType();
+        if (FlipEvent.FLIP_FORWARD == TYPE) {
+            HANDLER = getOnFlipForward();
+        } else if (FlipEvent.FLIP_BACKWARD == TYPE) {
+            HANDLER = getOnFlipBackward();
+        } else {
+            HANDLER = null;
+        }
+
+        if (HANDLER != null) {
+            HANDLER.handle(EVENT);
+        }
+    }
 
 
     // ******************** Methods *******************************************
@@ -181,10 +211,10 @@ public class SplitFlap extends Control {
             nextSelectionIndex = 0;
         }
         setText(selectedSet.get(currentSelectionIndex));
-        fireEvent(FLIP_FORWARD);
+        fireFlipEvent(FLIP_FORWARD);
     }
     public final void flipBackward() {
-        fireEvent(FIP_BACKWARD);
+        fireFlipEvent(FIP_BACKWARD);
         ((SplitFlapSkin) getSkin()).flipBackward();
     }
 
