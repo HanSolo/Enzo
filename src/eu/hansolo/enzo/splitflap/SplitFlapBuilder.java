@@ -38,6 +38,11 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
         return this;
     }
 
+    public final SplitFlapBuilder darkFixture(final boolean DARK_FIXTURE) {
+        properties.put("darkFixture", new SimpleBooleanProperty(DARK_FIXTURE));
+        return this;
+    }
+
     public final SplitFlapBuilder textColor(final Color TEXT_COLOR) {
         properties.put("textColor", new SimpleObjectProperty<Color>(TEXT_COLOR));
         return this;
@@ -57,9 +62,35 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B)this;
     }
-
     @Override public final B prefHeight(final double PREF_HEIGHT) {
         properties.put("prefHeight", new SimpleDoubleProperty(PREF_HEIGHT));
+        return (B)this;
+    }
+
+    @Override public final B minWidth(final double MIN_WIDTH) {
+        properties.put("minWidth", new SimpleDoubleProperty(MIN_WIDTH));
+        return (B)this;
+    }
+    @Override public final B minHeight(final double MIN_HEIGHT) {
+        properties.put("minHeight", new SimpleDoubleProperty(MIN_HEIGHT));
+        return (B)this;
+    }
+
+    @Override public final B maxWidth(final double MAX_WIDTH) {
+        properties.put("maxWidth", new SimpleDoubleProperty(MAX_WIDTH));
+        return (B)this;
+    }
+    @Override public final B maxHeight(final double MAX_HEIGHT) {
+        properties.put("maxHeight", new SimpleDoubleProperty(MAX_HEIGHT));
+        return (B)this;
+    }
+
+    @Override public final B scaleX(final double SCALE_X) {
+        properties.put("scaleX", new SimpleDoubleProperty(SCALE_X));
+        return (B)this;
+    }
+    @Override public final B scaleY(final double SCALE_Y) {
+        properties.put("scaleY", new SimpleDoubleProperty(SCALE_Y));
         return (B)this;
     }
 
@@ -67,11 +98,20 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
         properties.put("layoutX", new SimpleDoubleProperty(LAYOUT_X));
         return (B)this;
     }
-
     @Override public final B layoutY(final double LAYOUT_Y) {
         properties.put("layoutY", new SimpleDoubleProperty(LAYOUT_Y));
         return (B)this;
     }
+
+    @Override public final B translateX(final double TRANSLATE_X) {
+        properties.put("translateX", new SimpleDoubleProperty(TRANSLATE_X));
+        return (B)this;
+    }
+    @Override public final B translateY(final double TRANSLATE_Y) {
+        properties.put("translateY", new SimpleDoubleProperty(TRANSLATE_Y));
+        return (B)this;
+    }
+
 
     @Override public final SplitFlap build() {
         final SplitFlap CONTROL;
@@ -91,6 +131,8 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
                 CONTROL.setKeepAspect(((BooleanProperty) properties.get(key)).get());
             } else if ("flipTime".equals(key)) {
                 CONTROL.setFlipTime(((DoubleProperty) properties.get(key)).get());
+            } else if ("darkFixture".equals(key)) {
+                CONTROL.setDarkFixture(((BooleanProperty) properties.get(key)).get());
             } else if ("textColor".equals(key)) {
                 CONTROL.setTextColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("text".equals(key)) {
@@ -101,10 +143,26 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
                 CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());
+            } else if("minWidth".equals(key)) {
+                CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
+            } else if("minHeight".equals(key)) {
+                CONTROL.setMinHeight(((DoubleProperty) properties.get(key)).get());
+            } else if("maxWidth".equals(key)) {
+                CONTROL.setMaxWidth(((DoubleProperty) properties.get(key)).get());
+            } else if("maxHeight".equals(key)) {
+                CONTROL.setMaxHeight(((DoubleProperty) properties.get(key)).get());
+            } else if("scaleX".equals(key)) {
+                CONTROL.setScaleX(((DoubleProperty) properties.get(key)).get());
+            } else if("scaleY".equals(key)) {
+                CONTROL.setScaleY(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutX".equals(key)) {
                 CONTROL.setLayoutX(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutY".equals(key)) {
                 CONTROL.setLayoutY(((DoubleProperty) properties.get(key)).get());
+            } else if ("translateX".equals(key)) {
+                CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
+            } else if ("translateY".equals(key)) {
+                CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             }
         }
 

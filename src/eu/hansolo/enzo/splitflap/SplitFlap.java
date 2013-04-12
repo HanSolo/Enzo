@@ -1,9 +1,11 @@
 package eu.hansolo.enzo.splitflap;
 
 import eu.hansolo.enzo.splitflap.skin.SplitFlapSkin;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -44,6 +46,8 @@ public class SplitFlap extends Control {
     private boolean                      keepAspect;
     private double                       defaultFlipTime = 500;
     private DoubleProperty               flipTime;
+    private boolean                      defaultDarkFixture;
+    private BooleanProperty              darkFixture;
     private Color                        defaultTextColor = Color.WHITE;
     private ObjectProperty<Color>        textColor;
     private String                       defaultText = "";
@@ -130,6 +134,23 @@ public class SplitFlap extends Control {
             flipTime = new SimpleDoubleProperty(this, "flipTime", defaultFlipTime);
         }
         return flipTime;
+    }
+
+    public final boolean isDarkFixture() {
+        return null == darkFixture ? defaultDarkFixture : darkFixture.get();
+    }
+    public final void setDarkFixture(final boolean DARK_FIXTURE) {
+        if (null == darkFixture) {
+            defaultDarkFixture = DARK_FIXTURE;
+        } else {
+            darkFixture.set(DARK_FIXTURE);
+        }
+    }
+    public final BooleanProperty darkFixtureProperty() {
+        if (null == darkFixture) {
+            darkFixture = new SimpleBooleanProperty(this, "darkFixture", defaultDarkFixture);
+        }
+        return darkFixture;
     }
 
     public final Color getTextColor() {
