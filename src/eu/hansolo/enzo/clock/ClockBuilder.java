@@ -80,6 +80,11 @@ public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
+    public final ClockBuilder highlightVisible(final boolean HIGHLIGHT_VISIBLE) {
+        properties.put("highlightVisible", new SimpleBooleanProperty(HIGHLIGHT_VISIBLE));
+        return this;
+    }
+
     @Override public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B)this;
@@ -134,6 +139,7 @@ public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
         return (B)this;
     }
 
+
     @Override public final Clock build() {
         final Clock CONTROL = new Clock();
         for (String key : properties.keySet()) {
@@ -169,6 +175,8 @@ public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setDiscreteSecond(((BooleanProperty) properties.get(key)).get());
             } else if ("secondPointerVisible".equals(key)) {
                 CONTROL.setSecondPointerVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("highlightVisible".equals(key)) {
+                CONTROL.setHighlightVisible(((BooleanProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

@@ -54,6 +54,8 @@ public class Clock extends Control {
     private BooleanProperty        nightMode;
     private Design                 defaultDesign;
     private ObjectProperty<Design> design;
+    private boolean                defaultHighlightVisible;
+    private BooleanProperty        highlightVisible;
 
 
     // ******************** Constructors **************************************
@@ -63,6 +65,7 @@ public class Clock extends Control {
         defaultSecondPointerVisible = true;
         defaultNightMode            = false;
         defaultDesign               = Design.IOS6;
+        defaultHighlightVisible     = true;
     }
 
 
@@ -133,6 +136,23 @@ public class Clock extends Control {
             design = new SimpleObjectProperty<>(this, "design", defaultDesign);
         }
         return design;
+    }
+
+    public final boolean isHighlightVisible() {
+        return null == highlightVisible ? defaultHighlightVisible : highlightVisible.get();
+    }
+    public final void setHighlightVisible(final boolean HIGHLIGHT_VISIBLE) {
+        if (null == highlightVisible) {
+            defaultHighlightVisible = HIGHLIGHT_VISIBLE;
+        } else {
+            highlightVisible.set(HIGHLIGHT_VISIBLE);
+        }
+    }
+    public final BooleanProperty highlightVisibleProperty() {
+        if (null == highlightVisible) {
+            highlightVisible = new SimpleBooleanProperty(this, "highlightVisible", defaultHighlightVisible);
+        }
+        return highlightVisible;
     }
 
 
