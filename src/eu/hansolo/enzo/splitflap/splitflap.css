@@ -85,10 +85,19 @@
     -fx-scale-shape     : true;
     -fx-shape           : "M 105.0 0.0 C 110.0 0.0 112.0 3.0 112.0 7.0 C 112.0 7.0 112.0 77.0 112.0 77.0 L 101.0 77.0 L 101.0 93.0 L 11.0 93.0 L 11.0 77.0 L 0.0 77.0 C 0.0 77.0 0.0 7.0 0.0 7.0 C 0.0 3.0 2.0 0.0 7.0 0.0 C 7.0 0.0 105.0 0.0 105.0 0.0 Z";
 }
+.split-flap .upper-square {
+    -fx-background-color: -flap-upper-fill;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 112 0 L 112 77 L 101 77 L 101 93 L 11 93 L 11 77 L 0 77 L 0 0 L 112 0 Z";
+}
 
 .split-flap .lower {
     -fx-background-color: -flap-lower-fill;
     -fx-scale-shape     : true;
     -fx-shape           : "M 105.0 189.0 C 110.0 189.0 112.0 186.0 112.0 182.0 C 112.0 182.0 112.0 112.0 112.0 112.0 L 101.0 112.0 L 101.0 96.0 L 11.0 96.0 L 11.0 112.0 L 0.0 112.0 C 0.0 112.0 0.0 182.0 0.0 182.0 C 0.0 186.0 2.0 189.0 7.0 189.0 C 7.0 189.0 105.0 189.0 105.0 189.0 Z";
 }
-
+.split-flap .lower-square {
+    -fx-background-color: -flap-lower-fill;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 112 189 L 112 112 L 101 112 L 101 96 L 11 96 L 11 112 L 0 112 L 0 189 L 112 189 Z";
+}

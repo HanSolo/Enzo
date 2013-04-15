@@ -32,6 +32,7 @@ import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.splitflap.FlipEvent;
 import eu.hansolo.enzo.splitflap.SplitFlap;
 import eu.hansolo.enzo.splitflap.behavior.SplitFlapBehavior;
+import eu.hansolo.enzo.tools.ShapeConverter;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -54,6 +55,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.shape.ClosePath;
+import javafx.scene.shape.FillRule;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
@@ -188,11 +194,12 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
                                                    .build();
 
         upperBackground = new Region();
-        upperBackground.getStyleClass().setAll("upper");
+        upperBackground.getStyleClass().setAll(control.isSquareFlaps() ? "upper-square" : "upper");
         upperBackground.setEffect(innerHighlight);
 
         //font = Font.font("Bebas Neue", DEFAULT_HEIGHT);
-        font = Font.loadFont(getClass().getResourceAsStream("/resources/bebasneue.otf"), DEFAULT_HEIGHT);
+        //font = Font.loadFont(getClass().getResourceAsStream("/resources/bebasneue.otf"), DEFAULT_HEIGHT);
+        font = Font.loadFont(getClass().getResourceAsStream("/resources/droidsansmono.ttf"), DEFAULT_HEIGHT);
 
         upperTextFill = new LinearGradient(0, 0,
                                            0, flapHeight,
@@ -206,7 +213,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         ctxUpperBackgroundText.setTextAlign(TextAlignment.CENTER);
 
         lowerBackground = new Region();
-        lowerBackground.getStyleClass().setAll("lower");
+        lowerBackground.getStyleClass().setAll(control.isSquareFlaps() ? "lower-square" : "lower");
         lowerBackground.setEffect(innerHighlight);
 
         lowerTextFill = new LinearGradient(0, 0.5079365079365079 * DEFAULT_HEIGHT,
@@ -221,7 +228,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         ctxLowerBackgroundText.setTextAlign(TextAlignment.CENTER);
 
         flap = new Region();
-        flap.getStyleClass().setAll("upper");
+        flap.getStyleClass().setAll(control.isSquareFlaps() ? "upper-square" : "upper");
         flap.setEffect(innerHighlight);
         flap.getTransforms().add(rotateFlap);
 
@@ -261,8 +268,8 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         registerChangeListener(control.prefHeightProperty(), "PREF_SIZE");
         registerChangeListener(control.textProperty(), "TEXT");
         registerChangeListener(control.textColorProperty(), "TEXT_COLOR");
-        registerChangeListener(control.characterSetProperty(), "CHARACTER_SET");
         registerChangeListener(control.darkFixtureProperty(), "DARK_FIXTURE");
+        registerChangeListener(control.squareFlapsProperty(), "SQUARE_FLAPS");
 
         control.getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {
@@ -286,13 +293,15 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         timeline.setOnFinished(new EventHandler<ActionEvent>() {
             @Override public void handle(final ActionEvent EVENT) {
                 control.fireEvent(FLIP_FINISHED);
+                flap.setCache(false);
+                flap.setCacheShape(false);
                 if (Double.compare(rotateFlap.getAngle(), 180) == 0) {
                     flap.setEffect(innerHighlight);
                     rotateFlap.setAngle(0);
                     flapTextBack.setVisible(false);
                     flapTextFront.setVisible(true);
                     refreshTextCtx();
-                    if (control.getText() != selectedSet.get(currentSelectionIndex)) {
+                    if (!control.getText().equals(selectedSet.get(currentSelectionIndex))) {
                         flipForward();
                     }
                 } else if(Double.compare(rotateFlap.getAngle(), 0) == 0) {
@@ -322,6 +331,10 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         } else if ("DARK_FIXTURE".equals(PROPERTY)) {
             fixtureLeft.getStyleClass().setAll(control.isDarkFixture() ? "fixture-left-dark" : "fixture-left");
             fixtureRight.getStyleClass().setAll(control.isDarkFixture() ? "fixture-right-dark" : "fixture-right");
+        } else if ("SQUARE_FLAPS".equals(PROPERTY)) {
+            upperBackground.getStyleClass().setAll(control.isSquareFlaps() ? "upper-square" : "upper");
+            lowerBackground.getStyleClass().setAll(control.isSquareFlaps() ? "lower-square" : "lower");
+            flap.getStyleClass().setAll(control.isSquareFlaps() ? "upper-square" : "upper");
         }
     }
 
@@ -371,14 +384,16 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         if (nextSelectionIndex >= selectedSet.size()) {
             nextSelectionIndex = 0;
         }
-        keyValueFlap = new KeyValue(rotateFlap.angleProperty(), 180, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
+        //keyValueFlap = new KeyValue(rotateFlap.angleProperty(), 180, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
+        keyValueFlap = new KeyValue(rotateFlap.angleProperty(), 180, Interpolator.EASE_IN);
         keyFrame     = new KeyFrame(Duration.millis(control.getFlipTime()), keyValueFlap);
         timeline.getKeyFrames().setAll(keyFrame);
         timeline.play();
     }
     public void flipBackward() {
         timeline.stop();
-        keyValueFlap = new KeyValue(rotateFlap.angleProperty(), -180, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
+        //keyValueFlap = new KeyValue(rotateFlap.angleProperty(), -180, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
+        keyValueFlap = new KeyValue(rotateFlap.angleProperty(), -180, Interpolator.EASE_IN);
         keyFrame     = new KeyFrame(Duration.millis(control.getFlipTime()), keyValueFlap);
         timeline.getKeyFrames().setAll(keyFrame);
         timeline.play();
@@ -405,17 +420,20 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         // set the text on the upper background
         ctxUpperBackgroundText.clearRect(0, 0, flapWidth, flapHeight);
         ctxUpperBackgroundText.setFill(upperTextFill);
-        ctxUpperBackgroundText.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, height * 0.55);
+        //ctxUpperBackgroundText.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, height * 0.55);
+        ctxUpperBackgroundText.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, height * 0.5);
 
         // set the text on the lower background
         ctxLowerBackgroundText.clearRect(0, 0, flapWidth, flapHeight);
         ctxLowerBackgroundText.setFill(lowerTextFill);
-        ctxLowerBackgroundText.fillText(selectedSet.get(currentSelectionIndex), width * 0.5, height * 0.041);
+        //ctxLowerBackgroundText.fillText(selectedSet.get(currentSelectionIndex), width * 0.5, height * 0.041);
+        ctxLowerBackgroundText.fillText(selectedSet.get(currentSelectionIndex), width * 0.5, 0);
 
         // set the text on the flap front
         ctxTextFront.clearRect(0, 0, flapWidth, flapHeight);
         ctxTextFront.setFill(upperTextFill);
-        ctxTextFront.fillText(selectedSet.get(currentSelectionIndex), width * 0.5, height * 0.55);
+        //ctxTextFront.fillText(selectedSet.get(currentSelectionIndex), width * 0.5, height * 0.55);
+        ctxTextFront.fillText(selectedSet.get(currentSelectionIndex), width * 0.5, height * 0.5);
 
         // set the text on the flap back
         ctxTextBack.clearRect(0, 0, flapWidth, flapHeight);
@@ -427,7 +445,8 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
                                                new Stop(1.0, control.getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0))));
         ctxTextBack.save();
         ctxTextBack.scale(1,-1);
-        ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.45);
+        //ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.45);
+        ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.5);
         ctxTextBack.restore();
     }
 
@@ -444,55 +463,92 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
             }
         }
 
-        // Autocenter the control
-        //control.setTranslateX((control.getWidth() - width) * 0.5);
-        //control.setTranslateY((control.getHeight() - height) * 0.5);
+        if (width > 0 && height > 0) {
+            // Autocenter the control
+            //control.setTranslateX((control.getWidth() - width) * 0.5);
+            //control.setTranslateY((control.getHeight() - height) * 0.5);
 
-        flapHeight = 0.49206349206349204 * height;
+            flapHeight = 0.49206349206349204 * height;
 
-        fixtureRight.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
-        fixtureRight.setTranslateX(0.9196428571428571 * width);
-        fixtureRight.setTranslateY(0.41798941798941797 * height);
+            fixtureRight.setPrefSize(0.0476190476 * height, 0.164021164021164 * height);
+            fixtureRight.setTranslateX(width - 0.0476190476 * height);
+            fixtureRight.setTranslateY(0.41798941798941797 * height);
 
-        fixtureLeft.setPrefSize(0.08035714285714286 * width, 0.164021164021164 * height);
-        fixtureLeft.setTranslateY(0.41798941798941797 * height);
+            fixtureLeft.setPrefSize(0.0476190476 * height, 0.164021164021164 * height);
+            fixtureLeft.setTranslateY(0.41798941798941797 * height);
 
-        upperBackground.setPrefSize(width, flapHeight);
-        lowerBackground.setPrefSize(width, flapHeight);
-        lowerBackground.setTranslateY(0.5079365079365079 * height);
+            if (width > height && width > 0 && height > 0) {
+                final Path UPPER = new Path();
+                UPPER.setFillRule(FillRule.EVEN_ODD);
+                UPPER.getElements().add(new MoveTo(width, 0.0));
+                UPPER.getElements().add(new LineTo(width, 0.4074074074074074 * height));
+                UPPER.getElements().add(new LineTo(width - 0.0582010582 * height, 0.4074074074074074 * height));
+                UPPER.getElements().add(new LineTo(width - 0.0582010582 * height, 0.49206349206349204 * height));
+                UPPER.getElements().add(new LineTo(0.0582010582 * height, 0.49206349206349204 * height));
+                UPPER.getElements().add(new LineTo(0.0582010582 * height, 0.4074074074074074 * height));
+                UPPER.getElements().add(new LineTo(0.0, 0.4074074074074074 * height));
+                UPPER.getElements().add(new LineTo(0.0, 0.0));
+                UPPER.getElements().add(new LineTo(width, 0.0));
+                UPPER.getElements().add(new ClosePath());
+                final String UPPER_SVG = ShapeConverter.shapeToSvgString(UPPER);
 
-        font = Font.font("Bebas Neue", height * 0.9);
-        //font = Font.loadFont(getClass().getResourceAsStream("/resources/droidsansmono.ttf"), (0.8 * height));
+                final Path LOWER = new Path();
+                LOWER.setFillRule(FillRule.EVEN_ODD);
+                LOWER.getElements().add(new MoveTo(width, height));
+                LOWER.getElements().add(new LineTo(width, 0.5925925925925926 * height));
+                LOWER.getElements().add(new LineTo(width - 0.0582010582 * height, 0.5925925925925926 * height));
+                LOWER.getElements().add(new LineTo(width - 0.0582010582 * height, 0.5079365079365079 * height));
+                LOWER.getElements().add(new LineTo(0.0582010582 * height, 0.5079365079365079 * height));
+                LOWER.getElements().add(new LineTo(0.0582010582 * height, 0.5925925925925926 * height));
+                LOWER.getElements().add(new LineTo(0.0, 0.5925925925925926 * height));
+                LOWER.getElements().add(new LineTo(0.0, height));
+                LOWER.getElements().add(new LineTo(width, height));
+                LOWER.getElements().add(new ClosePath());
+                final String LOWER_SVG = ShapeConverter.shapeToSvgString(LOWER);
 
-        upperBackgroundText.setWidth(width);
-        upperBackgroundText.setHeight(flapHeight);
-        lowerBackgroundText.setWidth(width);
-        lowerBackgroundText.setHeight(flapHeight);
-        lowerBackgroundText.setTranslateY(0.5079365079365079 * height);
+                upperBackground.setStyle(new StringBuilder("-fx-shape:").append("\"").append(UPPER_SVG).append("\";").toString());
+                lowerBackground.setStyle(new StringBuilder("-fx-shape:").append("\"").append(LOWER_SVG).append("\";").toString());
+                flap.setStyle(new StringBuilder("-fx-shape:").append("\"").append(UPPER_SVG).append("\";").toString());
+            }
 
-        flap.setPrefSize(width, flapHeight);
-        rotateFlap.setPivotY(height * 0.5);
+            upperBackground.setPrefSize(width, flapHeight);
+            lowerBackground.setPrefSize(width, flapHeight);
+            lowerBackground.setTranslateY(0.5079365079365079 * height);
 
-        flapTextFront.setWidth(width);
-        flapTextFront.setHeight(flapHeight);
-        flapTextBack.setWidth(width);
-        flapTextBack.setHeight(flapHeight);
+            //font = Font.font("Bebas Neue", height * 0.9);
+            font = Font.font("Droid Sans Mono", height * 0.75);
 
-        ctxUpperBackgroundText.setFont(font);
-        ctxLowerBackgroundText.setFont(font);
-        ctxTextFront.setFont(font);
-        ctxTextBack.setFont(font);
+            upperBackgroundText.setWidth(width);
+            upperBackgroundText.setHeight(flapHeight);
+            lowerBackgroundText.setWidth(width);
+            lowerBackgroundText.setHeight(flapHeight);
+            //lowerBackgroundText.setTranslateY(0.5079365079365079 * height);
+            lowerBackgroundText.setTranslateY(0.5 * height);
 
-        refreshTextCtx();
+            flap.setPrefSize(width, flapHeight);
+            rotateFlap.setPivotY(height * 0.5);
 
-        innerShadow.setOffsetY(-0.01 * flapHeight);
-        innerShadow.setRadius(0.01 * flapHeight);
-        innerHighlight.setOffsetY(0.01 * flapHeight);
-        innerHighlight.setRadius(0.01 * flapHeight);
+            flapTextFront.setWidth(width);
+            flapTextFront.setHeight(flapHeight);
+            flapTextBack.setWidth(width);
+            flapTextBack.setHeight(flapHeight);
 
-        reversedInnerShadow.setOffsetY(-0.01 * 0.4920634921 * height);
-        reversedInnerShadow.setRadius(0.01 * 0.4920634921 * height);
-        reversedInnerHighlight.setOffsetY(0.01 * 0.4920634921 * height);
-        reversedInnerHighlight.setRadius(0.01 * 0.4920634921 * height);
+            ctxUpperBackgroundText.setFont(font);
+            ctxLowerBackgroundText.setFont(font);
+            ctxTextFront.setFont(font);
+            ctxTextBack.setFont(font);
+
+            refreshTextCtx();
+
+            innerShadow.setOffsetY(-0.01 * flapHeight);
+            innerShadow.setRadius(0.01 * flapHeight);
+            innerHighlight.setOffsetY(0.01 * flapHeight);
+            innerHighlight.setRadius(0.01 * flapHeight);
+
+            reversedInnerShadow.setOffsetY(-0.01 * 0.4920634921 * height);
+            reversedInnerShadow.setRadius(0.01 * 0.4920634921 * height);
+            reversedInnerHighlight.setOffsetY(0.01 * 0.4920634921 * height);
+            reversedInnerHighlight.setRadius(0.01 * 0.4920634921 * height);
+        }
     }
 }

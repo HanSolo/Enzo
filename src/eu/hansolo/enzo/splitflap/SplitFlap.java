@@ -48,6 +48,19 @@ import java.util.Arrays;
 
 
 public class SplitFlap extends Control {
+    public static final String[] TIME_0_TO_5  = {"1", "2", "3", "4", "5", "0"};
+    public static final String[] TIME_0_TO_9  = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+    public static final String[] NUMERIC      = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+    public static final String[] ALPHANUMERIC = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+                                                 "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+                                                 "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+                                                 "W", "X", "Y", "Z"};
+    public static final String[] EXTENDED     = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+                                                 "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+                                                 "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+                                                 "W", "X", "Y", "Z", "-", "/", ":", ",", ".", ";", "@",
+                                                 "#", "+", "?", "!", "%", "$", "=", "<", ">"};
+
     public static enum CharacterSet {
         TIME_0_TO_5("0", "1", "2", "3", "4", "5"),
         TIME_0_TO_9("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"),
@@ -60,7 +73,8 @@ public class SplitFlap extends Control {
                  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
                  "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
                  "W", "X", "Y", "Z", "-", "/", ":", ",", ".", ";", "@",
-                 "#", "+", "?", "!", "%", "$", "=", "<", ">");
+                 "#", "+", "?", "!", "%", "$", "=", "<", ">"),
+        CUSTOM();
 
         public String[] selection;
 
@@ -74,14 +88,18 @@ public class SplitFlap extends Control {
     private boolean                      keepAspect;
     private double                       defaultFlipTime = 500;
     private DoubleProperty               flipTime;
-    private boolean                      defaultDarkFixture;
+    private boolean                      defaultWordMode = false;
+    private BooleanProperty              wordMode;
+    private boolean                      defaultDarkFixture = false;
     private BooleanProperty              darkFixture;
+    private boolean                      defaultSquareFlaps = false;
+    private BooleanProperty              squareFlaps;
     private Color                        defaultTextColor = Color.WHITE;
     private ObjectProperty<Color>        textColor;
     private String                       defaultText = "";
     private StringProperty               text;
     private ArrayList<String>            selectedSet;
-    private ObjectProperty<CharacterSet> characterSet;
+    private String[]                     selection;
     private int                          currentSelectionIndex;
     private int                          nextSelectionIndex;
     private int                          previousSelectionIndex;
@@ -89,19 +107,18 @@ public class SplitFlap extends Control {
 
     // ******************** Constructors **************************************
     public SplitFlap() {
-        this(CharacterSet.EXTENDED, " ");
+        this(EXTENDED, " ");
     }
-
-    public SplitFlap(final CharacterSet CHARACTER_SET, final String TEXT) {
+    public SplitFlap(final String[] SELECTION, final String TEXT) {
         getStyleClass().add("split-flap");
         keepAspect             = true;
         selectedSet            = new ArrayList<>(64);
-        characterSet           = new SimpleObjectProperty<>(CHARACTER_SET);
-        selectedSet.addAll(Arrays.asList(characterSet.get().selection));
+        selection              = SELECTION;
         currentSelectionIndex  = 0;
         nextSelectionIndex     = 1;
-        previousSelectionIndex = characterSet.get().selection.length - 1;
+        previousSelectionIndex = selection.length - 1;
         defaultText            = TEXT;
+        selectedSet.addAll(Arrays.asList(selection));
     }
 
 
@@ -164,6 +181,23 @@ public class SplitFlap extends Control {
         return flipTime;
     }
 
+    public final boolean isWordMode() {
+        return null == wordMode ? defaultWordMode : wordMode.get();
+    }
+    public final void setWordMode(final boolean WORD_MODE) {
+        if (null == wordMode) {
+            defaultWordMode = WORD_MODE;
+        } else {
+            wordMode.set(WORD_MODE);
+        }
+    }
+    public final BooleanProperty wordModeProperty() {
+        if (null == wordMode) {
+            wordMode = new SimpleBooleanProperty(this, "wordMode", defaultWordMode);
+        }
+        return wordMode;
+    }
+
     public final boolean isDarkFixture() {
         return null == darkFixture ? defaultDarkFixture : darkFixture.get();
     }
@@ -179,6 +213,23 @@ public class SplitFlap extends Control {
             darkFixture = new SimpleBooleanProperty(this, "darkFixture", defaultDarkFixture);
         }
         return darkFixture;
+    }
+
+    public final boolean isSquareFlaps() {
+        return null == squareFlaps ? defaultSquareFlaps : squareFlaps.get();
+    }
+    public final void setSquareFlaps(final boolean SQUARE_FLAPS) {
+        if (null == squareFlaps) {
+            defaultSquareFlaps = SQUARE_FLAPS;
+        } else {
+            squareFlaps.set(SQUARE_FLAPS);
+        }
+    }
+    public final BooleanProperty squareFlapsProperty() {
+        if (null == squareFlaps) {
+            squareFlaps = new SimpleBooleanProperty(this, "squareFlaps", defaultSquareFlaps);
+        }
+        return squareFlaps;
     }
 
     public final Color getTextColor() {
@@ -201,14 +252,17 @@ public class SplitFlap extends Control {
     public final String getText() {
         return null == text ? defaultText : text.get();
     }
+    public final void setText(final char CHAR) {
+        setText(Character.toString(CHAR));
+    }
     public final void setText(final String TEXT) {
-        if(!TEXT.isEmpty() || selectedSet.contains(TEXT.substring(0,1))) {
+        if(!TEXT.isEmpty() && selectedSet.contains(TEXT)) {
             if (null == text) {
-                defaultText = TEXT.substring(0, 1);
+                defaultText = TEXT;
             } else {
-                text.set(TEXT.substring(0,1));
+                text.set(TEXT);
             }
-            currentSelectionIndex = selectedSet.indexOf(TEXT.substring(0,1));
+            currentSelectionIndex = selectedSet.indexOf(TEXT);
             nextSelectionIndex    = currentSelectionIndex + 1 > selectedSet.size() ? 0 : currentSelectionIndex + 1;
         } else {
             if (null == text) {
@@ -233,16 +287,13 @@ public class SplitFlap extends Control {
         return selectedSet.get(previousSelectionIndex);
     }
 
-    public final CharacterSet getCharacterSet() {
-        return characterSet.get();
+    public final String[] getSelection() {
+        return selection;
     }
-    public final void setCharacterSet(final CharacterSet CHARACTER_SET) {
-        characterSet.set(CHARACTER_SET);
+    public final void setSelection(final String[] SELECTION) {
+        selection = SELECTION;
         selectedSet.clear();
-        selectedSet.addAll(Arrays.asList(characterSet.get().selection));
-    }
-    public final ObjectProperty<CharacterSet> characterSetProperty() {
-        return characterSet;
+        selectedSet.addAll(Arrays.asList(selection));
     }
 
     public final ArrayList<String> getSelectedSet() {

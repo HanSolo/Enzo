@@ -66,8 +66,18 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
         return this;
     }
 
+    public final SplitFlapBuilder wordMode(final boolean WORD_MODE) {
+        properties.put("wordMode", new SimpleBooleanProperty(WORD_MODE));
+        return this;
+    }
+
     public final SplitFlapBuilder darkFixture(final boolean DARK_FIXTURE) {
         properties.put("darkFixture", new SimpleBooleanProperty(DARK_FIXTURE));
+        return this;
+    }
+
+    public final SplitFlapBuilder squareFlaps(final boolean SQUARE_FLAPS) {
+        properties.put("squareFlaps", new SimpleBooleanProperty(SQUARE_FLAPS));
         return this;
     }
 
@@ -81,8 +91,8 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
         return this;
     }
 
-    public final SplitFlapBuilder characterSet(final SplitFlap.CharacterSet CHARACTER_SET) {
-        properties.put("characterSet", new SimpleObjectProperty<SplitFlap.CharacterSet>(CHARACTER_SET));
+    public final SplitFlapBuilder selection(final String[] SELECTION) {
+        properties.put("selection", new SimpleObjectProperty<>(SELECTION));
         return this;
     }
 
@@ -143,13 +153,13 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
 
     @Override public final SplitFlap build() {
         final SplitFlap CONTROL;
-        if (properties.containsKey("characterSet")) {
+        if (properties.containsKey("selection")) {
             if (properties.containsKey("text")) {
-                CONTROL = new SplitFlap(((ObjectProperty<SplitFlap.CharacterSet>) properties.get("characterSet")).get(),
+                CONTROL = new SplitFlap(((ObjectProperty<String[]>) properties.get("selection")).get(),
                                         ((StringProperty) properties.get("text")).get());
             } else {
-                CONTROL = new SplitFlap(((ObjectProperty<SplitFlap.CharacterSet>) properties.get("characterSet")).get(),
-                                        ((ObjectProperty<SplitFlap.CharacterSet>) properties.get("characterSet")).get().selection[0]);
+                CONTROL = new SplitFlap(((ObjectProperty<String[]>) properties.get("selection")).get(),
+                                        ((ObjectProperty<String[]>) properties.get("selection")).get()[0]);
             }
         } else {
             CONTROL = new SplitFlap();
@@ -159,14 +169,18 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
                 CONTROL.setKeepAspect(((BooleanProperty) properties.get(key)).get());
             } else if ("flipTime".equals(key)) {
                 CONTROL.setFlipTime(((DoubleProperty) properties.get(key)).get());
+            } else if ("wordMode".equals(key)) {
+                CONTROL.setWordMode(((BooleanProperty) properties.get(key)).get());
             } else if ("darkFixture".equals(key)) {
                 CONTROL.setDarkFixture(((BooleanProperty) properties.get(key)).get());
+            } else if ("squareFlaps".equals(key)) {
+                CONTROL.setSquareFlaps(((BooleanProperty) properties.get(key)).get());
             } else if ("textColor".equals(key)) {
                 CONTROL.setTextColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("text".equals(key)) {
                 CONTROL.setText(((StringProperty) properties.get(key)).get());
-            } else if ("characterSet".equals(key)) {
-                CONTROL.setCharacterSet(((ObjectProperty<SplitFlap.CharacterSet>) properties.get(key)).get());
+            } else if ("selection".equals(key)) {
+                CONTROL.setSelection(((ObjectProperty<String[]>) properties.get(key)).get());
             } else if("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
