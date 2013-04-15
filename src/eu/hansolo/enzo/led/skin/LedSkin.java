@@ -239,73 +239,75 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
     private void resize() {
         size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
 
-        innerShadow.setRadius(0.07 * size);
-        glow.setRadius(0.36 * size);
+        if (size > 0) {
+            innerShadow.setRadius(0.07 * size);
+            glow.setRadius(0.36 * size);
 
-        switch(control.getType()) {
-            case HORIZONTAL:
-                frame.setPrefSize(size, 0.56 * size);
-                frame.setTranslateY(0.22 * size);
+            switch(control.getType()) {
+                case HORIZONTAL:
+                    frame.setPrefSize(size, 0.56 * size);
+                    frame.setTranslateY(0.22 * size);
 
-                off.setPrefSize(0.72 * size, 0.28 * size);
-                off.setTranslateX(0.14 * size);
-                off.setTranslateY(0.36 * size);
+                    off.setPrefSize(0.72 * size, 0.28 * size);
+                    off.setTranslateX(0.14 * size);
+                    off.setTranslateY(0.36 * size);
 
-                on.setPrefSize(0.72 * size, 0.28 * size);
-                on.setTranslateX(0.14 * size);
-                on.setTranslateY(0.36 * size);
+                    on.setPrefSize(0.72 * size, 0.28 * size);
+                    on.setTranslateX(0.14 * size);
+                    on.setTranslateY(0.36 * size);
 
-                highlight.setPrefSize(0.68 * size, 0.12 * size);
-                highlight.setTranslateX(0.16 * size);
-                highlight.setTranslateY(0.38 * size);
-                break;
-            case VERTICAL:
-                frame.setPrefSize(0.56 * size, size);
-                frame.setTranslateX(0.22 * size);
+                    highlight.setPrefSize(0.68 * size, 0.12 * size);
+                    highlight.setTranslateX(0.16 * size);
+                    highlight.setTranslateY(0.38 * size);
+                    break;
+                case VERTICAL:
+                    frame.setPrefSize(0.56 * size, size);
+                    frame.setTranslateX(0.22 * size);
 
-                off.setPrefSize(0.28 * size, 0.72 * size);
-                off.setTranslateX(0.36 * size);
-                off.setTranslateY(0.14 * size);
+                    off.setPrefSize(0.28 * size, 0.72 * size);
+                    off.setTranslateX(0.36 * size);
+                    off.setTranslateY(0.14 * size);
 
-                on.setPrefSize(0.28 * size, 0.72 * size);
-                on.setTranslateX(0.36 * size);
-                on.setTranslateY(0.14 * size);
+                    on.setPrefSize(0.28 * size, 0.72 * size);
+                    on.setTranslateX(0.36 * size);
+                    on.setTranslateY(0.14 * size);
 
-                highlight.setPrefSize(0.22 * size, 0.23 * size);
-                highlight.setTranslateX(0.39 * size);
-                highlight.setTranslateY(0.17 * size);
-                break;
-            case SQUARE:
-                frame.setPrefSize(size, size);
+                    highlight.setPrefSize(0.22 * size, 0.23 * size);
+                    highlight.setTranslateX(0.39 * size);
+                    highlight.setTranslateY(0.17 * size);
+                    break;
+                case SQUARE:
+                    frame.setPrefSize(size, size);
 
-                off.setPrefSize(0.72 * size, 0.72 * size);
-                off.setTranslateX(0.14 * size);
-                off.setTranslateY(0.14 * size);
+                    off.setPrefSize(0.72 * size, 0.72 * size);
+                    off.setTranslateX(0.14 * size);
+                    off.setTranslateY(0.14 * size);
 
-                on.setPrefSize(0.72 * size, 0.72 * size);
-                on.setTranslateX(0.14 * size);
-                on.setTranslateY(0.14 * size);
+                    on.setPrefSize(0.72 * size, 0.72 * size);
+                    on.setTranslateX(0.14 * size);
+                    on.setTranslateY(0.14 * size);
 
-                highlight.setPrefSize(0.66 * size, 0.23 * size);
-                highlight.setTranslateX(0.17 * size);
-                highlight.setTranslateY(0.17 * size);
-                break;
-            case ROUND:
-            default:
-                frame.setPrefSize(size, size);
+                    highlight.setPrefSize(0.66 * size, 0.23 * size);
+                    highlight.setTranslateX(0.17 * size);
+                    highlight.setTranslateY(0.17 * size);
+                    break;
+                case ROUND:
+                default:
+                    frame.setPrefSize(size, size);
 
-                off.setPrefSize(0.72 * size, 0.72 * size);
-                off.setTranslateX(0.14 * size);
-                off.setTranslateY(0.14 * size);
+                    off.setPrefSize(0.72 * size, 0.72 * size);
+                    off.setTranslateX(0.14 * size);
+                    off.setTranslateY(0.14 * size);
 
-                on.setPrefSize(0.72 * size, 0.72 * size);
-                on.setTranslateX(0.14 * size);
-                on.setTranslateY(0.14 * size);
+                    on.setPrefSize(0.72 * size, 0.72 * size);
+                    on.setTranslateX(0.14 * size);
+                    on.setTranslateY(0.14 * size);
 
-                highlight.setPrefSize(0.58 * size, 0.58 * size);
-                highlight.setTranslateX(0.21 * size);
-                highlight.setTranslateY(0.21 * size);
-                break;
+                    highlight.setPrefSize(0.58 * size, 0.58 * size);
+                    highlight.setTranslateX(0.21 * size);
+                    highlight.setTranslateY(0.21 * size);
+                    break;
+            }
         }
     }
 }

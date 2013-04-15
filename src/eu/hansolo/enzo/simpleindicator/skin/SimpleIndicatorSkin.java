@@ -167,22 +167,24 @@ public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, Simpl
     private void resize() {
         size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
 
-        outerFrame.setPrefSize(size, size);
+        if (size > 0) {
+            outerFrame.setPrefSize(size, size);
 
-        innerFrame.setPrefSize(size * 0.8, size * 0.8);
-        innerFrame.setTranslateX((size - innerFrame.getPrefWidth()) * 0.5);
-        innerFrame.setTranslateY((size - innerFrame.getPrefHeight()) * 0.5);
+            innerFrame.setPrefSize(size * 0.8, size * 0.8);
+            innerFrame.setTranslateX((size - innerFrame.getPrefWidth()) * 0.5);
+            innerFrame.setTranslateY((size - innerFrame.getPrefHeight()) * 0.5);
 
-        mainBack.setPrefSize(size * 0.76, size * 0.76);
-        mainBack.setTranslateX((size - mainBack.getPrefWidth()) * 0.5);
-        mainBack.setTranslateY((size - mainBack.getPrefHeight()) * 0.5);
+            mainBack.setPrefSize(size * 0.76, size * 0.76);
+            mainBack.setTranslateX((size - mainBack.getPrefWidth()) * 0.5);
+            mainBack.setTranslateY((size - mainBack.getPrefHeight()) * 0.5);
 
-        main.setPrefSize(size * 0.76, size * 0.76);
-        main.setTranslateX((size - main.getPrefWidth()) * 0.5);
-        main.setTranslateY((size - main.getPrefHeight()) * 0.5);
+            main.setPrefSize(size * 0.76, size * 0.76);
+            main.setTranslateX((size - main.getPrefWidth()) * 0.5);
+            main.setTranslateY((size - main.getPrefHeight()) * 0.5);
 
-        highlight.setPrefSize(size * 0.52, size * 0.30);
-        highlight.setTranslateX((size - highlight.getPrefWidth()) * 0.5);
-        highlight.setTranslateY((size - highlight.getPrefHeight()) * 0.2);
+            highlight.setPrefSize(size * 0.52, size * 0.30);
+            highlight.setTranslateX((size - highlight.getPrefWidth()) * 0.5);
+            highlight.setTranslateY((size - highlight.getPrefHeight()) * 0.2);
+        }
     }
 }

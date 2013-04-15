@@ -346,6 +346,7 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
         } else if (Clock.Design.BRAUN == control.getDesign()) {
             foreground.getStyleClass().setAll("foreground-braun");
         }
+        foreground.setVisible(control.isHighlightVisible());
 
         pane.getChildren().setAll(background, tickMarkGroup, tickLabelGroup, pointerGroup, secondPointerGroup, centerKnob, foreground);
 
@@ -360,6 +361,7 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
         registerChangeListener(control.secondPointerVisibleProperty(), "SECOND_POINTER_VISIBLE");
         registerChangeListener(control.nightModeProperty(), "DESIGN");
         registerChangeListener(control.designProperty(), "DESIGN");
+        registerChangeListener(control.highlightVisibleProperty(), "DESIGN");
     }
 
 
@@ -386,7 +388,6 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
         }
         return super.computePrefWidth(prefHeight);
     }
-
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = PREFERRED_SIZE;
         if (PREF_WIDTH != -1) {
@@ -398,7 +399,6 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
         return super.computeMinWidth(Math.max(20, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
     }
-
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
         return super.computeMinHeight(Math.max(20, MIN_WIDTH - control.getInsets().getRight() - control.getInsets().getLeft()));
     }
@@ -406,7 +406,6 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
         return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
     }
-
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
         return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - control.getInsets().getRight() - control.getInsets().getLeft()));
     }
@@ -475,168 +474,171 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
             foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-db");
         }
         tickLabelGroup.setVisible(Clock.Design.BRAUN == control.getDesign());
+        foreground.setVisible(control.isHighlightVisible());
         resize();
     }
 
     private void resize() {
         size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
 
-        background.setPrefSize(size, size);
+        if (size > 0) {
+            background.setPrefSize(size, size);
 
-        // TODO: hourPointer and minutePointer have to be vice versa...wrong scaling here !!!
+            // TODO: hourPointer and minutePointer have to be vice versa...wrong scaling here !!!
 
-        if (Clock.Design.IOS6 == control.getDesign()) {
-            hourPointerWidthFactor    = 0.04;
-            hourPointerHeightFactor   = 0.55;
-            minutePointerWidthFactor  = 0.04;
-            minutePointerHeightFactor = 0.4;
-            secondPointerWidthFactor  = 0.075;
-            secondPointerHeightFactor = 0.46;
-            majorTickWidthFactor      = 0.04;
-            majorTickHeightFactor     = 0.12;
-            minorTickWidthFactor      = 0.01;
-            minorTickHeightFactor     = 0.05;
-            majorTickOffset           = 0.018;
-            minorTickOffset           = 0.05;
-            hourAngle.setPivotX(size * 0.5 * hourPointerWidthFactor);
-            hourAngle.setPivotY(size * 0.76 * hourPointerHeightFactor);
-            minuteAngle.setPivotX(size * 0.5 * minutePointerWidthFactor);
-            minuteAngle.setPivotY(size * 0.66 * minutePointerHeightFactor);
-            secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
-            secondAngle.setPivotY(size * 0.7341040462 * secondPointerHeightFactor);
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
-            hourPointerWidthFactor    = 0.105;
-            hourPointerHeightFactor   = 0.485;
-            minutePointerWidthFactor  = 0.105;
-            minutePointerHeightFactor = 0.4;
-            secondPointerWidthFactor  = 0.09;
-            secondPointerHeightFactor = 0.53;
-            majorTickWidthFactor      = 0.015;
-            majorTickHeightFactor     = 0.045;
-            minorTickWidthFactor      = 0.0075;
-            minorTickHeightFactor     = 0.0225;
-            majorTickOffset           = 0.012;
-            minorTickOffset           = 0.02;
-            hourAngle.setPivotX(size * 0.5 * hourPointerWidthFactor);
-            hourAngle.setPivotY(size * 0.895 * hourPointerHeightFactor);
-            minuteAngle.setPivotX(size * 0.5 * minutePointerWidthFactor);
-            minuteAngle.setPivotY(size * 0.87 * minutePointerHeightFactor);
-            secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
-            secondAngle.setPivotY(size * 0.8125 * secondPointerHeightFactor);
-        } else {
-            hourPointerWidthFactor    = 0.04;
-            hourPointerHeightFactor   = 0.47;
-            minutePointerWidthFactor  = 0.055;
-            minutePointerHeightFactor = 0.33;
-            secondPointerWidthFactor  = 0.1;
-            secondPointerHeightFactor = 0.455;
-            majorTickWidthFactor      = 0.04;
-            majorTickHeightFactor     = 0.12;
-            minorTickWidthFactor      = 0.025;
-            minorTickHeightFactor     = 0.04;
-            majorTickOffset           = 0.018;
-            minorTickOffset           = 0.06;
-            hourAngle.setPivotX(size * 0.5 * hourPointerWidthFactor);
-            hourAngle.setPivotY(size * hourPointerHeightFactor);
-            minuteAngle.setPivotX(size * 0.5 * minutePointerWidthFactor);
-            minuteAngle.setPivotY(size * minutePointerHeightFactor);
-            secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
-            secondAngle.setPivotY(size * secondPointerHeightFactor);
-        }
-
-        double radius = 0.4;
-        double sinValue;
-        double cosValue;
-        int index = 0;
-        for (double angle = 0 ; angle < 360 ; angle += 6) {
-            sinValue = Math.sin(Math.toRadians(angle));
-            cosValue = Math.cos(Math.toRadians(angle));
-            Region tick = ticks.get(index);
-            if (angle % 30 == 0) {
-                tick.setPrefWidth(size * majorTickWidthFactor);
-                tick.setPrefHeight(size * majorTickHeightFactor);
-                tick.setTranslateX(size * 0.5 + ((size * (radius + majorTickOffset) * sinValue) - (size * (majorTickWidthFactor) * 0.5)));
-                tick.setTranslateY(size * 0.5 + ((size * (radius + majorTickOffset) * cosValue) - (size * (majorTickHeightFactor) * 0.5)));
+            if (Clock.Design.IOS6 == control.getDesign()) {
+                hourPointerWidthFactor    = 0.04;
+                hourPointerHeightFactor   = 0.55;
+                minutePointerWidthFactor  = 0.04;
+                minutePointerHeightFactor = 0.4;
+                secondPointerWidthFactor  = 0.075;
+                secondPointerHeightFactor = 0.46;
+                majorTickWidthFactor      = 0.04;
+                majorTickHeightFactor     = 0.12;
+                minorTickWidthFactor      = 0.01;
+                minorTickHeightFactor     = 0.05;
+                majorTickOffset           = 0.018;
+                minorTickOffset           = 0.05;
+                hourAngle.setPivotX(size * 0.5 * hourPointerWidthFactor);
+                hourAngle.setPivotY(size * 0.76 * hourPointerHeightFactor);
+                minuteAngle.setPivotX(size * 0.5 * minutePointerWidthFactor);
+                minuteAngle.setPivotY(size * 0.66 * minutePointerHeightFactor);
+                secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
+                secondAngle.setPivotY(size * 0.7341040462 * secondPointerHeightFactor);
+            } else if (Clock.Design.BRAUN == control.getDesign()) {
+                hourPointerWidthFactor    = 0.105;
+                hourPointerHeightFactor   = 0.485;
+                minutePointerWidthFactor  = 0.105;
+                minutePointerHeightFactor = 0.4;
+                secondPointerWidthFactor  = 0.09;
+                secondPointerHeightFactor = 0.53;
+                majorTickWidthFactor      = 0.015;
+                majorTickHeightFactor     = 0.045;
+                minorTickWidthFactor      = 0.0075;
+                minorTickHeightFactor     = 0.0225;
+                majorTickOffset           = 0.012;
+                minorTickOffset           = 0.02;
+                hourAngle.setPivotX(size * 0.5 * hourPointerWidthFactor);
+                hourAngle.setPivotY(size * 0.895 * hourPointerHeightFactor);
+                minuteAngle.setPivotX(size * 0.5 * minutePointerWidthFactor);
+                minuteAngle.setPivotY(size * 0.87 * minutePointerHeightFactor);
+                secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
+                secondAngle.setPivotY(size * 0.8125 * secondPointerHeightFactor);
             } else {
-                tick.setPrefWidth(size * minorTickWidthFactor);
-                tick.setPrefHeight(size * minorTickHeightFactor);
-                tick.setTranslateX(size * 0.5 + ((size * (radius + minorTickOffset) * sinValue) - (size * (minorTickWidthFactor) * 0.5)));
-                tick.setTranslateY(size * 0.5 + ((size * (radius + minorTickOffset) * cosValue) - (size * (minorTickHeightFactor) * 0.5)));
+                hourPointerWidthFactor    = 0.04;
+                hourPointerHeightFactor   = 0.47;
+                minutePointerWidthFactor  = 0.055;
+                minutePointerHeightFactor = 0.33;
+                secondPointerWidthFactor  = 0.1;
+                secondPointerHeightFactor = 0.455;
+                majorTickWidthFactor      = 0.04;
+                majorTickHeightFactor     = 0.12;
+                minorTickWidthFactor      = 0.025;
+                minorTickHeightFactor     = 0.04;
+                majorTickOffset           = 0.018;
+                minorTickOffset           = 0.06;
+                hourAngle.setPivotX(size * 0.5 * hourPointerWidthFactor);
+                hourAngle.setPivotY(size * hourPointerHeightFactor);
+                minuteAngle.setPivotX(size * 0.5 * minutePointerWidthFactor);
+                minuteAngle.setPivotY(size * minutePointerHeightFactor);
+                secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
+                secondAngle.setPivotY(size * secondPointerHeightFactor);
             }
-            tick.setRotate(-angle);
-            index++;
-        }
 
-        if (Clock.Design.BRAUN == control.getDesign()) {
-            int tickLabelCounter = 0;
-            tickLabelFont = Font.loadFont(getClass().getResourceAsStream("/resources/helvetica.ttf"), (0.075 * size));
-            for (double angle = 0 ; angle < 360 ; angle += 30.0) {
-                double x = 0.31 * size * Math.sin(Math.toRadians(150 - angle));
-                double y = 0.31 * size * Math.cos(Math.toRadians(150 - angle));
-                tickLabels.get(tickLabelCounter).setFont(tickLabelFont);
-                tickLabels.get(tickLabelCounter).setX(size * 0.5 + x - tickLabels.get(tickLabelCounter).getLayoutBounds().getWidth() * 0.5);
-                tickLabels.get(tickLabelCounter).setY(size * 0.5 + y);
-                tickLabels.get(tickLabelCounter).setTextOrigin(VPos.CENTER);
-                tickLabels.get(tickLabelCounter).setTextAlignment(TextAlignment.CENTER);
-                tickLabelCounter++;
+            double radius = 0.4;
+            double sinValue;
+            double cosValue;
+            int index = 0;
+            for (double angle = 0 ; angle < 360 ; angle += 6) {
+                sinValue = Math.sin(Math.toRadians(angle));
+                cosValue = Math.cos(Math.toRadians(angle));
+                Region tick = ticks.get(index);
+                if (angle % 30 == 0) {
+                    tick.setPrefWidth(size * majorTickWidthFactor);
+                    tick.setPrefHeight(size * majorTickHeightFactor);
+                    tick.setTranslateX(size * 0.5 + ((size * (radius + majorTickOffset) * sinValue) - (size * (majorTickWidthFactor) * 0.5)));
+                    tick.setTranslateY(size * 0.5 + ((size * (radius + majorTickOffset) * cosValue) - (size * (majorTickHeightFactor) * 0.5)));
+                } else {
+                    tick.setPrefWidth(size * minorTickWidthFactor);
+                    tick.setPrefHeight(size * minorTickHeightFactor);
+                    tick.setTranslateX(size * 0.5 + ((size * (radius + minorTickOffset) * sinValue) - (size * (minorTickWidthFactor) * 0.5)));
+                    tick.setTranslateY(size * 0.5 + ((size * (radius + minorTickOffset) * cosValue) - (size * (minorTickHeightFactor) * 0.5)));
+                }
+                tick.setRotate(-angle);
+                index++;
             }
-        }
 
-        hourPointer.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
-        if (Clock.Design.IOS6 == control.getDesign()) {
-            hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
-            hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.24));
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
-            hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
-            hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.108));
-            hourPointerFlour.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
-            hourPointerFlour.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
-            hourPointerFlour.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.108));
-        } else {
-            hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
-            hourPointer.setTranslateY(size * 0.5 - hourPointer.getPrefHeight());
-        }
+            if (Clock.Design.BRAUN == control.getDesign()) {
+                int tickLabelCounter = 0;
+                tickLabelFont = Font.loadFont(getClass().getResourceAsStream("/resources/helvetica.ttf"), (0.075 * size));
+                for (double angle = 0 ; angle < 360 ; angle += 30.0) {
+                    double x = 0.31 * size * Math.sin(Math.toRadians(150 - angle));
+                    double y = 0.31 * size * Math.cos(Math.toRadians(150 - angle));
+                    tickLabels.get(tickLabelCounter).setFont(tickLabelFont);
+                    tickLabels.get(tickLabelCounter).setX(size * 0.5 + x - tickLabels.get(tickLabelCounter).getLayoutBounds().getWidth() * 0.5);
+                    tickLabels.get(tickLabelCounter).setY(size * 0.5 + y);
+                    tickLabels.get(tickLabelCounter).setTextOrigin(VPos.CENTER);
+                    tickLabels.get(tickLabelCounter).setTextAlignment(TextAlignment.CENTER);
+                    tickLabelCounter++;
+                }
+            }
 
-        minutePointer.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
-        if (Clock.Design.IOS6 == control.getDesign()) {
-            minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
-            minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.34));
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
-            minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
-            minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.128));
-            minutePointerFlour.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
-            minutePointerFlour.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
-            minutePointerFlour.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.128));
-        } else {
-            minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
-            minutePointer.setTranslateY(size * 0.5 - minutePointer.getPrefHeight());
-        }
+            hourPointer.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
+            if (Clock.Design.IOS6 == control.getDesign()) {
+                hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
+                hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.24));
+            } else if (Clock.Design.BRAUN == control.getDesign()) {
+                hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
+                hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.108));
+                hourPointerFlour.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
+                hourPointerFlour.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
+                hourPointerFlour.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.108));
+            } else {
+                hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
+                hourPointer.setTranslateY(size * 0.5 - hourPointer.getPrefHeight());
+            }
 
-        secondPointer.setPrefSize(size * secondPointerWidthFactor, size * secondPointerHeightFactor);
-        if (Clock.Design.IOS6 == control.getDesign()) {
-            secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
-            secondPointer.setTranslateY(size * 0.5 - (secondPointer.getPrefHeight()) + (secondPointer.getPrefHeight() * 0.2658959538));
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
-            secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
-            secondPointer.setTranslateY(size * 0.5 - secondPointer.getPrefHeight() + (secondPointer.getPrefHeight() * 0.189));
-        } else {
-            secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
-            secondPointer.setTranslateY(size * 0.5 - secondPointer.getPrefHeight());
-        }
+            minutePointer.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
+            if (Clock.Design.IOS6 == control.getDesign()) {
+                minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
+                minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.34));
+            } else if (Clock.Design.BRAUN == control.getDesign()) {
+                minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
+                minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.128));
+                minutePointerFlour.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
+                minutePointerFlour.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
+                minutePointerFlour.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.128));
+            } else {
+                minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
+                minutePointer.setTranslateY(size * 0.5 - minutePointer.getPrefHeight());
+            }
 
-        if (Clock.Design.IOS6 == control.getDesign()) {
-            centerKnob.setPrefSize(size * 0.015, size * 0.015);
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
-            centerKnob.setPrefSize(size * 0.085, size * 0.085);
-        } else {
-            centerKnob.setPrefSize(size * 0.1, size * 0.1);
-        }
-        centerKnob.setTranslateX(size * 0.5 - (centerKnob.getPrefWidth() * 0.5));
-        centerKnob.setTranslateY(size * 0.5 - (centerKnob.getPrefHeight() * 0.5));
+            secondPointer.setPrefSize(size * secondPointerWidthFactor, size * secondPointerHeightFactor);
+            if (Clock.Design.IOS6 == control.getDesign()) {
+                secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
+                secondPointer.setTranslateY(size * 0.5 - (secondPointer.getPrefHeight()) + (secondPointer.getPrefHeight() * 0.2658959538));
+            } else if (Clock.Design.BRAUN == control.getDesign()) {
+                secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
+                secondPointer.setTranslateY(size * 0.5 - secondPointer.getPrefHeight() + (secondPointer.getPrefHeight() * 0.189));
+            } else {
+                secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
+                secondPointer.setTranslateY(size * 0.5 - secondPointer.getPrefHeight());
+            }
 
-        foreground.setPrefSize(size * 0.955, size * 0.495);
-        foreground.setTranslateX(size * 0.5 - (foreground.getPrefWidth() * 0.5));
-        foreground.setTranslateY(size * 0.01);
+            if (Clock.Design.IOS6 == control.getDesign()) {
+                centerKnob.setPrefSize(size * 0.015, size * 0.015);
+            } else if (Clock.Design.BRAUN == control.getDesign()) {
+                centerKnob.setPrefSize(size * 0.085, size * 0.085);
+            } else {
+                centerKnob.setPrefSize(size * 0.1, size * 0.1);
+            }
+            centerKnob.setTranslateX(size * 0.5 - (centerKnob.getPrefWidth() * 0.5));
+            centerKnob.setTranslateY(size * 0.5 - (centerKnob.getPrefHeight() * 0.5));
+
+            foreground.setPrefSize(size * 0.955, size * 0.495);
+            foreground.setTranslateX(size * 0.5 - (foreground.getPrefWidth() * 0.5));
+            foreground.setTranslateY(size * 0.01);
+        }
     }
 
 

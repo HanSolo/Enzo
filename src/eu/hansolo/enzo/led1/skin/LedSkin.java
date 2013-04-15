@@ -233,24 +233,25 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
             }
         }
 
-        frame.setPrefSize(0.75 * width, 0.75 * height);
-        frame.setTranslateX(0.125 * width);
-        frame.setTranslateY(0.125 * height);
+        if (width > 0 && height > 0) {
+            frame.setPrefSize(0.75 * width, 0.75 * height);
+            frame.setTranslateX(0.125 * width);
+            frame.setTranslateY(0.125 * height);
 
-        ledOff.setPrefSize(0.625 * width, 0.625 * height);
-        ledOff.setTranslateX(0.1875 * width);
-        ledOff.setTranslateY(0.1875 * height);
+            ledOff.setPrefSize(0.625 * width, 0.625 * height);
+            ledOff.setTranslateX(0.1875 * width);
+            ledOff.setTranslateY(0.1875 * height);
 
-        ledOn.setPrefSize(0.625 * width, 0.625 * height);
-        ledOn.setTranslateX(0.1875 * width);
-        ledOn.setTranslateY(0.1875 * height);
-        innerShadow.setRadius(0.1 / 80.0 * size);
-        dropShadow.setRadius(0.25 * size);
+            ledOn.setPrefSize(0.625 * width, 0.625 * height);
+            ledOn.setTranslateX(0.1875 * width);
+            ledOn.setTranslateY(0.1875 * height);
+            innerShadow.setRadius(0.1 / 80.0 * size);
+            dropShadow.setRadius(0.25 * size);
 
-        highlight.setPrefSize(0.5 * width, 0.5 * height);
-        highlight.setTranslateX(0.25 * width);
-        highlight.setTranslateY(0.25 * height);
-
+            highlight.setPrefSize(0.5 * width, 0.5 * height);
+            highlight.setTranslateX(0.25 * width);
+            highlight.setTranslateY(0.25 * height);
+        }
         control.setBlinking(wasBlinking);
     }
 }

@@ -596,239 +596,241 @@ public class MatrixSegmentSkin extends BehaviorSkinBase<MatrixSegment, MatrixSeg
             height = aspectRatio * width;
         }
 
-        // resize the background
-        background.setPrefSize(width, height);
-        backgroundInnerShadow.setRadius(0.0025 * size);
-        backgroundInnerHighlight.setRadius(0.0025 * size);
+        if (width > 0 && height > 0) {
+            // resize the background
+            background.setPrefSize(width, height);
+            backgroundInnerShadow.setRadius(0.0025 * size);
+            backgroundInnerHighlight.setRadius(0.0025 * size);
 
-        dotInnerShadow.setRadius(0.025 * width);
-        glow.setRadius(0.032 * width);
+            dotInnerShadow.setRadius(0.025 * width);
+            glow.setRadius(0.032 * width);
 
-        // resize the dots
-        double dotWidth  = 0.13548387096774195 * width;
-        double dotHeight = 0.0967741935483871 * height;
+            // resize the dots
+            double dotWidth  = 0.13548387096774195 * width;
+            double dotHeight = 0.0967741935483871 * height;
 
-        for (Region dot : dotMap.values()) {
-            dot.setPrefSize(dotWidth, dotHeight);
+            for (Region dot : dotMap.values()) {
+                dot.setPrefSize(dotWidth, dotHeight);
+            }
+
+            d57.setTranslateX(0.832258064516129 * width);
+            d57.setTranslateY(0.880184331797235 * height);
+
+            d47.setTranslateX(0.632258064516129 * width);
+            d47.setTranslateY(0.880184331797235 * height);
+
+            d37.setTranslateX(0.432258064516129 * width);
+            d37.setTranslateY(0.880184331797235 * height);
+
+            d27.setTranslateX(0.23225806451612904 * width);
+            d27.setTranslateY(0.880184331797235 * height);
+
+            d17.setTranslateX(0.03225806451612903 * width);
+            d17.setTranslateY(0.880184331797235 * height);
+
+            d56.setTranslateX(0.832258064516129 * width);
+            d56.setTranslateY(0.7373271889400922 * height);
+
+            d46.setTranslateX(0.632258064516129 * width);
+            d46.setTranslateY(0.7373271889400922 * height);
+
+            d36.setTranslateX(0.432258064516129 * width);
+            d36.setTranslateY(0.7373271889400922 * height);
+
+            d26.setTranslateX(0.23225806451612904 * width);
+            d26.setTranslateY(0.7373271889400922 * height);
+
+            d16.setTranslateX(0.03225806451612903 * width);
+            d16.setTranslateY(0.7373271889400922 * height);
+
+            d55.setTranslateX(0.832258064516129 * width);
+            d55.setTranslateY(0.5944700460829493 * height);
+
+            d45.setTranslateX(0.632258064516129 * width);
+            d45.setTranslateY(0.5944700460829493 * height);
+
+            d35.setTranslateX(0.432258064516129 * width);
+            d35.setTranslateY(0.5944700460829493 * height);
+
+            d25.setTranslateX(0.23225806451612904 * width);
+            d25.setTranslateY(0.5944700460829493 * height);
+
+            d15.setTranslateX(0.03225806451612903 * width);
+            d15.setTranslateY(0.5944700460829493 * height);
+
+            d54.setTranslateX(0.832258064516129 * width);
+            d54.setTranslateY(0.45161290322580644 * height);
+
+            d44.setTranslateX(0.632258064516129 * width);
+            d44.setTranslateY(0.45161290322580644 * height);
+
+            d34.setTranslateX(0.432258064516129 * width);
+            d34.setTranslateY(0.45161290322580644 * height);
+
+            d24.setTranslateX(0.23225806451612904 * width);
+            d24.setTranslateY(0.45161290322580644 * height);
+
+            d14.setTranslateX(0.03225806451612903 * width);
+            d14.setTranslateY(0.45161290322580644 * height);
+
+            d53.setTranslateX(0.832258064516129 * width);
+            d53.setTranslateY(0.3087557603686636 * height);
+
+            d43.setTranslateX(0.632258064516129 * width);
+            d43.setTranslateY(0.3087557603686636 * height);
+
+            d33.setTranslateX(0.432258064516129 * width);
+            d33.setTranslateY(0.3087557603686636 * height);
+
+            d23.setTranslateX(0.23225806451612904 * width);
+            d23.setTranslateY(0.3087557603686636 * height);
+
+            d13.setTranslateX(0.03225806451612903 * width);
+            d13.setTranslateY(0.3087557603686636 * height);
+
+            d52.setTranslateX(0.832258064516129 * width);
+            d52.setTranslateY(0.16589861751152074 * height);
+
+            d42.setTranslateX(0.632258064516129 * width);
+            d42.setTranslateY(0.16589861751152074 * height);
+
+            d32.setTranslateX(0.432258064516129 * width);
+            d32.setTranslateY(0.16589861751152074 * height);
+
+            d22.setTranslateX(0.23225806451612904 * width);
+            d22.setTranslateY(0.16589861751152074 * height);
+
+            d12.setTranslateX(0.03225806451612903 * width);
+            d12.setTranslateY(0.16589861751152074 * height);
+
+            d51.setTranslateX(0.832258064516129 * width);
+            d51.setTranslateY(0.02304147465437788 * height);
+
+            d41.setTranslateX(0.632258064516129 * width);
+            d41.setTranslateY(0.02304147465437788 * height);
+
+            d31.setTranslateX(0.432258064516129 * width);
+            d31.setTranslateY(0.02304147465437788 * height);
+
+            d21.setTranslateX(0.23225806451612904 * width);
+            d21.setTranslateY(0.02304147465437788 * height);
+
+            d11.setTranslateX(0.03225806451612903 * width);
+            d11.setTranslateY(0.02304147465437788 * height);
+
+
+            // resize the highlights
+            double highlightWidth  = 0.07741935483870968 * width;
+            double highlightHeight = 0.03456221198156682 * height;
+
+            for (Region highlight : highlights) {
+                highlight.setPrefSize(highlightWidth, highlightHeight);
+            }
+
+            d57h.setTranslateX(0.8612903225806452 * width);
+            d57h.setTranslateY(0.8894009216589862 * height);
+
+            d47h.setTranslateX(0.6612903225806451 * width);
+            d47h.setTranslateY(0.8894009216589862 * height);
+
+            d37h.setTranslateX(0.4612903225806452 * width);
+            d37h.setTranslateY(0.8894009216589862 * height);
+
+            d27h.setTranslateX(0.26129032258064516 * width);
+            d27h.setTranslateY(0.8894009216589862 * height);
+
+            d17h.setTranslateX(0.06129032258064516 * width);
+            d17h.setTranslateY(0.8894009216589862 * height);
+
+            d56h.setTranslateX(0.8612903225806452 * width);
+            d56h.setTranslateY(0.7465437788018433 * height);
+
+            d46h.setTranslateX(0.6612903225806451 * width);
+            d46h.setTranslateY(0.7465437788018433 * height);
+
+            d36h.setTranslateX(0.4612903225806452 * width);
+            d36h.setTranslateY(0.7465437788018433 * height);
+
+            d26h.setTranslateX(0.26129032258064516 * width);
+            d26h.setTranslateY(0.7465437788018433 * height);
+
+            d16h.setTranslateX(0.06129032258064516 * width);
+            d16h.setTranslateY(0.7465437788018433 * height);
+
+            d55h.setTranslateX(0.8612903225806452 * width);
+            d55h.setTranslateY(0.6036866359447005 * height);
+
+            d45h.setTranslateX(0.6612903225806451 * width);
+            d45h.setTranslateY(0.6036866359447005 * height);
+
+            d35h.setTranslateX(0.4612903225806452 * width);
+            d35h.setTranslateY(0.6036866359447005 * height);
+
+            d25h.setTranslateX(0.26129032258064516 * width);
+            d25h.setTranslateY(0.6036866359447005 * height);
+
+            d15h.setTranslateX(0.06129032258064516 * width);
+            d15h.setTranslateY(0.6036866359447005 * height);
+
+            d54h.setTranslateX(0.8612903225806452 * width);
+            d54h.setTranslateY(0.4608294930875576 * height);
+
+            d44h.setTranslateX(0.6612903225806451 * width);
+            d44h.setTranslateY(0.4608294930875576 * height);
+
+            d34h.setTranslateX(0.4612903225806452 * width);
+            d34h.setTranslateY(0.4608294930875576 * height);
+
+            d24h.setTranslateX(0.26129032258064516 * width);
+            d24h.setTranslateY(0.4608294930875576 * height);
+
+            d14h.setTranslateX(0.06129032258064516 * width);
+            d14h.setTranslateY(0.4608294930875576 * height);
+
+            d53h.setTranslateX(0.8612903225806452 * width);
+            d53h.setTranslateY(0.31797235023041476 * height);
+
+            d43h.setTranslateX(0.6612903225806451 * width);
+            d43h.setTranslateY(0.31797235023041476 * height);
+
+            d33h.setTranslateX(0.4612903225806452 * width);
+            d33h.setTranslateY(0.31797235023041476 * height);
+
+            d23h.setTranslateX(0.26129032258064516 * width);
+            d23h.setTranslateY(0.31797235023041476 * height);
+
+            d13h.setTranslateX(0.06129032258064516 * width);
+            d13h.setTranslateY(0.31797235023041476 * height);
+
+            d52h.setTranslateX(0.8612903225806452 * width);
+            d52h.setTranslateY(0.17511520737327188 * height);
+
+            d42h.setTranslateX(0.6612903225806451 * width);
+            d42h.setTranslateY(0.17511520737327188 * height);
+
+            d32h.setTranslateX(0.4612903225806452 * width);
+            d32h.setTranslateY(0.17511520737327188 * height);
+
+            d22h.setTranslateX(0.26129032258064516 * width);
+            d22h.setTranslateY(0.17511520737327188 * height);
+
+            d12h.setTranslateX(0.06129032258064516 * width);
+            d12h.setTranslateY(0.17511520737327188 * height);
+
+            d51h.setTranslateX(0.8612903225806452 * width);
+            d51h.setTranslateY(0.03225806451612903 * height);
+
+            d41h.setTranslateX(0.6612903225806451 * width);
+            d41h.setTranslateY(0.03225806451612903 * height);
+
+            d31h.setTranslateX(0.4612903225806452 * width);
+            d31h.setTranslateY(0.03225806451612903 * height);
+
+            d21h.setTranslateX(0.26129032258064516 * width);
+            d21h.setTranslateY(0.03225806451612903 * height);
+
+            d11h.setTranslateX(0.06129032258064516 * width);
+            d11h.setTranslateY(0.03225806451612903 * height);
         }
-
-        d57.setTranslateX(0.832258064516129 * width);
-        d57.setTranslateY(0.880184331797235 * height);
-
-        d47.setTranslateX(0.632258064516129 * width);
-        d47.setTranslateY(0.880184331797235 * height);
-
-        d37.setTranslateX(0.432258064516129 * width);
-        d37.setTranslateY(0.880184331797235 * height);
-
-        d27.setTranslateX(0.23225806451612904 * width);
-        d27.setTranslateY(0.880184331797235 * height);
-
-        d17.setTranslateX(0.03225806451612903 * width);
-        d17.setTranslateY(0.880184331797235 * height);
-
-        d56.setTranslateX(0.832258064516129 * width);
-        d56.setTranslateY(0.7373271889400922 * height);
-
-        d46.setTranslateX(0.632258064516129 * width);
-        d46.setTranslateY(0.7373271889400922 * height);
-
-        d36.setTranslateX(0.432258064516129 * width);
-        d36.setTranslateY(0.7373271889400922 * height);
-
-        d26.setTranslateX(0.23225806451612904 * width);
-        d26.setTranslateY(0.7373271889400922 * height);
-
-        d16.setTranslateX(0.03225806451612903 * width);
-        d16.setTranslateY(0.7373271889400922 * height);
-
-        d55.setTranslateX(0.832258064516129 * width);
-        d55.setTranslateY(0.5944700460829493 * height);
-
-        d45.setTranslateX(0.632258064516129 * width);
-        d45.setTranslateY(0.5944700460829493 * height);
-
-        d35.setTranslateX(0.432258064516129 * width);
-        d35.setTranslateY(0.5944700460829493 * height);
-
-        d25.setTranslateX(0.23225806451612904 * width);
-        d25.setTranslateY(0.5944700460829493 * height);
-
-        d15.setTranslateX(0.03225806451612903 * width);
-        d15.setTranslateY(0.5944700460829493 * height);
-
-        d54.setTranslateX(0.832258064516129 * width);
-        d54.setTranslateY(0.45161290322580644 * height);
-
-        d44.setTranslateX(0.632258064516129 * width);
-        d44.setTranslateY(0.45161290322580644 * height);
-
-        d34.setTranslateX(0.432258064516129 * width);
-        d34.setTranslateY(0.45161290322580644 * height);
-
-        d24.setTranslateX(0.23225806451612904 * width);
-        d24.setTranslateY(0.45161290322580644 * height);
-
-        d14.setTranslateX(0.03225806451612903 * width);
-        d14.setTranslateY(0.45161290322580644 * height);
-
-        d53.setTranslateX(0.832258064516129 * width);
-        d53.setTranslateY(0.3087557603686636 * height);
-
-        d43.setTranslateX(0.632258064516129 * width);
-        d43.setTranslateY(0.3087557603686636 * height);
-
-        d33.setTranslateX(0.432258064516129 * width);
-        d33.setTranslateY(0.3087557603686636 * height);
-
-        d23.setTranslateX(0.23225806451612904 * width);
-        d23.setTranslateY(0.3087557603686636 * height);
-
-        d13.setTranslateX(0.03225806451612903 * width);
-        d13.setTranslateY(0.3087557603686636 * height);
-
-        d52.setTranslateX(0.832258064516129 * width);
-        d52.setTranslateY(0.16589861751152074 * height);
-
-        d42.setTranslateX(0.632258064516129 * width);
-        d42.setTranslateY(0.16589861751152074 * height);
-
-        d32.setTranslateX(0.432258064516129 * width);
-        d32.setTranslateY(0.16589861751152074 * height);
-
-        d22.setTranslateX(0.23225806451612904 * width);
-        d22.setTranslateY(0.16589861751152074 * height);
-
-        d12.setTranslateX(0.03225806451612903 * width);
-        d12.setTranslateY(0.16589861751152074 * height);
-
-        d51.setTranslateX(0.832258064516129 * width);
-        d51.setTranslateY(0.02304147465437788 * height);
-
-        d41.setTranslateX(0.632258064516129 * width);
-        d41.setTranslateY(0.02304147465437788 * height);
-
-        d31.setTranslateX(0.432258064516129 * width);
-        d31.setTranslateY(0.02304147465437788 * height);
-
-        d21.setTranslateX(0.23225806451612904 * width);
-        d21.setTranslateY(0.02304147465437788 * height);
-
-        d11.setTranslateX(0.03225806451612903 * width);
-        d11.setTranslateY(0.02304147465437788 * height);
-
-
-        // resize the highlights
-        double highlightWidth  = 0.07741935483870968 * width;
-        double highlightHeight = 0.03456221198156682 * height;
-
-        for (Region highlight : highlights) {
-            highlight.setPrefSize(highlightWidth, highlightHeight);
-        }
-
-        d57h.setTranslateX(0.8612903225806452 * width);
-        d57h.setTranslateY(0.8894009216589862 * height);
-
-        d47h.setTranslateX(0.6612903225806451 * width);
-        d47h.setTranslateY(0.8894009216589862 * height);
-
-        d37h.setTranslateX(0.4612903225806452 * width);
-        d37h.setTranslateY(0.8894009216589862 * height);
-
-        d27h.setTranslateX(0.26129032258064516 * width);
-        d27h.setTranslateY(0.8894009216589862 * height);
-
-        d17h.setTranslateX(0.06129032258064516 * width);
-        d17h.setTranslateY(0.8894009216589862 * height);
-
-        d56h.setTranslateX(0.8612903225806452 * width);
-        d56h.setTranslateY(0.7465437788018433 * height);
-
-        d46h.setTranslateX(0.6612903225806451 * width);
-        d46h.setTranslateY(0.7465437788018433 * height);
-
-        d36h.setTranslateX(0.4612903225806452 * width);
-        d36h.setTranslateY(0.7465437788018433 * height);
-
-        d26h.setTranslateX(0.26129032258064516 * width);
-        d26h.setTranslateY(0.7465437788018433 * height);
-
-        d16h.setTranslateX(0.06129032258064516 * width);
-        d16h.setTranslateY(0.7465437788018433 * height);
-
-        d55h.setTranslateX(0.8612903225806452 * width);
-        d55h.setTranslateY(0.6036866359447005 * height);
-
-        d45h.setTranslateX(0.6612903225806451 * width);
-        d45h.setTranslateY(0.6036866359447005 * height);
-
-        d35h.setTranslateX(0.4612903225806452 * width);
-        d35h.setTranslateY(0.6036866359447005 * height);
-
-        d25h.setTranslateX(0.26129032258064516 * width);
-        d25h.setTranslateY(0.6036866359447005 * height);
-
-        d15h.setTranslateX(0.06129032258064516 * width);
-        d15h.setTranslateY(0.6036866359447005 * height);
-
-        d54h.setTranslateX(0.8612903225806452 * width);
-        d54h.setTranslateY(0.4608294930875576 * height);
-
-        d44h.setTranslateX(0.6612903225806451 * width);
-        d44h.setTranslateY(0.4608294930875576 * height);
-
-        d34h.setTranslateX(0.4612903225806452 * width);
-        d34h.setTranslateY(0.4608294930875576 * height);
-
-        d24h.setTranslateX(0.26129032258064516 * width);
-        d24h.setTranslateY(0.4608294930875576 * height);
-
-        d14h.setTranslateX(0.06129032258064516 * width);
-        d14h.setTranslateY(0.4608294930875576 * height);
-
-        d53h.setTranslateX(0.8612903225806452 * width);
-        d53h.setTranslateY(0.31797235023041476 * height);
-
-        d43h.setTranslateX(0.6612903225806451 * width);
-        d43h.setTranslateY(0.31797235023041476 * height);
-
-        d33h.setTranslateX(0.4612903225806452 * width);
-        d33h.setTranslateY(0.31797235023041476 * height);
-
-        d23h.setTranslateX(0.26129032258064516 * width);
-        d23h.setTranslateY(0.31797235023041476 * height);
-
-        d13h.setTranslateX(0.06129032258064516 * width);
-        d13h.setTranslateY(0.31797235023041476 * height);
-
-        d52h.setTranslateX(0.8612903225806452 * width);
-        d52h.setTranslateY(0.17511520737327188 * height);
-
-        d42h.setTranslateX(0.6612903225806451 * width);
-        d42h.setTranslateY(0.17511520737327188 * height);
-
-        d32h.setTranslateX(0.4612903225806452 * width);
-        d32h.setTranslateY(0.17511520737327188 * height);
-
-        d22h.setTranslateX(0.26129032258064516 * width);
-        d22h.setTranslateY(0.17511520737327188 * height);
-
-        d12h.setTranslateX(0.06129032258064516 * width);
-        d12h.setTranslateY(0.17511520737327188 * height);
-
-        d51h.setTranslateX(0.8612903225806452 * width);
-        d51h.setTranslateY(0.03225806451612903 * height);
-
-        d41h.setTranslateX(0.6612903225806451 * width);
-        d41h.setTranslateY(0.03225806451612903 * height);
-
-        d31h.setTranslateX(0.4612903225806452 * width);
-        d31h.setTranslateY(0.03225806451612903 * height);
-
-        d21h.setTranslateX(0.26129032258064516 * width);
-        d21h.setTranslateY(0.03225806451612903 * height);
-
-        d11h.setTranslateX(0.06129032258064516 * width);
-        d11h.setTranslateY(0.03225806451612903 * height);
     }
 }

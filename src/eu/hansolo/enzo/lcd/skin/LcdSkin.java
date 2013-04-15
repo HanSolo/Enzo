@@ -690,126 +690,128 @@ public class LcdSkin extends BehaviorSkinBase<Lcd, LcdBehavior> {
             }
         }
 
-        lcdFrame.setPrefSize(width, height);
+        if (width > 0 && height > 0) {
+            lcdFrame.setPrefSize(width, height);
 
-        lcdMain.setPrefSize(width - 2.0, height - 2.0);
-        lcdMain.setTranslateX(1);
-        lcdMain.setTranslateY(1);
-        lcdMainInnerShadow0.setRadius(3.0 / 132.0 * height);
-        lcdMainInnerShadow1.setRadius(2.0 / 132.0 * height);
+            lcdMain.setPrefSize(width - 2.0, height - 2.0);
+            lcdMain.setTranslateX(1);
+            lcdMain.setTranslateY(1);
+            lcdMainInnerShadow0.setRadius(3.0 / 132.0 * height);
+            lcdMainInnerShadow1.setRadius(2.0 / 132.0 * height);
 
-        if (width > 0 && height > 0 && lcdCrystalOverlay.isVisible()) {
-            lcdMainClip.setScaleX(width / (DEFAULT_WIDTH - 2.0));
-            lcdMainClip.setScaleY(height / (DEFAULT_HEIGHT - 2.0));
-            lcdMainClip.setTranslateX((width - DEFAULT_WIDTH - 2) * 0.5);
-            lcdMainClip.setTranslateY((height - DEFAULT_HEIGHT - 2) * 0.5);
-            lcdCrystalOverlay.setImage(createNoiseImage(width, height, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8));
-            lcdCrystalOverlay.setCache(true);
+            if (width > 0 && height > 0 && lcdCrystalOverlay.isVisible()) {
+                lcdMainClip.setScaleX(width / (DEFAULT_WIDTH - 2.0));
+                lcdMainClip.setScaleY(height / (DEFAULT_HEIGHT - 2.0));
+                lcdMainClip.setTranslateX((width - DEFAULT_WIDTH - 2) * 0.5);
+                lcdMainClip.setTranslateY((height - DEFAULT_HEIGHT - 2) * 0.5);
+                lcdCrystalOverlay.setImage(createNoiseImage(width, height, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8));
+                lcdCrystalOverlay.setCache(true);
+            }
+
+            lcdThreshold.setPrefSize(0.20 * height, 0.20 * height);
+            lcdThreshold.setTranslateX(0.027961994662429348 * width);
+            lcdThreshold.setTranslateY(0.75 * height);
+
+            lcdTrendDown.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
+            lcdTrendDown.setTranslateX(0.1439393939 * width);
+            lcdTrendDown.setTranslateY(0.8125 * height);
+
+            lcdTrendFalling.setPrefSize(0.06982171896732214 * width, 0.13879903157552084 * height);
+            lcdTrendFalling.setTranslateX(0.1439393939 * width);
+            lcdTrendFalling.setTranslateY(0.8061291376749674 * height);
+
+            lcdTrendSteady.setPrefSize(0.0676060878869259 * width, 0.1342292626698812 * height);
+            lcdTrendSteady.setTranslateX(0.1439393939 * width);
+            lcdTrendSteady.setTranslateY(0.8078853289286295 * height);
+
+            lcdTrendRising.setPrefSize(0.06982171896732214 * width, 0.13879903157552084 * height);
+            lcdTrendRising.setTranslateX(0.1439393939 * width);
+            lcdTrendRising.setTranslateY(0.8050718307495117 * height);
+
+            lcdTrendUp.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
+            lcdTrendUp.setTranslateX(0.1439393939 * width);
+            lcdTrendUp.setTranslateY(0.8041377067565918 * height);
+
+            lcdBattery.setPrefSize(0.0833333333 * width, 0.1458333333 * height);
+            lcdBattery.setTranslateX(0.6439393939 * width);
+            lcdBattery.setTranslateY(0.81 * height);
+
+            lcdAlarm.setPrefSize(0.1666666667 * height, 0.1666666667 * height);
+            lcdAlarm.setTranslateX(0.2651515152 * width);
+            lcdAlarm.setTranslateY(0.7916666667 * height);
+
+            updateFonts();
+
+            // Setup the lcd unit
+            lcdUnitText.setFont(lcdUnitFont);
+            lcdUnitText.setTextOrigin(VPos.BASELINE);
+            lcdUnitText.setTextAlignment(TextAlignment.RIGHT);
+
+            lcdUnitText.setText(control.getUnit());
+            if (lcdUnitText.visibleProperty().isBound()) {
+                lcdUnitText.visibleProperty().unbind();
+            }
+            lcdUnitText.visibleProperty().bind(control.unitVisibleProperty());
+
+            lcdValueOffsetLeft = height * 0.04;
+
+            if (control.isUnitVisible()) {
+                lcdUnitText.setX((width - lcdUnitText.getLayoutBounds().getWidth()) - height * 0.04);
+                lcdUnitText.setY(height - (lcdText.getLayoutBounds().getHeight() * lcdDigitalFontSizeFactor) * 0.5);
+                lcdValueOffsetRight = (lcdUnitText.getLayoutBounds().getWidth() + height * 0.0833333333); // distance between value and unit
+                lcdText.setX(width - 2 - lcdText.getLayoutBounds().getWidth() - lcdValueOffsetRight);
+            } else {
+                lcdValueOffsetRight = height * 0.0833333333;
+                lcdText.setX((width - lcdText.getLayoutBounds().getWidth()) - lcdValueOffsetRight);
+            }
+            lcdText.setY(height - (lcdText.getLayoutBounds().getHeight() * lcdDigitalFontSizeFactor) * 0.5);
+
+            // Visualize the lcd semitransparent background text
+            updateBackgroundText();
+
+            if (control.isUnitVisible()) {
+                lcdBackgroundText.setX(width - 2 - lcdBackgroundText.getLayoutBounds().getWidth() - lcdValueOffsetRight);
+            } else {
+                lcdBackgroundText.setX((width - lcdBackgroundText.getLayoutBounds().getWidth()) - lcdValueOffsetRight);
+            }
+            lcdBackgroundText.setY(height - (lcdBackgroundText.getLayoutBounds().getHeight() * lcdDigitalFontSizeFactor) * 0.5);
+
+            // Setup the font for the lcd title, number system, min measured, max measure and former value
+            // Title
+            lcdTitle.setFont(lcdTitleFont);
+            lcdTitle.setTextOrigin(VPos.BASELINE);
+            lcdTitle.setTextAlignment(TextAlignment.CENTER);
+            lcdTitle.setText(control.getTitle());
+            lcdTitle.setX((width - lcdTitle.getLayoutBounds().getWidth()) * 0.5);
+            lcdTitle.setY(lcdMain.getLayoutY() + lcdTitle.getLayoutBounds().getHeight() + 0.04 * height);
+
+            // Info Text
+            lcdLowerRightText.setFont(lcdSmallFont);
+            lcdLowerRightText.setTextOrigin(VPos.BASELINE);
+            lcdLowerRightText.setTextAlignment(TextAlignment.RIGHT);
+            lcdLowerRightText.setText(control.getNumberSystem().toString());
+            lcdLowerRightText.setX(lcdMain.getLayoutX() + (lcdMain.getLayoutBounds().getWidth() - lcdTitle.getLayoutBounds().getWidth()) * 0.5);
+            lcdLowerRightText.setY(lcdMain.getLayoutY() + height - 1 - 0.0416666667 * height);
+
+            // Min measured value
+            lcdUpperLeftText.setFont(lcdSmallFont);
+            lcdUpperLeftText.setTextOrigin(VPos.BASELINE);
+            lcdUpperLeftText.setTextAlignment(TextAlignment.RIGHT);
+            lcdUpperLeftText.setX(lcdMain.getLayoutX() + 0.0416666667 * height);
+            lcdUpperLeftText.setY(lcdMain.getLayoutY() + lcdUpperLeftText.getLayoutBounds().getHeight() + 0.04 * height);
+
+            // Max measured value
+            lcdUpperRightText.setFont(lcdSmallFont);
+            lcdUpperRightText.setTextOrigin(VPos.BASELINE);
+            lcdUpperRightText.setTextAlignment(TextAlignment.RIGHT);
+            lcdUpperRightText.setY(lcdMain.getLayoutY() + lcdUpperLeftText.getLayoutBounds().getHeight() + 0.04 * height);
+
+            // Former value
+            lcdLowerCenterText.setFont(lcdSmallFont);
+            lcdLowerCenterText.setTextOrigin(VPos.BASELINE);
+            lcdLowerCenterText.setTextAlignment(TextAlignment.CENTER);
+            lcdLowerCenterText.setX((width - lcdLowerCenterText.getLayoutBounds().getWidth()) * 0.5);
+            lcdLowerCenterText.setY(lcdMain.getLayoutY() + height - 1 - 0.0416666667 * height);
         }
-
-        lcdThreshold.setPrefSize(0.20 * height, 0.20 * height);
-        lcdThreshold.setTranslateX(0.027961994662429348 * width);
-        lcdThreshold.setTranslateY(0.75 * height);
-
-        lcdTrendDown.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
-        lcdTrendDown.setTranslateX(0.1439393939 * width);
-        lcdTrendDown.setTranslateY(0.8125 * height);
-
-        lcdTrendFalling.setPrefSize(0.06982171896732214 * width, 0.13879903157552084 * height);
-        lcdTrendFalling.setTranslateX(0.1439393939 * width);
-        lcdTrendFalling.setTranslateY(0.8061291376749674 * height);
-
-        lcdTrendSteady.setPrefSize(0.0676060878869259 * width, 0.1342292626698812 * height);
-        lcdTrendSteady.setTranslateX(0.1439393939 * width);
-        lcdTrendSteady.setTranslateY(0.8078853289286295 * height);
-
-        lcdTrendRising.setPrefSize(0.06982171896732214 * width, 0.13879903157552084 * height);
-        lcdTrendRising.setTranslateX(0.1439393939 * width);
-        lcdTrendRising.setTranslateY(0.8050718307495117 * height);
-
-        lcdTrendUp.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
-        lcdTrendUp.setTranslateX(0.1439393939 * width);
-        lcdTrendUp.setTranslateY(0.8041377067565918 * height);
-
-        lcdBattery.setPrefSize(0.0833333333 * width, 0.1458333333 * height);
-        lcdBattery.setTranslateX(0.6439393939 * width);
-        lcdBattery.setTranslateY(0.81 * height);
-
-        lcdAlarm.setPrefSize(0.1666666667 * height, 0.1666666667 * height);
-        lcdAlarm.setTranslateX(0.2651515152 * width);
-        lcdAlarm.setTranslateY(0.7916666667 * height);
-
-        updateFonts();
-
-        // Setup the lcd unit
-        lcdUnitText.setFont(lcdUnitFont);
-        lcdUnitText.setTextOrigin(VPos.BASELINE);
-        lcdUnitText.setTextAlignment(TextAlignment.RIGHT);
-
-        lcdUnitText.setText(control.getUnit());
-        if (lcdUnitText.visibleProperty().isBound()) {
-            lcdUnitText.visibleProperty().unbind();
-        }
-        lcdUnitText.visibleProperty().bind(control.unitVisibleProperty());
-
-        lcdValueOffsetLeft = height * 0.04;
-
-        if (control.isUnitVisible()) {
-            lcdUnitText.setX((width - lcdUnitText.getLayoutBounds().getWidth()) - height * 0.04);
-            lcdUnitText.setY(height - (lcdText.getLayoutBounds().getHeight() * lcdDigitalFontSizeFactor) * 0.5);
-            lcdValueOffsetRight = (lcdUnitText.getLayoutBounds().getWidth() + height * 0.0833333333); // distance between value and unit
-            lcdText.setX(width - 2 - lcdText.getLayoutBounds().getWidth() - lcdValueOffsetRight);
-        } else {
-            lcdValueOffsetRight = height * 0.0833333333;
-            lcdText.setX((width - lcdText.getLayoutBounds().getWidth()) - lcdValueOffsetRight);
-        }
-        lcdText.setY(height - (lcdText.getLayoutBounds().getHeight() * lcdDigitalFontSizeFactor) * 0.5);
-
-        // Visualize the lcd semitransparent background text
-        updateBackgroundText();
-
-        if (control.isUnitVisible()) {
-            lcdBackgroundText.setX(width - 2 - lcdBackgroundText.getLayoutBounds().getWidth() - lcdValueOffsetRight);
-        } else {
-            lcdBackgroundText.setX((width - lcdBackgroundText.getLayoutBounds().getWidth()) - lcdValueOffsetRight);
-        }
-        lcdBackgroundText.setY(height - (lcdBackgroundText.getLayoutBounds().getHeight() * lcdDigitalFontSizeFactor) * 0.5);
-
-        // Setup the font for the lcd title, number system, min measured, max measure and former value
-        // Title
-        lcdTitle.setFont(lcdTitleFont);
-        lcdTitle.setTextOrigin(VPos.BASELINE);
-        lcdTitle.setTextAlignment(TextAlignment.CENTER);
-        lcdTitle.setText(control.getTitle());
-        lcdTitle.setX((width - lcdTitle.getLayoutBounds().getWidth()) * 0.5);
-        lcdTitle.setY(lcdMain.getLayoutY() + lcdTitle.getLayoutBounds().getHeight() + 0.04 * height);
-
-        // Info Text
-        lcdLowerRightText.setFont(lcdSmallFont);
-        lcdLowerRightText.setTextOrigin(VPos.BASELINE);
-        lcdLowerRightText.setTextAlignment(TextAlignment.RIGHT);
-        lcdLowerRightText.setText(control.getNumberSystem().toString());
-        lcdLowerRightText.setX(lcdMain.getLayoutX() + (lcdMain.getLayoutBounds().getWidth() - lcdTitle.getLayoutBounds().getWidth()) * 0.5);
-        lcdLowerRightText.setY(lcdMain.getLayoutY() + height - 1 - 0.0416666667 * height);
-
-        // Min measured value
-        lcdUpperLeftText.setFont(lcdSmallFont);
-        lcdUpperLeftText.setTextOrigin(VPos.BASELINE);
-        lcdUpperLeftText.setTextAlignment(TextAlignment.RIGHT);
-        lcdUpperLeftText.setX(lcdMain.getLayoutX() + 0.0416666667 * height);
-        lcdUpperLeftText.setY(lcdMain.getLayoutY() + lcdUpperLeftText.getLayoutBounds().getHeight() + 0.04 * height);
-
-        // Max measured value
-        lcdUpperRightText.setFont(lcdSmallFont);
-        lcdUpperRightText.setTextOrigin(VPos.BASELINE);
-        lcdUpperRightText.setTextAlignment(TextAlignment.RIGHT);
-        lcdUpperRightText.setY(lcdMain.getLayoutY() + lcdUpperLeftText.getLayoutBounds().getHeight() + 0.04 * height);
-
-        // Former value
-        lcdLowerCenterText.setFont(lcdSmallFont);
-        lcdLowerCenterText.setTextOrigin(VPos.BASELINE);
-        lcdLowerCenterText.setTextAlignment(TextAlignment.CENTER);
-        lcdLowerCenterText.setX((width - lcdLowerCenterText.getLayoutBounds().getWidth()) * 0.5);
-        lcdLowerCenterText.setY(lcdMain.getLayoutY() + height - 1 - 0.0416666667 * height);
     }
 }

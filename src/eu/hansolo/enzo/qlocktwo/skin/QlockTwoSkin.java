@@ -364,45 +364,47 @@ public class QlockTwoSkin extends BehaviorSkinBase<QlockTwo, QlockTwoBehavior> {
             height = width;
         }
 
-        background.setPrefSize(width, height);
-        if (width != 0 && height != 0) {
-            stainlessBackground.setImage(texture.getImage(width, height));
-        }
-
-        p4.setPrefSize(0.012 * width, 0.012 * height);
-        p4.setTranslateX(0.044 * width);
-        p4.setTranslateY(0.944 * height);
-
-        p3.setPrefSize(0.012 * width, 0.012 * height);
-        p3.setTranslateX(0.944 * width);
-        p3.setTranslateY(0.944 * height);
-
-        p2.setPrefSize(0.012 * width, 0.012 * height);
-        p2.setTranslateX(0.944 * width);
-        p2.setTranslateY(0.044 * height);
-
-        p1.setPrefSize(0.012 * width, 0.012 * height);
-        p1.setTranslateX(0.044 * width);
-        p1.setTranslateY(0.044 * height);
-
-        startX = size * 0.114;
-        startY = size * 0.112;
-        stepX  = size * 0.072;
-        stepY  = size * 0.08;
-        font = Font.font("DINfun Pro", FontWeight.NORMAL, FontPosture.REGULAR, size * 0.048);
-        for (int y = 0 ; y < 10 ; y++) {
-            for (int x = 0 ; x < 11 ; x++) {
-                matrix[x][y].setFont(font);
-                matrix[x][y].setPrefSize(size * 0.048, size * 0.048);
-                matrix[x][y].setTranslateY(startY + y * stepY);
-                matrix[x][y].setTranslateX(startX + x * stepX);
-                matrix[x][y].setTranslateY(startY + y * stepY);
+        if (width > 0 && height > 0) {
+            background.setPrefSize(width, height);
+            if (width != 0 && height != 0) {
+                stainlessBackground.setImage(texture.getImage(width, height));
             }
-        }
 
-        highlight.setPrefSize(0.8572706909179687 * width, 0.7135147094726563 * height);
-        highlight.setTranslateX(0.14224906921386718 * width);
-        highlight.setTranslateY(0.28614569091796876 * height);
+            p4.setPrefSize(0.012 * width, 0.012 * height);
+            p4.setTranslateX(0.044 * width);
+            p4.setTranslateY(0.944 * height);
+
+            p3.setPrefSize(0.012 * width, 0.012 * height);
+            p3.setTranslateX(0.944 * width);
+            p3.setTranslateY(0.944 * height);
+
+            p2.setPrefSize(0.012 * width, 0.012 * height);
+            p2.setTranslateX(0.944 * width);
+            p2.setTranslateY(0.044 * height);
+
+            p1.setPrefSize(0.012 * width, 0.012 * height);
+            p1.setTranslateX(0.044 * width);
+            p1.setTranslateY(0.044 * height);
+
+            startX = size * 0.114;
+            startY = size * 0.112;
+            stepX  = size * 0.072;
+            stepY  = size * 0.08;
+            font = Font.font("DINfun Pro", FontWeight.NORMAL, FontPosture.REGULAR, size * 0.048);
+            for (int y = 0 ; y < 10 ; y++) {
+                for (int x = 0 ; x < 11 ; x++) {
+                    matrix[x][y].setFont(font);
+                    matrix[x][y].setPrefSize(size * 0.048, size * 0.048);
+                    matrix[x][y].setTranslateY(startY + y * stepY);
+                    matrix[x][y].setTranslateX(startX + x * stepX);
+                    matrix[x][y].setTranslateY(startY + y * stepY);
+                }
+            }
+
+            highlight.setPrefSize(0.8572706909179687 * width, 0.7135147094726563 * height);
+            highlight.setTranslateX(0.14224906921386718 * width);
+            highlight.setTranslateY(0.28614569091796876 * height);
+        }
     }
 }
 
