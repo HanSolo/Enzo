@@ -60,6 +60,7 @@ public class DepartureBoard extends VBox{
     private boolean             isUpdating;
 
 
+    // ******************** Constructors **************************************
     public DepartureBoard() {
         queue          = new LinkedList<>();
         rows           = FXCollections.observableArrayList();
@@ -116,6 +117,7 @@ public class DepartureBoard extends VBox{
     }
 
 
+    // ******************** Methods *******************************************
     public final void addRow(final Row ROW) {
         queue.add(ROW);
     }

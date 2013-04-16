@@ -24,6 +24,7 @@ public class WordSegment extends HBox {
     private ObservableList<String> selection;
 
 
+    // ******************** Constructors **************************************
     public WordSegment() {
         this(5, Color.WHITE);
     }
@@ -53,6 +54,7 @@ public class WordSegment extends HBox {
     }
 
 
+    // ******************** Methods *******************************************
     public final String getText() {
         return null == text ? defaultText : text.get();
     }

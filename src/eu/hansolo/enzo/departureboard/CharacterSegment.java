@@ -21,6 +21,7 @@ public class CharacterSegment extends HBox {
     private StringProperty text;
 
 
+    // ******************** Constructors **************************************
     public CharacterSegment() {
         this(5, Color.WHITE);
     }
@@ -50,6 +51,7 @@ public class CharacterSegment extends HBox {
     }
 
 
+    // ******************** Methods *******************************************
     public final String getText() {
         return null == text ? defaultText : text.get();
     }

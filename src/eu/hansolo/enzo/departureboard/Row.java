@@ -21,6 +21,7 @@ public class Row extends HBox {
     private boolean          isEmpty;
 
 
+    // ******************** Constructors **************************************
     public Row() {
         this(false, "  ", "  ", "", "", "", new String[]{""});
     }
@@ -57,6 +58,7 @@ public class Row extends HBox {
     }
 
 
+    // ******************** Methods *******************************************
     public final String getRowString() {
         //return time.getTime() + " " + flightNo.getText();
         return time.getTime() + " " + destination.getText() + " " + flightNo.getText();

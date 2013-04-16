@@ -29,6 +29,7 @@ public class TimeSegment extends HBox {
     private StringProperty minutes;
 
 
+    // ******************** Constructors **************************************
     public TimeSegment() {
         this(Color.rgb(255, 240, 100));
     }
@@ -80,6 +81,7 @@ public class TimeSegment extends HBox {
     }
 
 
+    // ******************** Methods *******************************************
     public final String getTime() {
         return (hours.get() + ":" + minutes.get());
     }

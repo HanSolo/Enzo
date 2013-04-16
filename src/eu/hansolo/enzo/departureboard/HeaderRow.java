@@ -17,6 +17,7 @@ import javafx.scene.text.TextAlignment;
  */
 public class HeaderRow extends HBox {
 
+    // ******************** Constructors **************************************
     public HeaderRow() {
         Font font = Font.font("sans-serif", 20);
 

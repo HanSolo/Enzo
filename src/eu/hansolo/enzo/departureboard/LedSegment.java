@@ -5,6 +5,7 @@ import eu.hansolo.enzo.led.LedBuilder;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
@@ -26,6 +27,7 @@ public class LedSegment extends HBox {
     private AnimationTimer  timer;
 
 
+    // ******************** Constructors **************************************
     public LedSegment() {
         this(Color.LIME);
     }
@@ -43,10 +45,10 @@ public class LedSegment extends HBox {
                              .prefWidth(25)
                              .prefHeight(25)
                              .build();
-        setCenterShape(true);
         setSpacing(0);
         getChildren().setAll(leftLed, rightLed);
-
+        HBox.setMargin(leftLed, new Insets(15, 0, 0, 0));
+        HBox.setMargin(rightLed, new Insets(15, 0, 0, 0));
         defaultBlinking = false;
         toggle          = false;
         timer = new AnimationTimer() {
@@ -62,6 +64,7 @@ public class LedSegment extends HBox {
     }
 
 
+    // ******************** Methods *******************************************
     public final boolean isBlinking() {
         return null == blinking ? defaultBlinking : blinking.get();
     }
