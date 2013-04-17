@@ -28,14 +28,14 @@
 
 package eu.hansolo.enzo.gauge.skin;
 
-import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.gauge.Radial;
-import eu.hansolo.enzo.gauge.behavior.RadialBehavior;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadowBuilder;
@@ -56,11 +56,10 @@ import javafx.util.Duration;
  * Date: 15.11.12
  * Time: 00:53
  */
-public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
+public class RadialSkin extends SkinBase<Radial> implements Skin<Radial> {
     private static final double PREFERRED_SIZE = 200;
     private static final double MINIMUM_SIZE   = 50;
     private static final double MAXIMUM_SIZE   = 1024;
-    private Radial   control;
     private double   size;
     private Pane     pane;
     private Region   background;
@@ -76,8 +75,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
 
     // ******************** Constructors **************************************
     public RadialSkin(final Radial CONTROL) {
-        super(CONTROL, new RadialBehavior(CONTROL));
-        control   = CONTROL;
+        super(CONTROL);
         pane      = new Pane();
         angleStep = 0;
         timeline  = new Timeline();
@@ -87,17 +85,17 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
     }
 
     private void init() {
-        if (Double.compare(control.getPrefWidth(), 0.0) <= 0 || Double.compare(control.getPrefHeight(), 0.0) <= 0 ||
-            Double.compare(control.getWidth(), 0.0) <= 0 || Double.compare(control.getHeight(), 0.0) <= 0) {
-            control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
+            Double.compare(getSkinnable().getWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getHeight(), 0.0) <= 0) {
+            getSkinnable().setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
         }
 
-        if (Double.compare(control.getMinWidth(), 0.0) <= 0 || Double.compare(control.getMinHeight(), 0.0) <= 0) {
-            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+            getSkinnable().setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <= 0) {
-            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <= 0) {
+            getSkinnable().setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
     }
 
@@ -109,7 +107,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
 
         needle = new Region();
         changeNeedle();
-        needleRotate = new Rotate(-control.getRotationOffset());
+        needleRotate = new Rotate(-getSkinnable().getRotationOffset());
         needle.getTransforms().setAll(needleRotate);
 
         knob = new Region();
@@ -138,7 +136,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
                                                                         .build())
                                                .build());
 
-        title = new Text(control.getTitle());
+        title = new Text(getSkinnable().getTitle());
         title.getStyleClass().setAll("title");
 
         // Add all nodes
@@ -148,23 +146,22 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
     }
 
     private void registerListeners() {
-        registerChangeListener(control.widthProperty(),      "RESIZE");
-        registerChangeListener(control.heightProperty(),     "RESIZE");
-        registerChangeListener(control.valueProperty(),      "VALUE");
-        registerChangeListener(control.titleProperty(),      "TITLE");
-        registerChangeListener(control.needleTypeProperty(), "NEEDLE");
+        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().valueProperty().addListener(observable -> { handleControlPropertyChanged("VALUE"); });
+        getSkinnable().titleProperty().addListener(observable -> { handleControlPropertyChanged("TITLE"); });
+        getSkinnable().needleTypeProperty().addListener(observable -> { handleControlPropertyChanged("NEEDLE"); });
     }
 
 
     // ******************** Methods *******************************************
-    @Override protected void handleControlPropertyChanged(final String PROPERTY) {
-        super.handleControlPropertyChanged(PROPERTY);
+    protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("VALUE".equals(PROPERTY)) {
             rotateNeedle();
         } else if ("TITLE".equals(PROPERTY)) {
-            title.setText(control.getTitle());
+            title.setText(getSkinnable().getTitle());
             resize();
         } else if ("NEEDLE".equals(PROPERTY)) {
             changeNeedle();
@@ -172,45 +169,38 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
         }
     }
 
-    @Override public final void dispose() {
-        control = null;
-    }
-
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = 100;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
+            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
-
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = 100;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight());
+            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(20, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(20, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(20, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMinHeight(Math.max(20, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     /*
     private void drawCircularTickmarks() {
-        size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
+        size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
         final double WIDTH  = size;
         final double HEIGHT = size;
         final Point2D CENTER = new Point2D(size * 0.5, size * 0.5);
@@ -220,7 +210,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
         final double RADIUS_FACTOR = 0.41;
 
         final double TEXT_DISTANCE_FACTOR;
-        switch (control.getTickLabelOrientation()) {
+        switch (getSkinnable().getTickLabelOrientation()) {
             case TANGENT:
                 TEXT_DISTANCE_FACTOR = 0.07;
                 break;
@@ -288,16 +278,16 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
 
         // Adjust the number format of the ticklabels
         final Radial.NumberFormat numberFormat;
-        if (Radial.NumberFormat.AUTO == control.getNumberFormat()) {
-            if (Math.abs(control.getMajorTickSpacing()) > 1000) {
+        if (Radial.NumberFormat.AUTO == getSkinnable().getNumberFormat()) {
+            if (Math.abs(getSkinnable().getMajorTickSpacing()) > 1000) {
                 numberFormat = Radial.NumberFormat.SCIENTIFIC;
-            } else if (control.getMajorTickSpacing() % 1.0 != 0) {
+            } else if (getSkinnable().getMajorTickSpacing() % 1.0 != 0) {
                 numberFormat = Radial.NumberFormat.FRACTIONAL;
             } else {
                 numberFormat = Radial.NumberFormat.STANDARD;
             }
         } else {
-            numberFormat = control.getNumberFormat();
+            numberFormat = getSkinnable().getNumberFormat();
         }
 
         // Definitions
@@ -317,16 +307,16 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
         Point2D outerPoint;
 
         // Set some default parameters for the graphics object
-        if (control.getTickmarksOffset() != null) {
-            TICKMARKS.translateXProperty().set(control.getTickmarksOffset().getX());
-            TICKMARKS.translateYProperty().set(control.getTickmarksOffset().getY());
+        if (getSkinnable().getTickmarksOffset() != null) {
+            TICKMARKS.translateXProperty().set(getSkinnable().getTickmarksOffset().getX());
+            TICKMARKS.translateYProperty().set(getSkinnable().getTickmarksOffset().getY());
         }
 
-        final double ROTATION_OFFSET = control.getRotationOffset(); // Depends on RadialRange
+        final double ROTATION_OFFSET = getSkinnable().getRotationOffset(); // Depends on RadialRange
         final double RADIUS          = WIDTH * RADIUS_FACTOR;
-        final double ANGLE_STEP      = (control.getAngleRange() / ((control.getMaxValue() - control.getMinValue()) / control.getMinorTickSpacing()));
-        double valueCounter          = control.getMinValue();
-        int majorTickCounter         = control.getMaxNoOfMinorTicks() - 1; // Indicator when to draw the major tickmark
+        final double ANGLE_STEP      = (getSkinnable().getAngleRange() / ((getSkinnable().getMaxValue() - getSkinnable().getMinValue()) / getSkinnable().getMinorTickSpacing()));
+        double valueCounter          = getSkinnable().getMinValue();
+        int majorTickCounter         = getSkinnable().getMaxNoOfMinorTicks() - 1; // Indicator when to draw the major tickmark
         double sinValue;
         double cosValue;
 
@@ -335,9 +325,9 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
 
         // ******************** Create the scale path in a loop ***************
         // recalculate the scaling
-        final double LOWER_BOUND = control.getMinValue();
-        final double UPPER_BOUND = control.getMaxValue();
-        final double STEP_SIZE   = control.getMinorTickSpacing();
+        final double LOWER_BOUND = getSkinnable().getMinValue();
+        final double UPPER_BOUND = getSkinnable().getMaxValue();
+        final double STEP_SIZE   = getSkinnable().getMinorTickSpacing();
 
         for (double angle = 0, counter = LOWER_BOUND ; Double.compare(counter, UPPER_BOUND) <= 0 ; angle -= ANGLE_STEP, counter += STEP_SIZE) {
             sinValue = Math.sin(Math.toRadians(angle));
@@ -346,7 +336,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
             majorTickCounter++;
 
             // Draw tickmark every major tickmark spacing
-            if (majorTickCounter == control.getMaxNoOfMinorTicks()) {
+            if (majorTickCounter == getSkinnable().getMaxNoOfMinorTicks()) {
                 innerPoint = new Point2D(CENTER.getX() + (RADIUS - MAJOR_TICK_LENGTH) * sinValue, CENTER.getY() + (RADIUS - MAJOR_TICK_LENGTH) * cosValue);
                 outerPoint = new Point2D(CENTER.getX() + RADIUS * sinValue, CENTER.getY() + RADIUS * cosValue);
                 textPoint  = new Point2D(CENTER.getX() + (RADIUS - TEXT_DISTANCE) * sinValue, CENTER.getY() + (RADIUS - TEXT_DISTANCE) * cosValue);
@@ -355,7 +345,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
                 drawRadialTicks(MAJOR_TICK_MARKS_PATH, innerPoint, outerPoint);
 
                 // Draw the standard tickmark labels
-                if (control.isTickLabelsVisible()) {
+                if (getSkinnable().isTickLabelsVisible()) {
                     final Text tickLabel = new Text(numberFormat.format(valueCounter));
                     tickLabel.setFontSmoothingType(FontSmoothingType.LCD);
                     tickLabel.setTextOrigin(VPos.BOTTOM);
@@ -365,7 +355,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
                     tickLabel.setFont(STD_FONT);
                     tickLabel.setX(textPoint.getX() - tickLabel.getLayoutBounds().getWidth() / 2.0);
                     tickLabel.setY(textPoint.getY() + tickLabel.getLayoutBounds().getHeight() / 2.0);
-                    switch (control.getTickLabelOrientation()) {
+                    switch (getSkinnable().getTickLabelOrientation()) {
                         case NORMAL:
                             if (Double.compare(angle, 0) > 0) {
                                 tickLabel.rotateProperty().set(-90 - angle);
@@ -374,7 +364,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
                             }
                             break;
                         case HORIZONTAL:
-                            tickLabel.rotateProperty().set(180 - control.getRotationOffset());
+                            tickLabel.rotateProperty().set(180 - getSkinnable().getRotationOffset());
                             break;
                         case TANGENT:
 
@@ -391,7 +381,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
                     }
                 }
 
-                valueCounter += control.getMajorTickSpacing();
+                valueCounter += getSkinnable().getMajorTickSpacing();
                 majorTickCounter = 0;
                 continue;
             }
@@ -399,13 +389,13 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
             // Draw tickmark every minor tickmark spacing
             innerPoint = new Point2D(CENTER.getX() + (RADIUS - MINOR_TICK_LENGTH) * sinValue, CENTER.getY() + (RADIUS - MINOR_TICK_LENGTH) * cosValue);
             outerPoint = new Point2D(CENTER.getX() + RADIUS * sinValue, CENTER.getY() + RADIUS * cosValue);
-            if (control.getMaxNoOfMinorTicks() % 2 == 0 && majorTickCounter == (control.getMaxNoOfMinorTicks() / 2)) {
+            if (getSkinnable().getMaxNoOfMinorTicks() % 2 == 0 && majorTickCounter == (getSkinnable().getMaxNoOfMinorTicks() / 2)) {
                 // Draw the medium TICKMARKS
                 innerPoint = new Point2D(CENTER.getX() + (RADIUS - MEDIUM_TICK_LENGTH) * sinValue,
                     CENTER.getY() + (RADIUS - MEDIUM_TICK_LENGTH) * cosValue);
                 outerPoint = new Point2D(CENTER.getX() + RADIUS * sinValue, CENTER.getY() + RADIUS * cosValue);
                 drawRadialTicks(MEDIUM_TICK_MARKS_PATH, innerPoint, outerPoint);
-            } else if (control.isTickmarksVisible() && control.isMinorTicksVisible()) {
+            } else if (getSkinnable().isTickmarksVisible() && getSkinnable().isMinorTicksVisible()) {
                 // Draw the minor TICKMARKS
                 drawRadialTicks(MINOR_TICK_MARKS_PATH, innerPoint, outerPoint);
             }
@@ -423,13 +413,13 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
     */
 
     private void rotateNeedle() {
-        double range          = (control.getMaxValue() - control.getMinValue());
-        double angleRange     = control.getAngleRange();
-        double rotationOffset = control.getRotationOffset();
+        double range          = (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+        double angleRange     = getSkinnable().getAngleRange();
+        double rotationOffset = getSkinnable().getRotationOffset();
         angleStep             = angleRange / range;
-        double targetAngle    = control.getValue() * angleStep - rotationOffset;
+        double targetAngle    = getSkinnable().getValue() * angleStep - rotationOffset;
 
-        if (control.isAnimated()) {
+        if (getSkinnable().isAnimated()) {
             timeline.stop();
             final KeyValue KEY_VALUE = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
             final KeyFrame KEY_FRAME = new KeyFrame(Duration.millis(800), KEY_VALUE);
@@ -442,7 +432,7 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
     }
 
     private void changeNeedle() {
-        switch(control.getNeedleType()) {
+        switch(getSkinnable().getNeedleType()) {
             case ARROW:
                 needle.getStyleClass().setAll(Radial.STYLE_CLASS_NEEDLE_ARROW);
                 break;
@@ -458,11 +448,11 @@ public class RadialSkin extends BehaviorSkinBase<Radial, RadialBehavior> {
     }
 
     private void resize() {
-        size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
+        size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
         background.setPrefSize(size, size);
 
-        switch (control.getNeedleType()) {
+        switch (getSkinnable().getNeedleType()) {
             case ARROW:
                 needle.setPrefSize(size * 0.07, size * 0.45);
                 break;
