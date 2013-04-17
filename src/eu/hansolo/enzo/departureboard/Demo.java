@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -80,12 +81,13 @@ public class Demo extends Application {
                                                      new Stop(0.25, Color.rgb(38, 37, 32)),
                                                      new Stop(1.0, Color.rgb(28, 27, 22)));
         final Scene scene = new Scene(grid, gradient);
-        //scene.setCamera(new PerspectiveCamera());
+        scene.setCamera(new PerspectiveCamera());
 
         stage.setTitle("DepartureBoard");
         stage.setScene(scene);
         stage.show();
         initialSetup();
+        departureBoard.start();
     }
 
     private void initialSetup() {
