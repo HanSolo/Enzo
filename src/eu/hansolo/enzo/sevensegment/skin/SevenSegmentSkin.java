@@ -28,10 +28,10 @@
 
 package eu.hansolo.enzo.sevensegment.skin;
 
-import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.sevensegment.SevenSegment;
-import eu.hansolo.enzo.sevensegment.behavior.SevenSegmentBehavior;
 import javafx.collections.ListChangeListener;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -40,14 +40,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmentBehavior> {
+public class SevenSegmentSkin extends SkinBase<SevenSegment> implements Skin<SevenSegment> {
     private static final double DEFAULT_WIDTH  = 268;
     private static final double DEFAULT_HEIGHT = 357;
     private static final double MINIMUM_WIDTH  = 5;
     private static final double MINIMUM_HEIGHT = 5;
     private static final double MAXIMUM_WIDTH  = 1024;
     private static final double MAXIMUM_HEIGHT = 1024;
-    private SevenSegment control;
     private static double aspectRatio;
     private double        size;
     private double        width;
@@ -66,8 +65,7 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
 
     // ******************** Constructors **************************************
     public SevenSegmentSkin(final SevenSegment CONTROL) {
-        super(CONTROL, new SevenSegmentBehavior(CONTROL));
-        control     = CONTROL;
+        super(CONTROL);
         aspectRatio = DEFAULT_HEIGHT / DEFAULT_WIDTH;
         pane        = new Pane();
         segmentMap  = new HashMap<SevenSegment.Segment, Region>(17);
@@ -79,25 +77,25 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
 
     // ******************** Initialization ************************************
     private void init() {
-        if (Double.compare(control.getPrefWidth(), 0.0) <= 0 || Double.compare(control.getPrefHeight(), 0.0) <= 0 ||
-            Double.compare(control.getWidth(), 0.0) <= 0 || Double.compare(control.getHeight(), 0.0) <= 0) {
-            if (control.getPrefWidth() > 0 && control.getPrefHeight() > 0) {
-                control.setPrefSize(control.getPrefWidth(), control.getPrefHeight());
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
+            Double.compare(getSkinnable().getWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getHeight(), 0.0) <= 0) {
+            if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
+                getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                control.setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                getSkinnable().setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             }
         }
 
-        if (Double.compare(control.getMinWidth(), 0.0) <= 0 || Double.compare(control.getMinHeight(), 0.0) <= 0) {
-            control.setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+            getSkinnable().setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
         }
 
-        if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <= 0) {
-            control.setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
+        if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <= 0) {
+            getSkinnable().setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
         }
 
-        if (control.getPrefWidth() != DEFAULT_WIDTH || control.getPrefHeight() != DEFAULT_HEIGHT) {
-            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
+        if (getSkinnable().getPrefWidth() != DEFAULT_WIDTH || getSkinnable().getPrefHeight() != DEFAULT_HEIGHT) {
+            aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         }
     }
 
@@ -150,15 +148,15 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
     }
 
     private void registerListeners() {
-        registerChangeListener(control.widthProperty(), "RESIZE");
-        registerChangeListener(control.heightProperty(), "RESIZE");
-        registerChangeListener(control.prefWidthProperty(), "PREF_SIZE");
-        registerChangeListener(control.prefHeightProperty(), "PREF_SIZE");
-        registerChangeListener(control.characterProperty(), "CHARACTER");
-        registerChangeListener(control.dotOnProperty(), "DOT_ON");
-        registerChangeListener(control.segmentStyleProperty(), "UPDATE");
+        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
+        getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
+        getSkinnable().characterProperty().addListener(observable -> { handleControlPropertyChanged("CHARACTER"); });
+        getSkinnable().dotOnProperty().addListener(observable -> { handleControlPropertyChanged("DOT_ON"); });
+        getSkinnable().segmentStyleProperty().addListener(observable -> { handleControlPropertyChanged("UPDATE"); });
 
-        control.getStyleClass().addListener(new ListChangeListener<String>() {
+        getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {
                 resize();
                 update();
@@ -168,15 +166,14 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
 
 
     // ******************** Methods *******************************************
-    @Override protected void handleControlPropertyChanged(final String PROPERTY) {
-        super.handleControlPropertyChanged(PROPERTY);
+    protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("UPDATE".equals(PROPERTY)) {
             update();
         } else if ("RESIZE".equals(PROPERTY)) {
             resize();
             update();
         } else if ("PREF_SIZE".equals(PROPERTY)) {
-            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
+            aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         } else if ("CHARACTER".equals(PROPERTY)) {
             update();
         } else if ("DOT_ON".equals(PROPERTY)) {
@@ -184,40 +181,33 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
         }
     }
 
-    @Override public final void dispose() {
-        control = null;
-    }
-
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = DEFAULT_HEIGHT;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
+            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
-
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = DEFAULT_WIDTH;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight());
+            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
 
@@ -235,12 +225,12 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
 
     // ******************** Update ********************************************
     private void update() {
-        final int    ASCII    = control.getCharacter().isEmpty() ? 20 : control.getCharacter().toUpperCase().charAt(0);
-        final String ON_STYLE = control.getSegmentStyle().CLASS;
+        final int    ASCII    = getSkinnable().getCharacter().isEmpty() ? 20 : getSkinnable().getCharacter().toUpperCase().charAt(0);
+        final String ON_STYLE = getSkinnable().getSegmentStyle().CLASS;
 
         for (SevenSegment.Segment segment : segmentMap.keySet()) {
-            if (control.getSegmentMapping().containsKey(ASCII)) {
-                if (control.getSegmentMapping().get(ASCII).contains(segment)) {
+            if (getSkinnable().getSegmentMapping().containsKey(ASCII)) {
+                if (getSkinnable().getSegmentMapping().get(ASCII).contains(segment)) {
                     segmentMap.get(segment).getStyleClass().setAll(segment.name().toLowerCase(), ON_STYLE);
                 } else {
                     segmentMap.get(segment).getStyleClass().setAll(segment.name().toLowerCase(), SevenSegment.STYLE_CLASS_OFF);
@@ -250,7 +240,7 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
             }
         }
 
-        if (control.isDotOn()) {
+        if (getSkinnable().isDotOn()) {
             segmentMap.get(SevenSegment.Segment.DOT).getStyleClass().setAll("dot", ON_STYLE);
         } else {
             segmentMap.get(SevenSegment.Segment.DOT).getStyleClass().setAll("dot", SevenSegment.STYLE_CLASS_OFF);
@@ -260,10 +250,10 @@ public class SevenSegmentSkin extends BehaviorSkinBase<SevenSegment, SevenSegmen
 
     // ******************** Resizing ******************************************
     private void resize() {
-        size   = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
-        width  = control.getWidth();
-        height = control.getHeight();
-        if (control.isKeepAspect()) {
+        size   = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
+        width  = getSkinnable().getWidth();
+        height = getSkinnable().getHeight();
+        if (getSkinnable().isKeepAspect()) {
             if (aspectRatio * width > height) {
                 width  = 1 / (aspectRatio / height);
             } else if (1 / (aspectRatio / height) > width) {

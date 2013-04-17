@@ -28,10 +28,8 @@
 
 package eu.hansolo.enzo.splitflap.skin;
 
-import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.splitflap.FlipEvent;
 import eu.hansolo.enzo.splitflap.SplitFlap;
-import eu.hansolo.enzo.splitflap.behavior.SplitFlapBehavior;
 import eu.hansolo.enzo.tools.ShapeConverter;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -46,6 +44,8 @@ import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.InnerShadowBuilder;
@@ -69,7 +69,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 
 
-public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior> {
+public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap> {
     private static final double DEFAULT_WIDTH  = 112;
     private static final double DEFAULT_HEIGHT = 189;
     private static final double MINIMUM_WIDTH  = 5;
@@ -78,7 +78,6 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     private static final double MAXIMUM_HEIGHT = 1024;
     private static double       aspectRatio;
     private final FlipEvent     FLIP_FINISHED;
-    private SplitFlap           control;
     private ArrayList<String>   selectedSet;
     private int                 currentSelectionIndex;
     private int                 nextSelectionIndex;
@@ -112,15 +111,13 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     private KeyValue            keyValueFlap;
 
 
-
     // ******************** Constructors **************************************
     public SplitFlapSkin(final SplitFlap CONTROL) {
-        super(CONTROL, new SplitFlapBehavior(CONTROL));
-        control               = CONTROL;
-        FLIP_FINISHED         = new FlipEvent(this, control, FlipEvent.FLIP_FINISHED);
-        selectedSet           = control.getSelectedSet();
-        currentSelectionIndex = control.getSelectedSet().indexOf(control.getText());
-        nextSelectionIndex    = currentSelectionIndex + 1 > control.getSelectedSet().size() ? 0 : currentSelectionIndex + 1;
+        super(CONTROL);
+        FLIP_FINISHED         = new FlipEvent(this, getSkinnable(), FlipEvent.FLIP_FINISHED);
+        selectedSet           = getSkinnable().getSelectedSet();
+        currentSelectionIndex = getSkinnable().getSelectedSet().indexOf(getSkinnable().getText());
+        nextSelectionIndex    = currentSelectionIndex + 1 > getSkinnable().getSelectedSet().size() ? 0 : currentSelectionIndex + 1;
         aspectRatio           = DEFAULT_HEIGHT / DEFAULT_WIDTH;
         pane                  = new Pane();
         rotateFlap            = RotateBuilder.create().axis(Rotate.X_AXIS).angle(0).build();
@@ -134,36 +131,36 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
     // ******************** Initialization ************************************
     private void init() {
-        if (Double.compare(control.getPrefWidth(), 0.0) <= 0 || Double.compare(control.getPrefHeight(), 0.0) <= 0 ||
-            Double.compare(control.getWidth(), 0.0) <= 0 || Double.compare(control.getHeight(), 0.0) <= 0) {
-            if (control.getPrefWidth() > 0 && control.getPrefHeight() > 0) {
-                control.setPrefSize(control.getPrefWidth(), control.getPrefHeight());
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
+            Double.compare(getSkinnable().getWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getHeight(), 0.0) <= 0) {
+            if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
+                getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                control.setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                getSkinnable().setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             }
         }
 
-        if (Double.compare(control.getMinWidth(), 0.0) <= 0 || Double.compare(control.getMinHeight(), 0.0) <= 0) {
-            control.setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+            getSkinnable().setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
         }
 
-        if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <= 0) {
-            control.setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
+        if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <= 0) {
+            getSkinnable().setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
         }
 
-        if (control.getPrefWidth() != DEFAULT_WIDTH || control.getPrefHeight() != DEFAULT_HEIGHT) {
-            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
+        if (getSkinnable().getPrefWidth() != DEFAULT_WIDTH || getSkinnable().getPrefHeight() != DEFAULT_HEIGHT) {
+            aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         }
 
-        selectedSet.addAll(control.getSelectedSet());
+        selectedSet.addAll(getSkinnable().getSelectedSet());
     }
 
     private void initGraphics() {
         fixtureRight = new Region();
-        fixtureRight.getStyleClass().setAll(control.isDarkFixture() ? "fixture-dark" : "fixture");
+        fixtureRight.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-dark" : "fixture");
 
         fixtureLeft = new Region();
-        fixtureLeft.getStyleClass().setAll(control.isDarkFixture() ? "fixture-dark" : "fixture");
+        fixtureLeft.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-dark" : "fixture");
 
         innerShadow = InnerShadowBuilder.create()
                                         .offsetY(-0.01 * flapHeight)
@@ -194,7 +191,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
                                                    .build();
 
         upperBackground = new Region();
-        upperBackground.getStyleClass().setAll(control.isSquareFlaps() ? "upper-square" : "upper");
+        upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
         upperBackground.setEffect(innerHighlight);
 
         //font = Font.font("Bebas Neue", DEFAULT_HEIGHT);
@@ -204,8 +201,8 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         upperTextFill = new LinearGradient(0, 0,
                                            0, flapHeight,
                                            false, CycleMethod.NO_CYCLE,
-                                           new Stop(0.0, control.getTextColor()),
-                                           new Stop(1.0, control.getTextColor().darker()));
+                                           new Stop(0.0, getSkinnable().getTextColor()),
+                                           new Stop(1.0, getSkinnable().getTextColor().darker()));
         upperBackgroundText    = new Canvas();
         upperBackgroundText.setEffect(innerShadow);
         ctxUpperBackgroundText = upperBackgroundText.getGraphicsContext2D();
@@ -213,14 +210,14 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         ctxUpperBackgroundText.setTextAlign(TextAlignment.CENTER);
 
         lowerBackground = new Region();
-        lowerBackground.getStyleClass().setAll(control.isSquareFlaps() ? "lower-square" : "lower");
+        lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-square" : "lower");
         lowerBackground.setEffect(innerHighlight);
 
         lowerTextFill = new LinearGradient(0, 0.5079365079365079 * DEFAULT_HEIGHT,
                                            0, 0.5079365079365079 * DEFAULT_HEIGHT + flapHeight,
                                            false, CycleMethod.NO_CYCLE,
-                                           new Stop(0.0, control.getTextColor().darker()),
-                                           new Stop(1.0, control.getTextColor()));
+                                           new Stop(0.0, getSkinnable().getTextColor().darker()),
+                                           new Stop(1.0, getSkinnable().getTextColor()));
         lowerBackgroundText    = new Canvas();
         lowerBackgroundText.setEffect(innerHighlight);
         ctxLowerBackgroundText = lowerBackgroundText.getGraphicsContext2D();
@@ -228,7 +225,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         ctxLowerBackgroundText.setTextAlign(TextAlignment.CENTER);
 
         flap = new Region();
-        flap.getStyleClass().setAll(control.isSquareFlaps() ? "upper-square" : "upper");
+        flap.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
         flap.setEffect(innerHighlight);
         flap.getTransforms().add(rotateFlap);
 
@@ -262,16 +259,16 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
     }
 
     private void registerListeners() {
-        registerChangeListener(control.widthProperty(), "RESIZE");
-        registerChangeListener(control.heightProperty(), "RESIZE");
-        registerChangeListener(control.prefWidthProperty(), "PREF_SIZE");
-        registerChangeListener(control.prefHeightProperty(), "PREF_SIZE");
-        registerChangeListener(control.textProperty(), "TEXT");
-        registerChangeListener(control.textColorProperty(), "TEXT_COLOR");
-        registerChangeListener(control.darkFixtureProperty(), "DARK_FIXTURE");
-        registerChangeListener(control.squareFlapsProperty(), "SQUARE_FLAPS");
+        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
+        getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
+        getSkinnable().textProperty().addListener(observable -> { handleControlPropertyChanged("TEXT"); });
+        getSkinnable().textColorProperty().addListener(observable -> { handleControlPropertyChanged("TEXT_COLOR"); });
+        getSkinnable().darkFixtureProperty().addListener(observable -> { handleControlPropertyChanged("DARK_FIXTURE"); });
+        getSkinnable().squareFlapsProperty().addListener(observable -> { handleControlPropertyChanged("SQUARE_FLAPS"); });
 
-        control.getStyleClass().addListener(new ListChangeListener<String>() {
+        getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {
                 resize();
             }
@@ -292,7 +289,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
         timeline.setOnFinished(new EventHandler<ActionEvent>() {
             @Override public void handle(final ActionEvent EVENT) {
-                control.fireEvent(FLIP_FINISHED);
+                getSkinnable().fireEvent(FLIP_FINISHED);
                 flap.setCache(false);
                 flap.setCacheShape(false);
                 if (Double.compare(rotateFlap.getAngle(), 180) == 0) {
@@ -301,7 +298,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
                     flapTextBack.setVisible(false);
                     flapTextFront.setVisible(true);
                     refreshTextCtx();
-                    if (!control.getText().equals(selectedSet.get(currentSelectionIndex))) {
+                    if (!getSkinnable().getText().equals(selectedSet.get(currentSelectionIndex))) {
                         flipForward();
                     }
                 } else if(Double.compare(rotateFlap.getAngle(), 0) == 0) {
@@ -313,62 +310,57 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
 
     // ******************** Methods *******************************************
-    @Override protected void handleControlPropertyChanged(final String PROPERTY) {
-        super.handleControlPropertyChanged(PROPERTY);
+    protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("PREF_SIZE".equals(PROPERTY)) {
-            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
+            aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         } else if ("TEXT".equals(PROPERTY)) {
             flipForward();
         } else if ("TEXT_COLOR".equals(PROPERTY)) {
             refreshTextCtx();
         } else if ("CHARACTER_SET".equals(PROPERTY)) {
             selectedSet.clear();
-            for (String text : control.getSelectedSet()) {
+            for (String text : getSkinnable().getSelectedSet()) {
                 selectedSet.add(text);
             }
         } else if ("DARK_FIXTURE".equals(PROPERTY)) {
-            fixtureLeft.getStyleClass().setAll(control.isDarkFixture() ? "fixture-left-dark" : "fixture-left");
-            fixtureRight.getStyleClass().setAll(control.isDarkFixture() ? "fixture-right-dark" : "fixture-right");
+            fixtureLeft.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-left-dark" : "fixture-left");
+            fixtureRight.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-right-dark" : "fixture-right");
         } else if ("SQUARE_FLAPS".equals(PROPERTY)) {
-            upperBackground.getStyleClass().setAll(control.isSquareFlaps() ? "upper-square" : "upper");
-            lowerBackground.getStyleClass().setAll(control.isSquareFlaps() ? "lower-square" : "lower");
-            flap.getStyleClass().setAll(control.isSquareFlaps() ? "upper-square" : "upper");
+            upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
+            lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-square" : "lower");
+            flap.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
         }
-    }
-
-    @Override public final void dispose() {
-        control = null;
     }
 
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = DEFAULT_HEIGHT;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
+            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = DEFAULT_WIDTH;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight());
+            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     public void flipForward() {
@@ -386,7 +378,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         }
         //keyValueFlap = new KeyValue(rotateFlap.angleProperty(), 180, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
         keyValueFlap = new KeyValue(rotateFlap.angleProperty(), 180, Interpolator.EASE_IN);
-        keyFrame     = new KeyFrame(Duration.millis(control.getFlipTime()), keyValueFlap);
+        keyFrame     = new KeyFrame(Duration.millis(getSkinnable().getFlipTime()), keyValueFlap);
         timeline.getKeyFrames().setAll(keyFrame);
         timeline.play();
     }
@@ -394,7 +386,7 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         timeline.stop();
         //keyValueFlap = new KeyValue(rotateFlap.angleProperty(), -180, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
         keyValueFlap = new KeyValue(rotateFlap.angleProperty(), -180, Interpolator.EASE_IN);
-        keyFrame     = new KeyFrame(Duration.millis(control.getFlipTime()), keyValueFlap);
+        keyFrame     = new KeyFrame(Duration.millis(getSkinnable().getFlipTime()), keyValueFlap);
         timeline.getKeyFrames().setAll(keyFrame);
         timeline.play();
     }
@@ -406,16 +398,16 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         upperTextFill = new LinearGradient(0, 0,
                                            0, flapHeight,
                                            false, CycleMethod.NO_CYCLE,
-                                           new Stop(0.0, control.getTextColor().deriveColor(0.0, 1.0, 0.75, 1.0)),
-                                           new Stop(0.97, control.getTextColor()),
-                                           new Stop(1.0, control.getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0)));
+                                           new Stop(0.0, getSkinnable().getTextColor().deriveColor(0.0, 1.0, 0.75, 1.0)),
+                                           new Stop(0.97, getSkinnable().getTextColor()),
+                                           new Stop(1.0, getSkinnable().getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0)));
 
         lowerTextFill = new LinearGradient(0, 0,
                                            0, flapHeight,
                                            false, CycleMethod.NO_CYCLE,
-                                           new Stop(0.0, control.getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0)),
-                                           new Stop(0.03, control.getTextColor()),
-                                           new Stop(1.0, control.getTextColor()));
+                                           new Stop(0.0, getSkinnable().getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0)),
+                                           new Stop(0.03, getSkinnable().getTextColor()),
+                                           new Stop(1.0, getSkinnable().getTextColor()));
 
         // set the text on the upper background
         ctxUpperBackgroundText.clearRect(0, 0, flapWidth, flapHeight);
@@ -440,9 +432,9 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
         ctxTextBack.setFill(new LinearGradient(0, 0,
                                                0, -flapHeight,
                                                false, CycleMethod.NO_CYCLE,
-                                               new Stop(0.0, control.getTextColor()),
-                                               new Stop(0.97, control.getTextColor()),
-                                               new Stop(1.0, control.getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0))));
+                                               new Stop(0.0, getSkinnable().getTextColor()),
+                                               new Stop(0.97, getSkinnable().getTextColor()),
+                                               new Stop(1.0, getSkinnable().getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0))));
         ctxTextBack.save();
         ctxTextBack.scale(1,-1);
         //ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.45);
@@ -453,9 +445,9 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
     // ******************** Resizing ******************************************
     private void resize() {
-        width  = control.getWidth();
-        height = control.getHeight();
-        if (control.isKeepAspect()) {
+        width  = getSkinnable().getWidth();
+        height = getSkinnable().getHeight();
+        if (getSkinnable().isKeepAspect()) {
             if (aspectRatio * width > height) {
                 width  = 1 / (aspectRatio / height);
             } else if (1 / (aspectRatio / height) > width) {
@@ -465,8 +457,8 @@ public class SplitFlapSkin extends BehaviorSkinBase<SplitFlap, SplitFlapBehavior
 
         if (width > 0 && height > 0) {
             // Autocenter the control
-            //control.setTranslateX((control.getWidth() - width) * 0.5);
-            //control.setTranslateY((control.getHeight() - height) * 0.5);
+            //getSkinnable().setTranslateX((getSkinnable().getWidth() - width) * 0.5);
+            //getSkinnable().setTranslateY((getSkinnable().getHeight() - height) * 0.5);
 
             flapHeight = 0.49206349206349204 * height;
 

@@ -28,9 +28,9 @@
 
 package eu.hansolo.enzo.simpleindicator.skin;
 
-import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.simpleindicator.SimpleIndicator;
-import eu.hansolo.enzo.simpleindicator.behavior.SimpleIndicatorBehavior;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
@@ -41,11 +41,10 @@ import javafx.scene.layout.Region;
  * Date: 06.03.12
  * Time: 13:53
  */
-public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, SimpleIndicatorBehavior> {
+public class SimpleIndicatorSkin extends SkinBase<SimpleIndicator> implements Skin<SimpleIndicator> {
     private static final double PREFERRED_SIZE = 48;
     private static final double MINIMUM_SIZE   = 16;
     private static final double MAXIMUM_SIZE   = 1024;
-    private SimpleIndicator     control;
     private double              size;
     private Pane                pane;
     private Region              outerFrame;
@@ -57,8 +56,7 @@ public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, Simpl
 
     // ******************** Constructors **************************************
     public SimpleIndicatorSkin(final SimpleIndicator CONTROL) {
-        super(CONTROL, new SimpleIndicatorBehavior(CONTROL));
-        control = CONTROL;
+        super(CONTROL);
         pane    = new Pane();
 
         init();
@@ -69,17 +67,17 @@ public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, Simpl
 
     // ******************** Initialization ************************************
     private void init() {
-        if (Double.compare(control.getPrefWidth(), 0.0) <= 0 || Double.compare(control.getPrefHeight(), 0.0) <= 0 ||
-            control.getWidth() <= 0 || control.getHeight() <= 0) {
-            control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
+            getSkinnable().getWidth() <= 0 || getSkinnable().getHeight() <= 0) {
+            getSkinnable().setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
         }
 
-        if (Double.compare(control.getMinWidth(), 0.0) <= 0 || Double.compare(control.getMinHeight(), 0.0) <= 0) {
-            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+            getSkinnable().setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <= 0) {
-            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <= 0) {
+            getSkinnable().setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
     }
 
@@ -105,15 +103,14 @@ public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, Simpl
     }
 
     private void registerListeners() {
-        registerChangeListener(control.widthProperty(), "RESIZE");
-        registerChangeListener(control.heightProperty(), "RESIZE");
-        registerChangeListener(control.indicatorStyleProperty(), "UPDATE");
+        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().indicatorStyleProperty().addListener(observable -> { handleControlPropertyChanged("UPDATE"); });
     }
 
 
     // ******************** Methods *******************************************
-    @Override protected void handleControlPropertyChanged(final String PROPERTY) {
-        super.handleControlPropertyChanged(PROPERTY);
+    protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("UPDATE".equals(PROPERTY)) {
@@ -121,51 +118,44 @@ public class SimpleIndicatorSkin extends BehaviorSkinBase<SimpleIndicator, Simpl
         }
     }
 
-    @Override public final void dispose() {
-        control = null;
-    }
-
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = PREFERRED_SIZE;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
+            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
-
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = PREFERRED_SIZE;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight());
+            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(5, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(5, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(5, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMinHeight(Math.max(5, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
 
     // ******************** Private Methods ***********************************
     private void update() {
-        control.getStyleClass().setAll("indicator", control.getIndicatorStyle().CLASS);
-        System.out.println(control.getIndicatorStyle());
+        getSkinnable().getStyleClass().setAll("indicator", getSkinnable().getIndicatorStyle().CLASS);
+        System.out.println(getSkinnable().getIndicatorStyle());
     }
 
     private void resize() {
-        size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
+        size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
         if (size > 0) {
             outerFrame.setPrefSize(size, size);

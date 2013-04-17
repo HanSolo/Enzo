@@ -28,9 +28,7 @@
 
 package eu.hansolo.enzo.clock.skin;
 
-import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.clock.Clock;
-import eu.hansolo.enzo.clock.behavior.ClockBehavior;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -42,6 +40,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadowBuilder;
@@ -64,12 +64,11 @@ import java.util.List;
  * Date: 31.10.12
  * Time: 14:18
  */
-public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
+public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
     private static final long   INTERVAL       = 20_000_000l;
     private static final int    PREFERRED_SIZE = 200;
     private static final double MINIMUM_SIZE   = 50;
     private static final double MAXIMUM_SIZE   = 1024;
-    private Clock               control;
     private Pane                pane;
     private String              nightDayStyleClass;
     private Region              background;
@@ -112,11 +111,10 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
 
     // ******************** Constructors **************************************
     public ClockSkin(final Clock CONTROL) {
-        super(CONTROL, new ClockBehavior(CONTROL));
-        control = CONTROL;
+        super(CONTROL);
         pane    = new Pane();
 
-        nightDayStyleClass        = control.isNightMode() ? "night-mode" : "day-mode";
+        nightDayStyleClass        = getSkinnable().isNightMode() ? "night-mode" : "day-mode";
 
         hourPointerWidthFactor    = 0.04;
         hourPointerHeightFactor   = 0.55;
@@ -151,7 +149,7 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
             @Override public void handle(final long NOW) {
                 if (NOW >= lastTimerCall + INTERVAL) {
                     // SecondsRight
-                    if (control.isDiscreteSecond()) {
+                    if (getSkinnable().isDiscreteSecond()) {
                         secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6);
                     } else {
                         secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6 + Calendar.getInstance().get(Calendar.MILLISECOND) * 0.006);
@@ -179,36 +177,36 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
 
     // ******************** Initialization ************************************
     private void init() {
-        if (Double.compare(control.getPrefWidth(), 0.0) <= 0 || Double.compare(control.getPrefHeight(), 0.0) <= 0 ||
-            Double.compare(control.getWidth(), 0.0) <= 0 || Double.compare(control.getHeight(), 0.0) <= 0) {
-            control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
+            Double.compare(getSkinnable().getWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getHeight(), 0.0) <= 0) {
+            getSkinnable().setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
         }
 
-        if (Double.compare(control.getMinWidth(), 0.0) <= 0 || Double.compare(control.getMinHeight(), 0.0) <= 0) {
-            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+            getSkinnable().setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <= 0) {
-            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <= 0) {
+            getSkinnable().setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
     }
 
     private void initGraphics() {
         background = new Region();
-        if (Clock.Design.IOS6 == control.getDesign()) {
+        if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             background.getStyleClass().setAll("background-ios6");
-        }else if (Clock.Design.DB == control.getDesign()) {
+        }else if (Clock.Design.DB == getSkinnable().getDesign()) {
             background.getStyleClass().setAll("background-db");
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
+        } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             background.getStyleClass().setAll("background-braun");
         }
 
         String majorTickStyleClass;
         String minorTickStyleClass;
-        if (Clock.Design.IOS6 == control.getDesign()) {
+        if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             majorTickStyleClass = "major-tick-ios6";
             minorTickStyleClass = "minor-tick-ios6";
-        } else if (Clock.Design.DB == control.getDesign()) {
+        } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             majorTickStyleClass = "major-tick-db";
             minorTickStyleClass = "minor-tick-db";
         } else {
@@ -248,21 +246,21 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
                                                   .offsetY(1)
                                                   .build());
         tickLabelGroup.getChildren().setAll(tickLabels);
-        tickLabelGroup.setVisible(Clock.Design.BRAUN == control.getDesign());
+        tickLabelGroup.setVisible(Clock.Design.BRAUN == getSkinnable().getDesign());
 
         hourPointer = new Region();
-        if (Clock.Design.IOS6 == control.getDesign()) {
+        if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             hourPointer.getStyleClass().setAll("hour-pointer-ios6");
-        } else if (Clock.Design.DB == control.getDesign()) {
+        } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             hourPointer.getStyleClass().setAll("hour-pointer-db");
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
+        } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             hourPointer.getStyleClass().setAll("hour-pointer-braun");
         }
         hourPointer.getTransforms().setAll(hourAngle);
 
         hourPointerFlour = new Region();
         hourPointerFlour.getStyleClass().setAll("hour-pointer-braun-flour");
-        if (Clock.Design.BRAUN == control.getDesign()) {
+        if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             hourPointerFlour.setVisible(true);
         } else {
             hourPointerFlour.setVisible(false);
@@ -270,18 +268,18 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
         hourPointerFlour.getTransforms().setAll(hourAngle);
 
         minutePointer = new Region();
-        if (Clock.Design.IOS6 == control.getDesign()) {
+        if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             minutePointer.getStyleClass().setAll("minute-pointer-ios6");
-        } else if (Clock.Design.DB == control.getDesign()) {
+        } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             minutePointer.getStyleClass().setAll("minute-pointer-db");
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
+        } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             minutePointer.getStyleClass().setAll("minute-pointer-braun");
         }
         minutePointer.getTransforms().setAll(minuteAngle);
 
         minutePointerFlour = new Region();
         minutePointerFlour.getStyleClass().setAll("minute-pointer-braun-flour");
-        if (Clock.Design.BRAUN == control.getDesign()) {
+        if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             minutePointerFlour.setVisible(true);
         } else {
             minutePointerFlour.setVisible(false);
@@ -298,11 +296,11 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
         pointerGroup.getChildren().setAll(minutePointerFlour, minutePointer, hourPointerFlour, hourPointer);
 
         secondPointer = new Region();
-        if (Clock.Design.IOS6 == control.getDesign()) {
+        if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             secondPointer.getStyleClass().setAll("second-pointer-ios6");
-        } else if (Clock.Design.DB == control.getDesign()) {
+        } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             secondPointer.getStyleClass().setAll("second-pointer-db");
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
+        } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             secondPointer.getStyleClass().setAll("second-pointer-braun");
         }
         secondPointer.getTransforms().setAll(secondAngle);
@@ -327,26 +325,26 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
                                                                                .build())
                                                       .build());
         secondPointerGroup.getChildren().setAll(secondPointer);
-        secondPointerGroup.setVisible(control.isSecondPointerVisible());
+        secondPointerGroup.setVisible(getSkinnable().isSecondPointerVisible());
 
         centerKnob = new Region();
-        if (Clock.Design.IOS6 == control.getDesign()) {
+        if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             centerKnob.getStyleClass().setAll("center-knob-ios6");
-        } else if (Clock.Design.DB == control.getDesign()) {
+        } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             centerKnob.getStyleClass().setAll("center-knob-db");
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
+        } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             centerKnob.getStyleClass().setAll("center-knob-braun");
         }
 
         foreground = new Region();
-        if (Clock.Design.IOS6 == control.getDesign()) {
+        if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             foreground.getStyleClass().setAll("foreground-ios6");
-        } else if (Clock.Design.DB == control.getDesign()) {
+        } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             foreground.getStyleClass().setAll("foreground-db");
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
+        } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             foreground.getStyleClass().setAll("foreground-braun");
         }
-        foreground.setVisible(control.isHighlightVisible());
+        foreground.setVisible(getSkinnable().isHighlightVisible());
 
         pane.getChildren().setAll(background, tickMarkGroup, tickLabelGroup, pointerGroup, secondPointerGroup, centerKnob, foreground);
 
@@ -356,65 +354,60 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
     }
 
     private void registerListeners() {
-        registerChangeListener(control.widthProperty(), "RESIZE");
-        registerChangeListener(control.heightProperty(), "RESIZE");
-        registerChangeListener(control.secondPointerVisibleProperty(), "SECOND_POINTER_VISIBLE");
-        registerChangeListener(control.nightModeProperty(), "DESIGN");
-        registerChangeListener(control.designProperty(), "DESIGN");
-        registerChangeListener(control.highlightVisibleProperty(), "DESIGN");
+        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().secondPointerVisibleProperty().addListener(observable -> { handleControlPropertyChanged("SECOND_POINTER_VISIBLE"); });
+        getSkinnable().nightModeProperty().addListener(observable -> { handleControlPropertyChanged("DESIGN"); });
+        getSkinnable().designProperty().addListener(observable -> { handleControlPropertyChanged("DESIGN"); });
+        getSkinnable().highlightVisibleProperty().addListener(observable -> { handleControlPropertyChanged("DESIGN"); });
     }
 
 
     // ******************** Methods *******************************************
-    @Override protected void handleControlPropertyChanged(final String PROPERTY) {
-        super.handleControlPropertyChanged(PROPERTY);
+    protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("DESIGN".equals(PROPERTY)) {
             updateDesign();
         } else if ("SECOND_POINTER_VISIBLE".equals(PROPERTY)) {
-            secondPointerGroup.setVisible(control.isSecondPointerVisible());
+            secondPointerGroup.setVisible(getSkinnable().isSecondPointerVisible());
         }
-    }
-
-    @Override public final void dispose() {
-        control = null;
     }
 
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = PREFERRED_SIZE;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(control.getMinHeight(), PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
+            prefHeight = Math.max(getSkinnable().getMinHeight(), PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = PREFERRED_SIZE;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(control.getMinWidth(), PREF_WIDTH -control. getInsets().getRight() - control.getInsets().getLeft());
+            prefWidth = Math.max(getSkinnable().getMinWidth(), PREF_WIDTH -getSkinnable(). getInsets().getRight() - getSkinnable().getInsets().getLeft());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(20, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(20, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(20, MIN_WIDTH - control.getInsets().getRight() - control.getInsets().getLeft()));
+        return super.computeMinHeight(Math.max(20, MIN_WIDTH - getSkinnable().getInsets().getRight() - getSkinnable().getInsets().getLeft()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - control.getInsets().getRight() - control.getInsets().getLeft()));
+        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - getSkinnable().getInsets().getRight() - getSkinnable().getInsets().getLeft()));
     }
 
     private void updateDesign() {
         // Set day or night mode
-        nightDayStyleClass = control.isNightMode() ? "night-mode" : "day-mode";
+        nightDayStyleClass = getSkinnable().isNightMode() ? "night-mode" : "day-mode";
         // Set Styles for each component
-        if (Clock.Design.IOS6 == control.getDesign()) {
+        if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             background.getStyleClass().setAll(nightDayStyleClass, "background-ios6");
             int index = 0;
             for (double angle = 0 ; angle < 360 ; angle += 6) {
@@ -432,8 +425,8 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
             secondPointer.getStyleClass().setAll(nightDayStyleClass, "second-pointer-ios6");
             centerKnob.getStyleClass().setAll(nightDayStyleClass, "center-knob-ios6");
             foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-ios6");
-        } else if (Clock.Design.BRAUN == control.getDesign()) {
-            nightDayStyleClass = control.isNightMode() ? "night-mode-braun" : "day-mode-braun";
+        } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
+            nightDayStyleClass = getSkinnable().isNightMode() ? "night-mode-braun" : "day-mode-braun";
             background.getStyleClass().setAll(nightDayStyleClass, "background-braun");
             int index = 0;
             for (double angle = 0 ; angle < 360 ; angle += 6) {
@@ -473,20 +466,20 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
             centerKnob.getStyleClass().setAll(nightDayStyleClass, "center-knob-db");
             foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-db");
         }
-        tickLabelGroup.setVisible(Clock.Design.BRAUN == control.getDesign());
-        foreground.setVisible(control.isHighlightVisible());
+        tickLabelGroup.setVisible(Clock.Design.BRAUN == getSkinnable().getDesign());
+        foreground.setVisible(getSkinnable().isHighlightVisible());
         resize();
     }
 
     private void resize() {
-        size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
+        size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
         if (size > 0) {
             background.setPrefSize(size, size);
 
             // TODO: hourPointer and minutePointer have to be vice versa...wrong scaling here !!!
 
-            if (Clock.Design.IOS6 == control.getDesign()) {
+            if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
                 hourPointerWidthFactor    = 0.04;
                 hourPointerHeightFactor   = 0.55;
                 minutePointerWidthFactor  = 0.04;
@@ -505,7 +498,7 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
                 minuteAngle.setPivotY(size * 0.66 * minutePointerHeightFactor);
                 secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
                 secondAngle.setPivotY(size * 0.7341040462 * secondPointerHeightFactor);
-            } else if (Clock.Design.BRAUN == control.getDesign()) {
+            } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 hourPointerWidthFactor    = 0.105;
                 hourPointerHeightFactor   = 0.485;
                 minutePointerWidthFactor  = 0.105;
@@ -568,7 +561,7 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
                 index++;
             }
 
-            if (Clock.Design.BRAUN == control.getDesign()) {
+            if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 int tickLabelCounter = 0;
                 tickLabelFont = Font.loadFont(getClass().getResourceAsStream("/resources/helvetica.ttf"), (0.075 * size));
                 for (double angle = 0 ; angle < 360 ; angle += 30.0) {
@@ -584,10 +577,10 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
             }
 
             hourPointer.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
-            if (Clock.Design.IOS6 == control.getDesign()) {
+            if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
                 hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
                 hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.24));
-            } else if (Clock.Design.BRAUN == control.getDesign()) {
+            } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
                 hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.108));
                 hourPointerFlour.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
@@ -599,10 +592,10 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
             }
 
             minutePointer.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
-            if (Clock.Design.IOS6 == control.getDesign()) {
+            if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
                 minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
                 minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.34));
-            } else if (Clock.Design.BRAUN == control.getDesign()) {
+            } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
                 minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.128));
                 minutePointerFlour.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
@@ -614,10 +607,10 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
             }
 
             secondPointer.setPrefSize(size * secondPointerWidthFactor, size * secondPointerHeightFactor);
-            if (Clock.Design.IOS6 == control.getDesign()) {
+            if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
                 secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
                 secondPointer.setTranslateY(size * 0.5 - (secondPointer.getPrefHeight()) + (secondPointer.getPrefHeight() * 0.2658959538));
-            } else if (Clock.Design.BRAUN == control.getDesign()) {
+            } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 secondPointer.setTranslateX(size * 0.5 - (secondPointer.getPrefWidth() * 0.5));
                 secondPointer.setTranslateY(size * 0.5 - secondPointer.getPrefHeight() + (secondPointer.getPrefHeight() * 0.189));
             } else {
@@ -625,9 +618,9 @@ public class ClockSkin extends BehaviorSkinBase<Clock, ClockBehavior> {
                 secondPointer.setTranslateY(size * 0.5 - secondPointer.getPrefHeight());
             }
 
-            if (Clock.Design.IOS6 == control.getDesign()) {
+            if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
                 centerKnob.setPrefSize(size * 0.015, size * 0.015);
-            } else if (Clock.Design.BRAUN == control.getDesign()) {
+            } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 centerKnob.setPrefSize(size * 0.085, size * 0.085);
             } else {
                 centerKnob.setPrefSize(size * 0.1, size * 0.1);

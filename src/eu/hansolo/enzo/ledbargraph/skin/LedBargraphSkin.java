@@ -28,18 +28,20 @@
 
 package eu.hansolo.enzo.ledbargraph.skin;
 
-import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.led.Led;
 import eu.hansolo.enzo.led.LedBuilder;
 import eu.hansolo.enzo.ledbargraph.LedBargraph;
-import eu.hansolo.enzo.ledbargraph.behavior.LedBargraphBehavior;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Orientation;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +53,11 @@ import java.util.List;
  * Date: 16.02.12
  * Time: 11:30
  */
-public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBehavior> {
+public class LedBargraphSkin extends SkinBase<LedBargraph> implements Skin<LedBargraph> {
     private static final double PREFERRED_SIZE = 16;
     private static final double MINIMUM_SIZE   = 8;
     private static final double MAXIMUM_SIZE   = 1024;
     public static final long    PEAK_TIMEOUT   = 1_500_000_000l;
-    private LedBargraph         control;
     private Pane                bargraph;
     private List<Led>           ledList;
     private long                lastTimerCall;
@@ -67,10 +68,9 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
 
     // ******************** Constructors **************************************
     public LedBargraphSkin(final LedBargraph CONTROL) {
-        super(CONTROL, new LedBargraphBehavior(CONTROL));
-        control         = CONTROL;
-        ledList         = new ArrayList<>(control.getNoOfLeds());
-        stepSize        = new SimpleDoubleProperty(1.0 / control.getNoOfLeds());
+        super(CONTROL);
+        ledList         = new ArrayList<>(getSkinnable().getNoOfLeds());
+        stepSize        = new SimpleDoubleProperty(1.0 / getSkinnable().getNoOfLeds());
         lastTimerCall   = 0l;
         peakLedIndex    = 0;
         timer           = new AnimationTimer() {
@@ -91,28 +91,28 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
 
     // ******************** Initialization ************************************
     private void init() {
-        if (Double.compare(control.getPrefWidth(), 0.0) <= 0 || Double.compare(control.getPrefHeight(), 0.0) <= 0 ||
-            control.getWidth() <= 0 || control.getHeight() <= 0) {
-            control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
+            getSkinnable().getWidth() <= 0 || getSkinnable().getHeight() <= 0) {
+            getSkinnable().setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
         }
 
-        if (Double.compare(control.getMinWidth(), 0.0) <= 0 || Double.compare(control.getMinHeight(), 0.0) <= 0) {
-            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+            getSkinnable().setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <=0) {
-            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <=0) {
+            getSkinnable().setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
 
-        for(int i = 0 ; i < control.getNoOfLeds() ; i++) {
+        for(int i = 0 ; i < getSkinnable().getNoOfLeds() ; i++) {
             Led led = LedBuilder.create()
-                                .frameVisible(control.isFrameVisible())
-                                .prefWidth(control.getLedSize())
-                                .prefHeight(control.getLedSize())
+                                .frameVisible(getSkinnable().isFrameVisible())
+                                .prefWidth(getSkinnable().getLedSize())
+                                .prefHeight(getSkinnable().getLedSize())
                                 .build();
             ledList.add(led);
-            if (control.getValue() > 0) {
-                if (Double.compare(i * stepSize.doubleValue(), control.getValue()) <= 0) {
+            if (getSkinnable().getValue() > 0) {
+                if (Double.compare(i * stepSize.doubleValue(), getSkinnable().getValue()) <= 0) {
                     ledList.get(i).setOn(true);
                 } else {
                     ledList.get(i).setOn(false);
@@ -125,8 +125,8 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
     }
 
     private void initGraphics() {
-        final int NO_OF_LEDS = control.getNoOfLeds();
-        if (control.getOrientation() == Orientation.VERTICAL) {
+        final int NO_OF_LEDS = getSkinnable().getNoOfLeds();
+        if (getSkinnable().getOrientation() == Orientation.VERTICAL) {
             bargraph = new VBox();
             ((VBox) bargraph).setSpacing(0);
             //bargraph.setPadding(new Insets(0, 0, 0, 0));
@@ -145,25 +145,28 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
     }
 
     private void registerListeners() {
-        registerChangeListener(control.widthProperty(), "RESIZE");
-        registerChangeListener(control.heightProperty(), "RESIZE");
-        registerChangeListener(control.valueProperty(), "VALUE");
-        registerChangeListener(control.ledTypeProperty(), "LED_TYPE");
-        registerChangeListener(control.frameVisibleProperty(), "FRAME_VISIBLE");
-        registerChangeListener(control.ledSizeProperty(), "LED_SIZE");
-        registerChangeListener(control.orientationProperty(), "ORIENTATION");
-        registerChangeListener(control.noOfLedsProperty(), "LED_NUMBER");
-        registerChangeListener(control.ledColorsProperty(), "LED_COLOR");
+        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().valueProperty().addListener(observable -> { handleControlPropertyChanged("VALUE"); });
+        getSkinnable().ledTypeProperty().addListener(observable -> { handleControlPropertyChanged("LED_TYPE"); });
+        getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
+        getSkinnable().ledSizeProperty().addListener(observable -> { handleControlPropertyChanged("LED_SIZE"); });
+        getSkinnable().orientationProperty().addListener(observable -> { handleControlPropertyChanged("ORIENTATION"); });
+        getSkinnable().noOfLedsProperty().addListener(observable -> { handleControlPropertyChanged("LED_NUMBER"); });
+        getSkinnable().ledColorsProperty().addListener(new ListChangeListener<Color>() {
+            @Override public void onChanged(Change<? extends Color> change) {
+                handleControlPropertyChanged("LED_COLOR");
+            }
+        });
     }
 
 
     // ******************** Methods *******************************************
-    @Override protected void handleControlPropertyChanged(final String PROPERTY) {
-        super.handleControlPropertyChanged(PROPERTY);
+    protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("VALUE".equals(PROPERTY)) {
             int currentLedPeakIndex = 0;
-            for (int i = 0 ; i < control.getNoOfLeds() ; i++) {
-                if (Double.compare(i * stepSize.doubleValue(), control.getValue()) <= 0) {
+            for (int i = 0 ; i < getSkinnable().getNoOfLeds() ; i++) {
+                if (Double.compare(i * stepSize.doubleValue(), getSkinnable().getValue()) <= 0) {
                     ledList.get(i).setOn(true);
                     currentLedPeakIndex = i;
                 } else {
@@ -172,7 +175,7 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
                 ledList.get(peakLedIndex).setOn(true);
             }
             // PeakValue
-            if (control.isPeakValueVisible()) {
+            if (getSkinnable().isPeakValueVisible()) {
                 if (currentLedPeakIndex > peakLedIndex) {
                     peakLedIndex = currentLedPeakIndex;
                     timer.stop();
@@ -182,7 +185,7 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
             }
         } else if ("FRAME_VISIBLE".equals(PROPERTY)) {
             for (Led led : ledList) {
-                led.setFrameVisible(control.isFrameVisible());
+                led.setFrameVisible(getSkinnable().isFrameVisible());
             }
         } else if ("LED_SIZE".equals(PROPERTY)) {
             setLedSizes();
@@ -190,7 +193,7 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
         } else if ("ORIENTATION".equals(PROPERTY)) {
             initGraphics();
         } else if ("LED_NUMBER".equals(PROPERTY)) {
-            stepSize.set(1.0 / control.getNoOfLeds());
+            stepSize.set(1.0 / getSkinnable().getNoOfLeds());
         } else if ("LED_COLOR".equals(PROPERTY)) {
             setLedColors();
         } else if ("LED_TYPE".equals(PROPERTY)) {
@@ -200,59 +203,52 @@ public class LedBargraphSkin extends BehaviorSkinBase<LedBargraph, LedBargraphBe
         }
     }
 
-    @Override public final void dispose() {
-        control = null;
-    }
-
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = 16;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
+            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
-
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = 16;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight());
+            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(5, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(5, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(5, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMinHeight(Math.max(5, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
 
     // ******************** Private Methods ***********************************
     private final void setLedSizes() {
         for (Led led : ledList) {
-            led.setPrefSize(control.getLedSize(), control.getLedSize());
+            led.setPrefSize(getSkinnable().getLedSize(), getSkinnable().getLedSize());
         }
     }
 
     private final void setLedColors() {
-        for (int i = 0 ; i < control.getNoOfLeds() ; i++) {
-            ledList.get(i).setColor(control.getLedColor(i));
+        for (int i = 0 ; i < getSkinnable().getNoOfLeds() ; i++) {
+            ledList.get(i).setColor(getSkinnable().getLedColor(i));
         }
     }
 
     private final void setLedTypes() {
         for (Led led : ledList) {
-            led.setType(control.getLedType());
+            led.setType(getSkinnable().getLedType());
         }
     }
 }

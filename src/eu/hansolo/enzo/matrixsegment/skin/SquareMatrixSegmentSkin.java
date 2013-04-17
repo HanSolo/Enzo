@@ -28,10 +28,10 @@
 
 package eu.hansolo.enzo.matrixsegment.skin;
 
-import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.matrixsegment.SquareMatrixSegment;
-import eu.hansolo.enzo.matrixsegment.behavior.SquareMatrixSegmentBehavior;
 import javafx.collections.ListChangeListener;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.DropShadowBuilder;
@@ -50,14 +50,13 @@ import java.util.Map;
 import static eu.hansolo.enzo.matrixsegment.SquareMatrixSegment.Dot;
 
 
-public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegment, SquareMatrixSegmentBehavior> {
+public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> implements Skin<SquareMatrixSegment> {
     private static final double DEFAULT_WIDTH  = 100;
     private static final double DEFAULT_HEIGHT = 100;
     private static final double MINIMUM_WIDTH  = 5;
     private static final double MINIMUM_HEIGHT = 5;
     private static final double MAXIMUM_WIDTH  = 1024;
     private static final double MAXIMUM_HEIGHT = 1024;
-    private SquareMatrixSegment control;
     private static double aspectRatio;
     private Map<SquareMatrixSegment.Dot, Region> dotMap;
     private List<Region>  highlights;
@@ -172,8 +171,7 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
 
     // ******************** Constructors **************************************
     public SquareMatrixSegmentSkin(final SquareMatrixSegment CONTROL) {
-        super(CONTROL, new SquareMatrixSegmentBehavior(CONTROL));
-        control     = CONTROL;
+        super(CONTROL);
         aspectRatio = 1.0;
         dotMap      = new HashMap<>(35);
         highlights  = new ArrayList<>(35);
@@ -186,25 +184,25 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
 
     // ******************** Initialization ************************************
     private void init() {
-        if (Double.compare(control.getPrefWidth(), 0.0) <= 0 || Double.compare(control.getPrefHeight(), 0.0) <= 0 ||
-            Double.compare(control.getWidth(), 0.0) <= 0 || Double.compare(control.getHeight(), 0.0) <= 0) {
-            if (control.getPrefWidth() > 0 && control.getPrefHeight() > 0) {
-                control.setPrefSize(control.getPrefWidth(), control.getPrefHeight());
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
+            Double.compare(getSkinnable().getWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getHeight(), 0.0) <= 0) {
+            if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
+                getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                control.setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                getSkinnable().setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             }
         }
 
-        if (Double.compare(control.getMinWidth(), 0.0) <= 0 || Double.compare(control.getMinHeight(), 0.0) <= 0) {
-            control.setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+            getSkinnable().setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
         }
 
-        if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <= 0) {
-            control.setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
+        if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <= 0) {
+            getSkinnable().setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
         }
 
-        if (control.getPrefWidth() != DEFAULT_WIDTH || control.getPrefHeight() != DEFAULT_HEIGHT) {
-            aspectRatio = control.getPrefHeight() / control.getPrefWidth();
+        if (getSkinnable().getPrefWidth() != DEFAULT_WIDTH || getSkinnable().getPrefHeight() != DEFAULT_HEIGHT) {
+            aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         }
     }
 
@@ -238,7 +236,7 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
         glow = DropShadowBuilder.create()
                                 .input(dotInnerShadow)
                                 .radius(0.023 * DEFAULT_WIDTH)
-                                .color(control.getColor())
+                                .color(getSkinnable().getColor())
                                 .blurType(BlurType.TWO_PASS_BOX)
                                 .build();
 
@@ -560,22 +558,22 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
         updateMatrix();
         updateMatrixColor();
         for (Region highlight : highlights) {
-            highlight.setVisible(control.isHighlightsVisible());
+            highlight.setVisible(getSkinnable().isHighlightsVisible());
         }
     }
 
     private void registerListeners() {
-        registerChangeListener(control.widthProperty(), "RESIZE");
-        registerChangeListener(control.heightProperty(), "RESIZE");
-        registerChangeListener(control.prefWidthProperty(), "PREF_SIZE");
-        registerChangeListener(control.prefHeightProperty(), "PREF_SIZE");
-        registerChangeListener(control.colorProperty(), "COLOR");
-        registerChangeListener(control.backgroundVisibleProperty(), "BACKGROUND");
-        registerChangeListener(control.highlightsVisibleProperty(), "HIGHLIGHTS");
-        registerChangeListener(control.characterProperty(), "CHARACTER");
-        registerChangeListener(control.glowEnabledProperty(), "GLOW");
+        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
+        getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
+        getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
+        getSkinnable().backgroundVisibleProperty().addListener(observable -> { handleControlPropertyChanged("BACKGROUND"); });
+        getSkinnable().highlightsVisibleProperty().addListener(observable -> { handleControlPropertyChanged("HIGHLIGHTS"); });
+        getSkinnable().characterProperty().addListener(observable -> { handleControlPropertyChanged("CHARACTER"); });
+        getSkinnable().glowEnabledProperty().addListener(observable -> { handleControlPropertyChanged("GLOW"); });
 
-        control.getStyleClass().addListener(new ListChangeListener<String>() {
+        getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {
                 resize();
             }
@@ -584,8 +582,7 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
 
 
     // ******************** Methods *******************************************
-    @Override protected void handleControlPropertyChanged(final String PROPERTY) {
-        super.handleControlPropertyChanged(PROPERTY);
+    protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("PREF_SIZE".equals(PROPERTY)) {
@@ -593,10 +590,10 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
         } else if ("COLOR".equals(PROPERTY)) {
             updateMatrixColor();
         } else if ("BACKGROUND".equals(PROPERTY)) {
-            background.setVisible(control.isBackgroundVisible());
+            background.setVisible(getSkinnable().isBackgroundVisible());
         } else if ("HIGHLIGHTS".equals(PROPERTY)) {
             for (Region highlight : highlights) {
-                highlight.setVisible(control.isHighlightsVisible());
+                highlight.setVisible(getSkinnable().isHighlightsVisible());
             }
         } else if ("CHARACTER".equals(PROPERTY)) {
             updateMatrix();
@@ -605,40 +602,33 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
         }
     }
 
-    @Override public final void dispose() {
-        control = null;
-    }
-
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = DEFAULT_HEIGHT;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
+            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
-
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = DEFAULT_WIDTH;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight());
+            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
 
@@ -656,19 +646,19 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
 
     // ******************** Update ********************************************
     public void updateMatrixColor() {
-        control.setStyle("-dot-on-color: " + colorToCss(control.getColor()) + ";");
-        glow.setColor(control.getColor());
+        getSkinnable().setStyle("-dot-on-color: " + colorToCss(getSkinnable().getColor()) + ";");
+        glow.setColor(getSkinnable().getColor());
     }
 
     public void updateMatrix() {
-        final int ASCII = control.getCharacter().isEmpty() ? 20 : control.getCharacter().toUpperCase().charAt(0);
+        final int ASCII = getSkinnable().getCharacter().isEmpty() ? 20 : getSkinnable().getCharacter().toUpperCase().charAt(0);
 
-        if (control.getCustomDotMapping().isEmpty()) {
+        if (getSkinnable().getCustomDotMapping().isEmpty()) {
             for (SquareMatrixSegment.Dot dot : dotMap.keySet()) {
-                if (control.getDotMapping().containsKey(ASCII)) {
-                    if (control.getDotMapping().get(ASCII).contains(dot)) {
+                if (getSkinnable().getDotMapping().containsKey(ASCII)) {
+                    if (getSkinnable().getDotMapping().get(ASCII).contains(dot)) {
                         dotMap.get(dot).getStyleClass().setAll("dot-on");
-                        dotMap.get(dot).setEffect(control.isGlowEnabled() ? glow : dotInnerShadow);
+                        dotMap.get(dot).setEffect(getSkinnable().isGlowEnabled() ? glow : dotInnerShadow);
                     } else {
                         dotMap.get(dot).getStyleClass().setAll("dot-off");
                         dotMap.get(dot).setEffect(dotInnerShadow);
@@ -680,10 +670,10 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
             }
         } else {
             for (SquareMatrixSegment.Dot dot : dotMap.keySet()) {
-                if (control.getCustomDotMapping().containsKey(ASCII)) {
-                    if (control.getCustomDotMapping().get(ASCII).contains(dot)) {
+                if (getSkinnable().getCustomDotMapping().containsKey(ASCII)) {
+                    if (getSkinnable().getCustomDotMapping().get(ASCII).contains(dot)) {
                         dotMap.get(dot).getStyleClass().setAll("dot-on");
-                        dotMap.get(dot).setEffect(control.isGlowEnabled() ? glow : dotInnerShadow);
+                        dotMap.get(dot).setEffect(getSkinnable().isGlowEnabled() ? glow : dotInnerShadow);
                     } else {
                         dotMap.get(dot).getStyleClass().setAll("dot-off");
                         dotMap.get(dot).setEffect(dotInnerShadow);
@@ -699,9 +689,9 @@ public class SquareMatrixSegmentSkin extends BehaviorSkinBase<SquareMatrixSegmen
 
     // ******************** Resizing ******************************************
     private void resize() {
-        size   = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
-        width  = control.getWidth();
-        height = control.getHeight();
+        size   = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
+        width  = getSkinnable().getWidth();
+        height = getSkinnable().getHeight();
 
         if (aspectRatio * width > height) {
             width  = 1 / (aspectRatio / height);

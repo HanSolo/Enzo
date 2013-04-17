@@ -28,9 +28,9 @@
 
 package eu.hansolo.enzo.led.skin;
 
-import com.sun.javafx.scene.control.skin.BehaviorSkinBase;
 import eu.hansolo.enzo.led.Led;
-import eu.hansolo.enzo.led.behavior.LedBehavior;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.DropShadowBuilder;
@@ -44,14 +44,13 @@ import javafx.scene.paint.Color;
 /**
  * Created by
  * User: hansolo
- * Date: 16.11.12
- * Time: 09:20
+ * Date: 17.04.13
+ * Time: 09:01
  */
-public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
+public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private static final double PREFERRED_SIZE = 16;
     private static final double MINIMUM_SIZE   = 8;
     private static final double MAXIMUM_SIZE   = 1024;
-    private Led                 control;
     private double              size;
     private Pane                pane;
     private Region              frame;
@@ -64,10 +63,8 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
 
     // ******************** Constructors **************************************
     public LedSkin(final Led CONTROL) {
-        super(CONTROL, new LedBehavior(CONTROL));
-        control = CONTROL;
+        super(CONTROL);
         pane    = new Pane();
-
         init();
         initGraphics();
         registerListeners();
@@ -76,27 +73,27 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
 
     // ******************** Initialization ************************************
     private void init() {
-        if (Double.compare(control.getPrefWidth(), 0.0) <= 0 || Double.compare(control.getPrefHeight(), 0.0) <= 0 ||
-            Double.compare(control.getWidth(), 0.0) <= 0 || Double.compare(control.getHeight(), 0.0) <= 0) {
-            if (control.getPrefWidth() > 0 && control.getPrefHeight() > 0) {
-                control.setPrefSize(control.getPrefWidth(), control.getPrefHeight());
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
+            Double.compare(getSkinnable().getWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getHeight(), 0.0) <= 0) {
+            if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
+                getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                control.setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
+                getSkinnable().setPrefSize(PREFERRED_SIZE, PREFERRED_SIZE);
             }
         }
 
-        if (Double.compare(control.getMinWidth(), 0.0) <= 0 || Double.compare(control.getMinHeight(), 0.0) <= 0) {
-            control.setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+            getSkinnable().setMinSize(MINIMUM_SIZE, MINIMUM_SIZE);
         }
 
-        if (Double.compare(control.getMaxWidth(), 0.0) <= 0 || Double.compare(control.getMaxHeight(), 0.0) <= 0) {
-            control.setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
+        if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <= 0) {
+            getSkinnable().setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
     }
 
     private void initGraphics() {
         frame = new Region();
-        frame.setVisible(control.isFrameVisible());
+        frame.setVisible(getSkinnable().isFrameVisible());
 
         off = new Region();
 
@@ -108,17 +105,18 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
 
         glow = DropShadowBuilder.create()
                                 .input(innerShadow)
-                                .color(control.getColor())
+                                .color(getSkinnable().getColor())
                                 .radius(20)
                                 .blurType(BlurType.GAUSSIAN)
                                 .build();
 
         on = new Region();
         on.setEffect(glow);
-        on.setVisible(control.isOn());
+        on.setVisible(getSkinnable().isOn());
 
         highlight = new Region();
 
+        // Set the appropriate style classes
         changeStyle();
 
         // Add all nodes
@@ -128,68 +126,60 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
     }
 
     private void registerListeners() {
-        registerChangeListener(control.widthProperty(), "RESIZE");
-        registerChangeListener(control.heightProperty(), "RESIZE");
-        registerChangeListener(control.colorProperty(), "COLOR");
-        registerChangeListener(control.typeProperty(), "TYPE");
-        registerChangeListener(control.onProperty(), "ON");
-        registerChangeListener(control.frameVisibleProperty(), "FRAME_VISIBLE");
+        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
+        getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
+        getSkinnable().typeProperty().addListener(observable -> { handleControlPropertyChanged("TYPE"); });
+        getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("ON"); });
+        getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
     }
 
 
     // ******************** Methods *******************************************
-    @Override protected void handleControlPropertyChanged(final String PROPERTY) {
-        super.handleControlPropertyChanged(PROPERTY);
+    protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("COLOR".equals(PROPERTY)) {
-            control.setStyle("-fx-led-color: " + colorToCss(control.getColor()) + ";");
-            glow.setColor(control.getColor());
+            getSkinnable().setStyle("-fx-led-color: " + colorToCss(getSkinnable().getColor()) + ";");
+            glow.setColor(getSkinnable().getColor());
         } else if ("ON".equals(PROPERTY)) {
-            on.setVisible(control.isOn());
-            off.setVisible(!control.isOn());
+            on.setVisible(getSkinnable().isOn());
+            off.setVisible(!getSkinnable().isOn());
         } else if ("TYPE".equals(PROPERTY)) {
             changeStyle();
             resize();
         } else if ("FRAME_VISIBLE".equals(PROPERTY)) {
-            frame.setVisible(control.isFrameVisible());
+            frame.setVisible(getSkinnable().isFrameVisible());
         }
-    }
-
-    @Override public final void dispose() {
-        control = null;
     }
 
     @Override protected double computePrefWidth(final double PREF_HEIGHT) {
         double prefHeight = PREFERRED_SIZE;
         if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom());
+            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
         }
         return super.computePrefWidth(prefHeight);
     }
-
     @Override protected double computePrefHeight(final double PREF_WIDTH) {
         double prefWidth = PREFERRED_SIZE;
         if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight());
+            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
         }
         return super.computePrefWidth(prefWidth);
     }
 
     @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(5, MIN_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMinWidth(Math.max(5, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(5, MIN_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMinHeight(Math.max(5, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
     @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - control.getInsets().getTop() - control.getInsets().getBottom()));
+        return super.computeMaxWidth(Math.min(1024, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
     }
-
     @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - control.getInsets().getLeft() - control.getInsets().getRight()));
+        return super.computeMaxHeight(Math.min(1024, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
     }
 
 
@@ -205,7 +195,7 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
     }
 
     private void changeStyle() {
-        switch(control.getType()) {
+        switch(getSkinnable().getType()) {
             case HORIZONTAL:
                 frame.getStyleClass().setAll("frame-horizontal");
                 off.getStyleClass().setAll("off-horizontal");
@@ -233,17 +223,17 @@ public class LedSkin extends BehaviorSkinBase<Led, LedBehavior> {
                 break;
         }
 
-        control.setStyle("-fx-led-color: " + colorToCss(control.getColor()) + ";");
+        getSkinnable().setStyle("-fx-led-color: " + colorToCss(getSkinnable().getColor()) + ";");
     }
 
     private void resize() {
-        size = control.getWidth() < control.getHeight() ? control.getWidth() : control.getHeight();
+        size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
         if (size > 0) {
             innerShadow.setRadius(0.07 * size);
             glow.setRadius(0.36 * size);
 
-            switch(control.getType()) {
+            switch(getSkinnable().getType()) {
                 case HORIZONTAL:
                     frame.setPrefSize(size, 0.56 * size);
                     frame.setTranslateY(0.22 * size);
