@@ -113,7 +113,6 @@ public class DepartureBoard extends VBox{
         };
         queueCounter = 0;
         isUpdating   = false;
-        timer.start();
     }
 
 
@@ -125,6 +124,13 @@ public class DepartureBoard extends VBox{
         if (queue.contains(ROW)) {
             queue.remove(ROW);
         }
+    }
+
+    public final void start() {
+        timer.start();
+    }
+    public final void stop() {
+        timer.stop();
     }
 
     private final void checkRows() {
