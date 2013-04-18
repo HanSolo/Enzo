@@ -39,13 +39,14 @@ public class LedSegment extends HBox {
                              .prefWidth(25)
                              .prefHeight(25)
                              .build();
+
         rightLed = LedBuilder.create()
                              //.frameVisible(false)
                              .color(color)
                              .prefWidth(25)
                              .prefHeight(25)
                              .build();
-        setSpacing(0);
+        setSpacing(2);
         getChildren().setAll(leftLed, rightLed);
         HBox.setMargin(leftLed, new Insets(15, 0, 0, 0));
         HBox.setMargin(rightLed, new Insets(15, 0, 0, 0));

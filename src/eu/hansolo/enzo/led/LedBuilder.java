@@ -154,7 +154,7 @@ public class LedBuilder<B extends LedBuilder<B>> extends ControlBuilder<B> {
         return (B)this;
     }
 
-    @Override public final Led build() {
+    @Override public final eu.hansolo.enzo.led.Led build() {
         final Led CONTROL = new Led();
         for (String key : properties.keySet()) {
             if("prefWidth".equals(key)) {

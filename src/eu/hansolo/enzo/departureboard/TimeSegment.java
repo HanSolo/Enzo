@@ -36,7 +36,6 @@ public class TimeSegment extends HBox {
     public TimeSegment(final Color TEXT_COLOR) {
         hourLeft  = SplitFlapBuilder.create()
                                     .selection(SplitFlap.NUMERIC)
-                                    .text(" ")
                                     .flipTime(100)
                                     .textColor(TEXT_COLOR)
                                     .squareFlaps(true)
@@ -44,7 +43,6 @@ public class TimeSegment extends HBox {
         hourLeft.setPrefSize(36, 60);
         hourRight = SplitFlapBuilder.create()
                                     .selection(SplitFlap.NUMERIC)
-                                    .text(" ")
                                     .flipTime(100)
                                     .textColor(TEXT_COLOR)
                                     .squareFlaps(true)
@@ -52,7 +50,6 @@ public class TimeSegment extends HBox {
         hourRight.setPrefSize(36, 60);
         minLeft   = SplitFlapBuilder.create()
                                     .selection(SplitFlap.NUMERIC)
-                                    .text(" ")
                                     .flipTime(100)
                                     .textColor(TEXT_COLOR)
                                     .squareFlaps(true)
@@ -60,7 +57,6 @@ public class TimeSegment extends HBox {
         minLeft.setPrefSize(36, 60);
         minRight  = SplitFlapBuilder.create()
                                     .selection(SplitFlap.NUMERIC)
-                                    .text(" ")
                                     .flipTime(100)
                                     .textColor(TEXT_COLOR)
                                     .squareFlaps(true)

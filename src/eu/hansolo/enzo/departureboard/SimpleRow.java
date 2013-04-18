@@ -12,11 +12,11 @@ import javafx.scene.paint.Color;
  * Time: 14:56
  */
 public class SimpleRow extends HBox {
-    private LedSegment        leds;
-    private SimpleTimeSegment time;
-    private CharacterSegment  destination;
-    private CharacterSegment  track;
-    private boolean           isEmpty;
+    private LedSegment              leds;
+    private SimpleTimeSegment       time;
+    private SimpleCharacterSegment  destination;
+    private SimpleCharacterSegment  track;
+    private boolean                 isEmpty;
 
 
     // ******************** Constructors **************************************
@@ -29,8 +29,8 @@ public class SimpleRow extends HBox {
     public SimpleRow(final boolean BLINKING, final String HOURS, final String MINUTES, final String DESTINATION, final String TRACK) {
         leds        = new LedSegment();
         time        = new SimpleTimeSegment();
-        destination = new CharacterSegment(16);
-        track       = new CharacterSegment(2);
+        destination = new SimpleCharacterSegment(16);
+        track       = new SimpleCharacterSegment(2);
         isEmpty     = DESTINATION.isEmpty() ? true : false;
         leds.setBlinking(BLINKING);
         time.setTime(HOURS, MINUTES);

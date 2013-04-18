@@ -1,7 +1,7 @@
 package eu.hansolo.enzo.departureboard;
 
-import eu.hansolo.enzo.splitflap.SplitFlap;
-import eu.hansolo.enzo.splitflap.SplitFlapBuilder;
+import eu.hansolo.enzo.imgsplitflap.SplitFlap;
+import eu.hansolo.enzo.imgsplitflap.SplitFlapBuilder;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.layout.HBox;
@@ -27,33 +27,29 @@ public class SimpleTimeSegment extends HBox {
     // ******************** Constructors **************************************
     public SimpleTimeSegment() {
         hourLeft  = SplitFlapBuilder.create()
-                                    .selection(SplitFlap.NUMERIC)
-                                    .text(" ")
+                                    .selection(SplitFlap.TIME_0_TO_5)
+                                    .text("0")
                                     .flipTime(100)
-                                    .squareFlaps(true)
                                     .build();
-        hourLeft.setPrefSize(36, 60);
+        hourLeft.setPrefSize(35, 60);
         hourRight = SplitFlapBuilder.create()
-                                    .selection(SplitFlap.NUMERIC)
-                                    .text(" ")
+                                    .selection(SplitFlap.TIME_0_TO_9)
+                                    .text("0")
                                     .flipTime(100)
-                                    .squareFlaps(true)
                                     .build();
-        hourRight.setPrefSize(36, 60);
+        hourRight.setPrefSize(35, 60);
         minLeft   = SplitFlapBuilder.create()
-                                    .selection(SplitFlap.NUMERIC)
-                                    .text(" ")
+                                    .selection(SplitFlap.TIME_0_TO_5)
+                                    .text("0")
                                     .flipTime(100)
-                                    .squareFlaps(true)
                                     .build();
-        minLeft.setPrefSize(24, 40);
+        minLeft.setPrefSize(23, 40);
         minRight  = SplitFlapBuilder.create()
-                                    .selection(SplitFlap.NUMERIC)
-                                    .text(" ")
+                                    .selection(SplitFlap.TIME_0_TO_9)
+                                    .text("0")
                                     .flipTime(100)
-                                    .squareFlaps(true)
                                     .build();
-        minRight.setPrefSize(24, 40);
+        minRight.setPrefSize(23, 40);
 
         setSpacing(2);
         getChildren().addAll(hourLeft,
