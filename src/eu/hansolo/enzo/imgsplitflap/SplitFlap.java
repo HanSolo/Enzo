@@ -122,7 +122,7 @@ public class SplitFlap extends Region {
         selection              = SELECTION;
         selectedSet            = new ArrayList<>(64);
         selectedSet.addAll(Arrays.asList(selection));
-        _text                  = "";
+        _text                  = TEXT;
         _textColor             = Color.WHITE;
         currentSelectionIndex  = 0;
         nextSelectionIndex     = 1;
