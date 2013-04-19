@@ -83,11 +83,11 @@ public class SevenSegment extends Control {
         }
     }
     private boolean                      keepAspect;
-    private String                       defaultCharacter = " ";
+    private String                       _character = " ";
     private StringProperty               character;
-    private boolean                      defaultDotOn = false;
+    private boolean                      _dotOn = false;
     private BooleanProperty              dotOn;
-    private SegmentStyle                 defaultSegmentStyle;
+    private SegmentStyle                 _segmentStyle;
     private ObjectProperty<SegmentStyle> segmentStyle;
     private Map<Integer, List<Segment>>  mapping;
 
@@ -96,33 +96,27 @@ public class SevenSegment extends Control {
     public SevenSegment() {
         this(" ", SegmentStyle.RED);
     }
-
     public SevenSegment(final String CHARACTER) {
         this(CHARACTER, SegmentStyle.RED);
     }
-
     public SevenSegment(final Character CHARACTER) {
         this(CHARACTER, SegmentStyle.RED);
     }
-
     public SevenSegment(final int CHARACTER) {
         this(Integer.toString(CHARACTER < 0 ? 0 : (CHARACTER > 9 ? 9 : CHARACTER)), SegmentStyle.RED);
     }
-
     public SevenSegment(final Character CHARACTER, final SegmentStyle SEGMENT_STYLE) {
         this(String.valueOf(CHARACTER), SEGMENT_STYLE);
     }
-
     public SevenSegment(final int CHARACTER, final SegmentStyle SEGMENT_STYLE) {
         this(Integer.toString(CHARACTER < 0 ? 0 : (CHARACTER > 9 ? 9 : CHARACTER)), SEGMENT_STYLE);
     }
-
     public SevenSegment(final String CHARACTER, final SegmentStyle SEGMENT_STYLE) {
         getStyleClass().add("seven-segment");
-        keepAspect          = true;
-        defaultCharacter    = CHARACTER.substring(0, 1);
-        defaultSegmentStyle = SEGMENT_STYLE;
-        mapping             = new HashMap<>(48);
+        keepAspect    = true;
+        _character    = CHARACTER.substring(0, 1);
+        _segmentStyle = SEGMENT_STYLE;
+        mapping       = new HashMap<>(48);
         initMapping();
     }
 
@@ -163,66 +157,66 @@ public class SevenSegment extends Control {
     }
 
     public final String getCharacter() {
-        return null == character ? defaultCharacter : character.get();
+        return null == character ? _character : character.get();
     }
     public final void setCharacter(final String CHARACTER) {
         if (null == character) {
-            defaultCharacter = CHARACTER.substring(0, 1);
+            _character = CHARACTER.substring(0, 1);
         } else {
             character.set(CHARACTER.substring(0, 1));
         }
     }
     public final void setCharacter(final Character CHARACTER) {
         if (null == character) {
-            defaultCharacter = String.valueOf(CHARACTER);
+            _character = String.valueOf(CHARACTER);
         } else {
             character.set(String.valueOf(CHARACTER));
         }
     }
     public final void setCharacter(final int CHARACTER) {
         if (null == character) {
-            defaultCharacter = Integer.toString(CHARACTER < 0 ? 0 : (CHARACTER > 9 ? 9 : CHARACTER));
+            _character = Integer.toString(CHARACTER < 0 ? 0 : (CHARACTER > 9 ? 9 : CHARACTER));
         } else {
             character.set(Integer.toString(CHARACTER < 0 ? 0 : (CHARACTER > 9 ? 9 : CHARACTER)));
         }
     }
     public final ReadOnlyStringProperty characterProperty() {
         if (null == character) {
-            character = new SimpleStringProperty(this, "character", defaultCharacter);
+            character = new SimpleStringProperty(this, "character", _character);
         }
         return character;
     }
 
     public final boolean isDotOn() {
-        return null == dotOn ? defaultDotOn : dotOn.get();
+        return null == dotOn ? _dotOn : dotOn.get();
     }
     public final void setDotOn(final boolean DOT_ON) {
         if (null == dotOn) {
-            defaultDotOn = DOT_ON;
+            _dotOn = DOT_ON;
         } else {
             dotOn.set(DOT_ON);
         }
     }
     public final BooleanProperty dotOnProperty() {
         if (null == dotOn) {
-            dotOn = new SimpleBooleanProperty(this, "dotOn", defaultDotOn);
+            dotOn = new SimpleBooleanProperty(this, "dotOn", _dotOn);
         }
         return dotOn;
     }
 
     public final SegmentStyle getSegmentStyle() {
-        return null == segmentStyle ? defaultSegmentStyle : segmentStyle.get();
+        return null == segmentStyle ? _segmentStyle : segmentStyle.get();
     }
     public final void setSegmentStyle(final SegmentStyle SEGMENT_STYLE) {
         if (null == segmentStyle) {
-            defaultSegmentStyle = SEGMENT_STYLE;
+            _segmentStyle = SEGMENT_STYLE;
         } else {
             segmentStyle.set(SEGMENT_STYLE);
         }
     }
     public final ObjectProperty<SegmentStyle> segmentStyleProperty() {
         if (null == segmentStyle) {
-            segmentStyle = new SimpleObjectProperty<>(this, "segmentStyle", defaultSegmentStyle);
+            segmentStyle = new SimpleObjectProperty<>(this, "segmentStyle", _segmentStyle);
         }
         return segmentStyle;
     }

@@ -358,7 +358,7 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
             } else if("value".equals(key)) {
                 CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
             } else if("valueAnimationEnabled".equals(key)) {
-                CONTROL.setValueAnimationEnabled(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setAnimated(((BooleanProperty) properties.get(key)).get());
             } else if ("animationDuration".equals(key)) {
                 CONTROL.setAnimationDuration(((DoubleProperty) properties.get(key)).get());
             } else if("threshold".equals(key)) {

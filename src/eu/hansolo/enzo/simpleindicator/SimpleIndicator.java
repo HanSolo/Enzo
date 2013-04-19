@@ -68,7 +68,7 @@ public class SimpleIndicator extends Control {
             CLASS = CLASS_NAME;
         }
     }
-    private IndicatorStyle                 defaultIndicatorStyle = IndicatorStyle.OFF;
+    private IndicatorStyle                 _indicatorStyle = IndicatorStyle.OFF;
     private ObjectProperty<IndicatorStyle> indicatorStyle;
 
 
@@ -80,18 +80,18 @@ public class SimpleIndicator extends Control {
 
     // ******************** Methods *******************************************
     public final IndicatorStyle getIndicatorStyle() {
-        return null == indicatorStyle ? defaultIndicatorStyle : indicatorStyle.get();
+        return null == indicatorStyle ? _indicatorStyle : indicatorStyle.get();
     }
     public final void setIndicatorStyle(final IndicatorStyle INDICATOR_STYLE) {
         if (null == indicatorStyle) {
-            defaultIndicatorStyle = INDICATOR_STYLE;
+            _indicatorStyle = INDICATOR_STYLE;
         } else {
             indicatorStyle.set(INDICATOR_STYLE);
         }
     }
     public final ObjectProperty<IndicatorStyle> indicatorStyleProperty() {
         if (null == indicatorStyle) {
-            indicatorStyle = new SimpleObjectProperty<>(this, "indicatorStyle", defaultIndicatorStyle);
+            indicatorStyle = new SimpleObjectProperty<>(this, "indicatorStyle", _indicatorStyle);
         }
         return indicatorStyle;
     }

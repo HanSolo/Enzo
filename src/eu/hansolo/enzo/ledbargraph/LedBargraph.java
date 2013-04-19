@@ -54,18 +54,18 @@ import java.util.List;
  * Time: 11:29
  */
 public class LedBargraph extends Control {
-    private Led.Type                    defaultLedType = Led.Type.ROUND;
+    private Led.Type                    _ledType = Led.Type.ROUND;
     private ObjectProperty<Led.Type>    ledType;
-    private boolean                     defaultFrameVisible = false;
+    private boolean                     _frameVisible = false;
     private BooleanProperty             frameVisible;
-    private double                      defaultLedSize = 16;
+    private double                      _ledSize = 16;
     private DoubleProperty              ledSize;
-    private Orientation                 defaultOrientation = Orientation.HORIZONTAL;
+    private Orientation                 _orientation = Orientation.HORIZONTAL;
     private ObjectProperty<Orientation> orientation;
-    private int                         defaultNoOfLeds = 16;
+    private int                         _noOfLeds = 16;
     private IntegerProperty             noOfLeds;
     private ListProperty<Color>         ledColors;
-    private boolean                     defaultPeakValueVisible = false;
+    private boolean                     _peakValueVisible = false;
     private BooleanProperty             peakValueVisible;
     private DoubleProperty              value;
 
@@ -73,8 +73,8 @@ public class LedBargraph extends Control {
     // ******************** Constructors **************************************
     public LedBargraph() {
         getStyleClass().add("bargraph");
-        ledColors        = new SimpleListProperty(this, "ledColors", FXCollections.<Color>observableArrayList());
-        value            = new SimpleDoubleProperty(this, "value", 0);
+        ledColors = new SimpleListProperty(this, "ledColors", FXCollections.<Color>observableArrayList());
+        value     = new SimpleDoubleProperty(this, "value", 0);
 
         for (int i = 0 ; i < getNoOfLeds() ; i++) {
             if (i < 11) {
@@ -90,76 +90,76 @@ public class LedBargraph extends Control {
 
     // ******************** Methods *******************************************
     public final Led.Type getLedType() {
-        return null == ledType ? defaultLedType : ledType.get();
+        return null == ledType ? _ledType : ledType.get();
     }
     public final void setLedType(final Led.Type LED_TYPE) {
         if (null == ledType) {
-            defaultLedType = LED_TYPE;
+            _ledType = LED_TYPE;
         } else {
             ledType.set(LED_TYPE);
         }
     }
     public final ObjectProperty<Led.Type> ledTypeProperty() {
         if (null == ledType) {
-            ledType = new SimpleObjectProperty<>(this, "ledType", defaultLedType);
+            ledType = new SimpleObjectProperty<>(this, "ledType", _ledType);
         }
         return ledType;
     }
 
     public final boolean isFrameVisible() {
-        return null == frameVisible ? defaultFrameVisible : frameVisible.get();
+        return null == frameVisible ? _frameVisible : frameVisible.get();
     }
     public final void setFrameVisible(final boolean FRAME_VISIBLE) {
         if (null == frameVisible) {
-            defaultFrameVisible = FRAME_VISIBLE;
+            _frameVisible = FRAME_VISIBLE;
         } else {
             frameVisible.set(FRAME_VISIBLE);
         }
     }
     public final BooleanProperty frameVisibleProperty() {
         if (null == frameVisible) {
-            frameVisible = new SimpleBooleanProperty(this, "frameVisible", defaultFrameVisible);
+            frameVisible = new SimpleBooleanProperty(this, "frameVisible", _frameVisible);
         }
         return frameVisible;
     }
 
     public final double getLedSize() {
-        return null == ledSize ? defaultLedSize : ledSize.get();
+        return null == ledSize ? _ledSize : ledSize.get();
     }
     public final void setLedSize(final double LED_SIZE) {
         double size = LED_SIZE < 10 ? 10 : (LED_SIZE > 50 ? 50 : LED_SIZE);
         if (null == ledSize) {
-            defaultLedSize = size;
+            _ledSize = size;
         } else {
             ledSize.set(size);
         }
     }
     public final DoubleProperty ledSizeProperty() {
         if (null == ledSize) {
-            ledSize = new SimpleDoubleProperty(this, "ledSize", defaultLedSize);
+            ledSize = new SimpleDoubleProperty(this, "ledSize", _ledSize);
         }
         return ledSize;
     }
 
     public final Orientation getOrientation() {
-        return null == orientation ? defaultOrientation : orientation.get();
+        return null == orientation ? _orientation : orientation.get();
     }
     public final void setOrientation(final Orientation ORIENTATION) {
         if (null == orientation) {
-            defaultOrientation = ORIENTATION;
+            _orientation = ORIENTATION;
         } else {
             orientation.set(ORIENTATION);
         }
     }
     public final ObjectProperty<Orientation> orientationProperty() {
         if (null == orientation) {
-            orientation = new SimpleObjectProperty<>(this, "orientation", defaultOrientation);
+            orientation = new SimpleObjectProperty<>(this, "orientation", _orientation);
         }
         return orientation;
     }
 
     public final int getNoOfLeds() {
-        return null == noOfLeds ? defaultNoOfLeds : noOfLeds.get();
+        return null == noOfLeds ? _noOfLeds : noOfLeds.get();
     }
     public final void setNoOfLeds(final int NO_OF_LEDS) {
         int amount = NO_OF_LEDS < 5 ? 5 : NO_OF_LEDS;
@@ -169,14 +169,14 @@ public class LedBargraph extends Control {
             }
         }
         if (null == noOfLeds) {
-            defaultNoOfLeds = amount;
+            _noOfLeds = amount;
         } else {
             noOfLeds.set(amount);
         }
     }
     public final IntegerProperty noOfLedsProperty() {
         if (null == noOfLeds) {
-            noOfLeds = new SimpleIntegerProperty(this, "noOfLeds", defaultNoOfLeds);
+            noOfLeds = new SimpleIntegerProperty(this, "noOfLeds", _noOfLeds);
         }
         return noOfLeds;
     }
@@ -214,18 +214,18 @@ public class LedBargraph extends Control {
     }
 
     public final boolean isPeakValueVisible() {
-        return null == peakValueVisible ? defaultPeakValueVisible : peakValueVisible.get();
+        return null == peakValueVisible ? _peakValueVisible : peakValueVisible.get();
     }
     public final void setPeakValueVisible(final boolean PEAK_VALUE_VISIBLE) {
         if (null == peakValueVisible) {
-            defaultPeakValueVisible = PEAK_VALUE_VISIBLE;
+            _peakValueVisible = PEAK_VALUE_VISIBLE;
         } else {
             peakValueVisible.set(PEAK_VALUE_VISIBLE);
         }
     }
     public final BooleanProperty peakValueVisibleProperty() {
         if (null == peakValueVisible) {
-            peakValueVisible = new SimpleBooleanProperty(this, "peakValueVisible", defaultPeakValueVisible);
+            peakValueVisible = new SimpleBooleanProperty(this, "peakValueVisible", _peakValueVisible);
         }
         return peakValueVisible;
     }

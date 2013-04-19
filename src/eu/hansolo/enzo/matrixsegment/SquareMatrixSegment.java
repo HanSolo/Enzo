@@ -53,17 +53,17 @@ public class SquareMatrixSegment extends Control {
         D06, D16, D26, D36, D46, D56, D66,
         D07, D17, D27, D37, D47, D57, D67
     }
-    private Color                                   defaultColor = Color.RED;
+    private Color                                   _color = Color.RED;
     private ObjectProperty<Color>                   color;
-    private String                                  defaultCharacter = " ";
+    private String                                  _character = " ";
     private StringProperty                          character;
     private Map<Integer, List<Dot>>                 mapping;
     private ObjectProperty<Map<Integer, List<Dot>>> customDotMapping;
-    private boolean                                 defaultBackgroundVisible = true;
+    private boolean                                 _backgroundVisible = true;
     private BooleanProperty                         backgroundVisible;
-    private boolean                                 defaultHighlightsVisible = true;
+    private boolean                                 _highlightsVisible = true;
     private BooleanProperty                         highlightsVisible;
-    private boolean                                 defaultGlowEnabled = true;
+    private boolean                                 _glowEnabled = true;
     private BooleanProperty                         glowEnabled;
 
 
@@ -71,20 +71,17 @@ public class SquareMatrixSegment extends Control {
     public SquareMatrixSegment() {
         this(" ", Color.RED);
     }
-
     public SquareMatrixSegment(final String CHARACTER) {
         this(CHARACTER, Color.RED);
     }
-
     public SquareMatrixSegment(final Color COLOR) {
         this(" ", COLOR);
     }
-
     public SquareMatrixSegment(final String CHARACTER, final Color COLOR) {
         getStyleClass().add("square-matrix-segment");
-        defaultColor      = COLOR;
-        defaultCharacter  = CHARACTER;
-        mapping           = new HashMap<>(72);
+        _color     = COLOR;
+        _character = CHARACTER;
+        mapping    = new HashMap<>(72);
 
         initMapping();
     }
@@ -168,42 +165,42 @@ public class SquareMatrixSegment extends Control {
     }
 
     public final Color getColor() {
-        return null == color ? defaultColor : color.get();
+        return null == color ? _color : color.get();
     }
     public final void setColor(final Color COLOR) {
         if (null == color) {
-            defaultColor = COLOR;
+            _color = COLOR;
         } else {
             color.set(COLOR);
         }
     }
     public final ObjectProperty<Color> colorProperty() {
         if (null == color) {
-            color = new SimpleObjectProperty<>(this, "color", defaultColor);
+            color = new SimpleObjectProperty<>(this, "color", _color);
         }
         return color;
     }
 
     public final String getCharacter() {
-        return null == character ? defaultCharacter : character.get();
+        return null == character ? _character : character.get();
     }
     public final void setCharacter(final String CHARACTER) {
         if (null == character) {
-            defaultCharacter = CHARACTER;
+            _character = CHARACTER;
         } else {
             character.set(CHARACTER);
         }
     }
     public final void setCharacter(final Character CHARACTER) {
         if (null == character) {
-            defaultCharacter = String.valueOf(CHARACTER);
+            _character = String.valueOf(CHARACTER);
         } else {
             character.set(String.valueOf(CHARACTER));
         }
     }
     public final StringProperty characterProperty() {
         if (null == character) {
-            character = new SimpleStringProperty(this, "character", defaultCharacter);
+            character = new SimpleStringProperty(this, "character", _character);
         }
         return character;
     }
@@ -269,52 +266,52 @@ public class SquareMatrixSegment extends Control {
     }
 
     public final boolean isBackgroundVisible() {
-        return null == backgroundVisible ? defaultBackgroundVisible : backgroundVisible.get();
+        return null == backgroundVisible ? _backgroundVisible : backgroundVisible.get();
     }
     public final void setBackgroundVisible(final boolean BACKGROUND_VISIBLE) {
         if (null == backgroundVisible) {
-            defaultBackgroundVisible = BACKGROUND_VISIBLE;
+            _backgroundVisible = BACKGROUND_VISIBLE;
         } else {
             backgroundVisible.set(BACKGROUND_VISIBLE);
         }
     }
     public final BooleanProperty backgroundVisibleProperty() {
         if (null == backgroundVisible) {
-            backgroundVisible = new SimpleBooleanProperty(this, "backgroundVisible", defaultBackgroundVisible);
+            backgroundVisible = new SimpleBooleanProperty(this, "backgroundVisible", _backgroundVisible);
         }
         return backgroundVisible;
     }
 
     public final boolean isHighlightsVisible() {
-        return null == highlightsVisible ? defaultHighlightsVisible : highlightsVisible.get();
+        return null == highlightsVisible ? _highlightsVisible : highlightsVisible.get();
     }
     public final void setHighlightsVisible(final boolean HIGHLIGHTS_VISIBLE) {
         if (null == highlightsVisible) {
-            defaultHighlightsVisible = HIGHLIGHTS_VISIBLE;
+            _highlightsVisible = HIGHLIGHTS_VISIBLE;
         } else {
             highlightsVisible.set(HIGHLIGHTS_VISIBLE);
         }
     }
     public final BooleanProperty highlightsVisibleProperty() {
         if (null == highlightsVisible) {
-            highlightsVisible = new SimpleBooleanProperty(this, "highlightsVisible", defaultHighlightsVisible);
+            highlightsVisible = new SimpleBooleanProperty(this, "highlightsVisible", _highlightsVisible);
         }
         return highlightsVisible;
     }
 
     public final boolean isGlowEnabled() {
-        return null == glowEnabled ? defaultGlowEnabled : glowEnabled.get();
+        return null == glowEnabled ? _glowEnabled : glowEnabled.get();
     }
     public final void setGlowEnabled(final boolean GLOW_ENABLED) {
         if (null == glowEnabled) {
-            defaultGlowEnabled = GLOW_ENABLED;
+            _glowEnabled = GLOW_ENABLED;
         } else {
             glowEnabled.set(GLOW_ENABLED);
         }
     }
     public final BooleanProperty glowEnabledProperty() {
         if (null == glowEnabled) {
-            glowEnabled = new SimpleBooleanProperty(this, "glowEnabled", defaultGlowEnabled);
+            glowEnabled = new SimpleBooleanProperty(this, "glowEnabled", _glowEnabled);
         }
         return glowEnabled;
     }

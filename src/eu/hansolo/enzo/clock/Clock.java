@@ -34,111 +34,111 @@ public class Clock extends Control {
         DB,
         BRAUN
     }
-    private boolean                defaultDiscreteSecond;
+    private boolean                _discreteSecond;
     private BooleanProperty        discreteSecond;
-    private boolean                defaultSecondPointerVisible;
+    private boolean                _secondPointerVisible;
     private BooleanProperty        secondPointerVisible;
-    private boolean                defaultNightMode;
+    private boolean                _nightMode;
     private BooleanProperty        nightMode;
-    private Design                 defaultDesign;
+    private Design                 _design;
     private ObjectProperty<Design> design;
-    private boolean                defaultHighlightVisible;
+    private boolean                _highlightVisible;
     private BooleanProperty        highlightVisible;
 
 
     // ******************** Constructors **************************************
     public Clock() {
         getStyleClass().add("clock");
-        defaultDiscreteSecond       = false;
-        defaultSecondPointerVisible = true;
-        defaultNightMode            = false;
-        defaultDesign               = Design.IOS6;
-        defaultHighlightVisible     = true;
+        _discreteSecond       = false;
+        _secondPointerVisible = true;
+        _nightMode            = false;
+        _design               = Design.IOS6;
+        _highlightVisible     = true;
     }
 
 
     // ******************** Methods *******************************************
     public final boolean isDiscreteSecond() {
-        return null == discreteSecond ? defaultDiscreteSecond : discreteSecond.get();
+        return null == discreteSecond ? _discreteSecond : discreteSecond.get();
     }
     public final void setDiscreteSecond(final boolean DISCRETE_SECOND) {
         if (null == discreteSecond) {
-            defaultDiscreteSecond = DISCRETE_SECOND;
+            _discreteSecond = DISCRETE_SECOND;
         } else {
             discreteSecond.set(DISCRETE_SECOND);
         }
     }
     public final BooleanProperty discreteSecondProperty() {
         if (null == discreteSecond) {
-            discreteSecond = new SimpleBooleanProperty(this, "discreteSecond", defaultDiscreteSecond);
+            discreteSecond = new SimpleBooleanProperty(this, "discreteSecond", _discreteSecond);
         }
         return discreteSecond;
     }
 
     public final boolean isSecondPointerVisible() {
-        return null == secondPointerVisible ? defaultSecondPointerVisible : secondPointerVisible.get();
+        return null == secondPointerVisible ? _secondPointerVisible : secondPointerVisible.get();
     }
     public final void setSecondPointerVisible(final boolean SECOND_POINTER_VISIBLE) {
         if (null == secondPointerVisible) {
-            defaultSecondPointerVisible = SECOND_POINTER_VISIBLE;
+            _secondPointerVisible = SECOND_POINTER_VISIBLE;
         } else {
             secondPointerVisible.set(SECOND_POINTER_VISIBLE);
         }
     }
     public final BooleanProperty secondPointerVisibleProperty() {
         if (null == secondPointerVisible) {
-            secondPointerVisible = new SimpleBooleanProperty(this, "secondPointerVisible", defaultSecondPointerVisible);
+            secondPointerVisible = new SimpleBooleanProperty(this, "secondPointerVisible", _secondPointerVisible);
         }
         return secondPointerVisible;
     }
 
     public final boolean isNightMode() {
-        return null == nightMode ? defaultNightMode : nightMode.get();
+        return null == nightMode ? _nightMode : nightMode.get();
     }
     public final void setNightMode(final boolean NIGHT_MODE) {
         if (null == nightMode) {
-            defaultNightMode = NIGHT_MODE;
+            _nightMode = NIGHT_MODE;
         } else {
             nightMode.set(NIGHT_MODE);
         }
     }
     public final BooleanProperty nightModeProperty() {
         if (null == nightMode) {
-            nightMode = new SimpleBooleanProperty(this, "nightMode", defaultNightMode);
+            nightMode = new SimpleBooleanProperty(this, "nightMode", _nightMode);
         }
         return nightMode;
     }
 
     public final Design getDesign() {
-        return null == design ? defaultDesign : design.get();
+        return null == design ? _design : design.get();
     }
     public final void setDesign(final Design DESIGN) {
         if (null == design) {
-            defaultDesign = DESIGN;
+            _design = DESIGN;
         } else {
             design.set(DESIGN);
         }
     }
     public final ObjectProperty<Design> designProperty() {
         if (null == design) {
-            design = new SimpleObjectProperty<>(this, "design", defaultDesign);
+            design = new SimpleObjectProperty<>(this, "design", _design);
         }
         return design;
     }
 
     public final boolean isHighlightVisible() {
-        return null == highlightVisible ? defaultHighlightVisible : highlightVisible.get();
+        return null == highlightVisible ? _highlightVisible : highlightVisible.get();
     }
     public final void setHighlightVisible(final boolean HIGHLIGHT_VISIBLE) {
         if (null == highlightVisible) {
-            defaultHighlightVisible = HIGHLIGHT_VISIBLE;
+            _highlightVisible = HIGHLIGHT_VISIBLE;
         } else {
             highlightVisible.set(HIGHLIGHT_VISIBLE);
         }
     }
     public final BooleanProperty highlightVisibleProperty() {
         if (null == highlightVisible) {
-            highlightVisible = new SimpleBooleanProperty(this, "highlightVisible", defaultHighlightVisible);
+            highlightVisible = new SimpleBooleanProperty(this, "highlightVisible", _highlightVisible);
         }
         return highlightVisible;
     }

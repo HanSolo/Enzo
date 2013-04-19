@@ -55,6 +55,9 @@ public class SplitFlap extends Control {
                                                  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
                                                  "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
                                                  "W", "X", "Y", "Z"};
+    public static final String[]   ALPHA      = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+                                                 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+                                                 "V", "W", "X", "Y", "Z"};
     public static final String[] EXTENDED     = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
                                                  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
                                                  "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
@@ -64,17 +67,17 @@ public class SplitFlap extends Control {
     private final FlipEvent              FLIP_FORWARD = new FlipEvent(this, null, FlipEvent.FLIP_FORWARD);
     private final FlipEvent              FIP_BACKWARD = new FlipEvent(this, null, FlipEvent.FLIP_BACKWARD);
     private boolean                      keepAspect;
-    private double                       defaultFlipTime = 500;
+    private double                       _flipTime    = 500;
     private DoubleProperty               flipTime;
-    private boolean                      defaultWordMode = false;
+    private boolean                      _wordMode    = false;
     private BooleanProperty              wordMode;
-    private boolean                      defaultDarkFixture = false;
+    private boolean                      _darkFixture = false;
     private BooleanProperty              darkFixture;
-    private boolean                      defaultSquareFlaps = false;
+    private boolean                      _squareFlaps = false;
     private BooleanProperty              squareFlaps;
-    private Color                        defaultTextColor = Color.WHITE;
+    private Color                        _textColor   = Color.WHITE;
     private ObjectProperty<Color>        textColor;
-    private String                       defaultText = "";
+    private String                       _text        = "";
     private StringProperty               text;
     private ArrayList<String>            selectedSet;
     private String[]                     selection;
@@ -95,7 +98,7 @@ public class SplitFlap extends Control {
         currentSelectionIndex  = 0;
         nextSelectionIndex     = 1;
         previousSelectionIndex = selection.length - 1;
-        defaultText            = TEXT;
+        _text                  = TEXT;
         selectedSet.addAll(Arrays.asList(selection));
     }
 
@@ -143,92 +146,92 @@ public class SplitFlap extends Control {
     }
 
     public final double getFlipTime() {
-        return null == flipTime ? defaultFlipTime : flipTime.get();
+        return null == flipTime ? _flipTime : flipTime.get();
     }
     public final void setFlipTime(final double FLIP_TIME) {
         if (null == flipTime) {
-            defaultFlipTime = FLIP_TIME;
+            _flipTime = FLIP_TIME;
         } else {
             flipTime.set(FLIP_TIME);
         }
     }
     public final DoubleProperty flipTimeProperty() {
         if (null == flipTime) {
-            flipTime = new SimpleDoubleProperty(this, "flipTime", defaultFlipTime);
+            flipTime = new SimpleDoubleProperty(this, "flipTime", _flipTime);
         }
         return flipTime;
     }
 
     public final boolean isWordMode() {
-        return null == wordMode ? defaultWordMode : wordMode.get();
+        return null == wordMode ? _wordMode : wordMode.get();
     }
     public final void setWordMode(final boolean WORD_MODE) {
         if (null == wordMode) {
-            defaultWordMode = WORD_MODE;
+            _wordMode = WORD_MODE;
         } else {
             wordMode.set(WORD_MODE);
         }
     }
     public final BooleanProperty wordModeProperty() {
         if (null == wordMode) {
-            wordMode = new SimpleBooleanProperty(this, "wordMode", defaultWordMode);
+            wordMode = new SimpleBooleanProperty(this, "wordMode", _wordMode);
         }
         return wordMode;
     }
 
     public final boolean isDarkFixture() {
-        return null == darkFixture ? defaultDarkFixture : darkFixture.get();
+        return null == darkFixture ? _darkFixture : darkFixture.get();
     }
     public final void setDarkFixture(final boolean DARK_FIXTURE) {
         if (null == darkFixture) {
-            defaultDarkFixture = DARK_FIXTURE;
+            _darkFixture = DARK_FIXTURE;
         } else {
             darkFixture.set(DARK_FIXTURE);
         }
     }
     public final BooleanProperty darkFixtureProperty() {
         if (null == darkFixture) {
-            darkFixture = new SimpleBooleanProperty(this, "darkFixture", defaultDarkFixture);
+            darkFixture = new SimpleBooleanProperty(this, "darkFixture", _darkFixture);
         }
         return darkFixture;
     }
 
     public final boolean isSquareFlaps() {
-        return null == squareFlaps ? defaultSquareFlaps : squareFlaps.get();
+        return null == squareFlaps ? _squareFlaps : squareFlaps.get();
     }
     public final void setSquareFlaps(final boolean SQUARE_FLAPS) {
         if (null == squareFlaps) {
-            defaultSquareFlaps = SQUARE_FLAPS;
+            _squareFlaps = SQUARE_FLAPS;
         } else {
             squareFlaps.set(SQUARE_FLAPS);
         }
     }
     public final BooleanProperty squareFlapsProperty() {
         if (null == squareFlaps) {
-            squareFlaps = new SimpleBooleanProperty(this, "squareFlaps", defaultSquareFlaps);
+            squareFlaps = new SimpleBooleanProperty(this, "squareFlaps", _squareFlaps);
         }
         return squareFlaps;
     }
 
     public final Color getTextColor() {
-        return null == textColor ? defaultTextColor : textColor.get();
+        return null == textColor ? _textColor : textColor.get();
     }
     public final void setTextColor(final Color TEXT_COLOR) {
         if (null == textColor) {
-            defaultTextColor = TEXT_COLOR;
+            _textColor = TEXT_COLOR;
         } else {
             textColor.set(TEXT_COLOR);
         }
     }
     public final ObjectProperty<Color> textColorProperty() {
         if (null == textColor) {
-            textColor = new SimpleObjectProperty<>(this, "textColor", defaultTextColor);
+            textColor = new SimpleObjectProperty<>(this, "textColor", _textColor);
         }
         return textColor;
     }
 
     public final String getText() {
-        return null == text ? defaultText : text.get();
+        return null == text ? _text : text.get();
     }
     public final void setText(final char CHAR) {
         setText(Character.toString(CHAR));
@@ -236,7 +239,7 @@ public class SplitFlap extends Control {
     public final void setText(final String TEXT) {
         if(!TEXT.isEmpty() && selectedSet.contains(TEXT)) {
             if (null == text) {
-                defaultText = TEXT;
+                _text = TEXT;
             } else {
                 text.set(TEXT);
             }
@@ -244,7 +247,7 @@ public class SplitFlap extends Control {
             nextSelectionIndex    = currentSelectionIndex + 1 > selectedSet.size() ? 0 : currentSelectionIndex + 1;
         } else {
             if (null == text) {
-                defaultText = selectedSet.get(0);
+                _text = selectedSet.get(0);
             } else {
                 text.set(selectedSet.get(0));
             }
@@ -254,7 +257,7 @@ public class SplitFlap extends Control {
     }
     public final StringProperty textProperty() {
         if (null == text) {
-            text = new SimpleStringProperty(this, "text", defaultText);
+            text = new SimpleStringProperty(this, "text", _text);
         }
         return text;
     }
@@ -306,4 +309,3 @@ public class SplitFlap extends Control {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
     }
 }
-
