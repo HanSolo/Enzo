@@ -367,7 +367,8 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         timeline.stop();
         flap.setCacheShape(true);
         flap.setCache(true);
-        flap.setCacheHint(CacheHint.SPEED);
+        flap.setCacheHint(CacheHint.ROTATE);
+        //flap.setCacheHint(CacheHint.SPEED);
         currentSelectionIndex++;
         if (currentSelectionIndex >= selectedSet.size()) {
             currentSelectionIndex = 0;
@@ -438,6 +439,7 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         ctxTextBack.save();
         ctxTextBack.scale(1,-1);
         //ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.45);
+        //ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.5);
         ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.5);
         ctxTextBack.restore();
     }
@@ -514,8 +516,7 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
             upperBackgroundText.setHeight(flapHeight);
             lowerBackgroundText.setWidth(width);
             lowerBackgroundText.setHeight(flapHeight);
-            //lowerBackgroundText.setTranslateY(0.5079365079365079 * height);
-            lowerBackgroundText.setTranslateY(0.5 * height);
+            lowerBackgroundText.setTranslateY(0.5079365079365079 * height);
 
             flap.setPrefSize(width, flapHeight);
             rotateFlap.setPivotY(height * 0.5);
