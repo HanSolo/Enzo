@@ -60,13 +60,13 @@ import java.util.Random;
 
 
 public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
-    private static final double        DEFAULT_WIDTH     = 132;
-    private static final double        DEFAULT_HEIGHT    = 48;
+    private static final double        PREFERRED_WIDTH = 132;
+    private static final double        PREFERRED_HEIGHT = 48;
     private static final double        MINIMUM_WIDTH     = 5;
     private static final double        MINIMUM_HEIGHT    = 5;
     private static final double        MAXIMUM_WIDTH     = 1024;
     private static final double        MAXIMUM_HEIGHT    = 1024;
-    private static double              aspectRatio       = DEFAULT_HEIGHT / DEFAULT_WIDTH;
+    private static double              aspectRatio       = PREFERRED_HEIGHT / PREFERRED_WIDTH;
     private static Text                oneSegment        = new Text("8");
     private static final DecimalFormat DEC_FORMAT        = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US));
     private static final boolean       SCIFI_FORMAT      = false;
@@ -142,7 +142,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
                 getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                getSkinnable().setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                getSkinnable().setPrefSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
             }
         }
 
@@ -154,7 +154,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             getSkinnable().setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
         }
 
-        if (getSkinnable().getPrefWidth() != DEFAULT_WIDTH || getSkinnable().getPrefHeight() != DEFAULT_HEIGHT) {
+        if (getSkinnable().getPrefWidth() != PREFERRED_WIDTH || getSkinnable().getPrefHeight() != PREFERRED_HEIGHT) {
             aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         }
     }
@@ -171,14 +171,14 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         lcdMainInnerShadow0 = InnerShadowBuilder.create()
                                                 .offsetX(0.0)
                                                 .offsetY(0.0)
-                                                .radius(3.0 / 132.0 * DEFAULT_WIDTH)
+                                                .radius(3.0 / 132.0 * PREFERRED_WIDTH)
                                                 .color(Color.web("0xffffff80"))
                                                 .blurType(BlurType.GAUSSIAN)
                                                 .build();
         lcdMainInnerShadow1 = InnerShadowBuilder.create()
                                                 .offsetX(0.0)
                                                 .offsetY(1.0)
-                                                .radius(2.0 / 132.0 * DEFAULT_WIDTH)
+                                                .radius(2.0 / 132.0 * PREFERRED_WIDTH)
                                                 .color(Color.web("0x000000a6"))
                                                 .blurType(BlurType.GAUSSIAN)
                                                 .input(lcdMainInnerShadow0)
@@ -383,34 +383,34 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             lcdAlarm.setVisible(getSkinnable().isAlarmVisible());
         }
     }
-    
-    @Override protected double computePrefWidth(final double PREF_HEIGHT) {
-        double prefHeight = DEFAULT_HEIGHT;
-        if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
-        }
-        return super.computePrefWidth(prefHeight);
+
+    @Override protected double computeMinWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computePrefHeight(final double PREF_WIDTH) {
-        double prefWidth = DEFAULT_WIDTH;
-        if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
-        }
-        return super.computePrefWidth(prefWidth);
+    @Override protected double computeMinHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computeMaxWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computeMaxHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computePrefWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefHeight = PREFERRED_HEIGHT;
+        if (HEIGHT != -1) {
+            prefHeight = Math.max(0, HEIGHT - TOP_INSET - BOTTOM_INSET);
+        }
+        return super.computePrefWidth(prefHeight, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computePrefHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefWidth = PREFERRED_WIDTH;
+        if (WIDTH != -1) {
+            prefWidth = Math.max(0, WIDTH - LEFT_INSET - RIGHT_INSET);
+        }
+        return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
 
@@ -444,8 +444,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     }
 
     private Image createNoiseImage(final double WIDTH, final double HEIGHT, final Color DARK_COLOR, final Color BRIGHT_COLOR, final double ALPHA_VARIATION_IN_PERCENT) {
-        int width  = WIDTH <= 0 ? (int) DEFAULT_WIDTH : (int) WIDTH;
-        int height = HEIGHT <= 0 ? (int) DEFAULT_HEIGHT : (int) HEIGHT;
+        int width  = WIDTH <= 0 ? (int) PREFERRED_WIDTH : (int) WIDTH;
+        int height = HEIGHT <= 0 ? (int) PREFERRED_HEIGHT : (int) HEIGHT;
         double alphaVariationInPercent      = getSkinnable().clamp(0, 100, ALPHA_VARIATION_IN_PERCENT);
         final WritableImage IMAGE           = new WritableImage(width, height);
         final PixelWriter   PIXEL_WRITER    = IMAGE.getPixelWriter();
@@ -690,10 +690,10 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             lcdMainInnerShadow1.setRadius(2.0 / 132.0 * height);
 
             if (width > 0 && height > 0 && lcdCrystalOverlay.isVisible()) {
-                lcdMainClip.setScaleX(width / (DEFAULT_WIDTH - 2.0));
-                lcdMainClip.setScaleY(height / (DEFAULT_HEIGHT - 2.0));
-                lcdMainClip.setTranslateX((width - DEFAULT_WIDTH - 2) * 0.5);
-                lcdMainClip.setTranslateY((height - DEFAULT_HEIGHT - 2) * 0.5);
+                lcdMainClip.setScaleX(width / (PREFERRED_WIDTH - 2.0));
+                lcdMainClip.setScaleY(height / (PREFERRED_HEIGHT - 2.0));
+                lcdMainClip.setTranslateX((width - PREFERRED_WIDTH - 2) * 0.5);
+                lcdMainClip.setTranslateY((height - PREFERRED_HEIGHT - 2) * 0.5);
                 lcdCrystalOverlay.setImage(createNoiseImage(width, height, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8));
                 lcdCrystalOverlay.setCache(true);
             }

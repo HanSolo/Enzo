@@ -70,12 +70,12 @@ import java.util.ArrayList;
 
 
 public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap> {
-    private static final double DEFAULT_WIDTH  = 112;
-    private static final double DEFAULT_HEIGHT = 189;
-    private static final double MINIMUM_WIDTH  = 5;
-    private static final double MINIMUM_HEIGHT = 5;
-    private static final double MAXIMUM_WIDTH  = 1024;
-    private static final double MAXIMUM_HEIGHT = 1024;
+    private static final double PREFERRED_WIDTH  = 112;
+    private static final double PREFERRED_HEIGHT = 189;
+    private static final double MINIMUM_WIDTH    = 5;
+    private static final double MINIMUM_HEIGHT   = 5;
+    private static final double MAXIMUM_WIDTH    = 1024;
+    private static final double MAXIMUM_HEIGHT   = 1024;
     private static double       aspectRatio;
     private final FlipEvent     FLIP_FINISHED;
     private ArrayList<String>   selectedSet;
@@ -118,10 +118,10 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         selectedSet           = getSkinnable().getSelectedSet();
         currentSelectionIndex = getSkinnable().getSelectedSet().indexOf(getSkinnable().getText());
         nextSelectionIndex    = currentSelectionIndex + 1 > getSkinnable().getSelectedSet().size() ? 0 : currentSelectionIndex + 1;
-        aspectRatio           = DEFAULT_HEIGHT / DEFAULT_WIDTH;
+        aspectRatio           = PREFERRED_HEIGHT / PREFERRED_WIDTH;
         pane                  = new Pane();
         rotateFlap            = RotateBuilder.create().axis(Rotate.X_AXIS).angle(0).build();
-        flapHeight            = 0.49206349206349204 * DEFAULT_HEIGHT;
+        flapHeight            = 0.49206349206349204 * PREFERRED_HEIGHT;
         timeline              = new Timeline();
         init();
         initGraphics();
@@ -136,7 +136,7 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
             if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
                 getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                getSkinnable().setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                getSkinnable().setPrefSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
             }
         }
 
@@ -148,7 +148,7 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
             getSkinnable().setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
         }
 
-        if (getSkinnable().getPrefWidth() != DEFAULT_WIDTH || getSkinnable().getPrefHeight() != DEFAULT_HEIGHT) {
+        if (getSkinnable().getPrefWidth() != PREFERRED_WIDTH || getSkinnable().getPrefHeight() != PREFERRED_HEIGHT) {
             aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         }
 
@@ -194,9 +194,9 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
         upperBackground.setEffect(innerHighlight);
 
-        //font = Font.font("Bebas Neue", DEFAULT_HEIGHT);
-        //font = Font.loadFont(getClass().getResourceAsStream("/resources/bebasneue.otf"), DEFAULT_HEIGHT);
-        font = Font.loadFont(getClass().getResourceAsStream("/resources/droidsansmono.ttf"), DEFAULT_HEIGHT);
+        //font = Font.font("Bebas Neue", PREFERRED_HEIGHT);
+        //font = Font.loadFont(getClass().getResourceAsStream("/resources/bebasneue.otf"), PREFERRED_HEIGHT);
+        font = Font.loadFont(getClass().getResourceAsStream("/resources/droidsansmono.ttf"), PREFERRED_HEIGHT);
 
         upperTextFill = new LinearGradient(0, 0,
                                            0, flapHeight,
@@ -213,8 +213,8 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-square" : "lower");
         lowerBackground.setEffect(innerHighlight);
 
-        lowerTextFill = new LinearGradient(0, 0.5079365079365079 * DEFAULT_HEIGHT,
-                                           0, 0.5079365079365079 * DEFAULT_HEIGHT + flapHeight,
+        lowerTextFill = new LinearGradient(0, 0.5079365079365079 * PREFERRED_HEIGHT,
+                                           0, 0.5079365079365079 * PREFERRED_HEIGHT + flapHeight,
                                            false, CycleMethod.NO_CYCLE,
                                            new Stop(0.0, getSkinnable().getTextColor().darker()),
                                            new Stop(1.0, getSkinnable().getTextColor()));
@@ -334,33 +334,33 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         }
     }
 
-    @Override protected double computePrefWidth(final double PREF_HEIGHT) {
-        double prefHeight = DEFAULT_HEIGHT;
-        if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
-        }
-        return super.computePrefWidth(prefHeight);
+    @Override protected double computeMinWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computePrefHeight(final double PREF_WIDTH) {
-        double prefWidth = DEFAULT_WIDTH;
-        if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
-        }
-        return super.computePrefWidth(prefWidth);
+    @Override protected double computeMinHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computeMaxWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computeMaxHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computePrefWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefHeight = PREFERRED_HEIGHT;
+        if (HEIGHT != -1) {
+            prefHeight = Math.max(0, HEIGHT - TOP_INSET - BOTTOM_INSET);
+        }
+        return super.computePrefWidth(prefHeight, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computePrefHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefWidth = PREFERRED_WIDTH;
+        if (WIDTH != -1) {
+            prefWidth = Math.max(0, WIDTH - LEFT_INSET - RIGHT_INSET);
+        }
+        return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
     public void flipForward() {

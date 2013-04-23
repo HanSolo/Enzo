@@ -29,16 +29,11 @@
 package eu.hansolo.enzo.gauge.skin;
 
 import eu.hansolo.enzo.gauge.Gauge;
-import eu.hansolo.enzo.gauge.GaugeModel;
 import eu.hansolo.enzo.tools.ShapeConverter;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
@@ -64,25 +59,24 @@ import javafx.util.Duration;
  * Time: 17:18
  */
 public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
-    private static final double                      DEFAULT_WIDTH  = 200;
-    private static final double                      DEFAULT_HEIGHT = 200;
-    private static final double                      MINIMUM_WIDTH  = 50;
-    private static final double                      MINIMUM_HEIGHT = 50;
-    private static final double                      MAXIMUM_WIDTH  = 1024;
-    private static final double                      MAXIMUM_HEIGHT = 1024;
-    private double                                   size;
-    private Pane                                     pane;
-    private Region                                   background;
-    private Region                                   ticks;
-    private Region                                   needle;
-    private Region                                   needleHighlight;
-    private Rotate                                   needleRotate;
-    private double                                   angleStep;
-    private Region                                   knob;
-    private Text                                     title;
-    private Text                                     unit;
-    private Timeline                                 timeline;
-    private EventHandler<GaugeModel.GaugeModelEvent> gaugeModelHandler;
+    private static final double PREFERRED_WIDTH  = 200;
+    private static final double PREFERRED_HEIGHT = 200;
+    private static final double MINIMUM_WIDTH    = 50;
+    private static final double MINIMUM_HEIGHT   = 50;
+    private static final double MAXIMUM_WIDTH    = 1024;
+    private static final double MAXIMUM_HEIGHT   = 1024;
+    private double              size;
+    private Pane                pane;
+    private Region              background;
+    private Region              ticks;
+    private Region              needle;
+    private Region              needleHighlight;
+    private Rotate              needleRotate;
+    private double              angleStep;
+    private Region              knob;
+    private Text                title;
+    private Text                unit;
+    private Timeline            timeline;
 
 
     // ******************** Constructors **************************************
@@ -92,7 +86,6 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         angleStep = 0;
         timeline  = new Timeline();
         init();
-        initGaugeModelHandler();
         initGraphics();
         registerListeners();
     }
@@ -105,7 +98,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
                 getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                getSkinnable().setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                getSkinnable().setPrefSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
             }
         }
 
@@ -118,47 +111,6 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         }
     }
 
-    private void initGaugeModelHandler() {
-        gaugeModelHandler = new EventHandler<GaugeModel.GaugeModelEvent>() {
-            @Override public void handle(final GaugeModel.GaugeModelEvent EVENT) {
-                final EventType TYPE = EVENT.getEventType();
-                if (GaugeModel.GaugeModelEvent.VALUE_CHANGED == TYPE) {
-                    rotateNeedle();
-                } else if (GaugeModel.GaugeModelEvent.MIN_VALUE_CHANGED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.MAX_VALUE_CHANGED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.THRESHOLD_CHANGED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.THRESHOLD_EXCEEDED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.THRESHOLD_UNDERRUN == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.MIN_MEASURED_VALUE_CHANGE == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.MAX_MEASURED_VALUE_CHANGED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.NO_OF_DECIMALS_CHANGED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.TITLE_CHANGED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.UNIT_CHANGED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.ALWAYS_ROUND_CHANGED == TYPE) {
-                    changeBackgroundShape();
-                } else if (GaugeModel.GaugeModelEvent.START_ANGLE_CHANGED == TYPE) {
-                    changeBackgroundShape();
-                } else if (GaugeModel.GaugeModelEvent.ANGLE_RANGE_CHANGED == TYPE) {
-                    changeBackgroundShape();
-                } else if (GaugeModel.GaugeModelEvent.ANIMATED == TYPE) {
-
-                } else if (GaugeModel.GaugeModelEvent.NEEDLE_TYPE_CHANGED == TYPE) {
-                    changeNeedle();
-                }
-            }
-        };
-    }
-
     private void initGraphics() {
         background = new Region();
         background.getStyleClass().setAll("background");
@@ -167,7 +119,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         needle = new Region();
         needle.getStyleClass().setAll(Gauge.STYLE_CLASS_NEEDLE_STANDARD);
-        needleRotate = new Rotate(-getSkinnable().getGaugeModel().getStartAngle());
+        needleRotate = new Rotate(-getSkinnable().getStartAngle());
         needle.getTransforms().setAll(needleRotate);
 
         needleHighlight = new Region();
@@ -185,10 +137,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                                                .offsetY(3)
                                                .build());
 
-        title = new Text(getSkinnable().getGaugeModel().getTitle());
+        title = new Text(getSkinnable().getTitle());
         title.getStyleClass().setAll("title");
 
-        unit = new Text(getSkinnable().getGaugeModel().getUnit());
+        unit = new Text(getSkinnable().getUnit());
         unit.getStyleClass().setAll("unit");
 
         // Add all nodes
@@ -200,12 +152,17 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private void registerListeners() {
         getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
         getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().getGaugeModel().setOnGaugeModelChanged(gaugeModelHandler);
-        getSkinnable().gaugeModelProperty().addListener(new InvalidationListener() {
-            @Override public void invalidated(Observable observable) {
-                registerListeners();
-            }
-        });
+        getSkinnable().valueProperty().addListener(observable -> { handleControlPropertyChanged("VALUE"); });
+        getSkinnable().minValueProperty().addListener(observable -> { handleControlPropertyChanged("MIN_VALUE"); });
+        getSkinnable().maxValueProperty().addListener(observable -> { handleControlPropertyChanged("MAX_VALUE"); });
+        getSkinnable().minMeasuredValueProperty().addListener(observable -> { handleControlPropertyChanged("MIN_MEASURED_VALUE"); });
+        getSkinnable().maxMeasuredValueProperty().addListener(observable -> { handleControlPropertyChanged("MAX_MEASURED_VALUE"); });
+        getSkinnable().tickLabelOrientationProperty().addListener(observable -> { handleControlPropertyChanged("TICK_LABEL_ORIENTATION"); });
+        getSkinnable().needleTypeProperty().addListener(observable -> { handleControlPropertyChanged("NEEDLE_TYPE"); });
+        getSkinnable().needleColorProperty().addListener(observable -> { handleControlPropertyChanged("NEEDLE_COLOR"); });
+        getSkinnable().animatedProperty().addListener(observable -> { handleControlPropertyChanged("ANIMATED"); });
+        getSkinnable().angleRangeProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE_RANGE"); });
+        getSkinnable().numberFormatProperty().addListener(observable -> { handleControlPropertyChanged("NUMBER_FORMAT"); });
     }
 
 
@@ -216,45 +173,45 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         }
     }
 
-    @Override protected double computePrefWidth(final double PREF_HEIGHT) {
-        double prefHeight = DEFAULT_HEIGHT;
-        if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
-        }
-        return super.computePrefWidth(prefHeight);
+    @Override protected double computeMinWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computePrefHeight(final double PREF_WIDTH) {
-        double prefWidth = DEFAULT_WIDTH;
-        if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
-        }
-        return super.computePrefWidth(prefWidth);
+    @Override protected double computeMinHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computeMaxWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computeMaxHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computePrefWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefHeight = PREFERRED_HEIGHT;
+        if (HEIGHT != -1) {
+            prefHeight = Math.max(0, HEIGHT - TOP_INSET - BOTTOM_INSET);
+        }
+        return super.computePrefWidth(prefHeight, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computePrefHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefWidth = PREFERRED_WIDTH;
+        if (WIDTH != -1) {
+            prefWidth = Math.max(0, WIDTH - LEFT_INSET - RIGHT_INSET);
+        }
+        return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
 
     // ******************** Private Methods ***********************************
     private void rotateNeedle() {
-        double range          = (getSkinnable().getGaugeModel().getMaxValue() - getSkinnable().getGaugeModel().getMinValue());
-        double angleRange     = getSkinnable().getGaugeModel().getAngleRange();
-        double rotationOffset = getSkinnable().getGaugeModel().getStartAngle();
+        double range          = (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+        double angleRange     = getSkinnable().getAngleRange();
+        double rotationOffset = getSkinnable().getStartAngle();
         angleStep             = angleRange / range;
-        double targetAngle    = getSkinnable().getGaugeModel().getValue() * angleStep - rotationOffset;
+        double targetAngle    = getSkinnable().getValue() * angleStep - rotationOffset;
 
-        if (getSkinnable().getGaugeModel().isAnimated()) {
+        if (getSkinnable().isAnimated()) {
             timeline.stop();
             final KeyValue KEY_VALUE = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
             final KeyFrame KEY_FRAME = new KeyFrame(Duration.millis(800), KEY_VALUE);
@@ -267,14 +224,14 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private void changeNeedle() {
-        switch(getSkinnable().getGaugeModel().getNeedleType()) {
+        switch(getSkinnable().getNeedleType()) {
             default:
                 needle.getStyleClass().setAll(Gauge.STYLE_CLASS_NEEDLE_STANDARD);
         }
     }
 
     private void changeBackgroundShape() {
-        if (getSkinnable().getGaugeModel().isAlwaysRound()) {
+        if (getSkinnable().isAlwaysRound()) {
             getSkinnable().setStyle("-shape: \"M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z\";");
         } else {
             final Arc ARC = new Arc();
@@ -282,8 +239,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             ARC.setCenterY(size * 0.5);
             ARC.setRadiusX(size * 0.5);
             ARC.setRadiusY(size * 0.5);
-            ARC.setStartAngle(getSkinnable().getGaugeModel().getStartAngle());
-            ARC.setLength(getSkinnable().getGaugeModel().getAngleRange());
+            ARC.setStartAngle(getSkinnable().getStartAngle());
+            ARC.setLength(getSkinnable().getAngleRange());
             ARC.setType(ArcType.ROUND);
             getSkinnable().setStyle("-shape: \"" + ShapeConverter.convertArc(ARC) + "\";");
         }
@@ -292,10 +249,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
-        double emptySegmentHeight = size * (1.0 - Math.cos(Math.toRadians((360 - getSkinnable().getGaugeModel().getAngleRange()) * 0.5)));
+        double emptySegmentHeight = size * (1.0 - Math.cos(Math.toRadians((360 - getSkinnable().getAngleRange()) * 0.5)));
         background.setPrefSize(size, size);
 
-        switch (getSkinnable().getGaugeModel().getNeedleType()) {
+        switch (getSkinnable().getNeedleType()) {
             default:
                 needle.setPrefSize(size * 0.04, size * 0.45);
         }

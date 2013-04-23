@@ -51,13 +51,13 @@ import java.util.Calendar;
 
 
 public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
-    private static final double   DEFAULT_WIDTH  = 200;
-    private static final double   DEFAULT_HEIGHT = 200;
-    private static final double   MINIMUM_WIDTH  = 50;
-    private static final double   MINIMUM_HEIGHT = 50;
-    private static final double   MAXIMUM_WIDTH  = 1024;
-    private static final double   MAXIMUM_HEIGHT = 1024;
-    private static final double   ASPECT_RATIO   = 1.0;
+    private static final double   PREFERRED_WIDTH  = 200;
+    private static final double   PREFERRED_HEIGHT = 200;
+    private static final double   MINIMUM_WIDTH    = 50;
+    private static final double   MINIMUM_HEIGHT   = 50;
+    private static final double   MAXIMUM_WIDTH    = 1024;
+    private static final double   MAXIMUM_HEIGHT   = 1024;
+    private static final double   ASPECT_RATIO     = 1.0;
     private double                size;
     private double                width;
     private double                height;
@@ -150,7 +150,7 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
             if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
                 getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                getSkinnable().setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                getSkinnable().setPrefSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
             }
         }
 
@@ -164,14 +164,14 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
     }
 
     private void initGraphics() {
-        startX     = DEFAULT_WIDTH * 0.114;
-        startY     = DEFAULT_WIDTH * 0.112;
-        stepX      = DEFAULT_WIDTH * 0.072;
-        stepY      = DEFAULT_WIDTH * 0.08;
-        font       = Font.loadFont(getClass().getResourceAsStream("/resources/din.otf"), DEFAULT_WIDTH * 0.048);
+        startX     = PREFERRED_WIDTH * 0.114;
+        startY     = PREFERRED_WIDTH * 0.112;
+        stepX      = PREFERRED_WIDTH * 0.072;
+        stepY      = PREFERRED_WIDTH * 0.08;
+        font       = Font.loadFont(getClass().getResourceAsStream("/resources/din.otf"), PREFERRED_WIDTH * 0.048);
         background = RegionBuilder.create().styleClass("background", getSkinnable().getColor().STYLE_CLASS).build();
 
-        stainlessBackground.setImage(texture.getImage(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        stainlessBackground.setImage(texture.getImage(PREFERRED_WIDTH, PREFERRED_HEIGHT));
         stainlessBackground.setVisible(getSkinnable().getColor() == QlockTwo.QlockColor.STAINLESS_STEEL);
 
         p1 = RegionBuilder.create().styleClass("dot-off").build();
@@ -186,8 +186,8 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
             for (int x = 0 ; x < 11 ; x++) {
                 matrix[x][y] = LabelBuilder.create()
                                           .alignment(Pos.CENTER)
-                                          .prefWidth(DEFAULT_WIDTH * 0.048)
-                                          .prefHeight(DEFAULT_HEIGHT * 0.048)
+                                          .prefWidth(PREFERRED_WIDTH * 0.048)
+                                          .prefHeight(PREFERRED_HEIGHT * 0.048)
                                           .text(getSkinnable().getQlock().getMatrix()[y][x])
                                           .font(font)
                                           .styleClass("text-off")
@@ -256,33 +256,33 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
         }
     }
 
-    @Override protected double computePrefWidth(final double PREF_HEIGHT) {
-        double prefHeight = DEFAULT_HEIGHT;
-        if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
-        }
-        return super.computePrefWidth(prefHeight);
+    @Override protected double computeMinWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computePrefHeight(final double PREF_WIDTH) {
-        double prefWidth = DEFAULT_WIDTH;
-        if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
-        }
-        return super.computePrefWidth(prefWidth);
+    @Override protected double computeMinHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computeMaxWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computeMaxHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computePrefWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefHeight = PREFERRED_HEIGHT;
+        if (HEIGHT != -1) {
+            prefHeight = Math.max(0, HEIGHT - TOP_INSET - BOTTOM_INSET);
+        }
+        return super.computePrefWidth(prefHeight, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computePrefHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefWidth = PREFERRED_WIDTH;
+        if (WIDTH != -1) {
+            prefWidth = Math.max(0, WIDTH - LEFT_INSET - RIGHT_INSET);
+        }
+        return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
 

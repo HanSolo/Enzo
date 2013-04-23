@@ -48,13 +48,13 @@ import javafx.stage.Stage;
 
 public class Demo extends Application {
     private static int noOfNodes = 0;
-    private Gauge      control;
+    private Radial     control;
 
     @Override public void init() {
-        control = GaugeBuilder.create()
-                               .needleType(Gauge.NeedleType.STANDARD)
+        control = RadialBuilder.create()
+                               .needleType(Radial.NeedleType.STANDARD)
                                .title("Title")
-                               .unit("Unit")
+                               //.unit("Unit")
                                .animated(true)
                                .build();
     }
@@ -75,9 +75,9 @@ public class Demo extends Application {
         //control.setStyle("-base: darkgray;");
         //control.setStyle("-needle: blue;");
         //control.setStyle("-background: red;");
-        //control.getGaugeModel().setValue(45);
-        control.getGaugeModel().setStartAngle(300);
-        control.getGaugeModel().setAngleRange(300);
+        //control.setValue(45);
+        //control.setStartAngle(300);
+        control.setAngleRange(300);
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes + " Nodes in SceneGraph");
 

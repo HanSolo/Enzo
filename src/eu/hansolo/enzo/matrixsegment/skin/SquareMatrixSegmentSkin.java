@@ -51,24 +51,24 @@ import static eu.hansolo.enzo.matrixsegment.SquareMatrixSegment.Dot;
 
 
 public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> implements Skin<SquareMatrixSegment> {
-    private static final double DEFAULT_WIDTH  = 100;
-    private static final double DEFAULT_HEIGHT = 100;
-    private static final double MINIMUM_WIDTH  = 5;
-    private static final double MINIMUM_HEIGHT = 5;
-    private static final double MAXIMUM_WIDTH  = 1024;
-    private static final double MAXIMUM_HEIGHT = 1024;
-    private static double aspectRatio;
+    private static final double                  PREFERRED_WIDTH = 100;
+    private static final double                  PREFERRED_HEIGHT = 100;
+    private static final double                  MINIMUM_WIDTH  = 5;
+    private static final double                  MINIMUM_HEIGHT = 5;
+    private static final double                  MAXIMUM_WIDTH  = 1024;
+    private static final double                  MAXIMUM_HEIGHT = 1024;
+    private static double                        aspectRatio;
     private Map<SquareMatrixSegment.Dot, Region> dotMap;
-    private List<Region>  highlights;
-    private double        size;
-    private double        width;
-    private double        height;
-    private Pane          pane;
-    private Region        background;
-    private InnerShadow   backgroundInnerShadow;
-    private InnerShadow   backgroundInnerHighlight;
-    private InnerShadow   dotInnerShadow;
-    private DropShadow    glow;
+    private List<Region>                         highlights;
+    private double                               size;
+    private double                               width;
+    private double                               height;
+    private Pane                                 pane;
+    private Region                               background;
+    private InnerShadow                          backgroundInnerShadow;
+    private InnerShadow                          backgroundInnerHighlight;
+    private InnerShadow                          dotInnerShadow;
+    private DropShadow                           glow;
     private Region        d67;
     private Region        d57;
     private Region        d47;
@@ -189,7 +189,7 @@ public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> imple
             if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
                 getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
-                getSkinnable().setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                getSkinnable().setPrefSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
             }
         }
 
@@ -201,7 +201,7 @@ public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> imple
             getSkinnable().setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
         }
 
-        if (getSkinnable().getPrefWidth() != DEFAULT_WIDTH || getSkinnable().getPrefHeight() != DEFAULT_HEIGHT) {
+        if (getSkinnable().getPrefWidth() != PREFERRED_WIDTH || getSkinnable().getPrefHeight() != PREFERRED_HEIGHT) {
             aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         }
     }
@@ -214,13 +214,13 @@ public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> imple
 
         backgroundInnerShadow = InnerShadowBuilder.create()
                                                   .offsetY(-1.0)
-                                                  .radius(1.0 / 434.0 * DEFAULT_WIDTH)
+                                                  .radius(1.0 / 434.0 * PREFERRED_WIDTH)
                                                   .color(Color.rgb(0, 0, 0, 0.65))
                                                   .blurType(BlurType.TWO_PASS_BOX)
                                                   .build();
         backgroundInnerHighlight = InnerShadowBuilder.create()
                                                      .offsetY(1.0)
-                                                     .radius(1.0 / 434.0 * DEFAULT_WIDTH)
+                                                     .radius(1.0 / 434.0 * PREFERRED_WIDTH)
                                                      .color(Color.rgb(200, 200, 200, 0.65))
                                                      .blurType(BlurType.TWO_PASS_BOX)
                                                      .input(backgroundInnerShadow)
@@ -228,14 +228,14 @@ public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> imple
         background.setEffect(backgroundInnerHighlight);
 
         dotInnerShadow = InnerShadowBuilder.create()
-                                           .radius(0.018 * DEFAULT_WIDTH)
+                                           .radius(0.018 * PREFERRED_WIDTH)
                                            .color(Color.rgb(0, 0, 0, 0.65))
                                            .blurType(BlurType.TWO_PASS_BOX)
                                            .build();
 
         glow = DropShadowBuilder.create()
                                 .input(dotInnerShadow)
-                                .radius(0.023 * DEFAULT_WIDTH)
+                                .radius(0.023 * PREFERRED_WIDTH)
                                 .color(getSkinnable().getColor())
                                 .blurType(BlurType.TWO_PASS_BOX)
                                 .build();
@@ -602,33 +602,33 @@ public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> imple
         }
     }
 
-    @Override protected double computePrefWidth(final double PREF_HEIGHT) {
-        double prefHeight = DEFAULT_HEIGHT;
-        if (PREF_HEIGHT != -1) {
-            prefHeight = Math.max(0, PREF_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom());
-        }
-        return super.computePrefWidth(prefHeight);
+    @Override protected double computeMinWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computePrefHeight(final double PREF_WIDTH) {
-        double prefWidth = DEFAULT_WIDTH;
-        if (PREF_WIDTH != -1) {
-            prefWidth = Math.max(0, PREF_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight());
-        }
-        return super.computePrefWidth(prefWidth);
+    @Override protected double computeMinHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMinWidth(final double MIN_HEIGHT) {
-        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computeMaxWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMinHeight(final double MIN_WIDTH) {
-        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computeMaxHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, WIDTH - LEFT_INSET - RIGHT_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
-        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getSkinnable().getInsets().getTop() - getSkinnable().getInsets().getBottom()));
+    @Override protected double computePrefWidth(final double HEIGHT, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefHeight = PREFERRED_HEIGHT;
+        if (HEIGHT != -1) {
+            prefHeight = Math.max(0, HEIGHT - TOP_INSET - BOTTOM_INSET);
+        }
+        return super.computePrefWidth(prefHeight, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
-    @Override protected double computeMaxHeight(final double MAX_WIDTH) {
-        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getSkinnable().getInsets().getLeft() - getSkinnable().getInsets().getRight()));
+    @Override protected double computePrefHeight(final double WIDTH, int TOP_INSET, int RIGHT_INSET, int BOTTOM_INSET, int LEFT_INSET) {
+        double prefWidth = PREFERRED_WIDTH;
+        if (WIDTH != -1) {
+            prefWidth = Math.max(0, WIDTH - LEFT_INSET - RIGHT_INSET);
+        }
+        return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
 
