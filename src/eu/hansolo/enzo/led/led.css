@@ -106,8 +106,7 @@
     -fx-shape           : "M 14.0 50.0 C 14.0 30.0 30.0 14.0 50.0 14.0 C 70.0 14.0 86.0 30.0 86.0 50.0 C 86.0 70.0 70.0 86.0 50.0 86.0 C 30.0 86.0 14.0 70.0 14.0 50.0 Z";
 }
 .led .highlight-round {
-    -fx-background-color: radial-gradient(focus-angle 0deg, focus-distance 0%,
-                                          center 15% 15%, radius 50%,
+    -fx-background-color: radial-gradient(center 15% 15%, radius 50%,
                                           rgba(200, 194, 208, 0.8) 0%,
                                           transparent 100%);
     -fx-scale-shape     : true;

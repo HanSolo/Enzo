@@ -71,7 +71,7 @@ public class Demo1 extends Application {
         StackPane pane = new StackPane();
         pane.getChildren().add(led);
 
-        Scene scene = new Scene(pane);
+        Scene scene = new Scene(pane, 128, 128);
 
         stage.setScene(scene);
         stage.show();

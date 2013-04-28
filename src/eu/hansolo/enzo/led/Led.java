@@ -52,6 +52,7 @@ public class Led extends Control {
         VERTICAL,
         HORIZONTAL
     }
+
     private static final String STYLE_CLASS_ROUND  = "led-round";
     private static final String STYLE_CLASS_SQUARE = "led-square";
     private static final String STYLE_CLASS_VER    = "led-ver";

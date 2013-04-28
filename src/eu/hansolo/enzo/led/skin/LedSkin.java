@@ -228,7 +228,6 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
 
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
-
         if (size > 0) {
             innerShadow.setRadius(0.07 * size);
             glow.setRadius(0.36 * size);
