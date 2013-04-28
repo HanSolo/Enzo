@@ -49,9 +49,11 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = SplitFlapBuilder.create()
-                                  .flipTime(100)
-                                  .textColor(Color.YELLOW)
-                                  .darkFixture(true)
+                                  .flipTime(1000)
+                                  //.flapColor(Color.rgb(0, 0, 150))
+                                  //.textColor(Color.WHITESMOKE)
+                                  //.withFixture(false)
+                                  //.darkFixture(false)
                                   .build();
         start = System.nanoTime();
         timer = new AnimationTimer() {

@@ -71,6 +71,11 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
         return this;
     }
 
+    public final SplitFlapBuilder withFixture(final boolean WITH_FIXTURE) {
+        properties.put("withFixture", new SimpleBooleanProperty(WITH_FIXTURE));
+        return this;
+    }
+
     public final SplitFlapBuilder darkFixture(final boolean DARK_FIXTURE) {
         properties.put("darkFixture", new SimpleBooleanProperty(DARK_FIXTURE));
         return this;
@@ -81,8 +86,13 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
         return this;
     }
 
+    public final SplitFlapBuilder flapColor(final Color FLAP_COLOR) {
+        properties.put("flapColor", new SimpleObjectProperty<>(FLAP_COLOR));
+        return this;
+    }
+
     public final SplitFlapBuilder textColor(final Color TEXT_COLOR) {
-        properties.put("textColor", new SimpleObjectProperty<Color>(TEXT_COLOR));
+        properties.put("textColor", new SimpleObjectProperty<>(TEXT_COLOR));
         return this;
     }
 
@@ -171,10 +181,14 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> extends ControlBuil
                 CONTROL.setFlipTime(((DoubleProperty) properties.get(key)).get());
             } else if ("wordMode".equals(key)) {
                 CONTROL.setWordMode(((BooleanProperty) properties.get(key)).get());
+            } else if ("withFixture".equals(key)) {
+                CONTROL.setWithFixture(((BooleanProperty) properties.get(key)).get());
             } else if ("darkFixture".equals(key)) {
                 CONTROL.setDarkFixture(((BooleanProperty) properties.get(key)).get());
             } else if ("squareFlaps".equals(key)) {
                 CONTROL.setSquareFlaps(((BooleanProperty) properties.get(key)).get());
+            } else if ("flapColor".equals(key)) {
+                CONTROL.setFlapColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("textColor".equals(key)) {
                 CONTROL.setTextColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("text".equals(key)) {

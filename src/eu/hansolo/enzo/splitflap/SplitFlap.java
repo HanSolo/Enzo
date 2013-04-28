@@ -71,10 +71,14 @@ public class SplitFlap extends Control {
     private DoubleProperty               flipTime;
     private boolean                      _wordMode    = false;
     private BooleanProperty              wordMode;
+    private boolean                      _withFixture = true;
+    private BooleanProperty              withFixture;
     private boolean                      _darkFixture = false;
     private BooleanProperty              darkFixture;
     private boolean                      _squareFlaps = false;
     private BooleanProperty              squareFlaps;
+    private Color                        _flapColor   = Color.rgb(59, 58, 53);
+    private ObjectProperty<Color>        flapColor;
     private Color                        _textColor   = Color.WHITE;
     private ObjectProperty<Color>        textColor;
     private String                       _text        = "";
@@ -179,6 +183,23 @@ public class SplitFlap extends Control {
         return wordMode;
     }
 
+    public final boolean isWithFixture() {
+        return null == withFixture ? _withFixture : withFixture.get();
+    }
+    public final void setWithFixture(final boolean WITH_FIXTURE) {
+        if (null == withFixture) {
+            _withFixture = WITH_FIXTURE;
+        } else {
+            withFixture.set(WITH_FIXTURE);
+        }
+    }
+    public final BooleanProperty withFixtureProperty() {
+        if (null == withFixture) {
+            withFixture = new SimpleBooleanProperty(this, "withFixture", _withFixture);
+        }
+        return withFixture;
+    }
+
     public final boolean isDarkFixture() {
         return null == darkFixture ? _darkFixture : darkFixture.get();
     }
@@ -211,6 +232,23 @@ public class SplitFlap extends Control {
             squareFlaps = new SimpleBooleanProperty(this, "squareFlaps", _squareFlaps);
         }
         return squareFlaps;
+    }
+
+    public final Color getFlapColor() {
+        return null == flapColor ? _flapColor : flapColor.get();
+    }
+    public final void setFlapColor(final Color FLAP_COLOR) {
+        if (null == flapColor) {
+            _flapColor = FLAP_COLOR;
+        } else {
+            flapColor.set(FLAP_COLOR);
+        }
+    }
+    public final ObjectProperty<Color> flapColorProperty() {
+        if (null == flapColor) {
+            flapColor = new SimpleObjectProperty<>(this, "flapColor", _flapColor);
+        }
+        return flapColor;
     }
 
     public final Color getTextColor() {

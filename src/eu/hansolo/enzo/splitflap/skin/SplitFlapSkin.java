@@ -158,9 +158,11 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
     private void initGraphics() {
         fixtureRight = new Region();
         fixtureRight.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-dark" : "fixture");
+        fixtureRight.setVisible(getSkinnable().isWithFixture());
 
         fixtureLeft = new Region();
         fixtureLeft.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-dark" : "fixture");
+        fixtureLeft.setVisible(getSkinnable().isWithFixture());
 
         innerShadow = InnerShadowBuilder.create()
                                         .offsetY(-0.01 * flapHeight)
@@ -190,9 +192,11 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
                                                    .input(innerShadow)
                                                    .build();
 
+        getSkinnable().setStyle("-flap-base: " + colorToCss(getSkinnable().getFlapColor()) + ";");
+
         upperBackground = new Region();
-        upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
         upperBackground.setEffect(innerHighlight);
+
 
         //font = Font.font("Bebas Neue", PREFERRED_HEIGHT);
         //font = Font.loadFont(getClass().getResourceAsStream("/resources/bebasneue.otf"), PREFERRED_HEIGHT);
@@ -204,13 +208,11 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
                                            new Stop(0.0, getSkinnable().getTextColor()),
                                            new Stop(1.0, getSkinnable().getTextColor().darker()));
         upperBackgroundText    = new Canvas();
-        upperBackgroundText.setEffect(innerShadow);
         ctxUpperBackgroundText = upperBackgroundText.getGraphicsContext2D();
         ctxUpperBackgroundText.setTextBaseline(VPos.CENTER);
         ctxUpperBackgroundText.setTextAlign(TextAlignment.CENTER);
 
         lowerBackground = new Region();
-        lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-square" : "lower");
         lowerBackground.setEffect(innerHighlight);
 
         lowerTextFill = new LinearGradient(0, 0.5079365079365079 * PREFERRED_HEIGHT,
@@ -219,30 +221,38 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
                                            new Stop(0.0, getSkinnable().getTextColor().darker()),
                                            new Stop(1.0, getSkinnable().getTextColor()));
         lowerBackgroundText    = new Canvas();
-        lowerBackgroundText.setEffect(innerHighlight);
         ctxLowerBackgroundText = lowerBackgroundText.getGraphicsContext2D();
         ctxLowerBackgroundText.setTextBaseline(VPos.CENTER);
         ctxLowerBackgroundText.setTextAlign(TextAlignment.CENTER);
 
         flap = new Region();
-        flap.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
         flap.setEffect(innerHighlight);
         flap.getTransforms().add(rotateFlap);
 
         flapTextFront = new Canvas();
-        flapTextFront.setEffect(innerShadow);
         flapTextFront.getTransforms().add(rotateFlap);
         ctxTextFront  = flapTextFront.getGraphicsContext2D();
         ctxTextFront.setTextBaseline(VPos.CENTER);
         ctxTextFront.setTextAlign(TextAlignment.CENTER);
 
         flapTextBack  = new Canvas();
-        flapTextBack.setEffect(reversedInnerHighlight);
         flapTextBack.getTransforms().add(rotateFlap);
         flapTextBack.setVisible(false);
         ctxTextBack   = flapTextBack.getGraphicsContext2D();
         ctxTextBack.setTextBaseline(VPos.CENTER);
         ctxTextBack.setTextAlign(TextAlignment.CENTER);
+
+
+        // Set the appropriate style class for the flaps
+        if (getSkinnable().isWithFixture()) {
+            upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
+            lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-square" : "lower");
+            flap.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
+        } else {
+            upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-no-fixture-square" : "upper-no-fixture");
+            lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-no-fixture-square" : "lower-no-fixture");
+            flap.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-no-fixture-square" : "upper-no-fixture");
+        }
 
         pane.getChildren().setAll(fixtureRight,
                                   fixtureLeft,
@@ -264,7 +274,9 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
         getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
         getSkinnable().textProperty().addListener(observable -> { handleControlPropertyChanged("TEXT"); });
+        getSkinnable().flapColorProperty().addListener(observable -> { handleControlPropertyChanged("FLAP_COLOR"); });
         getSkinnable().textColorProperty().addListener(observable -> { handleControlPropertyChanged("TEXT_COLOR"); });
+        getSkinnable().withFixtureProperty().addListener(observable -> { handleControlPropertyChanged("WITH_FIXTURE"); });
         getSkinnable().darkFixtureProperty().addListener(observable -> { handleControlPropertyChanged("DARK_FIXTURE"); });
         getSkinnable().squareFlapsProperty().addListener(observable -> { handleControlPropertyChanged("SQUARE_FLAPS"); });
 
@@ -317,6 +329,8 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
             aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         } else if ("TEXT".equals(PROPERTY)) {
             flipForward();
+        } else if ("FLAP_COLOR".equals(PROPERTY)) {
+            getSkinnable().setStyle("-flap-base: " + colorToCss(getSkinnable().getFlapColor()) + ";");
         } else if ("TEXT_COLOR".equals(PROPERTY)) {
             refreshTextCtx();
         } else if ("CHARACTER_SET".equals(PROPERTY)) {
@@ -324,13 +338,27 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
             for (String text : getSkinnable().getSelectedSet()) {
                 selectedSet.add(text);
             }
+        } else if ("WITH_FIXTURE".equals(PROPERTY)) {
+            fixtureLeft.setVisible(getSkinnable().isWithFixture());
+            fixtureRight.setVisible(getSkinnable().isWithFixture());
+            if (!getSkinnable().isWithFixture()) {
+                upperBackground.getStyleClass().setAll("upper-no-fixture");
+                lowerBackground.getStyleClass().setAll("lower-no-fixture");
+                flap.getStyleClass().setAll("upper-no-fixture");
+            }
         } else if ("DARK_FIXTURE".equals(PROPERTY)) {
             fixtureLeft.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-left-dark" : "fixture-left");
             fixtureRight.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-right-dark" : "fixture-right");
         } else if ("SQUARE_FLAPS".equals(PROPERTY)) {
-            upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
-            lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-square" : "lower");
-            flap.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
+            if (getSkinnable().isWithFixture()) {
+                upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
+                lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-square" : "lower");
+                flap.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-square" : "upper");
+            } else {
+                upperBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-no-fixture-square" : "upper-no-fixture");
+                lowerBackground.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "lower-no-fixture-square" : "lower-no-fixture");
+                flap.getStyleClass().setAll(getSkinnable().isSquareFlaps() ? "upper-no-fixture-square" : "upper-no-fixture");
+            }
         }
     }
 
@@ -399,15 +427,15 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         upperTextFill = new LinearGradient(0, 0,
                                            0, flapHeight,
                                            false, CycleMethod.NO_CYCLE,
-                                           new Stop(0.0, getSkinnable().getTextColor().deriveColor(0.0, 1.0, 0.75, 1.0)),
-                                           new Stop(0.97, getSkinnable().getTextColor()),
-                                           new Stop(1.0, getSkinnable().getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0)));
+                                           new Stop(0.0, getSkinnable().getTextColor().brighter().brighter()),
+                                           new Stop(0.99, getSkinnable().getTextColor()),
+                                           new Stop(1.0, getSkinnable().getTextColor().darker()));
 
         lowerTextFill = new LinearGradient(0, 0,
                                            0, flapHeight,
                                            false, CycleMethod.NO_CYCLE,
-                                           new Stop(0.0, getSkinnable().getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0)),
-                                           new Stop(0.03, getSkinnable().getTextColor()),
+                                           new Stop(0.0, getSkinnable().getTextColor().brighter().brighter()),
+                                           new Stop(0.01, getSkinnable().getTextColor().brighter()),
                                            new Stop(1.0, getSkinnable().getTextColor()));
 
         // set the text on the upper background
@@ -433,17 +461,25 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         ctxTextBack.setFill(new LinearGradient(0, 0,
                                                0, -flapHeight,
                                                false, CycleMethod.NO_CYCLE,
-                                               new Stop(0.0, getSkinnable().getTextColor()),
-                                               new Stop(0.97, getSkinnable().getTextColor()),
-                                               new Stop(1.0, getSkinnable().getTextColor().deriveColor(0.0, 1.0, 0.65, 1.0))));
+                                               new Stop(0.0, getSkinnable().getTextColor().brighter().brighter()),
+                                               new Stop(0.99, getSkinnable().getTextColor().brighter()),
+                                               new Stop(1.0, getSkinnable().getTextColor())));
         ctxTextBack.save();
         ctxTextBack.scale(1,-1);
         //ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.45);
-        //ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.5);
         ctxTextBack.fillText(selectedSet.get(nextSelectionIndex), width * 0.5, -height * 0.5);
         ctxTextBack.restore();
     }
 
+    private String colorToCss(final Color COLOR) {
+        StringBuilder cssColor = new StringBuilder();
+        cssColor.append("rgba(")
+                .append((int) (COLOR.getRed() * 255)).append(", ")
+                .append((int) (COLOR.getGreen() * 255)).append(", ")
+                .append((int) (COLOR.getBlue() * 255)).append(", ")
+                .append(COLOR.getOpacity()).append(");");
+        return cssColor.toString();
+    }
 
     // ******************** Resizing ******************************************
     private void resize() {
