@@ -1,4 +1,4 @@
-package eu.hansolo.enzo.touchbutton;
+package eu.hansolo.enzo.touchables;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -13,10 +13,10 @@ import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
 
 
-public class TouchButton extends Control {
+public class PushButton extends Control {
     public static enum Status {
-        OFF,
-        UNSELECTED,
+        EMPTY,
+        DESELECTED,
         SELECTED
     }
     private Status                 _status;
@@ -25,11 +25,14 @@ public class TouchButton extends Control {
     private BooleanProperty        toggleEnabled;
     private Color                  _color;
     private ObjectProperty<Color>  color;
+    private boolean                keepAspect;
+
 
     // ******************** Constructors **************************************
-    public TouchButton() {
-        getStyleClass().add("touch-button");
-        _status        = Status.OFF;
+    public PushButton() {
+        getStyleClass().add("push-button");
+        keepAspect     = true;
+        _status        = Status.EMPTY;
         _toggleEnabled = true;
         _color         = Color.RED;
         registerListeners();
@@ -42,6 +45,10 @@ public class TouchButton extends Control {
 
 
     // ******************** Methods *******************************************
+    public final boolean isKeepAspect() {
+        return keepAspect;
+    }
+
     public final Status getStatus() {
         return null == status ? _status : status.get();
     }
@@ -51,12 +58,12 @@ public class TouchButton extends Control {
         } else {
             status.set(STATUS);
         }
-        if (Status.UNSELECTED == STATUS) {
-            fireSelectionEvent(new SelectionEvent(getStatus(), this, null, SelectionEvent.UNSELECTED));
+        if (Status.DESELECTED == STATUS) {
+            fireSelectionEvent(new SelectionEvent(getStatus(), this, null, SelectionEvent.DESELECTED));
         } else if (Status.SELECTED == STATUS) {
             fireSelectionEvent(new SelectionEvent(getStatus(), this, null, SelectionEvent.SELECTED));
-        } else if (Status.OFF == STATUS) {
-            fireSelectionEvent(new SelectionEvent(getStatus(), this, null, SelectionEvent.OFF));
+        } else if (Status.EMPTY == STATUS) {
+            fireSelectionEvent(new SelectionEvent(getStatus(), this, null, SelectionEvent.EMPTY));
         }
     }
     public final ObjectProperty<Status> statusProperty() {
@@ -105,10 +112,10 @@ public class TouchButton extends Control {
     }
 
     private void toggle() {
-        if (Status.UNSELECTED == getStatus()) {
+        if (Status.DESELECTED == getStatus()) {
             setStatus(Status.SELECTED);
         } else if (isToggleEnabled() && Status.SELECTED == getStatus()) {
-            setStatus(Status.UNSELECTED);
+            setStatus(Status.DESELECTED);
         }
     }
 
@@ -122,32 +129,32 @@ public class TouchButton extends Control {
         @Override public String getName() { return "onSelect";}
     };
 
-    public final ObjectProperty<EventHandler<SelectionEvent>> onUnselectProperty() { return onUnselect; }
-    public final void setOnUnselect(EventHandler<SelectionEvent> value) { onUnselectProperty().set(value); }
-    public final EventHandler<SelectionEvent> getOnUnselect() { return onUnselectProperty().get(); }
-    private ObjectProperty<EventHandler<SelectionEvent>> onUnselect = new ObjectPropertyBase<EventHandler<SelectionEvent>>() {
+    public final ObjectProperty<EventHandler<SelectionEvent>> onDeselectProperty() { return onDeselect; }
+    public final void setOnDeselect(EventHandler<SelectionEvent> value) { onDeselectProperty().set(value); }
+    public final EventHandler<SelectionEvent> getOnDeselect() { return onDeselectProperty().get(); }
+    private ObjectProperty<EventHandler<SelectionEvent>> onDeselect = new ObjectPropertyBase<EventHandler<SelectionEvent>>() {
         @Override public Object getBean() { return this; }
-        @Override public String getName() { return "onUnselect";}
+        @Override public String getName() { return "onDeselect";}
     };
 
-    public final ObjectProperty<EventHandler<SelectionEvent>> onOffProperty() { return onOff; }
-    public final void setOnOff(EventHandler<SelectionEvent> value) { onOffProperty().set(value); }
-    public final EventHandler<SelectionEvent> getOnOff() { return onOffProperty().get(); }
-    private ObjectProperty<EventHandler<SelectionEvent>> onOff = new ObjectPropertyBase<EventHandler<SelectionEvent>>() {
+    public final ObjectProperty<EventHandler<SelectionEvent>> onEmptyProperty() { return onEmpty; }
+    public final void setOnEmpty(EventHandler<SelectionEvent> value) { onEmptyProperty().set(value); }
+    public final EventHandler<SelectionEvent> getOnEmpty() { return onEmptyProperty().get(); }
+    private ObjectProperty<EventHandler<SelectionEvent>> onEmpty = new ObjectPropertyBase<EventHandler<SelectionEvent>>() {
         @Override public Object getBean() { return this; }
-        @Override public String getName() { return "onOff";}
+        @Override public String getName() { return "onEmpty";}
     };
 
     public void fireSelectionEvent(final SelectionEvent EVENT) {
-        final EventType                    TYPE    = EVENT.getEventType();
+        final EventType TYPE    = EVENT.getEventType();
         final EventHandler<SelectionEvent> HANDLER;
 
         if (SelectionEvent.SELECTED == TYPE) {
             HANDLER = getOnSelect();
-        } else if (SelectionEvent.UNSELECTED == TYPE) {
-            HANDLER = getOnUnselect();
-        } else if (SelectionEvent.OFF == TYPE) {
-            HANDLER = getOnOff();
+        } else if (SelectionEvent.DESELECTED == TYPE) {
+            HANDLER = getOnDeselect();
+        } else if (SelectionEvent.EMPTY == TYPE) {
+            HANDLER = getOnEmpty();
         } else {
             HANDLER = null;
         }
@@ -167,8 +174,8 @@ public class TouchButton extends Control {
     // ******************** Inner classes *************************************
     public static class SelectionEvent extends Event {
         public static final EventType<SelectionEvent> SELECTED   = new EventType(ANY, "selected");
-        public static final EventType<SelectionEvent> UNSELECTED = new EventType(ANY, "unselected");
-        public static final EventType<SelectionEvent> OFF        = new EventType(ANY, "off");
+        public static final EventType<SelectionEvent> DESELECTED = new EventType(ANY, "deselected");
+        public static final EventType<SelectionEvent> EMPTY      = new EventType(ANY, "empty");
 
         private Status status;
 
@@ -186,3 +193,4 @@ public class TouchButton extends Control {
         }
     }
 }
+

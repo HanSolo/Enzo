@@ -1,4 +1,4 @@
-package eu.hansolo.enzo.touchbutton;
+package eu.hansolo.enzo.touchables;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -13,30 +13,30 @@ import javafx.scene.paint.Color;
 import java.util.HashMap;
 
 
-public class TouchButtonBuilder<B extends TouchButtonBuilder<B>> extends ControlBuilder<B> {
+public class PushButtonBuilder<B extends PushButtonBuilder<B>> extends ControlBuilder<B> {
     private HashMap<String, Property> properties = new HashMap<>();
 
 
     // ******************** Constructors **************************************
-    protected TouchButtonBuilder() {}
+    protected PushButtonBuilder() {}
 
 
     // ******************** Methods *******************************************
-    public static final TouchButtonBuilder create() {
-        return new TouchButtonBuilder();
+    public static final PushButtonBuilder create() {
+        return new PushButtonBuilder();
     }
 
-    public TouchButtonBuilder status(final TouchButton.Status STATUS) {
+    public PushButtonBuilder status(final PushButton.Status STATUS) {
         properties.put("status", new SimpleObjectProperty<>(STATUS));
         return this;
     }
 
-    public TouchButtonBuilder toggleEnabled(final boolean TOGGLE_ENABLED) {
+    public PushButtonBuilder toggleEnabled(final boolean TOGGLE_ENABLED) {
         properties.put("toggleEnabled", new SimpleBooleanProperty(TOGGLE_ENABLED));
         return this;
     }
 
-    public TouchButtonBuilder color(final Color COLOR) {
+    public PushButtonBuilder color(final Color COLOR) {
         properties.put("color", new SimpleObjectProperty<>(COLOR));
         return this;
     }
@@ -102,11 +102,11 @@ public class TouchButtonBuilder<B extends TouchButtonBuilder<B>> extends Control
     }
 
 
-    @Override public final TouchButton build() {
-        final TouchButton CONTROL = new TouchButton();
+    @Override public final PushButton build() {
+        final PushButton CONTROL = new PushButton();
         for (String key : properties.keySet()) {
             if ("status".equals(key)) {
-                CONTROL.setStatus(((ObjectProperty<TouchButton.Status>) properties.get(key)).get());
+                CONTROL.setStatus(((ObjectProperty<PushButton.Status>) properties.get(key)).get());
             } else if ("toggleEnabled".equals(key)) {
                 CONTROL.setToggleEnabled(((BooleanProperty) properties.get(key)).get());
             } else if ("color".equals(key)) {

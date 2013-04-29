@@ -130,7 +130,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
         getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
         getSkinnable().typeProperty().addListener(observable -> { handleControlPropertyChanged("TYPE"); });
-        getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("ON"); });
+        getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("SELECTED"); });
         getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
     }
 
@@ -142,7 +142,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         } else if ("COLOR".equals(PROPERTY)) {
             getSkinnable().setStyle("-fx-led-color: " + colorToCss(getSkinnable().getColor()) + ";");
             glow.setColor(getSkinnable().getColor());
-        } else if ("ON".equals(PROPERTY)) {
+        } else if ("SELECTED".equals(PROPERTY)) {
             on.setVisible(getSkinnable().isOn());
             off.setVisible(!getSkinnable().isOn());
         } else if ("TYPE".equals(PROPERTY)) {
