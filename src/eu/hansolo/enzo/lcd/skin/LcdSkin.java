@@ -294,6 +294,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
         getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
         getSkinnable().valueFontProperty().addListener(observable -> { handleControlPropertyChanged("FONT"); });
+        getSkinnable().smallFontProperty().addListener(observable -> { handleControlPropertyChanged("FONT"); });
+        getSkinnable().unitFontProperty().addListener(observable -> { handleControlPropertyChanged("FONT"); });
         getSkinnable().numberSystemVisibleProperty().addListener(observable -> { handleControlPropertyChanged("NUMBER_SYSTEM_VISIBLE"); });
         getSkinnable().backgroundVisibleProperty().addListener(observable -> { handleControlPropertyChanged("BACKGROUND_VISIBLE"); });
         getSkinnable().crystalOverlayVisibleProperty().addListener(observable -> { handleControlPropertyChanged("CRYSTAL_OVERLAY_VISIBLE"); });
@@ -483,7 +485,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         lcdText.setFont(lcdValueFont);
         lcdUnitFont  = Font.font(getSkinnable().getUnitFont(), FontWeight.NORMAL, (0.26 * height));
         lcdTitleFont = Font.font(getSkinnable().getTitleFont(), FontWeight.BOLD, (0.1666666667 * height));
-        lcdSmallFont = Font.font("Arial", FontWeight.NORMAL, (0.1666666667 * height));
+        lcdSmallFont = Font.font(getSkinnable().getSmallFont(), FontWeight.NORMAL, (0.1666666667 * height));
     }
 
     private void updateTrend() {

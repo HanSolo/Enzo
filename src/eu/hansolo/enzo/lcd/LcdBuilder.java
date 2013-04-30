@@ -256,6 +256,11 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
+    public final LcdBuilder smallFont(final String SMALL_FONT) {
+        properties.put("smallFont", new SimpleStringProperty(SMALL_FONT));
+        return this;
+    }
+
     @Override public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B)this;
@@ -419,6 +424,8 @@ public class LcdBuilder<B extends LcdBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setTitleFont(((StringProperty) properties.get(key)).get());
             } else if ("valueFont".equals(key)) {
                 CONTROL.setValueFont(((ObjectProperty<Lcd.LcdFont>) properties.get(key)).get());
+            } else if ("smallFont".equals(key)) {
+                CONTROL.setSmallFont(((StringProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

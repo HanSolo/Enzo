@@ -455,3 +455,12 @@
     -fx-lcd-fg     : #000000;
     -fx-lcd-fg-trsp: rgba(0, 0, 0, 0.1);
 }
+.lcd-yoctopuce {
+    -fx-lcd-bg0    : #0E181F;
+    -fx-lcd-bg1    : #232341;
+    -fx-lcd-bg2    : #1E1E3C;
+    -fx-lcd-bg3    : #1E1E3C;
+    -fx-lcd-bg4    : #191937;
+    -fx-lcd-fg     : #99E5FF;
+    -fx-lcd-fg-trsp: rgba(153,229,255, 0.1);
+}

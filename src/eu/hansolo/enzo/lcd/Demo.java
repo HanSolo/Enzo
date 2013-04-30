@@ -75,7 +75,7 @@ public class Demo extends Application {
         control = LcdBuilder.create()
                             .prefWidth(528)
                             .prefHeight(192)
-                            .styleClass(Lcd.STYLE_CLASS_DARKBLUE)
+                            .styleClass(Lcd.STYLE_CLASS_YOCTOPUCE)
                             .foregroundShadowVisible(true)
                             .crystalOverlayVisible(true)
                             .title("Room Temp")
@@ -130,7 +130,7 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        timer.start();
+        //timer.start();
     }
 
     public static void main(String[] args) {

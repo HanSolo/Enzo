@@ -78,6 +78,7 @@ public class Lcd extends Control {
     public static final String STYLE_CLASS_BLUE_LIGHTBLUE2  = "lcd-blue-lightblue2";
     public static final String STYLE_CLASS_GRAY_PURPLE      = "lcd-gray-purple";
     public static final String STYLE_CLASS_SECTIONS         = "lcd-sections";
+    public static final String STYLE_CLASS_YOCTOPUCE        = "lcd-yoctopuce";
     public static enum LcdFont {
         STANDARD,
         LCD,
@@ -178,12 +179,14 @@ public class Lcd extends Control {
     private BooleanProperty              formerValueVisible;
     private boolean                      _thresholdVisible = false;
     private BooleanProperty              thresholdVisible;
-    private String                       _unitFont = "Verdana";
+    private String                       _unitFont  = "Arial"; // Verdana
     private StringProperty               unitFont;
-    private String                       _titleFont = "Verdana";
+    private String                       _titleFont = "Arial"; // Verdana
     private StringProperty               titleFont;
     private LcdFont                      _valueFont = LcdFont.LCD;
     private ObjectProperty<LcdFont>      valueFont;
+    private String                       _smallFont = "Arial";
+    private StringProperty               smallFont;
     private int                          _decimals = 0;
     private IntegerProperty              decimals;
     private boolean                      _numberSystemVisible = false;
@@ -931,6 +934,23 @@ public class Lcd extends Control {
             valueFont = new SimpleObjectProperty<>(this, "valueFont", _valueFont);
         }
         return valueFont;
+    }
+
+    public final String getSmallFont() {
+        return null == smallFont ? _smallFont : smallFont.get();
+    }
+    public final void setSmallFont(final String SMALL_FONT) {
+        if (null == smallFont) {
+            _smallFont = SMALL_FONT;
+        } else {
+            smallFont.set(SMALL_FONT);
+        }
+    }
+    public final StringProperty smallFontProperty() {
+        if (null == smallFont) {
+            smallFont = new SimpleStringProperty(this, "smallFont", _smallFont);
+        }
+        return smallFont;
     }
 
     public final int getDecimals() {
