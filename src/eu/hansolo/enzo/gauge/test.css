@@ -1,0 +1,29 @@
+/*
+.list-view {
+    -fx-background-color: #918c8f, rgb(41, 32, 32);
+    -fx-text-fill: white;
+}
+
+.list-cell {
+    -fx-cell-size       : 22;
+    -fx-background-color: rgb(41, 32, 32);
+    -fx-text-fill: white;
+}
+.list-cell:odd {
+    -fx-cell-size       : 22;
+    -fx-background-color: rgb(61, 52, 52);
+    -fx-text-fill: white;
+}
+*/
+
+.list-cell:empty {
+    -fx-background-color: white;
+}
+
+.list-cell:even {
+    -fx-background-color: blue;
+}
+
+.list-cell:odd {
+    -fx-background-color: green;
+}
