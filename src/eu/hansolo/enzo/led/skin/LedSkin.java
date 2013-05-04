@@ -17,6 +17,7 @@
 package eu.hansolo.enzo.led.skin;
 
 import eu.hansolo.enzo.led.Led;
+import eu.hansolo.enzo.tools.Util;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
@@ -128,7 +129,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("COLOR".equals(PROPERTY)) {
-            getSkinnable().setStyle("-fx-led-color: " + colorToCss(getSkinnable().getColor()) + ";");
+            getSkinnable().setStyle("-fx-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
             glow.setColor(getSkinnable().getColor());
         } else if ("SELECTED".equals(PROPERTY)) {
             on.setVisible(getSkinnable().isOn());
@@ -172,16 +173,6 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
 
 
     // ******************** Private Methods ***********************************
-    private String colorToCss(final Color COLOR) {
-        StringBuilder cssColor = new StringBuilder();
-        cssColor.append("rgba(")
-                .append((int) (COLOR.getRed() * 255)).append(", ")
-                .append((int) (COLOR.getGreen() * 255)).append(", ")
-                .append((int) (COLOR.getBlue() * 255)).append(", ")
-                .append(COLOR.getOpacity()).append(");");
-        return cssColor.toString();
-    }
-
     private void changeStyle() {
         switch(getSkinnable().getType()) {
             case HORIZONTAL:
@@ -211,7 +202,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                 break;
         }
 
-        getSkinnable().setStyle("-fx-led-color: " + colorToCss(getSkinnable().getColor()) + ";");
+        getSkinnable().setStyle("-fx-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
     }
 
     private void resize() {
