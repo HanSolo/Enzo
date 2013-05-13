@@ -43,8 +43,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private double              size;
     private Pane                pane;
     private Region              frame;
-    private Region              off;
-    private Region              on;
+    private Region led;
     private Region              highlight;
     private InnerShadow         innerShadow;
     private DropShadow          glow;
@@ -84,7 +83,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         frame = new Region();
         frame.setVisible(getSkinnable().isFrameVisible());
 
-        off = new Region();
+        led = new Region();
 
         innerShadow = InnerShadowBuilder.create()
                                         .color(Color.rgb(0, 0, 0, 0.65))
@@ -99,17 +98,13 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                                 .blurType(BlurType.GAUSSIAN)
                                 .build();
 
-        on = new Region();
-        on.setEffect(glow);
-        on.setVisible(getSkinnable().isOn());
-
         highlight = new Region();
 
         // Set the appropriate style classes
         changeStyle();
 
         // Add all nodes
-        pane.getChildren().setAll(frame, off, on, highlight);
+        pane.getChildren().setAll(frame, led, highlight);
 
         getChildren().setAll(pane);
     }
@@ -119,7 +114,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
         getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
         getSkinnable().typeProperty().addListener(observable -> { handleControlPropertyChanged("TYPE"); });
-        getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("SELECTED"); });
+        getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("ON"); } );
         getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
     }
 
@@ -131,9 +126,8 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         } else if ("COLOR".equals(PROPERTY)) {
             getSkinnable().setStyle("-fx-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
             glow.setColor(getSkinnable().getColor());
-        } else if ("SELECTED".equals(PROPERTY)) {
-            on.setVisible(getSkinnable().isOn());
-            off.setVisible(!getSkinnable().isOn());
+        } else if ("ON".equals(PROPERTY)) {
+            led.setEffect(getSkinnable().isOn() ? glow : innerShadow);
         } else if ("TYPE".equals(PROPERTY)) {
             changeStyle();
             resize();
@@ -176,33 +170,29 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private void changeStyle() {
         switch(getSkinnable().getType()) {
             case HORIZONTAL:
-                frame.getStyleClass().setAll("frame-horizontal");
-                off.getStyleClass().setAll("off-horizontal");
-                on.getStyleClass().setAll("on-horizontal");
-                highlight.getStyleClass().setAll("highlight-horizontal");
+                frame.getStyleClass().setAll("horizontal-frame");
+                led.getStyleClass().setAll("horizontal");
+                highlight.getStyleClass().setAll("horizontal-highlight");
                 break;
             case VERTICAL:
-                frame.getStyleClass().setAll("frame-vertical");
-                off.getStyleClass().setAll("off-vertical");
-                on.getStyleClass().setAll("on-vertical");
-                highlight.getStyleClass().setAll("highlight-vertical");
+                frame.getStyleClass().setAll("vertical-frame");
+                led.getStyleClass().setAll("vertical");
+                highlight.getStyleClass().setAll("vertical-highlight");
                 break;
             case SQUARE:
-                frame.getStyleClass().setAll("frame-square");
-                off.getStyleClass().setAll("off-square");
-                on.getStyleClass().setAll("on-square");
-                highlight.getStyleClass().setAll("highlight-square");
+                frame.getStyleClass().setAll("square-frame");
+                led.getStyleClass().setAll("square");
+                highlight.getStyleClass().setAll("square-highlight");
                 break;
             case ROUND:
             default:
-                frame.getStyleClass().setAll("frame-round");
-                off.getStyleClass().setAll("off-round");
-                on.getStyleClass().setAll("on-round");
-                highlight.getStyleClass().setAll("highlight-round");
+                frame.getStyleClass().setAll("round-frame");
+                led.getStyleClass().setAll("round");
+                highlight.getStyleClass().setAll("round-highlight");
                 break;
         }
 
-        getSkinnable().setStyle("-fx-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
+        getSkinnable().setStyle("-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
     }
 
     private void resize() {
@@ -216,13 +206,9 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                     frame.setPrefSize(size, 0.56 * size);
                     frame.setTranslateY(0.22 * size);
 
-                    off.setPrefSize(0.72 * size, 0.28 * size);
-                    off.setTranslateX(0.14 * size);
-                    off.setTranslateY(0.36 * size);
-
-                    on.setPrefSize(0.72 * size, 0.28 * size);
-                    on.setTranslateX(0.14 * size);
-                    on.setTranslateY(0.36 * size);
+                    led.setPrefSize(0.72 * size, 0.28 * size);
+                    led.setTranslateX(0.14 * size);
+                    led.setTranslateY(0.36 * size);
 
                     highlight.setPrefSize(0.68 * size, 0.12 * size);
                     highlight.setTranslateX(0.16 * size);
@@ -232,13 +218,9 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                     frame.setPrefSize(0.56 * size, size);
                     frame.setTranslateX(0.22 * size);
 
-                    off.setPrefSize(0.28 * size, 0.72 * size);
-                    off.setTranslateX(0.36 * size);
-                    off.setTranslateY(0.14 * size);
-
-                    on.setPrefSize(0.28 * size, 0.72 * size);
-                    on.setTranslateX(0.36 * size);
-                    on.setTranslateY(0.14 * size);
+                    led.setPrefSize(0.28 * size, 0.72 * size);
+                    led.setTranslateX(0.36 * size);
+                    led.setTranslateY(0.14 * size);
 
                     highlight.setPrefSize(0.22 * size, 0.23 * size);
                     highlight.setTranslateX(0.39 * size);
@@ -247,13 +229,9 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                 case SQUARE:
                     frame.setPrefSize(size, size);
 
-                    off.setPrefSize(0.72 * size, 0.72 * size);
-                    off.setTranslateX(0.14 * size);
-                    off.setTranslateY(0.14 * size);
-
-                    on.setPrefSize(0.72 * size, 0.72 * size);
-                    on.setTranslateX(0.14 * size);
-                    on.setTranslateY(0.14 * size);
+                    led.setPrefSize(0.72 * size, 0.72 * size);
+                    led.setTranslateX(0.14 * size);
+                    led.setTranslateY(0.14 * size);
 
                     highlight.setPrefSize(0.66 * size, 0.23 * size);
                     highlight.setTranslateX(0.17 * size);
@@ -263,13 +241,9 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                 default:
                     frame.setPrefSize(size, size);
 
-                    off.setPrefSize(0.72 * size, 0.72 * size);
-                    off.setTranslateX(0.14 * size);
-                    off.setTranslateY(0.14 * size);
-
-                    on.setPrefSize(0.72 * size, 0.72 * size);
-                    on.setTranslateX(0.14 * size);
-                    on.setTranslateY(0.14 * size);
+                    led.setPrefSize(0.72 * size, 0.72 * size);
+                    led.setTranslateX(0.14 * size);
+                    led.setTranslateY(0.14 * size);
 
                     highlight.setPrefSize(0.58 * size, 0.58 * size);
                     highlight.setTranslateX(0.21 * size);
