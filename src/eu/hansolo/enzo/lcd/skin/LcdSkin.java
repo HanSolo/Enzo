@@ -353,7 +353,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             lcdText.setVisible(getSkinnable().isValueVisible());
         } else if ("UNIT_VISIBLE".equals(PROPERTY)) {
             lcdUnitText.setVisible(getSkinnable().isUnitVisible());
-        } else if ("FORMER_VALUE_VISIBLE".equals(getSkinnable().isFormerValueVisible())) {
+        } else if ("FORMER_VALUE_VISIBLE".equals(PROPERTY)) {
             lcdLowerCenterText.setVisible(getSkinnable().isFormerValueVisible());
         } else if ("MAX_MEASURED_VISIBLE".equals(PROPERTY)) {
             lcdUpperRightText.setVisible(getSkinnable().isMaxMeasuredValueVisible());

@@ -23,7 +23,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -51,6 +51,7 @@ public class Demo extends Application {
                             new Section(80, 100, Color.rgb(255, 160, 122)));
         control.setMajorTickSpace(20);
         //control.setMinorTickSpace(2);
+        control.setPrefSize(400, 400);
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {
@@ -64,7 +65,7 @@ public class Demo extends Application {
     }
 
     @Override public void start(Stage stage) throws Exception {
-        StackPane pane = new StackPane();
+        Pane pane = new Pane();
         pane.setPadding(new Insets(5, 5, 5, 5));
         pane.getChildren().add(control);
 

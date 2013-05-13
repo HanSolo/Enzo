@@ -327,6 +327,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         //double emptySegmentHeight = size * (1.0 - Math.cos(Math.toRadians((360 - getSkinnable().getAngleRange()) * 0.5)));
         background.setPrefSize(size, size);
+        //background.setPrefWidth(size);
+        //background.setPrefHeight(size);
 
         ticksAndSectionsCanvas.setWidth(size);
         ticksAndSectionsCanvas.setHeight(size);

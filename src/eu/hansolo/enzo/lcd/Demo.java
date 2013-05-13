@@ -19,7 +19,7 @@ package eu.hansolo.enzo.lcd;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -119,7 +119,7 @@ public class Demo extends Application {
     }
 
     @Override public void start(Stage stage) {
-        StackPane pane = new StackPane();
+        Pane pane = new Pane();
         pane.getChildren().setAll(control);
 
         Scene scene = new Scene(pane, Color.TRANSPARENT);
@@ -130,7 +130,7 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        //timer.start();
+        timer.start();
     }
 
     public static void main(String[] args) {
