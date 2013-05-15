@@ -19,7 +19,7 @@ package eu.hansolo.enzo.led;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
@@ -56,7 +56,7 @@ public class Demo1 extends Application {
     }
 
     @Override public void start(Stage stage) {
-        Pane pane = new Pane();
+        StackPane pane = new StackPane();
         pane.getChildren().add(led);
 
         Scene scene = new Scene(pane, 128, 128);

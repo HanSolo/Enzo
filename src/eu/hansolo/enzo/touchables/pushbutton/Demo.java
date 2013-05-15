@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package eu.hansolo.enzo.touchables;
+package eu.hansolo.enzo.touchables.pushbutton;
 
 import eu.hansolo.enzo.tools.Util;
 import javafx.application.Application;

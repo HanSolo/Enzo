@@ -19,7 +19,7 @@
 * PUSH BUTTON class                                         *
 ************************************************************/
 .push-button {
-    -fx-skin: "eu.hansolo.enzo.touchables.skin.PushButtonSkin";
+    -fx-skin: "eu.hansolo.enzo.touchables.pushbutton.skin.PushButtonSkin";
     -icon-on: red;
 }
 
