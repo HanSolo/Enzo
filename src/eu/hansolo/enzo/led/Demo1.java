@@ -38,7 +38,7 @@ public class Demo1 extends Application {
 
     @Override public void init() {
         led           = LedBuilder.create()
-                                  .type(Led.Type.ROUND)
+                                  .type(Led.Type.TRIANGLE_DOWN)
                                   .prefWidth(64)
                                   .prefHeight(64)
                                   .build();

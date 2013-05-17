@@ -43,7 +43,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private double              size;
     private Pane                pane;
     private Region              frame;
-    private Region led;
+    private Region              led;
     private Region              highlight;
     private InnerShadow         innerShadow;
     private DropShadow          glow;
@@ -184,6 +184,26 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                 led.getStyleClass().setAll("square");
                 highlight.getStyleClass().setAll("square-highlight");
                 break;
+            case TRIANGLE_UP:
+                frame.getStyleClass().setAll("triangle-up-frame");
+                led.getStyleClass().setAll("triangle-up");
+                highlight.getStyleClass().setAll("triangle-up-highlight");
+                break;
+            case TRIANGLE_RIGHT:
+                frame.getStyleClass().setAll("triangle-right-frame");
+                led.getStyleClass().setAll("triangle-right");
+                highlight.getStyleClass().setAll("triangle-right-highlight");
+                break;
+            case TRIANGLE_DOWN:
+                frame.getStyleClass().setAll("triangle-down-frame");
+                led.getStyleClass().setAll("triangle-down");
+                highlight.getStyleClass().setAll("triangle-down-highlight");
+                break;
+            case TRIANGLE_LEFT:
+                frame.getStyleClass().setAll("triangle-left-frame");
+                led.getStyleClass().setAll("triangle-left");
+                highlight.getStyleClass().setAll("triangle-left-highlight");
+                break;
             case ROUND:
             default:
                 frame.getStyleClass().setAll("round-frame");
@@ -193,6 +213,8 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         }
 
         getSkinnable().setStyle("-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
+
+        led.setEffect(getSkinnable().isOn() ? glow : innerShadow);
     }
 
     private void resize() {
@@ -236,6 +258,56 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                     highlight.setPrefSize(0.66 * size, 0.23 * size);
                     highlight.setTranslateX(0.17 * size);
                     highlight.setTranslateY(0.17 * size);
+                    break;
+                case TRIANGLE_UP:
+                    frame.setPrefSize(1.0035383605957031 * size, 0.9975 * size);
+                    frame.setTranslateX(-0.0017691457271575928 * size);
+                    frame.setTranslateY(0.0025 * size);
+
+                    led.setPrefSize(0.6956922149658203 * size, 0.7 * size);
+                    led.setTranslateX(0.15215388298034668 * size);
+                    led.setTranslateY(0.2 * size);
+
+                    highlight.setPrefSize(0.30249504089355467 * size, 0.635 * size);
+                    highlight.setTranslateX(0.1975049591064453 * size);
+                    highlight.setTranslateY(0.235 * size);
+                    break;
+                case TRIANGLE_RIGHT:
+                    frame.setPrefSize(size, size);
+
+                    led.setPrefSize(0.7 * size, 0.6956920623779297 * size);
+                    led.setTranslateX(0.1 * size);
+                    led.setTranslateY(0.152153902053833 * size);
+
+                    highlight.setPrefSize(0.635 * size, 0.3 * size);
+                    highlight.setTranslateX(0.13 * size);
+                    highlight.setTranslateY(0.19 * size);
+                    break;
+                case TRIANGLE_DOWN:
+                    frame.setPrefSize(1.0035383605957031 * size, 0.9975 * size);
+                    frame.setTranslateX(-0.0017691457271575928 * size);
+
+
+                    led.setPrefSize(0.6956922149658203 * size, 0.7 * size);
+                    led.setTranslateX(0.15215388298034668 * size);
+                    led.setTranslateY(0.1 * size);
+
+                    highlight.setPrefSize(0.6024949645996094 * size, 0.63 * size);
+                    highlight.setTranslateX(0.1975049591064453 * size);
+                    highlight.setTranslateY(0.13 * size);
+                    break;
+                case TRIANGLE_LEFT:
+                    frame.setPrefSize(0.9975 * size, 1.0035382843017577 * size);
+                    frame.setTranslateX(0.0025 * size);
+                    frame.setTranslateY(-0.0017691445350646972 * size);
+
+                    led.setPrefSize(0.7 * size, 0.6956920623779297 * size);
+                    led.setTranslateX(0.2 * size);
+                    led.setTranslateY(0.152153902053833 * size);
+
+                    highlight.setPrefSize(0.635 * size, 0.3 * size);
+                    highlight.setTranslateX(0.235 * size);
+                    highlight.setTranslateY(0.19 * size);
                     break;
                 case ROUND:
                 default:

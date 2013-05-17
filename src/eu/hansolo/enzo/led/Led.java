@@ -44,7 +44,11 @@ public class Led extends Control {
         ROUND,
         SQUARE,
         VERTICAL,
-        HORIZONTAL
+        HORIZONTAL,
+        TRIANGLE_UP,
+        TRIANGLE_RIGHT,
+        TRIANGLE_DOWN,
+        TRIANGLE_LEFT
     }
 
     private static final PseudoClass ON_PSEUDO_CLASS = PseudoClass.getPseudoClass("on");
@@ -154,7 +158,7 @@ public class Led extends Control {
 
     public final ObjectProperty<Type> typeProperty() {
         if (null == type) {
-            type = new StyleableObjectProperty<Type>(Type.ROUND) {
+            type = new StyleableObjectProperty<Type>(_type) {
                 @Override public CssMetaData getCssMetaData() { return TYPE; }
                 @Override public Object getBean() { return this; }
                 @Override public String getName() { return "type";}
