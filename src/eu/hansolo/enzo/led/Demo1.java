@@ -20,6 +20,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -30,20 +31,21 @@ import javafx.stage.Stage;
  * Time: 16:34
  */
 public class Demo1 extends Application {
-    private Led            led;
-    private boolean        toggle;
-    private long           lastTimerCall;
-    private AnimationTimer timer;
+    private Led                 led;
+    private boolean             toggle;
+    private long                lastTimerCall;
+    private AnimationTimer      timer;
 
 
     @Override public void init() {
-        led           = LedBuilder.create()
-                                  .type(Led.Type.TRIANGLE_DOWN)
-                                  .prefWidth(64)
-                                  .prefHeight(64)
-                                  .build();
-        toggle        = false;
-        lastTimerCall = System.nanoTime();
+        led                = LedBuilder.create()
+                                       .type(Led.Type.TRIANGLE_RIGHT)
+                                       .color(Color.MAGENTA)
+                                       .prefWidth(64)
+                                       .prefHeight(64)
+                                       .build();
+        toggle             = false;
+        lastTimerCall      = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 500_000_000l) {

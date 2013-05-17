@@ -130,7 +130,6 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
             led.setEffect(getSkinnable().isOn() ? glow : innerShadow);
         } else if ("TYPE".equals(PROPERTY)) {
             changeStyle();
-            resize();
         } else if ("FRAME_VISIBLE".equals(PROPERTY)) {
             frame.setVisible(getSkinnable().isFrameVisible());
         }
@@ -215,6 +214,8 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         getSkinnable().setStyle("-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
 
         led.setEffect(getSkinnable().isOn() ? glow : innerShadow);
+
+        resize();
     }
 
     private void resize() {
