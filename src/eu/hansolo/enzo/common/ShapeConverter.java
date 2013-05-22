@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package eu.hansolo.enzo.tools;
+package eu.hansolo.enzo.common;
 
 import javafx.geometry.Bounds;
 import javafx.scene.shape.Arc;

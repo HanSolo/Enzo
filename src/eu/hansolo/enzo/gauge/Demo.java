@@ -23,7 +23,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -46,11 +46,13 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = new Gauge();
+        //control.setStyle("-tick-label-fill: blue;");
         control.setSections(new Section(40, 60, Color.rgb(151, 252, 151)),
                             new Section(60, 80, Color.rgb(240, 230, 140)),
                             new Section(80, 100, Color.rgb(255, 160, 122)));
         control.setMajorTickSpace(20);
         //control.setMinorTickSpace(2);
+
         control.setPrefSize(400, 400);
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
@@ -65,17 +67,19 @@ public class Demo extends Application {
     }
 
     @Override public void start(Stage stage) throws Exception {
-        Pane pane = new Pane();
+        StackPane pane = new StackPane();
         pane.setPadding(new Insets(5, 5, 5, 5));
         pane.getChildren().add(control);
 
         final Scene scene = new Scene(pane, 400, 400, Color.BLACK);
-
+        scene.getStylesheets().add(getClass().getResource("demo.css").toExternalForm());
         //scene.setFullScreen(true);
 
         stage.setTitle("test");
         stage.setScene(scene);
         stage.show();
+
+        control.setTouched(true);
 
         timer.start();
 

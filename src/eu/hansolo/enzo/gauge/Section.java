@@ -1,6 +1,6 @@
 package eu.hansolo.enzo.gauge;
 
-import eu.hansolo.enzo.tools.Util;
+import eu.hansolo.enzo.common.Util;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -151,7 +151,7 @@ public class Section {
         NAME.append("text      : ").append(text.get()).append("\n");
         NAME.append("startValue: ").append(start.get()).append("\n");
         NAME.append("stopValue : ").append(stop.get()).append("\n");
-        NAME.append("color     : ").append(color.toString()).append("\n\n");
+        NAME.append("ledColor     : ").append(color.toString()).append("\n\n");
         return NAME.toString();
     }
 }

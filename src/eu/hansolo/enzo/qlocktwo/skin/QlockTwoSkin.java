@@ -18,7 +18,7 @@ package eu.hansolo.enzo.qlocktwo.skin;
 
 import eu.hansolo.enzo.qlocktwo.QlockTwo;
 import eu.hansolo.enzo.qlocktwo.QlockWord;
-import eu.hansolo.enzo.tools.BrushedMetalPaint;
+import eu.hansolo.enzo.common.BrushedMetalPaint;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;

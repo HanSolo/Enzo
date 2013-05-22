@@ -51,14 +51,14 @@ public class LedSegment extends HBox {
         color    = COLOR;
         leftLed  = LedBuilder.create()
                              //.frameVisible(false)
-                             .color(color)
+                             .ledColor(color)
                              .prefWidth(25)
                              .prefHeight(25)
                              .build();
 
         rightLed = LedBuilder.create()
                              //.frameVisible(false)
-                             .color(color)
+                             .ledColor(color)
                              .prefWidth(25)
                              .prefHeight(25)
                              .build();
@@ -111,8 +111,8 @@ public class LedSegment extends HBox {
     }
     public final void setColor(final Color COLOR) {
         color = COLOR;
-        leftLed.setColor(COLOR);
-        rightLed.setColor(COLOR);
+        leftLed.setLedColor(COLOR);
+        rightLed.setLedColor(COLOR);
     }
 
     public final void reset() {

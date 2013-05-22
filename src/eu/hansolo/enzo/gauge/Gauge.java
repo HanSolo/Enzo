@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.gauge;
 
+import com.sun.javafx.css.converters.PaintConverter;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
@@ -33,12 +34,12 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.css.CssMetaData;
 import javafx.css.PseudoClass;
-import javafx.css.StyleConverter;
 import javafx.css.Styleable;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
 import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 
 import java.text.DecimalFormat;
@@ -56,37 +57,17 @@ import java.util.Locale;
  * Time: 17:10
  */
 public class Gauge extends Control {
-    // CSS Styleable properties
-    private static final CssMetaData<Gauge, Color> TICK_MARK_FILL  = new CssMetaData("-tick-mark-fill", StyleConverter.getColorConverter(), Color.BLACK) {
-        @Override public boolean isSettable(Styleable styleable) {
-            return null == tickMarkFill || !tickMarkFill.isBound();
-        }
-
-        @Override public StyleableProperty getStyleableProperty(Styleable styleable) {
-            return (StyleableProperty) tickMarkFillProperty();
-        }
-    };
-    private static final CssMetaData<Gauge, Color> TICK_LABEL_FILL = new CssMetaData("-tick-label-fill", StyleConverter.getColorConverter(), Color.BLACK) {
-        @Override public boolean isSettable(Styleable styleable) {
-            return null == tickLabelFill || !tickLabelFill.isBound();
-        }
-
-        @Override public StyleableProperty getStyleableProperty(Styleable styleable) {
-            return (StyleableProperty) tickLabelFillProperty();
-        }
-    };
-    private static final List<CssMetaData> CSS_META_DATA;
-    static {
-        final List<CssMetaData> metaData = new ArrayList<CssMetaData>(Control.getClassCssMetaData());
-        Collections.addAll(metaData, TICK_MARK_FILL, TICK_LABEL_FILL);
-        CSS_META_DATA = Collections.unmodifiableList(metaData);
-    }
-
     // CSS Pseudo classes
-    private static final PseudoClass VIEWED_PSEUDO_CLASS = PseudoClass.getPseudoClass("viewed");
+    private static final PseudoClass             TOUCHED_PSEUDO_CLASS = PseudoClass.getPseudoClass("touched");
 
     public static enum NeedleType {
-        STANDARD
+        STANDARD("needle-standard");
+
+        public final String STYLE_CLASS;
+
+        private NeedleType(final String STYLE_CLASS) {
+            this.STYLE_CLASS = STYLE_CLASS;
+        }
     }
     public static enum TickLabelOrientation {
         NORMAL,
@@ -112,7 +93,7 @@ public class Gauge extends Control {
             return DF.format(NUMBER);
         }
     }
-    public static final String                   STYLE_CLASS_NEEDLE_STANDARD   = "needle-standard";
+    public static final String                   STYLE_CLASS_NEEDLE_STANDARD = NeedleType.STANDARD.STYLE_CLASS;
     private double                               _value;
     private DoubleProperty                       value;
     private double                               _oldValue;
@@ -159,12 +140,11 @@ public class Gauge extends Control {
     private Duration                             animationTime;
 
     // CSS styleable properties
-    private static ObjectProperty<Color>         tickMarkFill;
-    private static ObjectProperty<Color>         tickLabelFill;
+    private ObjectProperty<Paint>                tickMarkFill;
+    private ObjectProperty<Paint>                tickLabelFill;
 
     // CSS pseudo classes
-    private boolean                              _viewed;
-    private BooleanProperty                      viewed;
+    private BooleanProperty                      touched;
 
 
     // ******************** Constructors **************************************
@@ -193,39 +173,6 @@ public class Gauge extends Control {
         _minorTickSpace       = 1;
         _lcdEnabled           = true;
         animationTime         = Duration.millis(800);
-
-        // CSS styleable properties
-        tickMarkFill          = new StyleableObjectProperty<Color>(Color.BLACK) {
-
-            @Override public CssMetaData getCssMetaData() {
-                return TICK_MARK_FILL;
-            }
-
-            @Override public Object getBean() {
-                return this;
-            }
-
-            @Override public String getName() {
-                return "tickMarkFill";
-            }
-        };
-        tickLabelFill         = new StyleableObjectProperty<Color>(Color.BLACK) {
-
-            @Override public CssMetaData getCssMetaData() {
-                return TICK_LABEL_FILL;
-            }
-
-            @Override public Object getBean() {
-                return this;
-            }
-
-            @Override public String getName() {
-                return "tickLabelFill";
-            }
-        };
-
-        // CSS pseudo classes
-        _viewed               = false;
     }
 
 
@@ -649,70 +596,112 @@ public class Gauge extends Control {
 
 
     // ******************** CSS Stylable Properties ***************************
-    public final Color getTickMarkFill() {
-        return tickMarkFill.get();
+    public final Paint getTickMarkFill() {
+        return null == tickMarkFill ? Color.BLACK : tickMarkFill.get();
     }
-    public final void setTickMarkFill(final Color TICK_MARK_FILL) {
-        tickMarkFill.set(TICK_MARK_FILL);
+    public final void setTickMarkFill(Paint value) {
+        tickMarkFillProperty().set(value);
     }
-    public static final ObjectProperty<Color> tickMarkFillProperty() {
+    public final ObjectProperty<Paint> tickMarkFillProperty() {
+        if (null == tickMarkFill) {
+            tickMarkFill = new StyleableObjectProperty<Paint>(Color.BLACK) {
+
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.TICK_MARK_FILL; }
+
+                @Override public Object getBean() { return Gauge.this; }
+
+                @Override public String getName() { return "tickMarkFill"; }
+            };
+        }
         return tickMarkFill;
     }
 
-    public final Color getTickLabelFill() {
-        return tickLabelFill.get();
+    public final Paint getTickLabelFill() {
+        return null == tickLabelFill ? Color.BLACK : tickLabelFill.get();
     }
-    public final void setTickLabelFill(final Color TICK_LABEL_FILL) {
-        tickMarkFill.set(TICK_LABEL_FILL);
+    public final void setTickLabelFill(Paint value) {
+        tickLabelFillProperty().set(value);
     }
-    public static final ObjectProperty<Color> tickLabelFillProperty() {
-        return tickLabelFill;
-    }
-    /*
-    public static List<CssMetaData> getClassCssMetaData() {
-        return CSS_META_DATA;
-    }
-    @Override public List<CssMetaData> getCssMetaData() {
-        return getClassCssMetaData();
-    }
-    */
+    public final ObjectProperty<Paint> tickLabelFillProperty() {
+        if (null == tickLabelFill) {
+            tickLabelFill = new StyleableObjectProperty<Paint>(Color.BLACK) {
 
-    // ******************** CSS Pseudo Classes ********************************
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.TICK_LABEL_FILL; }
 
-    // .gauge:viewed { -fx-opacity: 30%; }
-    public final boolean isViewed() {
-        return null == viewed ? _viewed : viewed.get();
-    }
-    public final void setViewed(final boolean VIEWED) {
-        if (null == viewed) {
-            _viewed = VIEWED;
-        } else {
-            viewed.set(VIEWED);
-        }
-    }
-    public final BooleanProperty viewedProperty() {
-        if (null == viewed) {
-            System.out.println("reached");
-            viewed = new BooleanPropertyBase(false) {
-                @Override protected void invalidated() {
-                    pseudoClassStateChanged(VIEWED_PSEUDO_CLASS, get());
-                }
+                @Override public Object getBean() { return Gauge.this; }
 
-                @Override public Object getBean() {
-                    return this;
-                }
-
-                @Override public String getName() {
-                    return "viewed";
-                }
+                @Override public String getName() { return "tickLabelFill"; }
             };
         }
-        return viewed;
+        return tickLabelFill;
+    }
+
+
+    // ******************** CSS Pseudo Classes ********************************
+    public final boolean isTouched() {
+        return null == touched ? false : touched.get();
+    }
+    public final void setTouched(final boolean TOUCHED) {
+        touchedProperty().set(TOUCHED);
+    }
+    public final BooleanProperty touchedProperty() {
+        if (null == touched) {
+            touched = new BooleanPropertyBase(false) {
+                @Override protected void invalidated() { pseudoClassStateChanged(TOUCHED_PSEUDO_CLASS, get()); }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "touched"; }
+            };
+        }
+        return touched;
     }
 
 
     // ******************** Style related *************************************
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource("gauge.css").toExternalForm();
+    }
+    
+    private static class StyleableProperties {
+        private static final CssMetaData<Gauge, Paint> TICK_MARK_FILL =
+            new CssMetaData<Gauge, Paint>("-tick-mark-fill", PaintConverter.getInstance(), Color.BLACK) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.tickMarkFill || !gauge.tickMarkFill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.tickMarkFillProperty();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> TICK_LABEL_FILL =
+            new CssMetaData<Gauge, Paint>("-tick-label-fill", PaintConverter.getInstance(), Color.BLACK) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.tickLabelFill || !gauge.tickLabelFill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.tickLabelFillProperty();
+                }
+            };
+
+        private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
+        static {
+            final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
+            Collections.addAll(styleables,
+                               TICK_MARK_FILL,
+                               TICK_LABEL_FILL
+            );
+            STYLEABLES = Collections.unmodifiableList(styleables);
+        }
+    }
+
+    public static List<CssMetaData<? extends Styleable, ?>> getClassCssMetaData() {
+        return StyleableProperties.STYLEABLES;
+    }
+
+    @Override public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
+        return getClassCssMetaData();
     }
 }

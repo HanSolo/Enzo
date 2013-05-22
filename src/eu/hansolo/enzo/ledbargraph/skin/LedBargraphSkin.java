@@ -230,7 +230,7 @@ public class LedBargraphSkin extends SkinBase<LedBargraph> implements Skin<LedBa
 
     private final void setLedColors() {
         for (int i = 0 ; i < getSkinnable().getNoOfLeds() ; i++) {
-            ledList.get(i).setColor(getSkinnable().getLedColor(i));
+            ledList.get(i).setLedColor(getSkinnable().getLedColor(i));
         }
     }
 

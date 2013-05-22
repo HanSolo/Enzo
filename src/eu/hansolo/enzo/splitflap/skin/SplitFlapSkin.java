@@ -18,7 +18,7 @@ package eu.hansolo.enzo.splitflap.skin;
 
 import eu.hansolo.enzo.splitflap.FlipEvent;
 import eu.hansolo.enzo.splitflap.SplitFlap;
-import eu.hansolo.enzo.tools.ShapeConverter;
+import eu.hansolo.enzo.common.ShapeConverter;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

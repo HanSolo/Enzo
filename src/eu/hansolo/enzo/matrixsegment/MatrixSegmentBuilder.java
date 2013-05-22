@@ -45,7 +45,7 @@ public class MatrixSegmentBuilder<B extends MatrixSegmentBuilder<B>> extends Con
     }
 
     public final MatrixSegmentBuilder color(final Color COLOR) {
-        properties.put("color", new SimpleObjectProperty<Color>(COLOR));
+        properties.put("ledColor", new SimpleObjectProperty<Color>(COLOR));
         return this;
     }
 
@@ -150,7 +150,7 @@ public class MatrixSegmentBuilder<B extends MatrixSegmentBuilder<B>> extends Con
                 CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
             } else if ("translateY".equals(key)) {
                 CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
-            } else if ("color".equals(key)) {
+            } else if ("ledColor".equals(key)) {
                 CONTROL.setColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("character".equals(key)) {
                 CONTROL.setCharacter(((StringProperty) properties.get(key)).get());

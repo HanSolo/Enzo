@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package eu.hansolo.enzo.tools;
+package eu.hansolo.enzo.common;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

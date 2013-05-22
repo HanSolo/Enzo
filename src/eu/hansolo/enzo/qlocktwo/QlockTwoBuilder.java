@@ -42,7 +42,7 @@ public class QlockTwoBuilder<B extends QlockTwoBuilder<B>> extends ControlBuilde
     }
 
     public final QlockTwoBuilder color(final QlockTwo.QlockColor COLOR) {
-        properties.put("color", new SimpleObjectProperty<QlockTwo.QlockColor>(COLOR));
+        properties.put("ledColor", new SimpleObjectProperty<QlockTwo.QlockColor>(COLOR));
         return this;
     }
 
@@ -142,7 +142,7 @@ public class QlockTwoBuilder<B extends QlockTwoBuilder<B>> extends ControlBuilde
                 CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
             } else if ("translateY".equals(key)) {
                 CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
-            } else if ("color".equals(key)) {
+            } else if ("ledColor".equals(key)) {
                 CONTROL.setColor(((ObjectProperty<QlockTwo.QlockColor>) properties.get(key)).get());
             } else if ("language".equals(key)) {
                 CONTROL.setLanguage(((ObjectProperty<QlockTwo.Language>) properties.get(key)).get());

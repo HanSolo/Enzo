@@ -346,7 +346,7 @@ public class QlockTwo extends Control {
     }
     public final ObjectProperty<QlockColor> colorProperty() {
         if (null == color) {
-            color = new SimpleObjectProperty<>(this, "color", _color);
+            color = new SimpleObjectProperty<>(this, "ledColor", _color);
         }
         return color;
     }

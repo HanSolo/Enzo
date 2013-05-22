@@ -16,7 +16,7 @@
 
 package eu.hansolo.enzo.touchables.pushbutton;
 
-import eu.hansolo.enzo.tools.Util;
+import eu.hansolo.enzo.common.Util;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;

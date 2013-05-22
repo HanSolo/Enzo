@@ -53,7 +53,7 @@ public class PushButtonBuilder<B extends PushButtonBuilder<B>> extends ControlBu
     }
 
     public PushButtonBuilder color(final Color COLOR) {
-        properties.put("color", new SimpleObjectProperty<>(COLOR));
+        properties.put("ledColor", new SimpleObjectProperty<>(COLOR));
         return this;
     }
 
@@ -125,7 +125,7 @@ public class PushButtonBuilder<B extends PushButtonBuilder<B>> extends ControlBu
                 CONTROL.setStatus(((ObjectProperty<PushButton.Status>) properties.get(key)).get());
             } else if ("toggleEnabled".equals(key)) {
                 CONTROL.setToggleEnabled(((BooleanProperty) properties.get(key)).get());
-            } else if ("color".equals(key)) {
+            } else if ("ledColor".equals(key)) {
                 CONTROL.setColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("minWidth".equals(key)) {
                 CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());

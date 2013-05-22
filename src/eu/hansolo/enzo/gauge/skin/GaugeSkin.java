@@ -16,9 +16,9 @@
 
 package eu.hansolo.enzo.gauge.skin;
 
+import eu.hansolo.enzo.common.ShapeConverter;
 import eu.hansolo.enzo.gauge.Gauge;
 import eu.hansolo.enzo.gauge.Section;
-import eu.hansolo.enzo.tools.ShapeConverter;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -78,9 +78,9 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     // ******************** Constructors **************************************
     public GaugeSkin(Gauge gauge) {
         super(gauge);
-        pane          = new Pane();
-        angleStep     = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
-        timeline      = new Timeline();
+        pane             = new Pane();
+        angleStep        = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
+        timeline         = new Timeline();
         init();
         initGraphics();
         registerListeners();
@@ -280,7 +280,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                 CTX.setFont(Font.font("Verdana", FontWeight.NORMAL, 0.04 * size));
                 CTX.setTextAlign(TextAlignment.CENTER);
                 CTX.setTextBaseline(VPos.CENTER);
-                CTX.setFill(getSkinnable().getTickMarkFill());
+                CTX.setFill(getSkinnable().getTickLabelFill());
                 CTX.fillText(Integer.toString((int) counter), textPoint.getX(), textPoint.getY());
                 CTX.restore();
             } else if (getSkinnable().getMinorTickSpace() % 2 != 0 && counter % 5 == 0) {
