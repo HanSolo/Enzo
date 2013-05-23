@@ -42,7 +42,7 @@ public class Demo extends Application {
         for (int y = 0 ; y < 20 ; y++) {
             for (int x = 0 ; x < 40 ; x++) {
                 pane.add(LedBuilder.create()
-                                   .color(Color.rgb(RND.nextInt(255), RND.nextInt(255), RND.nextInt(255)))
+                                   .ledColor(Color.rgb(RND.nextInt(255), RND.nextInt(255), RND.nextInt(255)))
                                    .frameVisible(false)
                                    .interval(500_000_000l)
                                    .blink(true)

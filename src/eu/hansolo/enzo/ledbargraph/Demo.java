@@ -41,7 +41,7 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = LedBargraphBuilder.create()
-                                    .ledType(Led.Type.ROUND)
+                                    .ledType(Led.LedType.ROUND)
                                     .ledSize(32)
                                     .build();
         lastTimerCall = System.nanoTime();

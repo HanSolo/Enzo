@@ -319,7 +319,7 @@ public class Led extends Control {
     }
     public final ObjectProperty<LedColor> colorProperty() {
         if (null == color) {
-            color = new SimpleObjectProperty<>(this, "color", _color);
+            color = new SimpleObjectProperty<>(this, "ledColor", _color);
         }
         return color;
     }

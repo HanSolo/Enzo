@@ -236,7 +236,7 @@ public class LedBargraphSkin extends SkinBase<LedBargraph> implements Skin<LedBa
 
     private final void setLedTypes() {
         for (Led led : ledList) {
-            led.setType(getSkinnable().getLedType());
+            led.setLedType(getSkinnable().getLedType());
         }
     }
 }

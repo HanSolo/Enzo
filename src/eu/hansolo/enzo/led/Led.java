@@ -17,6 +17,7 @@
 package eu.hansolo.enzo.led;
 
 import com.sun.javafx.css.converters.EnumConverter;
+import com.sun.javafx.css.converters.PaintConverter;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
@@ -24,13 +25,18 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.css.CssMetaData;
 import javafx.css.PseudoClass;
+import javafx.css.Styleable;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
 import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -40,7 +46,7 @@ import javafx.scene.paint.Color;
  * Time: 09:19
  */
 public class Led extends Control {
-    public enum Type {
+    public enum LedType {
         ROUND,
         SQUARE,
         VERTICAL,
@@ -51,48 +57,43 @@ public class Led extends Control {
         TRIANGLE_LEFT
     }
 
-    private static final PseudoClass ON_PSEUDO_CLASS = PseudoClass.getPseudoClass("on");
+    public static final String       STYLE_CLASS_RED     = "led-red";
+    public static final String       STYLE_CLASS_GREEN   = "led-green";
+    public static final String       STYLE_CLASS_BLUE    = "led-blue";
+    public static final String       STYLE_CLASS_YELLOW  = "led-yellow";
+    public static final String       STYLE_CLASS_ORANGE  = "led-orange";
+    public static final String       STYLE_CLASS_CYAN    = "led-cyan";
+    public static final String       STYLE_CLASS_MAGENTA = "led-magenta";
+    public static final String       STYLE_CLASS_PURPLE  = "led-purple";
+    public static final String       STYLE_CLASS_GRAY    = "led-gray";
 
-    public static final String STYLE_CLASS_RED     = "led-red";
-    public static final String STYLE_CLASS_GREEN   = "led-green";
-    public static final String STYLE_CLASS_BLUE    = "led-blue";
-    public static final String STYLE_CLASS_YELLOW  = "led-yellow";
-    public static final String STYLE_CLASS_ORANGE  = "led-orange";
-    public static final String STYLE_CLASS_CYAN    = "led-cyan";
-    public static final String STYLE_CLASS_MAGENTA = "led-magenta";
-    public static final String STYLE_CLASS_PURPLE  = "led-purple";
-    public static final String STYLE_CLASS_GRAY    = "led-gray";
+    public static final Color        DEFAULT_LED_COLOR   = Color.RED;
+    public static final LedType      DEFAULT_LED_TYPE    = LedType.ROUND;
 
-    private BooleanProperty       on;
-    private Color                 _color = Color.RED;
-    private ObjectProperty<Color> color;
-    private Type                  _type = Type.ROUND;
-    private ObjectProperty<Type>  type;
-    private boolean               _blink = false;
-    private BooleanProperty       blink;
-    private boolean               _frameVisible = true;
-    private BooleanProperty       frameVisible;
-    private boolean               toggle;
-    private long                  lastTimerCall;
-    private long                  _interval = 500_000_000l;
-    private LongProperty          interval;
-    private AnimationTimer        timer;
+    private static final PseudoClass ON_PSEUDO_CLASS     = PseudoClass.getPseudoClass("on");
+
+    // CSS pseudo classes
+    private BooleanProperty         on;
+
+    // CSS styleable properties
+    private ObjectProperty<Paint>   ledColor;
+    private ObjectProperty<LedType> ledType;
+
+    // Properties
+    private boolean                 _blink = false;
+    private BooleanProperty         blink;
+    private boolean                 _frameVisible = true;
+    private BooleanProperty         frameVisible;
+    private boolean                 toggle;
+    private long                    lastTimerCall;
+    private long                    _interval = 500_000_000l;
+    private LongProperty            interval;
+    private AnimationTimer          timer;
 
 
     // ******************** Constructors **************************************
     public Led() {
         getStyleClass().add("led");
-        on = new BooleanPropertyBase(false) {
-            @Override protected void invalidated() {
-                pseudoClassStateChanged(ON_PSEUDO_CLASS, get());
-            }
-            @Override public Object getBean() {
-                return this;
-            }
-            @Override public String getName() {
-                return "on";
-            }
-        };
         toggle        = false;
         lastTimerCall = System.nanoTime();
         timer         = new AnimationTimer() {
@@ -109,62 +110,20 @@ public class Led extends Control {
 
     // ******************** Methods *******************************************
     public final boolean isOn() {
-        return on.get();
+        return null == on ? false : on.get();
     }
     public final void setOn(final boolean ON) {
-        on.set(ON);
+        onProperty().set(ON);
     }
     public final BooleanProperty onProperty() {
-        return on;
-    }
-
-    public final Color getColor() {
-        return (null == color) ? _color : color.get();
-    }
-    public final void setColor(final Color COLOR) {
-        if (null == color) {
-            _color = COLOR;
-        } else {
-            color.set(COLOR);
-        }
-    }
-    public ObjectProperty colorProperty() {
-        if (null == color) {
-            color = new SimpleObjectProperty<>(this, "color", _color);
-        }
-        return color;
-    }
-
-    public final Type getType() {
-        return (null == type) ? _type : type.get();
-    }
-    public final void setType(final Type TYPE) {
-        if (null == type) {
-            _type = TYPE;
-        } else {
-            type.set(TYPE);
-        }
-    }
-
-    private final CssMetaData<Led, Type> TYPE = new CssMetaData<Led, Type>("-led-type", new EnumConverter<Type>(Type.class)) {
-        @Override public boolean isSettable(Led led) {
-            return null == led.type || !led.type.isBound();
-        }
-
-        @Override public StyleableProperty<Type> getStyleableProperty(Led led) {
-            return (StyleableProperty) led.typeProperty();
-        }
-    };
-
-    public final ObjectProperty<Type> typeProperty() {
-        if (null == type) {
-            type = new StyleableObjectProperty<Type>(_type) {
-                @Override public CssMetaData getCssMetaData() { return TYPE; }
+        if (null == on) {
+            on = new BooleanPropertyBase(false) {
+                @Override protected void invalidated() { pseudoClassStateChanged(ON_PSEUDO_CLASS, get()); }
                 @Override public Object getBean() { return this; }
-                @Override public String getName() { return "type";}
+                @Override public String getName() { return "on"; }
             };
         }
-        return type;
+        return on;
     }
 
     public final boolean isBlinking() {
@@ -225,14 +184,42 @@ public class Led extends Control {
         return frameVisible;
     }
 
-    /* Problems
-    final static List<CssMetaData> metaData = new ArrayList<CssMetaData> (Control.getClassCssMetaData());
-    Collections.addAll(metaData, TYPE);
 
-    private static final List<CssMetaData> CSS_META_DATA = Collections.unmodifiableList(metaData);
-    public static List<CssMetaData> getClassCssMetaData() { return CSS_META_DATA; }
-    @Override public List<CssMetaData> getCssMetaData() { return getClassCssMetaData(); }
-    */
+    // ******************** CSS Stylable Properties ***************************
+    public final Paint getLedColor() {
+        return null == ledColor ? DEFAULT_LED_COLOR : ledColor.get();
+    }
+    public final void setLedColor(Paint value) {
+        ledColorProperty().set(value);
+    }
+    public final ObjectProperty<Paint> ledColorProperty() {
+        if (null == ledColor) {
+            ledColor = new StyleableObjectProperty<Paint>(DEFAULT_LED_COLOR) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.LED_COLOR; }
+                @Override public Object getBean() { return Led.this; }
+                @Override public String getName() { return "ledColor"; }
+            };
+        }
+        return ledColor;
+    }
+
+    public final LedType getLedType() {
+        return null == ledType ? DEFAULT_LED_TYPE : ledType.get();
+    }
+    public final void setLedType(final LedType TYPE) {
+        ledTypeProperty().set(TYPE);
+    }
+    public final ObjectProperty<LedType> ledTypeProperty() {
+        if (null == ledType) {
+            ledType = new StyleableObjectProperty<LedType>(DEFAULT_LED_TYPE) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.LED_TYPE; }
+                @Override public Object getBean() { return Led.this; }
+                @Override public String getName() { return "ledType";}
+            };
+        }
+        return ledType;
+    }
+
 
     // ******************** Utility Methods ***********************************
     public static long clamp(final long MIN, final long MAX, final long VALUE) {
@@ -245,6 +232,59 @@ public class Led extends Control {
     // ******************** Style related *************************************
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource("led.css").toExternalForm();
+    }
+
+    private static class StyleableProperties {
+        private static final CssMetaData<Led, Paint> LED_COLOR =
+            new CssMetaData<Led, Paint>("-led-color", PaintConverter.getInstance(), DEFAULT_LED_COLOR) {
+
+                @Override public boolean isSettable(Led led) {
+                    return null == led.ledColor || !led.ledColor.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Led led) {
+                    return (StyleableProperty) led.ledColorProperty();
+                }
+
+                @Override public Color getInitialValue(Led led) {
+                    return led.DEFAULT_LED_COLOR;
+                }
+            };
+
+        private static final CssMetaData<Led, LedType> LED_TYPE =
+            new CssMetaData<Led, LedType>("-led-type", new EnumConverter<>(LedType.class)) {
+
+                @Override public boolean isSettable(Led led) {
+                    return null == led.ledType || !led.ledType.isBound();
+                }
+
+                @Override public StyleableProperty<LedType> getStyleableProperty(Led led) {
+                    return (StyleableProperty) led.ledTypeProperty();
+                }
+
+                @Override public LedType getInitialValue(Led led) {
+                    return led.DEFAULT_LED_TYPE;
+                }
+            };
+
+
+        private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
+        static {
+            final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
+            Collections.addAll(styleables,
+                LED_COLOR,
+                LED_TYPE
+            );
+            STYLEABLES = Collections.unmodifiableList(styleables);
+        }
+    }
+
+    public static List<CssMetaData<? extends Styleable, ?>> getClassCssMetaData() {
+        return StyleableProperties.STYLEABLES;
+    }
+
+    @Override public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
+        return getClassCssMetaData();
     }
 }
 

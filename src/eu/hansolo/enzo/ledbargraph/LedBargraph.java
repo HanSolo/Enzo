@@ -42,8 +42,8 @@ import java.util.List;
  * Time: 11:29
  */
 public class LedBargraph extends Control {
-    private Led.Type                    _ledType = Led.Type.ROUND;
-    private ObjectProperty<Led.Type>    ledType;
+    private Led.LedType _ledType = Led.LedType.ROUND;
+    private ObjectProperty<Led.LedType>    ledType;
     private boolean                     _frameVisible = false;
     private BooleanProperty             frameVisible;
     private double                      _ledSize = 16;
@@ -77,17 +77,17 @@ public class LedBargraph extends Control {
 
 
     // ******************** Methods *******************************************
-    public final Led.Type getLedType() {
+    public final Led.LedType getLedType() {
         return null == ledType ? _ledType : ledType.get();
     }
-    public final void setLedType(final Led.Type LED_TYPE) {
+    public final void setLedType(final Led.LedType LED_TYPE) {
         if (null == ledType) {
             _ledType = LED_TYPE;
         } else {
             ledType.set(LED_TYPE);
         }
     }
-    public final ObjectProperty<Led.Type> ledTypeProperty() {
+    public final ObjectProperty<Led.LedType> ledTypeProperty() {
         if (null == ledType) {
             ledType = new SimpleObjectProperty<>(this, "ledType", _ledType);
         }

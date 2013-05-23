@@ -17,7 +17,6 @@
 package eu.hansolo.enzo.led.skin;
 
 import eu.hansolo.enzo.led.Led;
-import eu.hansolo.enzo.tools.Util;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
@@ -93,7 +92,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
 
         glow = DropShadowBuilder.create()
                                 .input(innerShadow)
-                                .color(getSkinnable().getColor())
+                                .color((Color) getSkinnable().getLedColor())
                                 .radius(20)
                                 .blurType(BlurType.GAUSSIAN)
                                 .build();
@@ -112,8 +111,8 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private void registerListeners() {
         getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
         getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
-        getSkinnable().typeProperty().addListener(observable -> { handleControlPropertyChanged("TYPE"); });
+        getSkinnable().ledColorProperty().addListener(observable -> { handleControlPropertyChanged("STYLE"); });
+        getSkinnable().ledTypeProperty().addListener(observable -> { handleControlPropertyChanged("STYLE"); });
         getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("ON"); } );
         getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
     }
@@ -123,13 +122,10 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
-        } else if ("COLOR".equals(PROPERTY)) {
-            getSkinnable().setStyle("-fx-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
-            glow.setColor(getSkinnable().getColor());
+        } else if ("STYLE".equals(PROPERTY)) {
+            changeStyle();
         } else if ("ON".equals(PROPERTY)) {
             led.setEffect(getSkinnable().isOn() ? glow : innerShadow);
-        } else if ("TYPE".equals(PROPERTY)) {
-            changeStyle();
         } else if ("FRAME_VISIBLE".equals(PROPERTY)) {
             frame.setVisible(getSkinnable().isFrameVisible());
         }
@@ -167,7 +163,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
 
     // ******************** Private Methods ***********************************
     private void changeStyle() {
-        switch(getSkinnable().getType()) {
+        switch(getSkinnable().getLedType()) {
             case HORIZONTAL:
                 frame.getStyleClass().setAll("horizontal-frame");
                 led.getStyleClass().setAll("horizontal");
@@ -211,8 +207,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                 break;
         }
 
-        getSkinnable().setStyle("-led-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
-
+        glow.setColor((Color) getSkinnable().getLedColor());
         led.setEffect(getSkinnable().isOn() ? glow : innerShadow);
 
         resize();
@@ -224,7 +219,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
             innerShadow.setRadius(0.07 * size);
             glow.setRadius(0.36 * size);
 
-            switch(getSkinnable().getType()) {
+            switch(getSkinnable().getLedType()) {
                 case HORIZONTAL:
                     frame.setPrefSize(size, 0.56 * size);
                     frame.setTranslateY(0.22 * size);

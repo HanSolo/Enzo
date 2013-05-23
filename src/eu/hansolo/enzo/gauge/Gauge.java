@@ -625,11 +625,8 @@ public class Gauge extends Control {
     public final ObjectProperty<Paint> tickLabelFillProperty() {
         if (null == tickLabelFill) {
             tickLabelFill = new StyleableObjectProperty<Paint>(Color.BLACK) {
-
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.TICK_LABEL_FILL; }
-
                 @Override public Object getBean() { return Gauge.this; }
-
                 @Override public String getName() { return "tickLabelFill"; }
             };
         }

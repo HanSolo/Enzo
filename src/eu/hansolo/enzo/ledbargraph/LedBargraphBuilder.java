@@ -58,8 +58,8 @@ public class LedBargraphBuilder<B extends LedBargraphBuilder<B>> extends Control
         return this;
     }
 
-    public final LedBargraphBuilder ledType(final Led.Type LED_TYPE) {
-        properties.put("ledType", new SimpleObjectProperty<Led.Type>(LED_TYPE));
+    public final LedBargraphBuilder ledType(final Led.LedType LED_TYPE) {
+        properties.put("ledType", new SimpleObjectProperty<Led.LedType>(LED_TYPE));
         return this;
     }
 
@@ -178,7 +178,7 @@ public class LedBargraphBuilder<B extends LedBargraphBuilder<B>> extends Control
             } else if ("noOfLeds".equals(key)) {
                 CONTROL.setNoOfLeds(((IntegerProperty) properties.get(key)).get());
             } else if ("ledType".equals(key)) {
-                CONTROL.setLedType(((ObjectProperty<Led.Type>) properties.get(key)).get());
+                CONTROL.setLedType(((ObjectProperty<Led.LedType>) properties.get(key)).get());
             } else if ("orientation".equals(key)) {
                 CONTROL.setOrientation(((ObjectProperty<Orientation>) properties.get(key)).get());
             } else if ("peakValueVisible".equals(key)) {

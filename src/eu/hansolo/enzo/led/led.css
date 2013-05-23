@@ -19,8 +19,8 @@
 ************************************************************/
 .led {
     -fx-skin     : "eu.hansolo.enzo.led.skin.LedSkin";
-    -led-color   : #ff0000;
-    -led-type    : "round";
+    -led-type    : round;   /* round, square, vertical, horizontal, triangle-up, triangle-right, triangle-down, triangle-left */
+    -led-color   : red;
     -frame-color : linear-gradient(from 14% 14% to 84% 84%,
                                    rgba(20, 20, 20, 0.64706) 0%,
                                    rgba(20, 20, 20, 0.64706) 15%,

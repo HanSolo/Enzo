@@ -58,13 +58,13 @@ public class LedBuilder<B extends LedBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
-    public final LedBuilder color(final Color COLOR) {
-        properties.put("color", new SimpleObjectProperty<Color>(COLOR));
+    public final LedBuilder ledColor(final Color LED_COLOR) {
+        properties.put("ledColor", new SimpleObjectProperty<>(LED_COLOR));
         return this;
     }
 
-    public final LedBuilder type(final Led.Type TYPE) {
-        properties.put("type", new SimpleObjectProperty<Led.Type>(TYPE));
+    public final LedBuilder ledType(final Led.LedType LED_TYPE) {
+        properties.put("ledType", new SimpleObjectProperty<>(LED_TYPE));
         return this;
     }
 
@@ -171,10 +171,10 @@ public class LedBuilder<B extends LedBuilder<B>> extends ControlBuilder<B> {
                 CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             } else if("styleClass".equals(key)) {
                 CONTROL.getStyleClass().setAll("led", ((StringProperty) properties.get(key)).get());
-            } else if ("color".equals(key)) {
-                CONTROL.setColor(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if ("type".equals(key)) {
-                CONTROL.setType(((ObjectProperty<Led.Type>) properties.get(key)).get());
+            } else if ("ledColor".equals(key)) {
+                CONTROL.setLedColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("ledType".equals(key)) {
+                CONTROL.setLedType(((ObjectProperty<Led.LedType>) properties.get(key)).get());
             } else if ("on".equals(key)) {
                 CONTROL.setOn(((BooleanProperty) properties.get(key)).get());
             } else if ("blink".equals(key)) {

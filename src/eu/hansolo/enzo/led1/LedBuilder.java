@@ -59,7 +59,7 @@ public class LedBuilder<B extends LedBuilder<B>> extends ControlBuilder<B> { //i
     }
 
     public final LedBuilder color(final Led.LedColor COLOR) {
-        properties.put("color", new SimpleObjectProperty<Led.LedColor>(COLOR));
+        properties.put("ledColor", new SimpleObjectProperty<Led.LedColor>(COLOR));
         return this;
     }
 
@@ -155,7 +155,7 @@ public class LedBuilder<B extends LedBuilder<B>> extends ControlBuilder<B> { //i
                 CONTROL.setBlinking(((BooleanProperty) properties.get(key)).get());
             } else if("frameVisible".equals(key)) {
                 CONTROL.setFrameVisible(((BooleanProperty) properties.get(key)).get());
-            } else if("color".equals(key)) {
+            } else if("ledColor".equals(key)) {
                 CONTROL.setColor(((ObjectProperty<Led.LedColor>) properties.get(key)).get());
             } else if ("interval".equals(key)) {
                 CONTROL.setInterval(((LongProperty) properties.get(key)).get());
