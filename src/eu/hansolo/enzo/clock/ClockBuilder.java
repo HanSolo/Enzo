@@ -23,7 +23,6 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.control.ControlBuilder;
 
 import java.util.HashMap;
 
@@ -34,7 +33,7 @@ import java.util.HashMap;
  * Date: 09.01.13
  * Time: 09:02
  */
-public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
+public class ClockBuilder<B extends ClockBuilder<B>> {
     private HashMap<String, Property> properties = new HashMap<>();
 
 
@@ -73,62 +72,62 @@ public class ClockBuilder<B extends ClockBuilder<B>> extends ControlBuilder<B> {
         return this;
     }
 
-    @Override public final B prefWidth(final double PREF_WIDTH) {
+    public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B)this;
     }
-    @Override public final B prefHeight(final double PREF_HEIGHT) {
+    public final B prefHeight(final double PREF_HEIGHT) {
         properties.put("prefHeight", new SimpleDoubleProperty(PREF_HEIGHT));
         return (B)this;
     }
 
-    @Override public final B minWidth(final double MIN_WIDTH) {
+    public final B minWidth(final double MIN_WIDTH) {
         properties.put("minWidth", new SimpleDoubleProperty(MIN_WIDTH));
         return (B)this;
     }
-    @Override public final B minHeight(final double MIN_HEIGHT) {
+    public final B minHeight(final double MIN_HEIGHT) {
         properties.put("minHeight", new SimpleDoubleProperty(MIN_HEIGHT));
         return (B)this;
     }
 
-    @Override public final B maxWidth(final double MAX_WIDTH) {
+    public final B maxWidth(final double MAX_WIDTH) {
         properties.put("maxWidth", new SimpleDoubleProperty(MAX_WIDTH));
         return (B)this;
     }
-    @Override public final B maxHeight(final double MAX_HEIGHT) {
+    public final B maxHeight(final double MAX_HEIGHT) {
         properties.put("maxHeight", new SimpleDoubleProperty(MAX_HEIGHT));
         return (B)this;
     }
 
-    @Override public final B scaleX(final double SCALE_X) {
+    public final B scaleX(final double SCALE_X) {
         properties.put("scaleX", new SimpleDoubleProperty(SCALE_X));
         return (B)this;
     }
-    @Override public final B scaleY(final double SCALE_Y) {
+    public final B scaleY(final double SCALE_Y) {
         properties.put("scaleY", new SimpleDoubleProperty(SCALE_Y));
         return (B)this;
     }
 
-    @Override public final B layoutX(final double LAYOUT_X) {
+    public final B layoutX(final double LAYOUT_X) {
         properties.put("layoutX", new SimpleDoubleProperty(LAYOUT_X));
         return (B)this;
     }
-    @Override public final B layoutY(final double LAYOUT_Y) {
+    public final B layoutY(final double LAYOUT_Y) {
         properties.put("layoutY", new SimpleDoubleProperty(LAYOUT_Y));
         return (B)this;
     }
 
-    @Override public final B translateX(final double TRANSLATE_X) {
+    public final B translateX(final double TRANSLATE_X) {
         properties.put("translateX", new SimpleDoubleProperty(TRANSLATE_X));
         return (B)this;
     }
-    @Override public final B translateY(final double TRANSLATE_Y) {
+    public final B translateY(final double TRANSLATE_Y) {
         properties.put("translateY", new SimpleDoubleProperty(TRANSLATE_Y));
         return (B)this;
     }
 
 
-    @Override public final Clock build() {
+    public final Clock build() {
         final Clock CONTROL = new Clock();
         for (String key : properties.keySet()) {
             if("prefWidth".equals(key)) {
