@@ -47,9 +47,9 @@ public class Demo extends Application {
     @Override public void init() {
         control = new Gauge();
         //control.setStyle("-tick-label-fill: blue;");
-        control.setSections(new Section(40, 60, Color.rgb(151, 252, 151)),
-                            new Section(60, 80, Color.rgb(240, 230, 140)),
-                            new Section(80, 100, Color.rgb(255, 160, 122)));
+        control.setSections(new Section(40, 60),
+                            new Section(60, 80),
+                            new Section(80, 100));
         control.setMajorTickSpace(20);
         //control.setMinorTickSpace(2);
 
@@ -80,7 +80,6 @@ public class Demo extends Application {
         stage.show();
 
         control.setTouchMode(true);
-
         timer.start();
 
         calcNoOfNodes(scene.getRoot());

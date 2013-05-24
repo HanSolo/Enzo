@@ -1,4 +1,7 @@
 .gauge {
     -tick-mark-fill : blue;
     -tick-label-fill: red;
+    -section0-fill  : rgba(0, 200, 0, 0.5);
+    -section1-fill  : rgba(255, 255, 0, 0.5);
+    -section2-fill  : rgba(255, 0, 0, 0.5);
 }

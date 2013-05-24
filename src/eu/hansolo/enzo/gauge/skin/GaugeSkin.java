@@ -54,25 +54,25 @@ import java.util.Locale;
  * Time: 17:18
  */
 public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
-    private static final double            PREFERRED_WIDTH  = 200;
-    private static final double            PREFERRED_HEIGHT = 200;
-    private static final double            MINIMUM_WIDTH    = 50;
-    private static final double            MINIMUM_HEIGHT   = 50;
-    private static final double            MAXIMUM_WIDTH    = 1024;
-    private static final double            MAXIMUM_HEIGHT   = 1024;
-    private double                         size;
-    private Pane                           pane;
-    private Region                         background;
-    private Canvas                         ticksAndSectionsCanvas;
-    private GraphicsContext                ticksAndSections;
-    private Region                         needle;
-    private Region                         needleHighlight;
-    private Rotate                         needleRotate;
-    private Region                         knob;
-    private Text                           title;
-    private Text                           unit;
-    private double                         angleStep;
-    private Timeline                       timeline;
+    private static final double PREFERRED_WIDTH  = 200;
+    private static final double PREFERRED_HEIGHT = 200;
+    private static final double MINIMUM_WIDTH    = 50;
+    private static final double MINIMUM_HEIGHT   = 50;
+    private static final double MAXIMUM_WIDTH    = 1024;
+    private static final double MAXIMUM_HEIGHT   = 1024;
+    private double              size;
+    private Pane                pane;
+    private Region              background;
+    private Canvas              ticksAndSectionsCanvas;
+    private GraphicsContext     ticksAndSections;
+    private Region              needle;
+    private Region              needleHighlight;
+    private Rotate              needleRotate;
+    private Region              knob;
+    private Text                title;
+    private Text                unit;
+    private double              angleStep;
+    private Timeline            timeline;
 
 
     // ******************** Constructors **************************************
@@ -164,6 +164,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         getSkinnable().angleRangeProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE_RANGE"); });
         getSkinnable().numberFormatProperty().addListener(observable -> { handleControlPropertyChanged("RECALC"); });
         needleRotate.angleProperty().addListener(observable -> { handleControlPropertyChanged("LCD"); });
+
     }
 
 
@@ -298,11 +299,23 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         final double xy     = (size - 0.8 * size) / 2;
         final double wh     = size * 0.8;
         final double OFFSET = 90 - getSkinnable().getStartAngle();
-        for (final Section section : getSkinnable().getSections()) {
-            final double ANGLE_START   = section.getStart() * angleStep;
-            final double ANGLE_EXTEND  = (section.getStop() - section.getStart()) * angleStep;
+        for (int i = 0 ; i < getSkinnable().getSections().size() ; i++) {
+            final Section SECTION      = getSkinnable().getSections().get(i);
+            final double  ANGLE_START  = SECTION.getStart() * angleStep;
+            final double  ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
             CTX.save();
-            CTX.setStroke(section.getColor());
+            switch(i) {
+                case 0: CTX.setStroke(getSkinnable().getSection0Fill()); break;
+                case 1: CTX.setStroke(getSkinnable().getSection1Fill()); break;
+                case 2: CTX.setStroke(getSkinnable().getSection2Fill()); break;
+                case 3: CTX.setStroke(getSkinnable().getSection3Fill()); break;
+                case 4: CTX.setStroke(getSkinnable().getSection4Fill()); break;
+                case 5: CTX.setStroke(getSkinnable().getSection5Fill()); break;
+                case 6: CTX.setStroke(getSkinnable().getSection6Fill()); break;
+                case 7: CTX.setStroke(getSkinnable().getSection7Fill()); break;
+                case 8: CTX.setStroke(getSkinnable().getSection8Fill()); break;
+                case 9: CTX.setStroke(getSkinnable().getSection9Fill()); break;
+            }
             CTX.setLineWidth(size * 0.07);
             CTX.setLineCap(StrokeLineCap.BUTT);
             CTX.strokeArc(xy, xy, wh, wh, -(OFFSET + ANGLE_START), -ANGLE_EXTEND, ArcType.OPEN);

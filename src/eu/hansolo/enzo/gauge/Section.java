@@ -1,13 +1,9 @@
 package eu.hansolo.enzo.gauge;
 
-import eu.hansolo.enzo.common.Util;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
 
@@ -20,30 +16,24 @@ public class Section {
     private DoubleProperty        start;
     private double                _stop;
     private DoubleProperty        stop;
-    private Color                 _color;
-    private ObjectProperty<Color> color;
-    private String                _cssColor;
-    private StringProperty        cssColor;
     private String                _text;
     private StringProperty        text;
 
 
     // ******************** Constructors **************************************
     public Section() {
-        this(-1, -1, Color.RED, "");
+        this(-1, -1, "");
     }
-    public Section(final double START, final double STOP, final Color COLOR) {
-        this(START, STOP, COLOR, "");
+    public Section(final double START, final double STOP) {
+        this(START, STOP, "");
     }
-    public Section(final double START, final double STOP, final Color COLOR, final String TEXT) {
-        this(START, STOP, COLOR, COLOR.brighter().brighter(), null, null, TEXT);
+    public Section(final double START, final double STOP, final String TEXT) {
+        this(START, STOP, null, null, TEXT);
     }
-    public Section(final double START, final double STOP, final Color COLOR, final Color HIGHLIGHT_COLOR, final Shape SECTION_AREA, final Shape FILLED_AREA, final String TEXT) {
+    public Section(final double START, final double STOP, final Shape SECTION_AREA, final Shape FILLED_AREA, final String TEXT) {
         _start                     = START;
         _stop                      = STOP;
-        _color                     = COLOR;
         _text                      = TEXT;
-        _cssColor                  = Util.colorToCss(COLOR);
     }
 
 
@@ -82,41 +72,6 @@ public class Section {
         return stop;
     }
 
-    public final Color getColor() {
-        return null == color ? _color : color.get();
-    }
-    public final void setColor(final Color COLOR) {
-        if (null == color) {
-            _color = COLOR;
-        } else {
-            color.set(COLOR);
-        }
-        setCssColor(COLOR);
-    }
-    public final ObjectProperty<Color> colorProperty() {
-        if (null == color) {
-            color = new SimpleObjectProperty<>(this, "color", _color);
-        }
-        return color;
-    }
-
-    public final String getCssColor() {
-        return null == cssColor ? _cssColor : cssColor.get();
-    }
-    private void setCssColor(final Color COLOR) {
-        if (null == cssColor) {
-            _cssColor = Util.colorToCss(COLOR);
-        } else {
-            cssColor.set(Util.colorToCss(COLOR));
-        }
-    }
-    public final StringProperty cssColorProperty() {
-        if (null == cssColor) {
-            cssColor = new SimpleStringProperty(this, "cssColor", _cssColor);
-        }
-        return cssColor;
-    }
-
     public final String getText() {
         return null == text ? _text : text.get();
     }
@@ -141,7 +96,6 @@ public class Section {
     public boolean equals(final Section SECTION) {
         return (Double.compare(SECTION.getStart(), getStart()) == 0 &&
                 Double.compare(SECTION.getStop(), getStop()) == 0 &&
-                SECTION.getColor().equals(getColor()) &&
                 SECTION.getText().equals(getText()));
     }
 
@@ -151,7 +105,6 @@ public class Section {
         NAME.append("text      : ").append(text.get()).append("\n");
         NAME.append("startValue: ").append(start.get()).append("\n");
         NAME.append("stopValue : ").append(stop.get()).append("\n");
-        NAME.append("ledColor     : ").append(color.toString()).append("\n\n");
         return NAME.toString();
     }
 }

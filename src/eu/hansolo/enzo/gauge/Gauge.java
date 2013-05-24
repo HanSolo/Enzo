@@ -57,6 +57,18 @@ import java.util.Locale;
  * Time: 17:10
  */
 public class Gauge extends Control {
+    // Default section colors
+    private static final Color                   DEFAULT_SECTION_0_FILL      = Color.rgb(0, 0, 178, 0.5);
+    private static final Color                   DEFAULT_SECTION_1_FILL      = Color.rgb(0, 128, 255, 0.5);
+    private static final Color                   DEFAULT_SECTION_2_FILL      = Color.rgb(  0, 255, 255, 0.5);
+    private static final Color                   DEFAULT_SECTION_3_FILL      = Color.rgb(  0, 255,  64, 0.5);
+    private static final Color                   DEFAULT_SECTION_4_FILL      = Color.rgb(128, 255,   0, 0.5);
+    private static final Color                   DEFAULT_SECTION_5_FILL      = Color.rgb(255, 255,   0, 0.5);
+    private static final Color                   DEFAULT_SECTION_6_FILL      = Color.rgb(255, 191,   0, 0.5);
+    private static final Color                   DEFAULT_SECTION_7_FILL      = Color.rgb(255, 128,   0, 0.5);
+    private static final Color                   DEFAULT_SECTION_8_FILL      = Color.rgb(255,  64,   0, 0.5);
+    private static final Color                   DEFAULT_SECTION_9_FILL      = Color.rgb(255,   0,   0, 0.5);
+
     // CSS Pseudo classes
     private static final PseudoClass             TOUCH_MODE_PSEUDO_CLASS     = PseudoClass.getPseudoClass("touch-mode");
 
@@ -142,10 +154,19 @@ public class Gauge extends Control {
     // CSS styleable properties
     private ObjectProperty<Paint>                tickMarkFill;
     private ObjectProperty<Paint>                tickLabelFill;
+    private ObjectProperty<Paint>                section0Fill;
+    private ObjectProperty<Paint>                section1Fill;
+    private ObjectProperty<Paint>                section2Fill;
+    private ObjectProperty<Paint>                section3Fill;
+    private ObjectProperty<Paint>                section4Fill;
+    private ObjectProperty<Paint>                section5Fill;
+    private ObjectProperty<Paint>                section6Fill;
+    private ObjectProperty<Paint>                section7Fill;
+    private ObjectProperty<Paint>                section8Fill;
+    private ObjectProperty<Paint>                section9Fill;
 
     // CSS pseudo classes
     private BooleanProperty                      touchMode;
-
 
     // ******************** Constructors **************************************
     public Gauge() {
@@ -633,6 +654,176 @@ public class Gauge extends Control {
         return tickLabelFill;
     }
 
+    public final Paint getSection0Fill() {
+        return null == section0Fill ? DEFAULT_SECTION_0_FILL : section0Fill.get();
+    }
+    public final void setSection0Fill(Paint value) {
+        section0FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section0FillProperty() {
+        if (null == section0Fill) {
+            section0Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_0_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_0_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section0Fill"; }
+            };
+        }
+        return section0Fill;
+    }
+
+    public final Paint getSection1Fill() {
+        return null == section1Fill ? DEFAULT_SECTION_1_FILL : section1Fill.get();
+    }
+    public final void setSection1Fill(Paint value) {
+        section1FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section1FillProperty() {
+        if (null == section1Fill) {
+            section1Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_1_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_1_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section1Fill"; }
+            };
+        }
+        return section1Fill;
+    }
+
+    public final Paint getSection2Fill() {
+        return null == section2Fill ? DEFAULT_SECTION_2_FILL : section2Fill.get();
+    }
+    public final void setSection2Fill(Paint value) {
+        section2FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section2FillProperty() {
+        if (null == section2Fill) {
+            section2Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_2_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_2_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section2Fill"; }
+            };
+        }
+        return section2Fill;
+    }
+
+    public final Paint getSection3Fill() {
+        return null == section3Fill ? DEFAULT_SECTION_3_FILL : section3Fill.get();
+    }
+    public final void setSection3Fill(Paint value) {
+        section3FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section3FillProperty() {
+        if (null == section3Fill) {
+            section3Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_3_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_3_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section3Fill"; }
+            };
+        }
+        return section3Fill;
+    }
+
+    public final Paint getSection4Fill() {
+        return null == section4Fill ? DEFAULT_SECTION_4_FILL : section4Fill.get();
+    }
+    public final void setSection4Fill(Paint value) {
+        section4FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section4FillProperty() {
+        if (null == section4Fill) {
+            section4Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_4_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_4_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section4Fill"; }
+            };
+        }
+        return section4Fill;
+    }
+
+    public final Paint getSection5Fill() {
+        return null == section5Fill ? DEFAULT_SECTION_5_FILL : section5Fill.get();
+    }
+    public final void setSection5Fill(Paint value) {
+        section5FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section5FillProperty() {
+        if (null == section5Fill) {
+            section5Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_5_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_5_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section5Fill"; }
+            };
+        }
+        return section5Fill;
+    }
+
+    public final Paint getSection6Fill() {
+        return null == section6Fill ? DEFAULT_SECTION_6_FILL : section6Fill.get();
+    }
+    public final void setSection6Fill(Paint value) {
+        section6FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section6FillProperty() {
+        if (null == section6Fill) {
+            section6Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_6_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_6_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section6Fill"; }
+            };
+        }
+        return section6Fill;
+    }
+
+    public final Paint getSection7Fill() {
+        return null == section7Fill ? DEFAULT_SECTION_7_FILL : section7Fill.get();
+    }
+    public final void setSection7Fill(Paint value) {
+        section7FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section7FillProperty() {
+        if (null == section7Fill) {
+            section7Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_7_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_7_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section7Fill"; }
+            };
+        }
+        return section7Fill;
+    }
+
+    public final Paint getSection8Fill() {
+        return null == section8Fill ? DEFAULT_SECTION_8_FILL : section8Fill.get();
+    }
+    public final void setSection8Fill(Paint value) {
+        section8FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section8FillProperty() {
+        if (null == section8Fill) {
+            section8Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_8_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_8_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section8Fill"; }
+            };
+        }
+        return section8Fill;
+    }
+
+    public final Paint getSection9Fill() {
+        return null == section9Fill ? DEFAULT_SECTION_9_FILL : section9Fill.get();
+    }
+    public final void setSection9Fill(Paint value) {
+        section9FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> section9FillProperty() {
+        if (null == section9Fill) {
+            section9Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_9_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_9_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "section9Fill"; }
+            };
+        }
+        return section9Fill;
+    }
+
 
     // ******************** CSS Pseudo Classes ********************************
     public final boolean isTouchMode() {
@@ -683,12 +874,182 @@ public class Gauge extends Control {
                 }
             };
 
+        private static final CssMetaData<Gauge, Paint> SECTION_0_FILL =
+            new CssMetaData<Gauge, Paint>("-section0-fill", PaintConverter.getInstance(), DEFAULT_SECTION_0_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section0Fill || !gauge.section0Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section0FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection0Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_1_FILL =
+            new CssMetaData<Gauge, Paint>("-section1-fill", PaintConverter.getInstance(), DEFAULT_SECTION_1_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section1Fill || !gauge.section1Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section1FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection1Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_2_FILL =
+            new CssMetaData<Gauge, Paint>("-section2-fill", PaintConverter.getInstance(), DEFAULT_SECTION_2_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section2Fill || !gauge.section2Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section2FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection2Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_3_FILL =
+            new CssMetaData<Gauge, Paint>("-section3-fill", PaintConverter.getInstance(), DEFAULT_SECTION_3_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section3Fill || !gauge.section3Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section3FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection3Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_4_FILL =
+            new CssMetaData<Gauge, Paint>("-section4-fill", PaintConverter.getInstance(), DEFAULT_SECTION_4_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section4Fill || !gauge.section4Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section4FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection4Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_5_FILL =
+            new CssMetaData<Gauge, Paint>("-section5-fill", PaintConverter.getInstance(), DEFAULT_SECTION_5_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section5Fill || !gauge.section5Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section5FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection5Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_6_FILL =
+            new CssMetaData<Gauge, Paint>("-section6-fill", PaintConverter.getInstance(), DEFAULT_SECTION_6_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section6Fill || !gauge.section6Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section6FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection6Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_7_FILL =
+            new CssMetaData<Gauge, Paint>("-section7-fill", PaintConverter.getInstance(), DEFAULT_SECTION_7_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section7Fill || !gauge.section7Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section7FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection7Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_8_FILL =
+            new CssMetaData<Gauge, Paint>("-section8-fill", PaintConverter.getInstance(), DEFAULT_SECTION_8_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section8Fill || !gauge.section8Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section8FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection8Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> SECTION_9_FILL =
+            new CssMetaData<Gauge, Paint>("-section9-fill", PaintConverter.getInstance(), DEFAULT_SECTION_9_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.section9Fill || !gauge.section9Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.section9FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getSection9Fill();
+                }
+            };
+
         private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
                                TICK_MARK_FILL,
-                               TICK_LABEL_FILL
+                               TICK_LABEL_FILL,
+                               SECTION_0_FILL,
+                               SECTION_1_FILL,
+                               SECTION_2_FILL,
+                               SECTION_3_FILL,
+                               SECTION_4_FILL,
+                               SECTION_5_FILL,
+                               SECTION_6_FILL,
+                               SECTION_7_FILL,
+                               SECTION_8_FILL,
+                               SECTION_9_FILL
             );
             STYLEABLES = Collections.unmodifiableList(styleables);
         }

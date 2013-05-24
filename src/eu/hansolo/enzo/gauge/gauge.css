@@ -26,6 +26,16 @@
     -shape          : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
     -tick-mark-fill : black;
     -tick-label-fill: black;
+    -section0-fill  : rgba(0, 0, 178, 0.5);
+    -section1-fill  : rgba(0, 128, 255, 0.5);
+    -section2-fill  : rgba(0, 255, 255, 0.5);
+    -section3-fill  : rgba(0, 255, 64, 0.5);
+    -section4-fill  : rgba(128, 255, 0, 0.5);
+    -section5-fill  : rgba(255, 255, 0, 0.5);
+    -section6-fill  : rgba(255, 191, 0, 0.5);
+    -section7-fill  : rgba(255, 128, 0, 0.5);
+    -section8-fill  : rgba(255, 64, 0, 0.5);
+    -section9-fill  : rgba(255, 0, 0, 0.5);
 }
 
 
@@ -110,4 +120,69 @@
 
 .gauge .unit {
     -fx-fill: ladder(-background, white 49%, #888888 50%);
+}
+
+
+/******************************************************************************
+ * GAUGE sections                                                             *
+ *****************************************************************************/
+.gauge .section0 {
+    -fx-fill: -section0-fill;
+}
+.gauge:highlighted .section0 {
+    -fx-fill: derive(-section0-fill, 30%);
+}
+.gauge .section1 {
+    -fx-fill: -section1-fill;
+}
+.gauge:highlighted .section1 {
+    -fx-fill: derive(-section1-fill, 30%);
+}
+.gauge .section2 {
+    -fx-fill: -section2-fill;
+}
+.gauge:highlighted .section2 {
+    -fx-fill: derive(-section2-fill, 30%);
+}
+.gauge .section3 {
+    -fx-fill: -section3-fill;
+}
+.gauge:highlighted .section3 {
+    -fx-fill: derive(-section3-fill, 30%);
+}
+.gauge .section4 {
+    -fx-fill: -section4-fill;
+}
+.gauge:highlighted .section4 {
+    -fx-fill: derive(-section4-fill, 30%);
+}
+.gauge .section5 {
+    -fx-fill: -section5-fill;
+}
+.gauge:highlighted .section5 {
+    -fx-fill: derive(-section5-fill, 30%);
+}
+.gauge .section6 {
+    -fx-fill: -section6-fill;
+}
+.gauge:highlighted .section6 {
+    -fx-fill: derive(-section6-fill, 30%);
+}
+.gauge .section7 {
+    -fx-fill: -section7-fill;
+}
+.gauge:highlighted .section7 {
+    -fx-fill: derive(-section7-fill, 30%);
+}
+.gauge .section8 {
+    -fx-fill: -section8-fill;
+}
+.gauge:highlighted .section8 {
+    -fx-fill: derive(-section8-fill, 30%);
+}
+.gauge .section9 {
+    -fx-fill: -section9-fill;
+}
+.gauge:highlighted .section9 {
+    -fx-fill: derive(-section9-fill, 30%);
 }
