@@ -81,7 +81,7 @@
     -fx-scale-shape      : true;
     -fx-shape            : "M 3.0313 0 L 0 74 L 7.9688 74 L 4.9375 0 L 3.0313 0 Z";
 }
-.gauge:touched .needle-standard {
+.gauge:touch-mode .needle-standard {
     -needle: green;
 }
 

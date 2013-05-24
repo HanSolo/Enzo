@@ -58,7 +58,7 @@ import java.util.Locale;
  */
 public class Gauge extends Control {
     // CSS Pseudo classes
-    private static final PseudoClass             TOUCHED_PSEUDO_CLASS = PseudoClass.getPseudoClass("touched");
+    private static final PseudoClass             TOUCH_MODE_PSEUDO_CLASS     = PseudoClass.getPseudoClass("touch-mode");
 
     public static enum NeedleType {
         STANDARD("needle-standard");
@@ -144,7 +144,7 @@ public class Gauge extends Control {
     private ObjectProperty<Paint>                tickLabelFill;
 
     // CSS pseudo classes
-    private BooleanProperty                      touched;
+    private BooleanProperty                      touchMode;
 
 
     // ******************** Constructors **************************************
@@ -635,21 +635,21 @@ public class Gauge extends Control {
 
 
     // ******************** CSS Pseudo Classes ********************************
-    public final boolean isTouched() {
-        return null == touched ? false : touched.get();
+    public final boolean isTouchMode() {
+        return null == touchMode ? false : touchMode.get();
     }
-    public final void setTouched(final boolean TOUCHED) {
-        touchedProperty().set(TOUCHED);
+    public final void setTouchMode(final boolean TOUCH_MODE) {
+        touchModeProperty().set(TOUCH_MODE);
     }
-    public final BooleanProperty touchedProperty() {
-        if (null == touched) {
-            touched = new BooleanPropertyBase(false) {
-                @Override protected void invalidated() { pseudoClassStateChanged(TOUCHED_PSEUDO_CLASS, get()); }
+    public final BooleanProperty touchModeProperty() {
+        if (null == touchMode) {
+            touchMode = new BooleanPropertyBase(false) {
+                @Override protected void invalidated() { pseudoClassStateChanged(TOUCH_MODE_PSEUDO_CLASS, get()); }
                 @Override public Object getBean() { return this; }
-                @Override public String getName() { return "touched"; }
+                @Override public String getName() { return "touchMode"; }
             };
         }
-        return touched;
+        return touchMode;
     }
 
 

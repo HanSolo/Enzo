@@ -79,7 +79,7 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        control.setTouched(true);
+        control.setTouchMode(true);
 
         timer.start();
 
