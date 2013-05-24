@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.led.skin;
 
+import eu.hansolo.enzo.common.Util;
 import eu.hansolo.enzo.led.Led;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
@@ -81,6 +82,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         frame.setVisible(getSkinnable().isFrameVisible());
 
         led = new Region();
+        led.setStyle("-led-color: " + Util.colorToCss((Color) getSkinnable().getLedColor()) + ";");
 
         innerShadow = new InnerShadow();
         innerShadow.setColor(Color.rgb(0, 0, 0, 0.65));
@@ -107,7 +109,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private void registerListeners() {
         getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
         getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().ledColorProperty().addListener(observable -> { handleControlPropertyChanged("STYLE"); });
+        getSkinnable().ledColorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
         getSkinnable().ledTypeProperty().addListener(observable -> { handleControlPropertyChanged("STYLE"); });
         getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("ON"); } );
         getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
@@ -118,6 +120,9 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     protected void handleControlPropertyChanged(final String PROPERTY) {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
+        } else if ("COLOR".equals(PROPERTY)) {
+            led.setStyle("-led-color: " + Util.colorToCss((Color) getSkinnable().getLedColor()) + ";");
+            changeStyle();
         } else if ("STYLE".equals(PROPERTY)) {
             changeStyle();
         } else if ("ON".equals(PROPERTY)) {

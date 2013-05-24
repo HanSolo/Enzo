@@ -67,8 +67,8 @@ public class Led extends Control {
     public static final String       STYLE_CLASS_PURPLE  = "led-purple";
     public static final String       STYLE_CLASS_GRAY    = "led-gray";
 
-    public static final Color        DEFAULT_LED_COLOR   = Color.RED;
     public static final LedType      DEFAULT_LED_TYPE    = LedType.ROUND;
+    public static final Color        DEFAULT_LED_COLOR   = Color.RED;
 
     private static final PseudoClass ON_PSEUDO_CLASS     = PseudoClass.getPseudoClass("on");
 
@@ -247,7 +247,7 @@ public class Led extends Control {
                 }
 
                 @Override public Color getInitialValue(Led led) {
-                    return led.DEFAULT_LED_COLOR;
+                    return (Color) led.getLedColor();
                 }
             };
 
@@ -263,7 +263,7 @@ public class Led extends Control {
                 }
 
                 @Override public LedType getInitialValue(Led led) {
-                    return led.DEFAULT_LED_TYPE;
+                    return led.getLedType();
                 }
             };
 

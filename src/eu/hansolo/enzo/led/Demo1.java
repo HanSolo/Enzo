@@ -20,6 +20,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -39,7 +40,7 @@ public class Demo1 extends Application {
     @Override public void init() {
         led                = LedBuilder.create()
                                        //.ledType(Led.LedType.TRIANGLE_RIGHT)
-                                       //.ledColor(Color.MAGENTA)
+                                       .ledColor(Color.MAGENTA)
                                        .prefWidth(64)
                                        .prefHeight(64)
                                        .build();
