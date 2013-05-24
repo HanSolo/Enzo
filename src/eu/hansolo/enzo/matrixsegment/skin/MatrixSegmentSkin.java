@@ -22,12 +22,9 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.effect.InnerShadowBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.RegionBuilder;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -171,244 +168,347 @@ public class MatrixSegmentSkin extends SkinBase<MatrixSegment> implements Skin<M
         background = new Region();
         background.getStyleClass().setAll("background");
 
-        backgroundInnerShadow = InnerShadowBuilder.create()
-                                                  .offsetY(-1.0)
-                                                  .radius(1.0 / 310.0 * PREFERRED_WIDTH)
-                                                  .color(Color.rgb(0, 0, 0, 0.65))
-                                                  .blurType(BlurType.TWO_PASS_BOX)
-                                                  .build();
-        backgroundInnerHighlight = InnerShadowBuilder.create()
-                                                     .offsetY(1.0)
-                                                     .radius(1.0 / 310.0 * PREFERRED_WIDTH)
-                                                     .color(Color.rgb(200, 200, 200, 0.65))
-                                                     .blurType(BlurType.TWO_PASS_BOX)
-                                                     .input(backgroundInnerShadow)
-                                                     .build();
+        backgroundInnerShadow = new InnerShadow();
+        backgroundInnerShadow.setOffsetY(-1.0);
+        backgroundInnerShadow.setRadius(1.0 / 310.0 * PREFERRED_WIDTH);
+        backgroundInnerShadow.setColor(Color.rgb(0, 0, 0, 0.65));
+        backgroundInnerShadow.setBlurType(BlurType.TWO_PASS_BOX);
+
+        backgroundInnerHighlight = new InnerShadow();
+        backgroundInnerHighlight.setOffsetY(1.0);
+        backgroundInnerHighlight.setRadius(1.0 / 310.0 * PREFERRED_WIDTH);
+        backgroundInnerHighlight.setColor(Color.rgb(200, 200, 200, 0.65));
+        backgroundInnerHighlight.setBlurType(BlurType.TWO_PASS_BOX);
+        backgroundInnerHighlight.setInput(backgroundInnerShadow);
+
         background.setEffect(backgroundInnerHighlight);
 
-        dotInnerShadow = InnerShadowBuilder.create()
-                                           .radius(0.025 * PREFERRED_WIDTH)
-                                           .color(Color.rgb(0, 0, 0, 0.65))
-                                           .blurType(BlurType.TWO_PASS_BOX)
-                                           .build();
+        dotInnerShadow = new InnerShadow();
+        dotInnerShadow.setRadius(0.025 * PREFERRED_WIDTH);
+        dotInnerShadow.setColor(Color.rgb(0, 0, 0, 0.65));
+        dotInnerShadow.setBlurType(BlurType.TWO_PASS_BOX);
 
-        glow = DropShadowBuilder.create()
-                                .input(dotInnerShadow)
-                                .radius(0.032 * PREFERRED_WIDTH)
-                                .color(getSkinnable().getColor())
-                                .blurType(BlurType.TWO_PASS_BOX)
-                                .build();
+        glow = new DropShadow();
+        glow.setInput(dotInnerShadow);
+        glow.setRadius(0.032 * PREFERRED_WIDTH);
+        glow.setColor(getSkinnable().getColor());
+        glow.setBlurType(BlurType.TWO_PASS_BOX);
 
         // dot definitions
-        d57 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d57 = new Region();
+        d57.getStyleClass().add("dot-off");
+        d57.setEffect(dotInnerShadow);
         dotMap.put(Dot.D57, d57);
 
-        d47 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d47 = new Region();
+        d47.getStyleClass().add("dot-off");
+        d47.setEffect(dotInnerShadow);
         dotMap.put(Dot.D47, d47);
 
-        d37 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d37 = new Region();
+        d37.getStyleClass().add("dot-off");
+        d37.setEffect(dotInnerShadow);
         dotMap.put(Dot.D37, d37);
 
-        d27 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d27 = new Region();
+        d27.getStyleClass().add("dot-off");
+        d27.setEffect(dotInnerShadow);
         dotMap.put(Dot.D27, d27);
 
-        d17 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d17 = new Region();
+        d17.getStyleClass().add("dot-off");
+        d17.setEffect(dotInnerShadow);
         dotMap.put(Dot.D17, d17);
 
-        d56 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d56 = new Region();
+        d56.getStyleClass().add("dot-off");
+        d56.setEffect(dotInnerShadow);
         dotMap.put(Dot.D56, d56);
 
-        d46 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d46 = new Region();
+        d46.getStyleClass().add("dot-off");
+        d46.setEffect(dotInnerShadow);
         dotMap.put(Dot.D46, d46);
 
-        d36 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d36 = new Region();
+        d36.getStyleClass().add("dot-off");
+        d36.setEffect(dotInnerShadow);
         dotMap.put(Dot.D36, d36);
 
-        d26 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d26 = new Region();
+        d26.getStyleClass().add("dot-off");
+        d26.setEffect(dotInnerShadow);
         dotMap.put(Dot.D26, d26);
 
-        d16 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d16 = new Region();
+        d16.getStyleClass().add("dot-off");
+        d16.setEffect(dotInnerShadow);
         dotMap.put(Dot.D16, d16);
 
-        d55 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d55 = new Region();
+        d55.getStyleClass().add("dot-off");
+        d55.setEffect(dotInnerShadow);
         dotMap.put(Dot.D55, d55);
 
-        d45 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d45 = new Region();
+        d45.getStyleClass().add("dot-off");
+        d45.setEffect(dotInnerShadow);
         dotMap.put(Dot.D45, d45);
 
-        d35 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d35 = new Region();
+        d35.getStyleClass().add("dot-off");
+        d35.setEffect(dotInnerShadow);
         dotMap.put(Dot.D35, d35);
 
-        d25 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d25 = new Region();
+        d25.getStyleClass().add("dot-off");
+        d25.setEffect(dotInnerShadow);
         dotMap.put(Dot.D25, d25);
 
-        d15 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d15 = new Region();
+        d15.getStyleClass().add("dot-off");
+        d15.setEffect(dotInnerShadow);
         dotMap.put(Dot.D15, d15);
 
-        d54 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d54 = new Region();
+        d54.getStyleClass().add("dot-off");
+        d54.setEffect(dotInnerShadow);
         dotMap.put(Dot.D54, d54);
 
-        d44 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d44 = new Region();
+        d44.getStyleClass().add("dot-off");
+        d44.setEffect(dotInnerShadow);
         dotMap.put(Dot.D44, d44);
 
-        d34 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d34 = new Region();
+        d34.getStyleClass().add("dot-off");
+        d34.setEffect(dotInnerShadow);
         dotMap.put(Dot.D34, d34);
 
-        d24 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d24 = new Region();
+        d24.getStyleClass().add("dot-off");
+        d24.setEffect(dotInnerShadow);
         dotMap.put(Dot.D24, d24);
 
-        d14 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d14 = new Region();
+        d14.getStyleClass().add("dot-off");
+        d14.setEffect(dotInnerShadow);
         dotMap.put(Dot.D14, d14);
 
-        d53 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d53 = new Region();
+        d53.getStyleClass().add("dot-off");
+        d53.setEffect(dotInnerShadow);
         dotMap.put(Dot.D53, d53);
 
-        d43 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d43 = new Region();
+        d43.getStyleClass().add("dot-off");
+        d43.setEffect(dotInnerShadow);
         dotMap.put(Dot.D43, d43);
 
-        d33 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d33 = new Region();
+        d33.getStyleClass().add("dot-off");
+        d33.setEffect(dotInnerShadow);
         dotMap.put(Dot.D33, d33);
 
-        d23 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d23 = new Region();
+        d23.getStyleClass().add("dot-off");
+        d23.setEffect(dotInnerShadow);
         dotMap.put(Dot.D23, d23);
 
-        d13 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d13 = new Region();
+        d13.getStyleClass().add("dot-off");
+        d13.setEffect(dotInnerShadow);
         dotMap.put(Dot.D13, d13);
 
-        d52 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d52 = new Region();
+        d52.getStyleClass().add("dot-off");
+        d52.setEffect(dotInnerShadow);
         dotMap.put(Dot.D52, d52);
 
-        d42 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d42 = new Region();
+        d42.getStyleClass().add("dot-off");
+        d42.setEffect(dotInnerShadow);
         dotMap.put(Dot.D42, d42);
 
-        d32 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d32 = new Region();
+        d32.getStyleClass().add("dot-off");
+        d32.setEffect(dotInnerShadow);
         dotMap.put(Dot.D32, d32);
 
-        d22 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d22 = new Region();
+        d22.getStyleClass().add("dot-off");
+        d22.setEffect(dotInnerShadow);
         dotMap.put(Dot.D22, d22);
 
-        d12 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d12 = new Region();
+        d12.getStyleClass().add("dot-off");
+        d12.setEffect(dotInnerShadow);
         dotMap.put(Dot.D12, d12);
 
-        d51 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d51 = new Region();
+        d51.getStyleClass().add("dot-off");
+        d51.setEffect(dotInnerShadow);
         dotMap.put(Dot.D51, d51);
 
-        d41 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d41 = new Region();
+        d41.getStyleClass().add("dot-off");
+        d41.setEffect(dotInnerShadow);
         dotMap.put(Dot.D41, d41);
 
-        d31 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d31 = new Region();
+        d31.getStyleClass().add("dot-off");
+        d31.setEffect(dotInnerShadow);
         dotMap.put(Dot.D31, d31);
 
-        d21 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d21 = new Region();
+        d21.getStyleClass().add("dot-off");
+        d21.setEffect(dotInnerShadow);
         dotMap.put(Dot.D21, d21);
 
-        d11 = RegionBuilder.create().styleClass("dot-off").effect(dotInnerShadow).build();
+        d11 = new Region();
+        d11.getStyleClass().add("dot-off");
+        d11.setEffect(dotInnerShadow);
         dotMap.put(Dot.D11, d11);
 
         // highlight definitions
-        d57h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d57h = new Region();
+        d57h.getStyleClass().add("dot-highlight");
         highlights.add(d57h);
 
-        d47h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d47h = new Region();
+        d47h.getStyleClass().add("dot-highlight");
         highlights.add(d47h);
 
-        d37h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d37h = new Region();
+        d37h.getStyleClass().add("dot-highlight");
         highlights.add(d37h);
 
-        d27h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d27h = new Region();
+        d27h.getStyleClass().add("dot-highlight");
         highlights.add(d27h);
 
-        d17h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d17h = new Region();
+        d17h.getStyleClass().add("dot-highlight");
         highlights.add(d17h);
 
-        d56h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d56h = new Region();
+        d56h.getStyleClass().add("dot-highlight");
         highlights.add(d56h);
 
-        d46h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d46h = new Region();
+        d46h.getStyleClass().add("dot-highlight");
         highlights.add(d46h);
 
-        d36h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d36h = new Region();
+        d36h.getStyleClass().add("dot-highlight");
         highlights.add(d36h);
 
-        d26h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d26h = new Region();
+        d26h.getStyleClass().add("dot-highlight");
         highlights.add(d26h);
 
-        d16h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d16h = new Region();
+        d16h.getStyleClass().add("dot-highlight");
         highlights.add(d16h);
 
-        d55h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d55h = new Region();
+        d55h.getStyleClass().add("dot-highlight");
         highlights.add(d55h);
 
-        d45h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d45h = new Region();
+        d45h.getStyleClass().add("dot-highlight");
         highlights.add(d45h);
 
-        d35h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d35h = new Region();
+        d35h.getStyleClass().add("dot-highlight");
         highlights.add(d35h);
 
-        d25h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d25h = new Region();
+        d25h.getStyleClass().add("dot-highlight");
         highlights.add(d25h);
 
-        d15h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d15h = new Region();
+        d15h.getStyleClass().add("dot-highlight");
         highlights.add(d15h);
 
-        d54h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d54h = new Region();
+        d54h.getStyleClass().add("dot-highlight");
         highlights.add(d54h);
 
-        d44h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d44h = new Region();
+        d44h.getStyleClass().add("dot-highlight");
         highlights.add(d44h);
 
-        d34h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d34h = new Region();
+        d34h.getStyleClass().add("dot-highlight");
         highlights.add(d34h);
 
-        d24h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d24h = new Region();
+        d24h.getStyleClass().add("dot-highlight");
         highlights.add(d24h);
 
-        d14h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d14h = new Region();
+        d14h.getStyleClass().add("dot-highlight");
         highlights.add(d14h);
 
-        d53h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d53h = new Region();
+        d53h.getStyleClass().add("dot-highlight");
         highlights.add(d53h);
 
-        d43h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d43h = new Region();
+        d43h.getStyleClass().add("dot-highlight");
         highlights.add(d43h);
 
-        d33h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d33h = new Region();
+        d33h.getStyleClass().add("dot-highlight");
         highlights.add(d33h);
 
-        d23h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d23h = new Region();
+        d23h.getStyleClass().add("dot-highlight");
         highlights.add(d23h);
 
-        d13h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d13h = new Region();
+        d13h.getStyleClass().add("dot-highlight");
         highlights.add(d13h);
 
-        d52h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d52h = new Region();
+        d52h.getStyleClass().add("dot-highlight");
         highlights.add(d52h);
 
-        d42h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d42h = new Region();
+        d42h.getStyleClass().add("dot-highlight");
         highlights.add(d42h);
 
-        d32h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d32h = new Region();
+        d32h.getStyleClass().add("dot-highlight");
         highlights.add(d32h);
 
-        d22h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d22h = new Region();
+        d22h.getStyleClass().add("dot-highlight");
         highlights.add(d22h);
 
-        d12h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d12h = new Region();
+        d12h.getStyleClass().add("dot-highlight");
         highlights.add(d12h);
 
-        d51h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d51h = new Region();
+        d51h.getStyleClass().add("dot-highlight");
         highlights.add(d51h);
 
-        d41h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d41h = new Region();
+        d41h.getStyleClass().add("dot-highlight");
         highlights.add(d41h);
 
-        d31h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d31h = new Region();
+        d31h.getStyleClass().add("dot-highlight");
         highlights.add(d31h);
 
-        d21h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d21h = new Region();
+        d21h.getStyleClass().add("dot-highlight");
         highlights.add(d21h);
 
-        d11h = RegionBuilder.create().styleClass("dot-highlight").build();
+        d11h = new Region();
+        d11h.getStyleClass().add("dot-highlight");
         highlights.add(d11h);
 
         pane.getChildren().setAll(background,

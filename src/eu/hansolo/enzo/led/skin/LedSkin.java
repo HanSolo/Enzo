@@ -21,9 +21,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.effect.InnerShadowBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -84,18 +82,16 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
 
         led = new Region();
 
-        innerShadow = InnerShadowBuilder.create()
-                                        .color(Color.rgb(0, 0, 0, 0.65))
-                                        .radius(8)
-                                        .blurType(BlurType.GAUSSIAN)
-                                        .build();
+        innerShadow = new InnerShadow();
+        innerShadow.setColor(Color.rgb(0, 0, 0, 0.65));
+        innerShadow.setRadius(8);
+        innerShadow.setBlurType(BlurType.GAUSSIAN);
 
-        glow = DropShadowBuilder.create()
-                                .input(innerShadow)
-                                .color((Color) getSkinnable().getLedColor())
-                                .radius(20)
-                                .blurType(BlurType.GAUSSIAN)
-                                .build();
+        glow = new DropShadow();
+        glow.setInput(innerShadow);
+        glow.setColor((Color) getSkinnable().getLedColor());
+        glow.setRadius(20);
+        glow.setBlurType(BlurType.GAUSSIAN);
 
         highlight = new Region();
 

@@ -22,9 +22,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.effect.InnerShadowBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -97,21 +95,21 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         ledOn.getStyleClass().setAll("led", "led-on", getSkinnable().getColor().STYLE_CLASS);
         ledOn.setVisible(getSkinnable().isOn());
 
-        innerShadow = InnerShadowBuilder.create()
-                                        .offsetX(0.0)
-                                        .offsetY(0.0)
-                                        .radius(0.1 * PREFERRED_WIDTH)
-                                        .color(Color.BLACK)
-                                        .blurType(BlurType.GAUSSIAN)
-                                        .build();
-        dropShadow = DropShadowBuilder.create()
-                                      .offsetX(0.0)
-                                      .offsetY(0.0)
-                                      .radius(25.0 / 100.0 * PREFERRED_WIDTH)
-                                      .color(getSkinnable().getColor().COLOR)
-                                      .blurType(BlurType.GAUSSIAN)
-                                      .input(innerShadow)
-                                      .build();
+        innerShadow = new InnerShadow();
+        innerShadow.setOffsetX(0.0);
+        innerShadow.setOffsetY(0.0);
+        innerShadow.setRadius(0.1 * PREFERRED_WIDTH);
+        innerShadow.setColor(Color.BLACK);
+        innerShadow.setBlurType(BlurType.GAUSSIAN);
+
+        dropShadow = new DropShadow();
+        dropShadow.setOffsetX(0.0);
+        dropShadow.setOffsetY(0.0);
+        dropShadow.setRadius(25.0 / 100.0 * PREFERRED_WIDTH);
+        dropShadow.setColor(getSkinnable().getColor().COLOR);
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setInput(innerShadow);
+
         ledOn.setEffect(dropShadow);
 
         highlight = new Region();

@@ -24,9 +24,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.DropShadowBuilder;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.effect.InnerShadowBuilder;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -35,7 +33,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.shape.SVGPathBuilder;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -60,12 +57,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     private static final boolean       SCIFI_FORMAT      = false;
     private static final Color         DARK_NOISE_COLOR   = Color.rgb(100, 100, 100, 0.10);
     private static final Color         BRIGHT_NOISE_COLOR = Color.rgb(200, 200, 200, 0.05);
-    private static final DropShadow    FOREGROUND_SHADOW  = DropShadowBuilder.create()
-                                                                             .offsetX(0).offsetY(1)
-                                                                             .color(Color.rgb(0, 0, 0, 0.5))
-                                                                             .blurType(BlurType.GAUSSIAN)
-                                                                             .radius(2)
-                                                                             .build();
+    private static final DropShadow    FOREGROUND_SHADOW  = new DropShadow();
     private double                     width;
     private double                     height;
     private Pane                       pane;
@@ -117,6 +109,11 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         lcdDigitalFontSizeFactor = 1.0;
         lcdBackgroundTextBuilder = new StringBuilder();
         decBuffer                = new StringBuilder(16);
+        FOREGROUND_SHADOW.setOffsetX(0);
+        FOREGROUND_SHADOW.setOffsetY(1);
+        FOREGROUND_SHADOW.setColor(Color.rgb(0, 0, 0, 0.5));
+        FOREGROUND_SHADOW.setBlurType(BlurType.GAUSSIAN);
+        FOREGROUND_SHADOW.setRadius(2);
         init();
         initGraphics();
         registerListeners();
@@ -156,28 +153,28 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         lcdMain.getStyleClass().setAll("main");
         lcdMain.setVisible(getSkinnable().isBackgroundVisible());
 
-        lcdMainInnerShadow0 = InnerShadowBuilder.create()
-                                                .offsetX(0.0)
-                                                .offsetY(0.0)
-                                                .radius(3.0 / 132.0 * PREFERRED_WIDTH)
-                                                .color(Color.web("0xffffff80"))
-                                                .blurType(BlurType.GAUSSIAN)
-                                                .build();
-        lcdMainInnerShadow1 = InnerShadowBuilder.create()
-                                                .offsetX(0.0)
-                                                .offsetY(1.0)
-                                                .radius(2.0 / 132.0 * PREFERRED_WIDTH)
-                                                .color(Color.web("0x000000a6"))
-                                                .blurType(BlurType.GAUSSIAN)
-                                                .input(lcdMainInnerShadow0)
-                                                .build();
+        lcdMainInnerShadow0 = new InnerShadow();
+        lcdMainInnerShadow0.setOffsetX(0.0);
+        lcdMainInnerShadow0.setOffsetY(0.0);
+        lcdMainInnerShadow0.setRadius(3.0 / 132.0 * PREFERRED_WIDTH);
+        lcdMainInnerShadow0.setColor(Color.web("0xffffff80"));
+        lcdMainInnerShadow0.setBlurType(BlurType.GAUSSIAN);
+
+        lcdMainInnerShadow1 = new InnerShadow();
+        lcdMainInnerShadow1.setOffsetX(0.0);
+        lcdMainInnerShadow1.setOffsetY(1.0);
+        lcdMainInnerShadow1.setRadius(2.0 / 132.0 * PREFERRED_WIDTH);
+        lcdMainInnerShadow1.setColor(Color.web("0x000000a6"));
+        lcdMainInnerShadow1.setBlurType(BlurType.GAUSSIAN);
+        lcdMainInnerShadow1.setInput(lcdMainInnerShadow0);
+
         lcdMain.setEffect(lcdMainInnerShadow1);
 
-        lcdMainClip = SVGPathBuilder.create()
-                                    .content("M 1 5 C 1 3 3 1 5 1 C 5 1 127 1 127 1 C 129 1 131 3 131 5 " +
-                                             "C 131 5 131 43 131 43 C 131 45 129 47 127 47 C 127 47 5 47 5 47 " +
-                                             "C 3 47 1 45 1 43 C 1 43 1 5 1 5 Z")
-                                    .build();
+        lcdMainClip = new SVGPath();
+        lcdMainClip.setContent("M 1 5 C 1 3 3 1 5 1 C 5 1 127 1 127 1 C 129 1 131 3 131 5 " +
+                               "C 131 5 131 43 131 43 C 131 45 129 47 127 47 C 127 47 5 47 5 47 " +
+                               "C 3 47 1 45 1 43 C 1 43 1 5 1 5 Z");
+
         crystalImage      = createNoiseImage(132, 48, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8);
         lcdCrystalOverlay = new ImageView(crystalImage);
         lcdCrystalOverlay.setClip(lcdMainClip);

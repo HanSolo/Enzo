@@ -33,7 +33,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.RotateBuilder;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -116,7 +115,9 @@ public class SplitFlap extends Region {
         nextSelectionIndex     = 1;
         previousSelectionIndex = selectedSet.size() - 1;
         pane                   = new Pane();
-        rotateFlap             = RotateBuilder.create().axis(Rotate.X_AXIS).angle(0).build();
+        rotateFlap             = new Rotate();
+        rotateFlap.setAxis(Rotate.X_AXIS);
+        rotateFlap.setAngle(0);
         flipTime               = Duration.millis(100);
         flipping               = false;
         angleStep              = 180.0 / ((flipTime.toMillis() * 1_000_000) / (MIN_FLIP_TIME));

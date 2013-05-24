@@ -38,7 +38,6 @@ import javafx.scene.shape.QuadCurve;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.shape.SVGPathBuilder;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.VLineTo;
 import javafx.scene.text.Text;
@@ -89,7 +88,9 @@ public class ShapeConverter {
     }
 
     public static SVGPath shapeToSvgPath(final Shape SHAPE) {
-        return SVGPathBuilder.create().content(shapeToSvgString(SHAPE)).build();
+        SVGPath svgPath = new SVGPath();
+        svgPath.setContent(shapeToSvgString(SHAPE));
+        return svgPath;
     }
 
     public static Path svgPathToPath(final SVGPath SVG_PATH) {

@@ -31,7 +31,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadowBuilder;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -126,13 +126,14 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         knob = new Region();
         knob.getStyleClass().setAll("knob");
 
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.rgb(0, 0, 0, 0.25));
+        dropShadow.setRadius(3);
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setOffsetY(3);
+
         Group shadowGroup = new Group(needle, needleHighlight, knob);
-        shadowGroup.setEffect(DropShadowBuilder.create()
-                                               .color(Color.rgb(0, 0, 0, 0.25))
-                                               .radius(3)
-                                               .blurType(BlurType.GAUSSIAN)
-                                               .offsetY(3)
-                                               .build());
+        shadowGroup.setEffect(dropShadow);
 
         title = new Text(getSkinnable().getTitle());
         title.setTextOrigin(VPos.CENTER);

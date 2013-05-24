@@ -16,9 +16,9 @@
 
 package eu.hansolo.enzo.splitflap.skin;
 
+import eu.hansolo.enzo.common.ShapeConverter;
 import eu.hansolo.enzo.splitflap.FlipEvent;
 import eu.hansolo.enzo.splitflap.SplitFlap;
-import eu.hansolo.enzo.common.ShapeConverter;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -36,7 +36,6 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.effect.InnerShadowBuilder;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -51,7 +50,6 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.RotateBuilder;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -108,7 +106,9 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         nextSelectionIndex    = currentSelectionIndex + 1 > getSkinnable().getSelectedSet().size() ? 0 : currentSelectionIndex + 1;
         aspectRatio           = PREFERRED_HEIGHT / PREFERRED_WIDTH;
         pane                  = new Pane();
-        rotateFlap            = RotateBuilder.create().axis(Rotate.X_AXIS).angle(0).build();
+        rotateFlap            = new Rotate();
+        rotateFlap.setAxis(Rotate.X_AXIS);
+        rotateFlap.setAngle(0);
         flapHeight            = 0.49206349206349204 * PREFERRED_HEIGHT;
         timeline              = new Timeline();
         init();
@@ -152,33 +152,31 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         fixtureLeft.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-dark" : "fixture");
         fixtureLeft.setVisible(getSkinnable().isWithFixture());
 
-        innerShadow = InnerShadowBuilder.create()
-                                        .offsetY(-0.01 * flapHeight)
-                                        .radius(0.01 * flapHeight)
-                                        .color(Color.rgb(0, 0, 0, 0.65))
-                                        .blurType(BlurType.TWO_PASS_BOX)
-                                        .build();
-        innerHighlight = InnerShadowBuilder.create()
-                                           .offsetY(0.01 * flapHeight)
-                                           .radius(0.01 * flapHeight)
-                                           .color(Color.rgb(255, 255, 255, 0.65))
-                                           .blurType(BlurType.TWO_PASS_BOX)
-                                           .input(innerShadow)
-                                           .build();
+        innerShadow = new InnerShadow();
+        innerShadow.setOffsetY(-0.01 * flapHeight);
+        innerShadow.setRadius(0.01 * flapHeight);
+        innerShadow.setColor(Color.rgb(0, 0, 0, 0.65));
+        innerShadow.setBlurType(BlurType.TWO_PASS_BOX);
 
-        reversedInnerShadow = InnerShadowBuilder.create()
-                                                .offsetY(-0.01 * 0.4920634921 * height)
-                                                .radius(0.01 * 0.4920634921 * height)
-                                                .color(Color.rgb(0, 0, 0, 0.65))
-                                                .blurType(BlurType.TWO_PASS_BOX)
-                                                .build();
-        reversedInnerHighlight = InnerShadowBuilder.create()
-                                                   .offsetY(0.01 * 0.4920634921 * height)
-                                                   .radius(0.01 * 0.4920634921 * height)
-                                                   .color(Color.rgb(255, 255, 255, 0.65))
-                                                   .blurType(BlurType.TWO_PASS_BOX)
-                                                   .input(innerShadow)
-                                                   .build();
+        innerHighlight = new InnerShadow();
+        innerHighlight.setOffsetY(0.01 * flapHeight);
+        innerHighlight.setRadius(0.01 * flapHeight);
+        innerHighlight.setColor(Color.rgb(255, 255, 255, 0.65));
+        innerHighlight.setBlurType(BlurType.TWO_PASS_BOX);
+        innerHighlight.setInput(innerShadow);
+
+        reversedInnerShadow = new InnerShadow();
+        reversedInnerShadow.setOffsetY(-0.01 * 0.4920634921 * height);
+        reversedInnerShadow.setRadius(0.01 * 0.4920634921 * height);
+        reversedInnerShadow.setColor(Color.rgb(0, 0, 0, 0.65));
+        reversedInnerShadow.setBlurType(BlurType.TWO_PASS_BOX);
+
+        reversedInnerHighlight = new InnerShadow();
+        reversedInnerHighlight.setOffsetY(0.01 * 0.4920634921 * height);
+        reversedInnerHighlight.setRadius(0.01 * 0.4920634921 * height);
+        reversedInnerHighlight.setColor(Color.rgb(255, 255, 255, 0.65));
+        reversedInnerHighlight.setBlurType(BlurType.TWO_PASS_BOX);
+        reversedInnerHighlight.setInput(innerShadow);
 
         getSkinnable().setStyle("-flap-base: " + colorToCss(getSkinnable().getFlapColor()) + ";");
 

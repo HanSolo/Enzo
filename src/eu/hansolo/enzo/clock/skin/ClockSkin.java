@@ -29,8 +29,8 @@ import javafx.scene.Group;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadowBuilder;
-import javafx.scene.effect.InnerShadowBuilder;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -211,22 +211,18 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             ticks.add(tick);
         }
 
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.rgb(0, 0, 0, 0.65));
+        dropShadow.setRadius(1.5);
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setOffsetY(1);
+
         tickMarkGroup = new Group();
-        tickMarkGroup.setEffect(DropShadowBuilder.create()
-                                             .color(Color.rgb(0, 0, 0, 0.65))
-                                             .radius(1.5)
-                                             .blurType(BlurType.GAUSSIAN)
-                                             .offsetY(1)
-                                             .build());
+        tickMarkGroup.setEffect(dropShadow);
         tickMarkGroup.getChildren().setAll(ticks);
 
         tickLabelGroup = new Group();
-        tickLabelGroup.setEffect(DropShadowBuilder.create()
-                                                  .color(Color.rgb(0, 0, 0, 0.65))
-                                                  .radius(1.5)
-                                                  .blurType(BlurType.GAUSSIAN)
-                                                  .offsetY(1)
-                                                  .build());
+        tickLabelGroup.setEffect(dropShadow);
         tickLabelGroup.getChildren().setAll(tickLabels);
         tickLabelGroup.setVisible(Clock.Design.BRAUN == getSkinnable().getDesign());
 
@@ -268,13 +264,14 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         }
         minutePointerFlour.getTransforms().setAll(minuteAngle);
 
+        DropShadow pointerShadow = new DropShadow();
+        pointerShadow.setColor(Color.rgb(0, 0, 0, 0.45));
+        pointerShadow.setRadius(12);
+        pointerShadow.setBlurType(BlurType.GAUSSIAN);
+        pointerShadow.setOffsetY(6);
+
         pointerGroup = new Group();
-        pointerGroup.setEffect(DropShadowBuilder.create()
-                                                .color(Color.rgb(0, 0, 0, 0.45))
-                                                .radius(12)
-                                                .blurType(BlurType.GAUSSIAN)
-                                                .offsetY(6)
-                                                .build());
+        pointerGroup.setEffect(pointerShadow);
         pointerGroup.getChildren().setAll(minutePointerFlour, minutePointer, hourPointerFlour, hourPointer);
 
         secondPointer = new Region();
@@ -287,25 +284,28 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         }
         secondPointer.getTransforms().setAll(secondAngle);
 
+        InnerShadow secondPointerInnerShadow = new InnerShadow();
+        secondPointerInnerShadow.setColor(Color.rgb(0, 0, 0, 0.3));
+        secondPointerInnerShadow.setRadius(1);
+        secondPointerInnerShadow.setBlurType(BlurType.GAUSSIAN);
+        secondPointerInnerShadow.setOffsetY(-1);
+
+        InnerShadow secondPointerInnerHighlight = new InnerShadow();
+        secondPointerInnerHighlight.setColor(Color.rgb(255, 255, 255, 0.3));
+        secondPointerInnerHighlight.setRadius(1);
+        secondPointerInnerHighlight.setBlurType(BlurType.GAUSSIAN);
+        secondPointerInnerHighlight.setOffsetY(1);
+        secondPointerInnerHighlight.setInput(secondPointerInnerShadow);
+
+        DropShadow secondPointerShadow = new DropShadow();
+        secondPointerShadow.setColor(Color.rgb(0, 0, 0, 0.45));
+        secondPointerShadow.setRadius(12);
+        secondPointerShadow.setBlurType(BlurType.GAUSSIAN);
+        secondPointerShadow.setOffsetY(6);
+        secondPointerShadow.setInput(secondPointerInnerHighlight);
+
         secondPointerGroup = new Group();
-        secondPointerGroup.setEffect(DropShadowBuilder.create()
-                                                      .color(Color.rgb(0, 0, 0, 0.45))
-                                                      .radius(12)
-                                                      .blurType(BlurType.GAUSSIAN)
-                                                      .offsetY(6)
-                                                      .input(InnerShadowBuilder.create()
-                                                                               .color(Color.rgb(255, 255, 255, 0.3))
-                                                                               .radius(1)
-                                                                               .blurType(BlurType.GAUSSIAN)
-                                                                               .offsetY(1)
-                                                                               .input(InnerShadowBuilder.create()
-                                                                                                        .color(Color.rgb(0, 0, 0, 0.3))
-                                                                                                        .radius(1)
-                                                                                                        .blurType(BlurType.GAUSSIAN)
-                                                                                                        .offsetY(-1)
-                                                                                                        .build())
-                                                                               .build())
-                                                      .build());
+        secondPointerGroup.setEffect(secondPointerShadow);
         secondPointerGroup.getChildren().setAll(secondPointer);
         secondPointerGroup.setVisible(getSkinnable().isSecondPointerVisible());
 

@@ -16,20 +16,18 @@
 
 package eu.hansolo.enzo.qlocktwo.skin;
 
+import eu.hansolo.enzo.common.BrushedMetalPaint;
 import eu.hansolo.enzo.qlocktwo.QlockTwo;
 import eu.hansolo.enzo.qlocktwo.QlockWord;
-import eu.hansolo.enzo.common.BrushedMetalPaint;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.LabelBuilder;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.RegionBuilder;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -157,29 +155,34 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
         stepX      = PREFERRED_WIDTH * 0.072;
         stepY      = PREFERRED_WIDTH * 0.08;
         font       = Font.loadFont(getClass().getResourceAsStream("/resources/din.otf"), PREFERRED_WIDTH * 0.048);
-        background = RegionBuilder.create().styleClass("background", getSkinnable().getColor().STYLE_CLASS).build();
+        background = new Region();
+        background.getStyleClass().addAll("background", getSkinnable().getColor().STYLE_CLASS);
 
         stainlessBackground.setImage(texture.getImage(PREFERRED_WIDTH, PREFERRED_HEIGHT));
         stainlessBackground.setVisible(getSkinnable().getColor() == QlockTwo.QlockColor.STAINLESS_STEEL);
 
-        p1 = RegionBuilder.create().styleClass("dot-off").build();
-        p2 = RegionBuilder.create().styleClass("dot-off").build();
-        p3 = RegionBuilder.create().styleClass("dot-off").build();
-        p4 = RegionBuilder.create().styleClass("dot-off").build();
+        p1 = new Region();
+        p1.getStyleClass().add("dot-off");
+        p2 = new Region();
+        p2.getStyleClass().add("dot-off");
+        p3 = new Region();
+        p3.getStyleClass().add("dot-off");
+        p4 = new Region();
+        p4.getStyleClass().add("dot-off");
 
-        highlight = RegionBuilder.create().styleClass("highlight").build();
+        highlight = new Region();
+        highlight.getStyleClass().add("highlight");
 
         matrix = new Label[11][10];
         for (int y = 0 ; y < 10 ; y++) {
             for (int x = 0 ; x < 11 ; x++) {
-                matrix[x][y] = LabelBuilder.create()
-                                          .alignment(Pos.CENTER)
-                                          .prefWidth(PREFERRED_WIDTH * 0.048)
-                                          .prefHeight(PREFERRED_HEIGHT * 0.048)
-                                          .text(getSkinnable().getQlock().getMatrix()[y][x])
-                                          .font(font)
-                                          .styleClass("text-off")
-                                          .build();
+                matrix[x][y] = new Label();
+                matrix[x][y].setAlignment(Pos.CENTER);
+                matrix[x][y].setPrefWidth(PREFERRED_WIDTH * 0.048);
+                matrix[x][y].setPrefHeight(PREFERRED_HEIGHT * 0.048);
+                matrix[x][y].setText(getSkinnable().getQlock().getMatrix()[y][x]);
+                matrix[x][y].setFont(font);
+                matrix[x][y].getStyleClass().add("text-off");
             }
         }
 

@@ -17,16 +17,13 @@
 package eu.hansolo.enzo.radialmenu;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.FadeTransitionBuilder;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
-import javafx.animation.RotateTransitionBuilder;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
-import javafx.animation.TimelineBuilder;
 import javafx.animation.Transition;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
@@ -337,7 +334,11 @@ public class RadialMenu extends Pane {
         }
         setState(State.OPENED);
         button.setOpacity(1.0);
-        RotateTransition rotate = RotateTransitionBuilder.create().node(cross).toAngle(45).duration(Duration.millis(200)).interpolator(Interpolator.EASE_BOTH).build();
+        RotateTransition rotate = new RotateTransition();
+        rotate.setNode(cross);
+        rotate.setToAngle(45);
+        rotate.setDuration(Duration.millis(200));
+        rotate.setInterpolator(Interpolator.EASE_BOTH);
         rotate.play();
         openTimeLines[openTimeLines.length - 1].setOnFinished(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent actionEvent) {
@@ -354,11 +355,18 @@ public class RadialMenu extends Pane {
             return;
         }
         setState(State.CLOSED);
-        RotateTransition rotate = RotateTransitionBuilder.create().node(cross).toAngle(0).duration(Duration.millis(200)).interpolator(Interpolator.EASE_BOTH).build();
+        RotateTransition rotate = new RotateTransition();
+        rotate.setNode(cross);
+        rotate.setToAngle(0);
+        rotate.setDuration(Duration.millis(200));
+        rotate.setInterpolator(Interpolator.EASE_BOTH);
         rotate.play();
         closeTimeLines[closeTimeLines.length - 1].setOnFinished(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent actionEvent) {
-                FadeTransition buttonFadeOut = FadeTransitionBuilder.create().node(button).duration(Duration.millis(100)).toValue(options.getButtonAlpha()).build();
+                FadeTransition buttonFadeOut = new FadeTransition();
+                buttonFadeOut.setNode(button);
+                buttonFadeOut.setDuration(Duration.millis(100));
+                buttonFadeOut.setToValue(options.getButtonAlpha());
                 buttonFadeOut.play();
                 fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_CLOSE_FINISHED));
             }
@@ -380,7 +388,10 @@ public class RadialMenu extends Pane {
             cross.setRotate(0);
             button.setRotate(0);
 
-            FadeTransition buttonFadeIn = FadeTransitionBuilder.create().node(button).duration(Duration.millis(200)).toValue(options.getButtonAlpha()).build();
+            FadeTransition buttonFadeIn = new FadeTransition();
+            buttonFadeIn.setNode(button);
+            buttonFadeIn.setDuration(Duration.millis(200));
+            buttonFadeIn.setToValue(options.getButtonAlpha());
             buttonFadeIn.play();
         }
         for (Parent node : items.keySet()) {
@@ -434,9 +445,16 @@ public class RadialMenu extends Pane {
             shrinkMainButton.setToY(0.0);
             transitions.add(shrinkMainButton);
         } else {
-            RotateTransition rotateBackMainButton = RotateTransitionBuilder.create().node(cross).toAngle(0).duration(Duration.millis(200)).interpolator(Interpolator.EASE_BOTH).build();
+            RotateTransition rotateBackMainButton = new RotateTransition();
+            rotateBackMainButton.setNode(cross);
+            rotateBackMainButton.setToAngle(0);
+            rotateBackMainButton.setDuration(Duration.millis(200));
+            rotateBackMainButton.setInterpolator(Interpolator.EASE_BOTH);
             transitions.add(rotateBackMainButton);
-            FadeTransition mainButtonFadeOut = FadeTransitionBuilder.create().node(button).duration(Duration.millis(100)).toValue(options.getButtonAlpha()).build();
+            FadeTransition mainButtonFadeOut = new FadeTransition();
+            mainButtonFadeOut.setNode(button);
+            mainButtonFadeOut.setDuration(Duration.millis(100));
+            mainButtonFadeOut.setToValue(options.getButtonAlpha());
             transitions.add(mainButtonFadeOut);
         }
 
@@ -499,7 +517,7 @@ public class RadialMenu extends Pane {
         KeyFrame kfO4     = new KeyFrame(Duration.millis(400 + DELAY), kvX4, kvY4, kvRO4, kvO4);
         KeyFrame kfO5     = new KeyFrame(Duration.millis(600 + DELAY), kvX5, kvY5);
 
-        return TimelineBuilder.create().keyFrames(kfO1, kfO2, kfO3, kfO4, kfO5).build();
+        return new Timeline(kfO1, kfO2, kfO3, kfO4, kfO5);
     }
     private Timeline createItemCloseTimeLine(final StackPane NODE, final double X, final double Y, final double DELAY) {
         KeyValue kvX1     = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
@@ -527,7 +545,7 @@ public class RadialMenu extends Pane {
         KeyFrame kfC4     = new KeyFrame(Duration.millis(400 + DELAY), kvX2, kvY2);
         KeyFrame kfC5     = new KeyFrame(Duration.millis(600 + DELAY), kvX1, kvY1, kvR1, kvO1);
 
-        return TimelineBuilder.create().keyFrames(kfC1, kfC2, kfC3, kfC4, kfC5).build();
+        return new Timeline(kfC1, kfC2, kfC3, kfC4, kfC5);
     }
 
     private void resize() {
