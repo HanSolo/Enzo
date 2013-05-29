@@ -1,5 +1,6 @@
-package eu.hansolo.enzo.touchables.pbutton;
+package eu.hansolo.enzo.experiments.pbutton.skin;
 
+import eu.hansolo.enzo.experiments.pbutton.PushButton;
 import javafx.geometry.VPos;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
@@ -155,7 +156,6 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
             }
         }
         if (width > 0 && height > 0) {
-
             frame.setPrefSize(width, height);
 
             outerBorder.setPrefSize(0.9259259259259259 * width, 0.8604651162790697 * height);

@@ -1,35 +1,35 @@
-.pushbutton {
-    -fx-skin     : "eu.hansolo.enzo.touchables.pbutton.PushButtonSkin";
+.push-button {
+    -fx-skin     : "eu.hansolo.enzo.experiments.pbutton.skin.PushButtonSkin";
     -pbutton-base: rgb(0, 128, 255);
 }
 
-.pushbutton .frame {
+.push-button .frame {
     -fx-background-color: linear-gradient(to bottom,
                                           derive(-pbutton-base, -20%) 0%,
                                           -pbutton-base 100%);
     -fx-scale-shape     : true;
     -fx-shape           : "M 0.0 9.0 C 0.0 4.0 4.0 0.0 9.0 0.0 C 9.0 0.0 72.0 0.0 72.0 0.0 C 77.0 0.0 81.0 4.0 81.0 9.0 C 81.0 9.0 81.0 34.0 81.0 34.0 C 81.0 39.0 77.0 43.0 72.0 43.0 C 72.0 43.0 9.0 43.0 9.0 43.0 C 4.0 43.0 0.0 39.0 0.0 34.0 C 0.0 34.0 0.0 9.0 0.0 9.0 Z";
 }
-.pushbutton .outer-border {
+.push-button .outer-border {
     -fx-background-color: linear-gradient(to bottom,
                                           derive(-pbutton-base, -30%) 0%,
                                           derive(-pbutton-base, -45%) 100%);
     -fx-scale-shape     : true;
     -fx-shape           : "M 3.0 10.0 C 3.0 6.0 6.0 3.0 10.0 3.0 C 10.0 3.0 71.0 3.0 71.0 3.0 C 75.0 3.0 78.0 6.0 78.0 10.0 C 78.0 10.0 78.0 33.0 78.0 33.0 C 78.0 37.0 75.0 40.0 71.0 40.0 C 71.0 40.0 10.0 40.0 10.0 40.0 C 6.0 40.0 3.0 37.0 3.0 33.0 C 3.0 33.0 3.0 10.0 3.0 10.0 Z";
 }
-.pushbutton .inner-border {
+.push-button .inner-border {
     -fx-background-color: linear-gradient(to bottom,
                                           derive(-pbutton-base, 15%) 0%,
                                           derive(-pbutton-base, 5%) 72%,
                                           derive(-pbutton-base, -5%) 100%);
     -fx-scale-shape     : true;
     -fx-shape           : "M 5.0 11.0 C 5.0 7.0 7.0 5.0 11.0 5.0 C 11.0 5.0 70.0 5.0 70.0 5.0 C 74.0 5.0 76.0 7.0 76.0 11.0 C 76.0 11.0 76.0 33.0 76.0 33.0 C 76.0 37.0 74.0 39.0 70.0 39.0 C 70.0 39.0 11.0 39.0 11.0 39.0 C 7.0 39.0 5.0 37.0 5.0 33.0 C 5.0 33.0 5.0 11.0 5.0 11.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, rgba(0, 0, 0, 0.5), 2, 0, 0, 2);
+    -fx-effect          : dropshadow(two-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 2);
 }
-.pushbutton:selected .inner-border {
+.push-button:selected .inner-border {
     -fx-effect          : null;
 }
-.pushbutton .body {
+.push-button .body {
     -fx-background-color: linear-gradient(to bottom,
                                           derive(-pbutton-base, 15%) 0%,
                                           derive(-pbutton-base, 10%) 50%,
@@ -38,13 +38,13 @@
     -fx-scale-shape     : true;
     -fx-shape           : "M 6.0 11.0 C 6.0 8.0 8.0 6.0 11.0 6.0 C 11.0 6.0 70.0 6.0 70.0 6.0 C 73.0 6.0 75.0 8.0 75.0 11.0 C 75.0 11.0 75.0 33.0 75.0 33.0 C 75.0 36.0 73.0 38.0 70.0 38.0 C 70.0 38.0 11.0 38.0 11.0 38.0 C 8.0 38.0 6.0 36.0 6.0 33.0 C 6.0 33.0 6.0 11.0 6.0 11.0 Z";
 }
-.pushbutton:selected .body {
+.push-button:selected .body {
     -fx-background-color: linear-gradient(to bottom,
                                           derive(-pbutton-base, -25%) 0%,
                                           derive(-pbutton-base, -5%) 50%,
                                           derive(-pbutton-base, 15%) 100%);
 }
-.pushbutton .text {
+.push-button .text {
      -fx-font-family: Arial;
      -fx-font-size  : 16px;
      -fx-font-weight: bold;

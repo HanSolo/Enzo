@@ -1,4 +1,4 @@
-package eu.hansolo.enzo.touchables.pbutton;
+package eu.hansolo.enzo.experiments.pbutton;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
@@ -14,7 +14,7 @@ public class PushButton extends Control {
 
     // ******************** Constructors **************************************
     public PushButton() {
-        getStyleClass().add("pushbutton");
+        getStyleClass().add("push-button");
         keepAspect    = true;
     }
 

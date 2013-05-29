@@ -1,4 +1,4 @@
-package eu.hansolo.enzo.touchables.pbutton;
+package eu.hansolo.enzo.experiments.pbutton;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

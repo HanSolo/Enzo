@@ -122,13 +122,13 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> implements Skin<Sev
         segmentMap.put(SevenSegment.Segment.DOT, segmentDot);
 
         pane.getChildren().setAll(segmentA,
-            segmentB,
-            segmentC,
-            segmentD,
-            segmentE,
-            segmentF,
-            segmentG,
-            segmentDot);
+                                  segmentB,
+                                  segmentC,
+                                  segmentD,
+                                  segmentE,
+                                  segmentF,
+                                  segmentG,
+                                  segmentDot);
 
         getChildren().setAll(pane);
         resize();

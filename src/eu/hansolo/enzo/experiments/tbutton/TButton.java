@@ -1,4 +1,4 @@
-package eu.hansolo.enzo.touchables.tbutton;
+package eu.hansolo.enzo.experiments.tbutton;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;

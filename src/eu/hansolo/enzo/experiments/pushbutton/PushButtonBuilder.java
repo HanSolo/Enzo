@@ -1,4 +1,20 @@
-package eu.hansolo.enzo.touchables.tbutton;
+/*
+ * Copyright (c) 2013. Gerrit Grunwald
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+package eu.hansolo.enzo.experiments.pushbutton;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -7,43 +23,36 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
 
 
-public class TButtonBuilder<B extends TButtonBuilder<B>> {
+public class PushButtonBuilder<B extends PushButtonBuilder<B>> {
     private HashMap<String, Property> properties = new HashMap<>();
 
 
     // ******************** Constructors **************************************
-    protected TButtonBuilder() {}
+    protected PushButtonBuilder() {}
 
 
     // ******************** Methods *******************************************
-    public static final TButtonBuilder create() {
-        return new TButtonBuilder();
+    public static final PushButtonBuilder create() {
+        return new PushButtonBuilder();
     }
 
-    public final TButtonBuilder selected(final boolean SELECTED) {
-        properties.put("selected", new SimpleBooleanProperty(SELECTED));
+    public PushButtonBuilder status(final PushButton.Status STATUS) {
+        properties.put("status", new SimpleObjectProperty<>(STATUS));
         return this;
     }
 
-    public final TButtonBuilder touchable(final boolean TOUCHABLE) {
-        properties.put("touchable", new SimpleBooleanProperty(TOUCHABLE));
+    public PushButtonBuilder toggleEnabled(final boolean TOGGLE_ENABLED) {
+        properties.put("toggleEnabled", new SimpleBooleanProperty(TOGGLE_ENABLED));
         return this;
     }
 
-    public final TButtonBuilder text(final String TEXT) {
-        properties.put("text", new SimpleStringProperty(TEXT));
-        return this;
-    }
-
-    public final TButtonBuilder ledColor(final Color LED_COLOR) {
-        properties.put("ledColor", new SimpleObjectProperty<Color>(LED_COLOR));
+    public PushButtonBuilder color(final Color COLOR) {
+        properties.put("ledColor", new SimpleObjectProperty<>(COLOR));
         return this;
     }
 
@@ -102,17 +111,15 @@ public class TButtonBuilder<B extends TButtonBuilder<B>> {
     }
 
 
-    public final TButton build() {
-        final TButton CONTROL = new TButton();
+    public final PushButton build() {
+        final PushButton CONTROL = new PushButton();
         for (String key : properties.keySet()) {
-            if ("selected".equals(key)) {
-                CONTROL.setSelected(((BooleanProperty) properties.get(key)).get());
-            } else if ("touchable".equals(key)) {
-                CONTROL.setTouchable(((BooleanProperty) properties.get(key)).get());
-            } else if ("text".equals(key)) {
-                CONTROL.setText(((StringProperty) properties.get(key)).get());
+            if ("status".equals(key)) {
+                CONTROL.setStatus(((ObjectProperty<PushButton.Status>) properties.get(key)).get());
+            } else if ("toggleEnabled".equals(key)) {
+                CONTROL.setToggleEnabled(((BooleanProperty) properties.get(key)).get());
             } else if ("ledColor".equals(key)) {
-                CONTROL.setLedColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("minWidth".equals(key)) {
                 CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
             } else if("minHeight".equals(key)) {
@@ -143,3 +150,4 @@ public class TButtonBuilder<B extends TButtonBuilder<B>> {
         return CONTROL;
     }
 }
+
