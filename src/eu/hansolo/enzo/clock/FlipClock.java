@@ -91,23 +91,23 @@ public class FlipClock extends Application {
     @Override public void init() {
         // 234 : 402 => 0.5820895522
         // 402 : 234 => 1.7179487179
-        dayLeft    = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(500).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
-        dayMid     = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(500).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
-        dayRight   = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(500).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
+        dayLeft    = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(100).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
+        dayMid     = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(100).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
+        dayRight   = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(100).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
 
-        dateLeft   = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(500).selection(SplitFlap.NUMERIC).textColor(Color.WHITESMOKE).build();
-        dateRight  = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(500).selection(SplitFlap.NUMERIC).textColor(Color.WHITESMOKE).build();
+        dateLeft   = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(100).selection(SplitFlap.NUMERIC).textColor(Color.WHITESMOKE).build();
+        dateRight  = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(100).selection(SplitFlap.NUMERIC).textColor(Color.WHITESMOKE).build();
 
-        monthLeft  = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(500).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
-        monthMid   = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(500).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
-        monthRight = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(500).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
+        monthLeft  = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(100).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
+        monthMid   = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(100).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
+        monthRight = SplitFlapBuilder.create().prefWidth(146).prefHeight(250).flipTime(100).selection(SplitFlap.ALPHA).textColor(Color.WHITESMOKE).build();
 
-        hourLeft   = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(500).selection(SplitFlap.TIME_0_TO_5).textColor(Color.WHITESMOKE).build();
-        hourRight  = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(500).selection(SplitFlap.TIME_0_TO_9).textColor(Color.WHITESMOKE).build();
-        minLeft    = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(500).selection(SplitFlap.TIME_0_TO_5).textColor(Color.WHITESMOKE).build();
-        minRight   = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(500).selection(SplitFlap.TIME_0_TO_9).textColor(Color.WHITESMOKE).build();
-        secLeft    = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(250).selection(SplitFlap.TIME_0_TO_5).textColor(Color.ORANGERED).build();
-        secRight   = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(250).selection(SplitFlap.TIME_0_TO_9).textColor(Color.ORANGERED).build();
+        hourLeft   = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(100).selection(SplitFlap.TIME_0_TO_5).textColor(Color.WHITESMOKE).build();
+        hourRight  = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(100).selection(SplitFlap.TIME_0_TO_9).textColor(Color.WHITESMOKE).build();
+        minLeft    = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(100).selection(SplitFlap.TIME_0_TO_5).textColor(Color.WHITESMOKE).build();
+        minRight   = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(100).selection(SplitFlap.TIME_0_TO_9).textColor(Color.WHITESMOKE).build();
+        secLeft    = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(100).selection(SplitFlap.TIME_0_TO_5).textColor(Color.ORANGERED).build();
+        secRight   = SplitFlapBuilder.create().prefWidth(200).prefHeight(343).flipTime(100).selection(SplitFlap.TIME_0_TO_9).textColor(Color.ORANGERED).build();
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {

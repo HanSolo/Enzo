@@ -767,7 +767,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             lcdLowerRightText.setTextOrigin(VPos.BASELINE);
             lcdLowerRightText.setTextAlignment(TextAlignment.RIGHT);
             lcdLowerRightText.setText(getSkinnable().getNumberSystem().toString());
-            lcdLowerRightText.setX(lcdMain.getLayoutX() + (lcdMain.getLayoutBounds().getWidth() - lcdTitle.getLayoutBounds().getWidth()) * 0.5);
+            lcdLowerRightText.setX(lcdMain.getLayoutX() + (lcdMain.getLayoutBounds().getWidth() - lcdLowerRightText.getLayoutBounds().getWidth()) * 0.5);
             lcdLowerRightText.setY(lcdMain.getLayoutY() + height - 1 - 0.0416666667 * height);
 
             // Min measured value
@@ -781,7 +781,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             lcdUpperRightText.setFont(lcdSmallFont);
             lcdUpperRightText.setTextOrigin(VPos.BASELINE);
             lcdUpperRightText.setTextAlignment(TextAlignment.RIGHT);
-            lcdUpperRightText.setY(lcdMain.getLayoutY() + lcdUpperLeftText.getLayoutBounds().getHeight() + 0.04 * height);
+            lcdUpperRightText.setY(lcdMain.getLayoutY() + lcdUpperRightText.getLayoutBounds().getHeight() + 0.04 * height);
 
             // Former value
             lcdLowerCenterText.setFont(lcdSmallFont);

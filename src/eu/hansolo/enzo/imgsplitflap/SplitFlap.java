@@ -171,6 +171,8 @@ public class SplitFlap extends Region {
         flap.setCacheHint(CacheHint.ROTATE);
         flap.getTransforms().add(rotateFlap);
         rotateFlap.setPivotY(DEFAULT_HEIGHT * 0.460199005);
+        flap.setCache(true);
+        flap.setCacheHint(CacheHint.SPEED);
 
         upperBackgroundText    = new Canvas();
         ctxUpperBackgroundText = upperBackgroundText.getGraphicsContext2D();
