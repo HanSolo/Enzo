@@ -82,7 +82,7 @@
     -fx-padding          : 0;
     -fx-scale-shape      : true;
     -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
-    -fx-effect           : innershadow(gaussian, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
+    -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
 }
 .clock .minor-tick-ios6 {
     -fx-background-color : -fx-minor-tick-color;
@@ -149,7 +149,7 @@
     -fx-padding          : 0;
     -fx-scale-shape      : true;
     -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
-    -fx-effect           : innershadow(gaussian, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
+    -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
 }
 .clock .minor-tick-braun {
     -fx-background-color : -fx-minor-tick-color;
@@ -222,8 +222,8 @@
     -fx-background-radius: 0em;
     -fx-scale-shape      : true;
     -fx-shape            : "M 58 62.5 C 58 59.4624 60.4624 57 63.5 57 C 66.5376 57 69 59.4624 69 62.5 C 69 65.5376 66.5376 68 63.5 68 C 60.4624 68 58 65.5376 58 62.5 Z";
-    /*-fx-effect           : innershadow(gaussian, rgba(255, 255, 255, 0.6), 5, 0.0, 0, 1);*/
-    -fx-effect           : dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0.0, 0, 1);
+    /*-fx-effect           : innershadow(two-pass-box, rgba(255, 255, 255, 0.6), 5, 0.0, 0, 1);*/
+    -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.15), 5, 0.0, 0, 1);
 }
 .clock .foreground-braun {
     -fx-background-color : transparent; /*rgba(255, 255, 255, 0.2);*/
@@ -247,7 +247,7 @@
     -fx-padding          : 0;
     -fx-scale-shape      : true;
     -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
-    -fx-effect           : innershadow(gaussian, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
+    -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
 }
 .clock .minor-tick-db {
     -fx-background-color : -fx-minor-tick-color;

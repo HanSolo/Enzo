@@ -36,7 +36,7 @@
                                           rgb(15, 15, 18) 100%);
     -fx-scale-shape     : true;
     -fx-shape           : "M 258.0 403.0 C 258.0 391.0 267.0 382.0 279.0 382.0 C 291.0 382.0 300.0 391.0 300.0 403.0 C 300.0 415.0 291.0 424.0 279.0 424.0 C 267.0 424.0 258.0 415.0 258.0 403.0 Z";
-    /*-fx-effect          : innershadow(gaussian, rgba(0, 0, 0, 0.65), 10, 0.0, 0%, 0%);*/
+    /*-fx-effect          : innershadow(two-pass-box, rgba(0, 0, 0, 0.65), 10, 0.0, 0%, 0%);*/
 }
 
 .matrix-segment .dot-on {
@@ -48,7 +48,7 @@
                                           derive(-dot-on-color, -10%) 100%);
     -fx-scale-shape     : true;
     -fx-shape           : "M 196.0 403.0 C 196.0 391.0 205.0 382.0 217.0 382.0 C 229.0 382.0 238.0 391.0 238.0 403.0 C 238.0 415.0 229.0 424.0 217.0 424.0 C 205.0 424.0 196.0 415.0 196.0 403.0 Z";
-    /*-fx-effect          : innershadow(gaussian, rgba(0, 0, 0, 0.65), 10, 0.0, 0%, 0%);*/
+    /*-fx-effect          : innershadow(two-pass-box, rgba(0, 0, 0, 0.65), 10, 0.0, 0%, 0%);*/
 }
 
 .matrix-segment .dot-highlight {

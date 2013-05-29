@@ -77,7 +77,7 @@
                                           derive(-led-color, -80) 100%);
     -fx-scale-shape     : true;
     -fx-shape           : "M 14.0 50.0 C 14.0 30.0 30.0 14.0 50.0 14.0 C 70.0 14.0 86.0 30.0 86.0 50.0 C 86.0 70.0 70.0 86.0 50.0 86.0 C 30.0 86.0 14.0 70.0 14.0 50.0 Z";
-    -fx-effect          : innershadow(gaussian, black, 9%, 0.0, 0%, 0%);
+    -fx-effect          : innershadow(two-pass-box, black, 9%, 0.0, 0%, 0%);
 }
 .led:on .round {
     -fx-background-color: linear-gradient(from 15% 15% to 83% 83%,

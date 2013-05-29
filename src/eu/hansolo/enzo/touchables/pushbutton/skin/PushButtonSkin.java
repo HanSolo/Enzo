@@ -102,13 +102,13 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
         frameInnerShadow0.setOffsetY(1);
         frameInnerShadow0.setRadius(0);
         frameInnerShadow0.setColor(Color.web("0x333333a6"));
-        frameInnerShadow0.setBlurType(BlurType.GAUSSIAN);
+        frameInnerShadow0.setBlurType(BlurType.TWO_PASS_BOX);
         frameInnerShadow1 = new InnerShadow();
         frameInnerShadow1.setOffsetX(0);
         frameInnerShadow1.setOffsetY(-1);
         frameInnerShadow1.setRadius(0);
         frameInnerShadow1.setColor(Color.web("0xeeeeeea6"));
-        frameInnerShadow1.setBlurType(BlurType.GAUSSIAN);
+        frameInnerShadow1.setBlurType(BlurType.TWO_PASS_BOX);
         frameInnerShadow1.setInput(frameInnerShadow0);
         frame.setEffect(frameInnerShadow1);
 
@@ -120,20 +120,20 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
         deselectedInnerShadow0.setOffsetY(-1);
         deselectedInnerShadow0.setRadius(0);
         deselectedInnerShadow0.setColor(Color.web("0x4b4e52a6"));
-        deselectedInnerShadow0.setBlurType(BlurType.GAUSSIAN);
+        deselectedInnerShadow0.setBlurType(BlurType.TWO_PASS_BOX);
         deselectedInnerShadow1 = new InnerShadow();
         deselectedInnerShadow1.setOffsetX(0);
         deselectedInnerShadow1.setOffsetY(1);
         deselectedInnerShadow1.setRadius(0);
         deselectedInnerShadow1.setColor(Color.web("0xeeeeeea6"));
-        deselectedInnerShadow1.setBlurType(BlurType.GAUSSIAN);
+        deselectedInnerShadow1.setBlurType(BlurType.TWO_PASS_BOX);
         deselectedInnerShadow1.setInput(deselectedInnerShadow0);
         deselectedDropShadow = new DropShadow();
         deselectedDropShadow.setOffsetX(0);
         deselectedDropShadow.setOffsetY(3);
         deselectedDropShadow.setRadius(3.0 / 128.0 * PREFERRED_WIDTH);
         deselectedDropShadow.setColor(Color.web("0x000000a6"));
-        deselectedDropShadow.setBlurType(BlurType.GAUSSIAN);
+        deselectedDropShadow.setBlurType(BlurType.TWO_PASS_BOX);
         deselectedDropShadow.setInput(deselectedInnerShadow1);
         deselected.setEffect(deselectedDropShadow);
 
@@ -145,20 +145,20 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
         selectedInnerShadow0.setOffsetY(-1);
         selectedInnerShadow0.setRadius(0);
         selectedInnerShadow0.setColor(Color.web("0x4b4e52a6"));
-        selectedInnerShadow0.setBlurType(BlurType.GAUSSIAN);
+        selectedInnerShadow0.setBlurType(BlurType.TWO_PASS_BOX);
         selectedInnerShadow1 = new InnerShadow();
         selectedInnerShadow1.setOffsetX(0);
         selectedInnerShadow1.setOffsetY(1);
         selectedInnerShadow1.setRadius(0);
         selectedInnerShadow1.setColor(Color.web("0xeeeeeea6"));
-        selectedInnerShadow1.setBlurType(BlurType.GAUSSIAN);
+        selectedInnerShadow1.setBlurType(BlurType.TWO_PASS_BOX);
         selectedInnerShadow1.setInput(selectedInnerShadow0);
         selectedDropShadow = new DropShadow();
         selectedDropShadow.setOffsetX(0);
         selectedDropShadow.setOffsetY(0);
         selectedDropShadow.setRadius(2.0 / 128.0 * PREFERRED_WIDTH);
         selectedDropShadow.setColor(Color.web("0x000000a6"));
-        selectedDropShadow.setBlurType(BlurType.GAUSSIAN);
+        selectedDropShadow.setBlurType(BlurType.TWO_PASS_BOX);
         selectedDropShadow.setInput(selectedInnerShadow1);
         selected.setEffect(selectedDropShadow);
 

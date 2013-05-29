@@ -1,58 +1,37 @@
-/*
- * Copyright (c) 2013. Gerrit Grunwald
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
+package eu.hansolo.enzo.touchables.pbutton;
 
-package eu.hansolo.enzo.led1.skin;
-
-import eu.hansolo.enzo.led1.Led;
-import javafx.collections.ListChangeListener;
+import javafx.geometry.VPos;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 
-public class LedSkin extends SkinBase<Led> implements Skin<Led> {
-    private static final double PREFERRED_WIDTH  = 16;
-    private static final double PREFERRED_HEIGHT = 16;
-    private static final double MINIMUM_WIDTH    = 5;
-    private static final double MINIMUM_HEIGHT   = 5;
+public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushButton> {
+    private static final double MINIMUM_WIDTH    = 81;
+    private static final double MINIMUM_HEIGHT   = 43;
     private static final double MAXIMUM_WIDTH    = 1024;
     private static final double MAXIMUM_HEIGHT   = 1024;
+    private static final double PREFERRED_WIDTH  = 81;
+    private static final double PREFERRED_HEIGHT = 43;
     private double              aspectRatio;
-    private double              size;
     private double              width;
     private double              height;
     private Pane                pane;
+
     private Region              frame;
-    private Region              ledOff;
-    private Region              ledOn;
-    private InnerShadow         innerShadow;
-    private DropShadow          dropShadow;
-    private Region              highlight;
+    private Region              outerBorder;
+    private Region              innerBorder;
+    private Region              body;
+    private Text                text;
 
 
     // ******************** Constructors **************************************
-    public LedSkin(final Led CONTROL) {
+    public PushButtonSkin(final PushButton CONTROL) {
         super(CONTROL);
-        aspectRatio = PREFERRED_HEIGHT / PREFERRED_WIDTH;
-        pane        = new Pane();
+        aspectRatio  = PREFERRED_HEIGHT / PREFERRED_WIDTH;
+        pane         = new Pane();
         init();
         initGraphics();
         registerListeners();
@@ -86,39 +65,27 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private void initGraphics() {
         frame = new Region();
         frame.getStyleClass().setAll("frame");
-        frame.setVisible(getSkinnable().isFrameVisible());
 
-        ledOff = new Region();
-        ledOff.getStyleClass().setAll("led", "led-off", getSkinnable().getColor().STYLE_CLASS);
+        outerBorder = new Region();
+        outerBorder.getStyleClass().setAll("outer-border");
 
-        ledOn = new Region();
-        ledOn.getStyleClass().setAll("led", "led-on", getSkinnable().getColor().STYLE_CLASS);
-        ledOn.setVisible(getSkinnable().isOn());
+        innerBorder = new Region();
+        innerBorder.getStyleClass().setAll("inner-border");
 
-        innerShadow = new InnerShadow();
-        innerShadow.setOffsetX(0.0);
-        innerShadow.setOffsetY(0.0);
-        innerShadow.setRadius(0.1 * PREFERRED_WIDTH);
-        innerShadow.setColor(Color.BLACK);
-        innerShadow.setBlurType(BlurType.TWO_PASS_BOX);
+        body = new Region();
+        body.getStyleClass().setAll("body");
+        body.setMouseTransparent(true);
 
-        dropShadow = new DropShadow();
-        dropShadow.setOffsetX(0.0);
-        dropShadow.setOffsetY(0.0);
-        dropShadow.setRadius(25.0 / 100.0 * PREFERRED_WIDTH);
-        dropShadow.setColor(getSkinnable().getColor().COLOR);
-        dropShadow.setBlurType(BlurType.TWO_PASS_BOX);
-        dropShadow.setInput(innerShadow);
-
-        ledOn.setEffect(dropShadow);
-
-        highlight = new Region();
-        highlight.getStyleClass().setAll("highlight");
+        text = new Text("Push");
+        text.setTextOrigin(VPos.CENTER);
+        text.setMouseTransparent(true);
+        text.getStyleClass().setAll("text");
 
         pane.getChildren().setAll(frame,
-                                  ledOff,
-                                  ledOn,
-                                  highlight);
+                                  outerBorder,
+                                  innerBorder,
+                                  body,
+                                  text);
 
         getChildren().setAll(pane);
         resize();
@@ -129,15 +96,9 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
         getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
         getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
-        getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("GLOWING"); });
-        getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
+        getSkinnable().selectedProperty().addListener(observable -> { handleControlPropertyChanged("SELECTED"); });
 
-        getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
-            @Override public void onChanged(Change<? extends String> change) {
-                resize();
-            }
-        });
+        innerBorder.setOnMousePressed(observable -> { getSkinnable().setSelected(!getSkinnable().isSelected()); });
     }
 
 
@@ -147,15 +108,8 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
             resize();
         } else if ("PREF_SIZE".equals(PROPERTY)) {
             aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
-        } else if ("GLOWING".equals(PROPERTY)) {
-            ledOn.setVisible(getSkinnable().isOn());
-            ledOff.setVisible(!getSkinnable().isOn());
-        } else if ("FRAME_VISIBLE".equals(PROPERTY)) {
-            frame.setVisible(getSkinnable().isFrameVisible());
-        } else if ("COLOR".equals(PROPERTY)) {
-            ledOff.getStyleClass().setAll("led", "led-off", getSkinnable().getColor().STYLE_CLASS);
-            ledOn.getStyleClass().setAll("led", "led-on", getSkinnable().getColor().STYLE_CLASS);
-            dropShadow.setColor(getSkinnable().getColor().COLOR);
+        } else if ("SELECTED".equals(PROPERTY)) {
+            text.setTranslateY(getSkinnable().isSelected() ? height * 0.5 - 1 : height * 0.5);
         }
     }
 
@@ -191,14 +145,8 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
 
     // ******************** Resizing ******************************************
     private void resize() {
-        boolean wasBlinking = getSkinnable().isBlinking();
-        if (wasBlinking) {
-            getSkinnable().setBlinking(false);
-        }
-
-        size    = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
-        width   = getSkinnable().getWidth();
-        height  = getSkinnable().getHeight();
+        width  = getSkinnable().getWidth();
+        height = getSkinnable().getHeight();
         if (getSkinnable().isKeepAspect()) {
             if (aspectRatio * width > height) {
                 width  = 1 / (aspectRatio / height);
@@ -206,26 +154,25 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
                 height = aspectRatio * width;
             }
         }
-
         if (width > 0 && height > 0) {
-            frame.setPrefSize(0.75 * width, 0.75 * height);
-            frame.setTranslateX(0.125 * width);
-            frame.setTranslateY(0.125 * height);
 
-            ledOff.setPrefSize(0.625 * width, 0.625 * height);
-            ledOff.setTranslateX(0.1875 * width);
-            ledOff.setTranslateY(0.1875 * height);
+            frame.setPrefSize(width, height);
 
-            ledOn.setPrefSize(0.625 * width, 0.625 * height);
-            ledOn.setTranslateX(0.1875 * width);
-            ledOn.setTranslateY(0.1875 * height);
-            innerShadow.setRadius(0.1 / 80.0 * size);
-            dropShadow.setRadius(0.25 * size);
+            outerBorder.setPrefSize(0.9259259259259259 * width, 0.8604651162790697 * height);
+            outerBorder.setTranslateX(0.037037037037037035 * width);
+            outerBorder.setTranslateY(0.06976744186046512 * height);
 
-            highlight.setPrefSize(0.5 * width, 0.5 * height);
-            highlight.setTranslateX(0.25 * width);
-            highlight.setTranslateY(0.25 * height);
+            innerBorder.setPrefSize(0.8765432098765432 * width, 0.7906976744186046 * height);
+            innerBorder.setTranslateX(0.06172839506172839 * width);
+            innerBorder.setTranslateY(0.11627906976744186 * height);
+
+            body.setPrefSize(0.8518518518518519 * width, 0.7441860465116279 * height);
+            body.setTranslateX(0.07407407407407407 * width);
+            body.setTranslateY(0.13953488372093023 * height);
+
+            text.setTranslateX(0.2716049382716049 * width);
+            text.setTranslateY(height * 0.5);
         }
-        getSkinnable().setBlinking(wasBlinking);
     }
 }
+

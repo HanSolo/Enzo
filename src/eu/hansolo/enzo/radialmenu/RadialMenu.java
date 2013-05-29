@@ -183,7 +183,7 @@ public class RadialMenu extends Pane {
         final DropShadow SHADOW = new DropShadow();
         SHADOW.setRadius(0.1590909091 * options.getButtonSize());
         SHADOW.setColor(Color.rgb(0, 0, 0, 0.6));
-        SHADOW.setBlurType(BlurType.GAUSSIAN);
+        SHADOW.setBlurType(BlurType.TWO_PASS_BOX);
         button.setEffect(SHADOW);
 
         button.setOpacity(options.isButtonVisible() ? options.getButtonAlpha() : 0.0);
@@ -197,7 +197,7 @@ public class RadialMenu extends Pane {
         final DropShadow SHADOW = new DropShadow();
         SHADOW.setRadius(0.1590909091 * options.getButtonSize());
         SHADOW.setColor(Color.rgb(0, 0, 0, 0.6));
-        SHADOW.setBlurType(BlurType.GAUSSIAN);
+        SHADOW.setBlurType(BlurType.TWO_PASS_BOX);
 
         for (int i = 0 ; i < ITEMS.size() ; i++) {
             MenuItem item = ITEMS.get(i);

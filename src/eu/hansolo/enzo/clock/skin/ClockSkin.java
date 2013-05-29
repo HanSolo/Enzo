@@ -214,7 +214,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setColor(Color.rgb(0, 0, 0, 0.65));
         dropShadow.setRadius(1.5);
-        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setBlurType(BlurType.TWO_PASS_BOX);
         dropShadow.setOffsetY(1);
 
         tickMarkGroup = new Group();
@@ -267,7 +267,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         DropShadow pointerShadow = new DropShadow();
         pointerShadow.setColor(Color.rgb(0, 0, 0, 0.45));
         pointerShadow.setRadius(12);
-        pointerShadow.setBlurType(BlurType.GAUSSIAN);
+        pointerShadow.setBlurType(BlurType.TWO_PASS_BOX);
         pointerShadow.setOffsetY(6);
 
         pointerGroup = new Group();
@@ -287,20 +287,20 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         InnerShadow secondPointerInnerShadow = new InnerShadow();
         secondPointerInnerShadow.setColor(Color.rgb(0, 0, 0, 0.3));
         secondPointerInnerShadow.setRadius(1);
-        secondPointerInnerShadow.setBlurType(BlurType.GAUSSIAN);
+        secondPointerInnerShadow.setBlurType(BlurType.TWO_PASS_BOX);
         secondPointerInnerShadow.setOffsetY(-1);
 
         InnerShadow secondPointerInnerHighlight = new InnerShadow();
         secondPointerInnerHighlight.setColor(Color.rgb(255, 255, 255, 0.3));
         secondPointerInnerHighlight.setRadius(1);
-        secondPointerInnerHighlight.setBlurType(BlurType.GAUSSIAN);
+        secondPointerInnerHighlight.setBlurType(BlurType.TWO_PASS_BOX);
         secondPointerInnerHighlight.setOffsetY(1);
         secondPointerInnerHighlight.setInput(secondPointerInnerShadow);
 
         DropShadow secondPointerShadow = new DropShadow();
         secondPointerShadow.setColor(Color.rgb(0, 0, 0, 0.45));
         secondPointerShadow.setRadius(12);
-        secondPointerShadow.setBlurType(BlurType.GAUSSIAN);
+        secondPointerShadow.setBlurType(BlurType.TWO_PASS_BOX);
         secondPointerShadow.setOffsetY(6);
         secondPointerShadow.setInput(secondPointerInnerHighlight);
 

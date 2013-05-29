@@ -112,7 +112,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         FOREGROUND_SHADOW.setOffsetX(0);
         FOREGROUND_SHADOW.setOffsetY(1);
         FOREGROUND_SHADOW.setColor(Color.rgb(0, 0, 0, 0.5));
-        FOREGROUND_SHADOW.setBlurType(BlurType.GAUSSIAN);
+        FOREGROUND_SHADOW.setBlurType(BlurType.TWO_PASS_BOX);
         FOREGROUND_SHADOW.setRadius(2);
         init();
         initGraphics();
@@ -158,14 +158,14 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         lcdMainInnerShadow0.setOffsetY(0.0);
         lcdMainInnerShadow0.setRadius(3.0 / 132.0 * PREFERRED_WIDTH);
         lcdMainInnerShadow0.setColor(Color.web("0xffffff80"));
-        lcdMainInnerShadow0.setBlurType(BlurType.GAUSSIAN);
+        lcdMainInnerShadow0.setBlurType(BlurType.TWO_PASS_BOX);
 
         lcdMainInnerShadow1 = new InnerShadow();
         lcdMainInnerShadow1.setOffsetX(0.0);
         lcdMainInnerShadow1.setOffsetY(1.0);
         lcdMainInnerShadow1.setRadius(2.0 / 132.0 * PREFERRED_WIDTH);
         lcdMainInnerShadow1.setColor(Color.web("0x000000a6"));
-        lcdMainInnerShadow1.setBlurType(BlurType.GAUSSIAN);
+        lcdMainInnerShadow1.setBlurType(BlurType.TWO_PASS_BOX);
         lcdMainInnerShadow1.setInput(lcdMainInnerShadow0);
 
         lcdMain.setEffect(lcdMainInnerShadow1);

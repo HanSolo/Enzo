@@ -32,49 +32,49 @@
     -fx-background-color: -fx-segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 31.0 9.0 L 67.0 45.0 L 187.0 45.0 L 221.0 11.0 C 221.0 11.0 209.0 0.0 197.0 0.0 C 197.0 0.0 54.0 0.0 54.0 0.0 C 39.0 0.0 31.0 9.0 31.0 9.0 Z";
-    -fx-effect          : dropshadow(gaussian, -fx-segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
 }
 .seven-segment .b {
     -fx-background-color: -fx-segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 223.0 12.0 C 223.0 12.0 233.0 25.0 233.0 37.0 C 233.0 37.0 233.0 50.0 233.0 50.0 L 224.0 155.0 L 201.0 177.0 L 180.0 156.0 L 189.0 46.0 L 223.0 12.0 Z";
-    -fx-effect          : dropshadow(gaussian, -fx-segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
 }
 .seven-segment .c {
     -fx-background-color: -fx-segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 202.0 180.0 L 223.0 201.0 C 223.0 201.0 212.0 324.0 212.0 324.0 C 212.0 336.0 203.0 347.0 203.0 347.0 L 168.0 311.0 L 178.0 204.0 L 202.0 180.0 Z";
-    -fx-effect          : dropshadow(gaussian, -fx-segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
 }
 .seven-segment .d {
     -fx-background-color: -fx-segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 166.0 312.0 L 46.0 312.0 L 12.0 346.0 C 12.0 346.0 21.0 357.0 37.0 357.0 C 37.0 357.0 179.0 357.0 179.0 357.0 C 193.0 357.0 201.0 348.0 201.0 348.0 L 166.0 312.0 Z";
-    -fx-effect          : dropshadow(gaussian, -fx-segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
 }
 .seven-segment .e {
     -fx-background-color: -fx-segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 11.0 344.0 C 11.0 344.0 0.0 332.0 0.0 320.0 C 0.0 320.0 10.0 202.0 10.0 202.0 L 32.0 180.0 L 54.0 201.0 L 44.0 311.0 L 11.0 344.0 Z";
-    -fx-effect          : dropshadow(gaussian, -fx-segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
 }
 .seven-segment .f {
     -fx-background-color: -fx-segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 29.0 10.0 L 64.0 46.0 L 56.0 154.0 L 32.0 178.0 L 10.0 155.0 C 10.0 155.0 20.0 33.0 20.0 33.0 C 20.0 22.0 29.0 10.0 29.0 10.0 Z";
-    -fx-effect          : dropshadow(gaussian, -fx-segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
 }
 .seven-segment .g {
     -fx-background-color: -fx-segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 177.0 201.0 L 199.0 179.0 L 177.0 156.0 L 57.0 156.0 L 35.0 179.0 L 57.0 201.0 L 177.0 201.0 Z";
-    -fx-effect          : dropshadow(gaussian, -fx-segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
 }
 .seven-segment .dot {
     -fx-background-color: -fx-segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 223.0 335.0 C 223.0 322.0 233.0 312.0 246.0 312.0 C 258.0 312.0 268.0 322.0 268.0 335.0 C 268.0 347.0 258.0 357.0 246.0 357.0 C 233.0 357.0 223.0 347.0 223.0 335.0 Z";
-    -fx-effect          : dropshadow(gaussian, -fx-segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
 }
 
 

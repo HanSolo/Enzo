@@ -129,7 +129,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setColor(Color.rgb(0, 0, 0, 0.25));
         dropShadow.setRadius(3);
-        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setBlurType(BlurType.TWO_PASS_BOX);
         dropShadow.setOffsetY(3);
 
         Group shadowGroup = new Group(needle, needleHighlight, knob);
