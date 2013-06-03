@@ -17,7 +17,6 @@ import javafx.scene.paint.Color;
 
 public class TButton extends Control {
     private BooleanProperty       selected;
-    private BooleanProperty       touchable;
     private StringProperty        text;
     private ObjectProperty<Color> ledColor;
 
@@ -29,7 +28,6 @@ public class TButton extends Control {
     public TButton(final String TEXT) {
         getStyleClass().add("tbutton");
         selected  = new SimpleBooleanProperty(this, "selected", false);
-        touchable = new SimpleBooleanProperty(this, "touchable", false);
         text      = new SimpleStringProperty(this, "text", TEXT);
         ledColor  = new SimpleObjectProperty<>(Color.YELLOW);
     }
@@ -44,16 +42,6 @@ public class TButton extends Control {
     }
     public final BooleanProperty selectedProperty() {
         return selected;
-    }
-
-    public final boolean isTouchable() {
-        return touchable.get();
-    }
-    public final void setTouchable(final boolean TOUCHABLE) {
-        touchable.set(TOUCHABLE);
-    }
-    public final BooleanProperty touchableProperty() {
-        return touchable;
     }
 
     public final String getText() {
@@ -109,6 +97,7 @@ public class TButton extends Control {
             HANDLER.handle(EVENT);
         }
     }
+
 
     // ******************** Style related *************************************
     @Override protected String getUserAgentStylesheet() {

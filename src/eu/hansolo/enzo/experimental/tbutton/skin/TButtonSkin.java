@@ -1,12 +1,17 @@
 package eu.hansolo.enzo.experimental.tbutton.skin;
 
 import eu.hansolo.enzo.experimental.tbutton.TButton;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.VPos;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -17,34 +22,35 @@ import javafx.scene.text.Text;
 
 
 public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
-    private static final double MINIMUM_SIZE   = 25;    
-    private static final double MAXIMUM_SIZE   = 1024;    
-    private static final double PREFERRED_SIZE = 144;    
-    private double              size;
-    private double              width;
-    private double              height;
-    private Pane                pane;
+    private static final double      MINIMUM_SIZE   = 25;
+    private static final double      MAXIMUM_SIZE   = 1024;
+    private static final double      PREFERRED_SIZE = 144;
+    private double                   size;
+    private double                   width;
+    private double                   height;
+    private EventHandler<InputEvent> inputHandler;
+    private Pane                     pane;
 
-    private Region              frame;
-    private Region              off;
-    private InnerShadow         offInnerShadow;
-    private InnerShadow         offInnerShadow1;
-    private DropShadow          offDropShadow;
-    private Region              ledOff;
-    private InnerShadow         ledOffInnerShadow;
-    private InnerShadow         ledOffInnerShadow1;
-    private Region              on;
-    private InnerShadow         onInnerShadow;
-    private InnerShadow         onInnerShadow1;
-    private DropShadow          onDropShadow;
-    private Region              ledOn;
-    private InnerShadow         ledOnInnerShadow;
-    private InnerShadow         ledOnInnerShadow1;
-    private DropShadow          ledOnGlow;
-    private Text                text;
-    private Font                font;
-    private InnerShadow         textInnerShadow;
-    private InnerShadow         textInnerShadow1;
+    private Region                   frame;
+    private Region                   off;
+    private InnerShadow              offInnerShadow;
+    private InnerShadow              offInnerShadow1;
+    private DropShadow               offDropShadow;
+    private Region                   ledOff;
+    private InnerShadow              ledOffInnerShadow;
+    private InnerShadow              ledOffInnerShadow1;
+    private Region                   on;
+    private InnerShadow              onInnerShadow;
+    private InnerShadow              onInnerShadow1;
+    private DropShadow               onDropShadow;
+    private Region                   ledOn;
+    private InnerShadow              ledOnInnerShadow;
+    private InnerShadow              ledOnInnerShadow1;
+    private DropShadow               ledOnGlow;
+    private Text                     text;
+    private Font                     font;
+    private InnerShadow              textInnerShadow;
+    private InnerShadow              textInnerShadow1;
 
 
     // ******************** Constructors **************************************
@@ -75,6 +81,20 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
         if (Double.compare(getSkinnable().getMaxWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMaxHeight(), 0.0) <= 0) {
             getSkinnable().setMaxSize(MAXIMUM_SIZE, MAXIMUM_SIZE);
         }
+
+        inputHandler = new EventHandler<InputEvent>() {
+            @Override public void handle(final InputEvent EVENT) {
+                final EventType TYPE = EVENT.getEventType();
+                final Object    SRC  = EVENT.getSource();
+                if (MouseEvent.MOUSE_PRESSED == TYPE || TouchEvent.TOUCH_PRESSED == TYPE) {
+                    if (SRC.equals(on)) {
+                        getSkinnable().setSelected(false);
+                    } else if (SRC.equals(off)) {
+                        getSkinnable().setSelected(true);
+                    }
+                }
+            }
+        };
     }
 
     private void initGraphics() {
@@ -217,13 +237,11 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
         getSkinnable().selectedProperty().addListener(observable -> { handleControlPropertyChanged("SELECTED"); });
         getSkinnable().textProperty().addListener(observable -> { handleControlPropertyChanged("TEXT"); });
         getSkinnable().ledColorProperty().addListener(observable -> { handleControlPropertyChanged("LED_COLOR"); });
-        if (getSkinnable().isTouchable()) {
-            on.setOnTouchPressed(event -> { getSkinnable().setSelected(false); });
-            off.setOnTouchPressed(event -> { getSkinnable().setSelected(true); });
-        } else {
-            on.setOnMousePressed(event -> { getSkinnable().setSelected(false); });
-            off.setOnMousePressed(event -> { getSkinnable().setSelected(true); });
-        }
+
+        on.setOnMousePressed(inputHandler);
+        on.setOnTouchPressed(inputHandler);
+        off.setOnMousePressed(inputHandler);
+        off.setOnTouchPressed(inputHandler);
     }
 
 

@@ -32,11 +32,6 @@ public class TButtonBuilder<B extends TButtonBuilder<B>> {
         return this;
     }
 
-    public final TButtonBuilder touchable(final boolean TOUCHABLE) {
-        properties.put("touchable", new SimpleBooleanProperty(TOUCHABLE));
-        return this;
-    }
-
     public final TButtonBuilder text(final String TEXT) {
         properties.put("text", new SimpleStringProperty(TEXT));
         return this;
@@ -107,8 +102,6 @@ public class TButtonBuilder<B extends TButtonBuilder<B>> {
         for (String key : properties.keySet()) {
             if ("selected".equals(key)) {
                 CONTROL.setSelected(((BooleanProperty) properties.get(key)).get());
-            } else if ("touchable".equals(key)) {
-                CONTROL.setTouchable(((BooleanProperty) properties.get(key)).get());
             } else if ("text".equals(key)) {
                 CONTROL.setText(((StringProperty) properties.get(key)).get());
             } else if ("ledColor".equals(key)) {
