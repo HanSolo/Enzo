@@ -1,4 +1,4 @@
-package eu.hansolo.enzo.experiments.tbutton;
+package eu.hansolo.enzo.experimental.tbutton;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;

@@ -1,4 +1,4 @@
-package eu.hansolo.enzo.experiments.pbutton;
+package eu.hansolo.enzo.experimental.pbutton;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.Property;

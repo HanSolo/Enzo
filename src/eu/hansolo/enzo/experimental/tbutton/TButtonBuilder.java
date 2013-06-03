@@ -1,4 +1,4 @@
-package eu.hansolo.enzo.experiments.tbutton;
+package eu.hansolo.enzo.experimental.tbutton;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;

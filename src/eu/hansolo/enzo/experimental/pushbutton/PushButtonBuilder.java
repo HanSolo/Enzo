@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package eu.hansolo.enzo.experiments.pushbutton;
+package eu.hansolo.enzo.experimental.pushbutton;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;

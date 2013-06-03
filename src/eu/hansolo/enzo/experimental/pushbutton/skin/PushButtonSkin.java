@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-package eu.hansolo.enzo.experiments.pushbutton.skin;
+package eu.hansolo.enzo.experimental.pushbutton.skin;
 
-import eu.hansolo.enzo.experiments.pushbutton.PushButton;
+import eu.hansolo.enzo.experimental.pushbutton.PushButton;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;

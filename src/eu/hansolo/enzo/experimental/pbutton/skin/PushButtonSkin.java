@@ -1,6 +1,6 @@
-package eu.hansolo.enzo.experiments.pbutton.skin;
+package eu.hansolo.enzo.experimental.pbutton.skin;
 
-import eu.hansolo.enzo.experiments.pbutton.PushButton;
+import eu.hansolo.enzo.experimental.pbutton.PushButton;
 import javafx.geometry.VPos;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
