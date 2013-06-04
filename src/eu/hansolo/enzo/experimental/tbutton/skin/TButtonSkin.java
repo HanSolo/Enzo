@@ -11,7 +11,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -86,12 +85,13 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
             @Override public void handle(final InputEvent EVENT) {
                 final EventType TYPE = EVENT.getEventType();
                 final Object    SRC  = EVENT.getSource();
-                if (MouseEvent.MOUSE_PRESSED == TYPE || TouchEvent.TOUCH_PRESSED == TYPE) {
+                if (MouseEvent.MOUSE_PRESSED == TYPE) {
                     if (SRC.equals(on)) {
                         getSkinnable().setSelected(false);
                     } else if (SRC.equals(off)) {
                         getSkinnable().setSelected(true);
                     }
+                    EVENT.consume();
                 }
             }
         };
