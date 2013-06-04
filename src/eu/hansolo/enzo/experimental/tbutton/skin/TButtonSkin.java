@@ -125,10 +125,12 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
         offDropShadow.setBlurType(BlurType.TWO_PASS_BOX);
         offDropShadow.setInput(offInnerShadow1);
         off.setEffect(offDropShadow);
+        off.setVisible(!getSkinnable().isSelected());
 
         ledOff = new Region();
         ledOff.getStyleClass().setAll("off-led");
         ledOff.setMouseTransparent(true);
+        ledOff.setVisible(!getSkinnable().isSelected());
 
         ledOffInnerShadow = new InnerShadow();
         ledOffInnerShadow.setOffsetX(0);
@@ -169,12 +171,12 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
         onDropShadow.setBlurType(BlurType.TWO_PASS_BOX);
         onDropShadow.setInput(onInnerShadow1);
         on.setEffect(onDropShadow);
-        on.setOpacity(getSkinnable().isSelected() ? 1 : 0);
+        on.setVisible(getSkinnable().isSelected());
 
         ledOn = new Region();
         ledOn.getStyleClass().setAll("on-led");
         ledOn.setMouseTransparent(true);
-        ledOn.setOpacity(getSkinnable().isSelected() ? 1 : 0);
+        ledOn.setVisible(getSkinnable().isSelected());
 
         ledOnInnerShadow = new InnerShadow();
         ledOnInnerShadow.setOffsetX(1.4142135623730951);
@@ -251,11 +253,11 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
             resize();
         } else if ("SELECTED".equals(PROPERTY)) {
             getSkinnable().fireSelectEvent(getSkinnable().isSelected() ? new TButton.SelectEvent(getSkinnable(), getSkinnable(), TButton.SelectEvent.SELECT) : new TButton.SelectEvent(getSkinnable(), getSkinnable(), TButton.SelectEvent.DESELECT));
-            on.setOpacity(getSkinnable().isSelected() ? 1 : 0);
-            ledOn.setOpacity(getSkinnable().isSelected() ? 1 : 0);
+            on.setVisible(getSkinnable().isSelected());
+            ledOn.setVisible(getSkinnable().isSelected());
 
-            off.setOpacity(getSkinnable().isSelected() ? 0 : 1);
-            ledOff.setOpacity(getSkinnable().isSelected() ? 0 : 1);
+            off.setVisible(!getSkinnable().isSelected());
+            ledOff.setVisible(!getSkinnable().isSelected());
 
             text.setTranslateY(getSkinnable().isSelected() ? (height - text.getLayoutBounds().getHeight()) * 0.49 + (3.0 / 144.0) * height : (height - text.getLayoutBounds().getHeight()) * 0.49);
         } else if ("TEXT".equals(PROPERTY)) {
