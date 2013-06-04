@@ -139,7 +139,6 @@ public class SimpleIndicatorSkin extends SkinBase<SimpleIndicator> implements Sk
     // ******************** Private Methods ***********************************
     private void update() {
         getSkinnable().getStyleClass().setAll("indicator", getSkinnable().getIndicatorStyle().CLASS);
-        System.out.println(getSkinnable().getIndicatorStyle());
     }
 
     private void resize() {

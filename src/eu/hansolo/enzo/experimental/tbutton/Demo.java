@@ -15,7 +15,6 @@ public class Demo extends Application {
         control = TButtonBuilder.create()
                                 .prefWidth(144)
                                 .prefHeight(144)
-                                .touchable(false)
                                 .text("Pi 1")
                                 .build();
         control.setOnSelect(new EventHandler<TButton.SelectEvent>() {

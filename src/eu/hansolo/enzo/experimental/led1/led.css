@@ -18,7 +18,7 @@
 * LED class                                                 *
 ************************************************************/
 .led {
-    -fx-skin     : "eu.hansolo.enzo.led1.skin.LedSkin";
+    -fx-skin     : "eu.hansolo.enzo.experimental.led1.skin.LedSkin";
     -fx-led-color: #FF0000;
 }
 .led .led-off {

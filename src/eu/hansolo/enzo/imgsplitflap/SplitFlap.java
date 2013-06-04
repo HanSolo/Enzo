@@ -192,7 +192,7 @@ public class SplitFlap extends Region {
 
         flapTextBack  = new Canvas();
         flapTextBack.getTransforms().add(rotateFlap);
-        flapTextBack.setVisible(false);
+        flapTextBack.setOpacity(0);
 
         ctxTextBack   = flapTextBack.getGraphicsContext2D();
         ctxTextBack.setTextBaseline(VPos.CENTER);
@@ -323,8 +323,8 @@ public class SplitFlap extends Region {
         currentAngle += ANGLE_STEP;
         if (Double.compare(currentAngle, 180) >= 0) {
             currentAngle = 0;
-            flapTextBack.setVisible(false);
-            flapTextFront.setVisible(true);
+            flapTextBack.setOpacity(0);
+            flapTextFront.setOpacity(1);
             currentSelectionIndex++;
             if (currentSelectionIndex >= selectedSet.size()) {
                 currentSelectionIndex = 0;
@@ -341,8 +341,8 @@ public class SplitFlap extends Region {
             refreshTextCtx();
         }
         if (currentAngle > 90) {
-            flapTextFront.setVisible(false);
-            flapTextBack.setVisible(true);
+            flapTextFront.setOpacity(0);
+            flapTextBack.setOpacity(1);
         }
         if (flipping) {
             rotateFlap.setAngle(currentAngle);

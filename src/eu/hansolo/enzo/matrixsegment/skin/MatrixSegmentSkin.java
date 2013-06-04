@@ -533,7 +533,7 @@ public class MatrixSegmentSkin extends SkinBase<MatrixSegment> implements Skin<M
         updateMatrix();
         updateMatrixColor();
         for (Region highlight : highlights) {
-            highlight.setVisible(getSkinnable().isHighlightsVisible());
+            highlight.setOpacity(getSkinnable().isHighlightsVisible() ? 1 : 0);
         }
     }
 
@@ -565,10 +565,10 @@ public class MatrixSegmentSkin extends SkinBase<MatrixSegment> implements Skin<M
         } else if ("COLOR".equals(PROPERTY)) {
             updateMatrixColor();
         } else if ("BACKGROUND".equals(PROPERTY)) {
-            background.setVisible(getSkinnable().isBackgroundVisible());
+            background.setOpacity(getSkinnable().isBackgroundVisible() ? 1 : 0);
         } else if ("HIGHLIGHTS".equals(PROPERTY)) {
             for (Region highlight : highlights) {
-                highlight.setVisible(getSkinnable().isHighlightsVisible());
+                highlight.setOpacity(getSkinnable().isHighlightsVisible() ? 1 : 0);
             }
         } else if ("CHARACTER".equals(PROPERTY)) {
             updateMatrix();

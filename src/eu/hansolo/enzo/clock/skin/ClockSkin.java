@@ -224,7 +224,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         tickLabelGroup = new Group();
         tickLabelGroup.setEffect(dropShadow);
         tickLabelGroup.getChildren().setAll(tickLabels);
-        tickLabelGroup.setVisible(Clock.Design.BRAUN == getSkinnable().getDesign());
+        tickLabelGroup.setOpacity(Clock.Design.BRAUN == getSkinnable().getDesign() ? 1 : 0);
 
         hourPointer = new Region();
         if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
@@ -239,9 +239,9 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         hourPointerFlour = new Region();
         hourPointerFlour.getStyleClass().setAll("hour-pointer-braun-flour");
         if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
-            hourPointerFlour.setVisible(true);
+            hourPointerFlour.setOpacity(1);
         } else {
-            hourPointerFlour.setVisible(false);
+            hourPointerFlour.setOpacity(0);
         }
         hourPointerFlour.getTransforms().setAll(hourAngle);
 
@@ -258,9 +258,9 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         minutePointerFlour = new Region();
         minutePointerFlour.getStyleClass().setAll("minute-pointer-braun-flour");
         if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
-            minutePointerFlour.setVisible(true);
+            minutePointerFlour.setOpacity(1);
         } else {
-            minutePointerFlour.setVisible(false);
+            minutePointerFlour.setOpacity(0);
         }
         minutePointerFlour.getTransforms().setAll(minuteAngle);
 
@@ -307,7 +307,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         secondPointerGroup = new Group();
         secondPointerGroup.setEffect(secondPointerShadow);
         secondPointerGroup.getChildren().setAll(secondPointer);
-        secondPointerGroup.setVisible(getSkinnable().isSecondPointerVisible());
+        secondPointerGroup.setOpacity(getSkinnable().isSecondPointerVisible() ? 1 : 0);
 
         centerKnob = new Region();
         if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
@@ -326,7 +326,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             foreground.getStyleClass().setAll("foreground-braun");
         }
-        foreground.setVisible(getSkinnable().isHighlightVisible());
+        foreground.setOpacity(getSkinnable().isHighlightVisible() ? 1 : 0);
 
         pane.getChildren().setAll(background, tickMarkGroup, tickLabelGroup, pointerGroup, secondPointerGroup, centerKnob, foreground);
 
@@ -352,7 +352,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         } else if ("DESIGN".equals(PROPERTY)) {
             updateDesign();
         } else if ("SECOND_POINTER_VISIBLE".equals(PROPERTY)) {
-            secondPointerGroup.setVisible(getSkinnable().isSecondPointerVisible());
+            secondPointerGroup.setOpacity(getSkinnable().isSecondPointerVisible() ? 1 : 0);
         }
     }
 
@@ -419,8 +419,6 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
                 }
                 index++;
             }
-            System.out.println(ticks.size());
-            index = 0;
             for (index = 0 ; index < 12 ; index++) {
                 tickLabels.get(index).getStyleClass().setAll(nightDayStyleClass, "tick-label-braun");
             }
@@ -448,8 +446,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             centerKnob.getStyleClass().setAll(nightDayStyleClass, "center-knob-db");
             foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-db");
         }
-        tickLabelGroup.setVisible(Clock.Design.BRAUN == getSkinnable().getDesign());
-        foreground.setVisible(getSkinnable().isHighlightVisible());
+        tickLabelGroup.setOpacity(Clock.Design.BRAUN == getSkinnable().getDesign() ? 1 : 0);
+        foreground.setOpacity(getSkinnable().isHighlightVisible() ? 1 : 0);
         resize();
     }
 
@@ -621,7 +619,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
     private void moveMinutePointer(double newAngle) {
         final KeyValue kv = new KeyValue(currentMinuteAngle, newAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
         final KeyFrame kf = new KeyFrame(Duration.millis(200), kv);
-        timeline  = new Timeline();
+        timeline = new Timeline();
         timeline.getKeyFrames().add(kf);
         timeline.play();
     }

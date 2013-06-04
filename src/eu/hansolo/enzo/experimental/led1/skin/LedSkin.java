@@ -14,9 +14,10 @@
  *    limitations under the License.
  */
 
-package eu.hansolo.enzo.led1.skin;
+package eu.hansolo.enzo.experimental.led1.skin;
 
-import eu.hansolo.enzo.led1.Led;
+import eu.hansolo.enzo.experimental.led1.Led;
+
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
@@ -86,14 +87,14 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private void initGraphics() {
         frame = new Region();
         frame.getStyleClass().setAll("frame");
-        frame.setVisible(getSkinnable().isFrameVisible());
+        frame.setOpacity(getSkinnable().isFrameVisible() ? 1 : 0);
 
         ledOff = new Region();
         ledOff.getStyleClass().setAll("led", "led-off", getSkinnable().getColor().STYLE_CLASS);
 
         ledOn = new Region();
         ledOn.getStyleClass().setAll("led", "led-on", getSkinnable().getColor().STYLE_CLASS);
-        ledOn.setVisible(getSkinnable().isOn());
+        ledOn.setOpacity(getSkinnable().isOn() ? 1 : 0);
 
         innerShadow = new InnerShadow();
         innerShadow.setOffsetX(0.0);
@@ -148,10 +149,10 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         } else if ("PREF_SIZE".equals(PROPERTY)) {
             aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         } else if ("GLOWING".equals(PROPERTY)) {
-            ledOn.setVisible(getSkinnable().isOn());
-            ledOff.setVisible(!getSkinnable().isOn());
+            ledOn.setOpacity(getSkinnable().isOn() ? 1 : 0);
+            ledOff.setOpacity(getSkinnable().isOn() ? 0 : 1);
         } else if ("FRAME_VISIBLE".equals(PROPERTY)) {
-            frame.setVisible(getSkinnable().isFrameVisible());
+            frame.setOpacity(getSkinnable().isFrameVisible() ? 1 : 0);
         } else if ("COLOR".equals(PROPERTY)) {
             ledOff.getStyleClass().setAll("led", "led-off", getSkinnable().getColor().STYLE_CLASS);
             ledOn.getStyleClass().setAll("led", "led-on", getSkinnable().getColor().STYLE_CLASS);

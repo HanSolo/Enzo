@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package eu.hansolo.enzo.led1;
+package eu.hansolo.enzo.experimental.led1;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;

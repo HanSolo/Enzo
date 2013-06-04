@@ -146,11 +146,11 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
     private void initGraphics() {
         fixtureRight = new Region();
         fixtureRight.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-dark" : "fixture");
-        fixtureRight.setVisible(getSkinnable().isWithFixture());
+        fixtureRight.setOpacity(getSkinnable().isWithFixture() ? 1 : 0);
 
         fixtureLeft = new Region();
         fixtureLeft.getStyleClass().setAll(getSkinnable().isDarkFixture() ? "fixture-dark" : "fixture");
-        fixtureLeft.setVisible(getSkinnable().isWithFixture());
+        fixtureLeft.setOpacity(getSkinnable().isWithFixture() ? 1 : 0);
 
         innerShadow = new InnerShadow();
         innerShadow.setOffsetY(-0.01 * flapHeight);
@@ -223,7 +223,7 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
 
         flapTextBack  = new Canvas();
         flapTextBack.getTransforms().add(rotateFlap);
-        flapTextBack.setVisible(false);
+        flapTextBack.setOpacity(0);
         ctxTextBack   = flapTextBack.getGraphicsContext2D();
         ctxTextBack.setTextBaseline(VPos.CENTER);
         ctxTextBack.setTextAlign(TextAlignment.CENTER);
@@ -275,8 +275,8 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         rotateFlap.angleProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> ov, Number oldAngle, Number newAngle) {
                 if (newAngle.doubleValue() > 90) {
-                    flapTextFront.setVisible(false);
-                    flapTextBack.setVisible(true);
+                    flapTextFront.setOpacity(0);
+                    flapTextBack.setOpacity(1);
                     flap.setEffect(reversedInnerHighlight);
                 }
                 if (newAngle.doubleValue() < 90) {
@@ -293,8 +293,8 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
                 if (Double.compare(rotateFlap.getAngle(), 180) == 0) {
                     flap.setEffect(innerHighlight);
                     rotateFlap.setAngle(0);
-                    flapTextBack.setVisible(false);
-                    flapTextFront.setVisible(true);
+                    flapTextBack.setOpacity(0);
+                    flapTextFront.setOpacity(1);
                     refreshTextCtx();
                     if (!getSkinnable().getText().equals(selectedSet.get(currentSelectionIndex))) {
                         flipForward();
@@ -325,8 +325,8 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
                 selectedSet.add(text);
             }
         } else if ("WITH_FIXTURE".equals(PROPERTY)) {
-            fixtureLeft.setVisible(getSkinnable().isWithFixture());
-            fixtureRight.setVisible(getSkinnable().isWithFixture());
+            fixtureLeft.setOpacity(getSkinnable().isWithFixture() ? 1 : 0);
+            fixtureRight.setOpacity(getSkinnable().isWithFixture() ? 1 : 0);
             if (!getSkinnable().isWithFixture()) {
                 upperBackground.getStyleClass().setAll("upper-no-fixture");
                 lowerBackground.getStyleClass().setAll("lower-no-fixture");

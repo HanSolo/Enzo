@@ -159,7 +159,7 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
         background.getStyleClass().addAll("background", getSkinnable().getColor().STYLE_CLASS);
 
         stainlessBackground.setImage(texture.getImage(PREFERRED_WIDTH, PREFERRED_HEIGHT));
-        stainlessBackground.setVisible(getSkinnable().getColor() == QlockTwo.QlockColor.STAINLESS_STEEL);
+        stainlessBackground.setOpacity(getSkinnable().getColor() == QlockTwo.QlockColor.STAINLESS_STEEL ? 1 : 0);
 
         p1 = new Region();
         p1.getStyleClass().add("dot-off");
@@ -226,7 +226,7 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
             resize();
         } else if ("COLOR".equals(PROPERTY)) {
             background.getStyleClass().setAll("background", getSkinnable().getColor().STYLE_CLASS);
-            stainlessBackground.setVisible(getSkinnable().getColor() == QlockTwo.QlockColor.STAINLESS_STEEL);
+            stainlessBackground.setOpacity(getSkinnable().getColor() == QlockTwo.QlockColor.STAINLESS_STEEL ? 1 : 0);
             for (int y = 0 ; y < 10 ; y++) {
                 for (int x = 0 ; x < 11 ; x++) {
                     matrix[x][y].getStyleClass().setAll("text-off", getSkinnable().getColor().STYLE_CLASS);
@@ -243,7 +243,7 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
                 }
             }
         } else if ("HIGHLIGHT".equals(PROPERTY)) {
-            highlight.setVisible(getSkinnable().isHighlightVisible());
+            highlight.setOpacity(getSkinnable().isHighlightVisible() ? 1 : 0);
         }
     }
 

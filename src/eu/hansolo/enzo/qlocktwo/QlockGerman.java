@@ -80,33 +80,69 @@ public class QlockGerman implements Qlock {
         timeList.add(QlockLanguage.IST);
         switch (minute) {
             case 0:
-                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
+                if (10 == hour) {
+                    timeList.add(QlockLanguage.ZEHN1);
+                } else if (1 == hour) {
+                    timeList.add(QlockLanguage.EIN);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                }
                 timeList.add(QlockLanguage.UHR);
                 break;
             case 5:
                 timeList.add(QlockLanguage.FÜNF1);
                 timeList.add(QlockLanguage.NACH);
-                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
+                if (10 == hour) {
+                    timeList.add(QlockLanguage.ZEHN1);
+                } else if (3 == hour) {
+                    timeList.add(QlockLanguage.DREI1);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                }
                 break;
             case 10:
                 timeList.add(QlockLanguage.ZEHN);
                 timeList.add(QlockLanguage.NACH);
-                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
+                if (10 == hour) {
+                    timeList.add(QlockLanguage.ZEHN1);
+                } else if (3 == hour) {
+                    timeList.add(QlockLanguage.DREI1);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                }
                 break;
             case 15:
                 timeList.add(QlockLanguage.VIERTEL);
                 timeList.add(QlockLanguage.NACH);
-                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
+                if (10 == hour) {
+                    timeList.add(QlockLanguage.ZEHN1);
+                } else if (3 == hour) {
+                    timeList.add(QlockLanguage.DREI1);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                }
                 break;
             case 20:
                 timeList.add(QlockLanguage.ZWANZIG);
                 timeList.add(QlockLanguage.NACH);
-                timeList.add(hour == 10 ? QlockLanguage.ZEHN1 : QlockLanguage.valueOf(LOOKUP.get(hour)));
+                if (10 == hour) {
+                    timeList.add(QlockLanguage.ZEHN1);
+                } else if (3 == hour) {
+                    timeList.add(QlockLanguage.DREI1);
+                } else {
+                    timeList.add(QlockLanguage.valueOf(LOOKUP.get(hour)));
+                }
                 break;
             case 25:
                 timeList.add(QlockLanguage.FÜNF1);
                 timeList.add(QlockLanguage.VOR);
-                timeList.add(hour == 9 ? QlockLanguage.ZEHN1 : QlockLanguage.HALB);
+                if (9 == hour) {
+                    timeList.add(QlockLanguage.ZEHN1);
+                } else if (2 == hour) {
+                    timeList.add(QlockLanguage.DREI1);
+                } else {
+                    timeList.add(QlockLanguage.HALB);
+                }
                 addHour(timeList, hour);
                 break;
             case 30:
@@ -155,6 +191,8 @@ public class QlockGerman implements Qlock {
                 timeList.add(QlockLanguage.FÜNF2);
             } else if (HOUR + 1 == 10) {
                 timeList.add(QlockLanguage.ZEHN1);
+            } else if (HOUR + 1 == 3) {
+                timeList.add(QlockLanguage.DREI1);
             } else {
                 timeList.add(QlockLanguage.valueOf(LOOKUP.get(HOUR + 1)));
             }
@@ -162,9 +200,11 @@ public class QlockGerman implements Qlock {
     }
 
     private enum QlockLanguage implements QlockWord {
+        EIN(5, 0, 2),
         EINS(5, 0, 3),
         ZWEI(5, 7, 10),
         DREI(2, 0, 3),
+        DREI1(6, 0, 3),
         VIER(6, 7, 10),
         FÜNF(4, 7, 10),
         FÜNF1(0, 7, 10),

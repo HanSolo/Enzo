@@ -246,22 +246,22 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
     private void updateStatus() {
         switch (getSkinnable().getStatus()) {
             case DESELECTED:
-                selected.setVisible(false);
-                deselected.setVisible(true);
+                selected.setOpacity(0);
+                deselected.setOpacity(1);
                 icon.getStyleClass().setAll("icon");
-                icon.setVisible(true);
+                icon.setOpacity(1);
                 break;
             case SELECTED:
-                selected.setVisible(true);
-                deselected.setVisible(false);
+                selected.setOpacity(1);
+                deselected.setOpacity(0);
                 icon.getStyleClass().setAll("icon", "icon-selected");
-                icon.setVisible(true);
+                icon.setOpacity(1);
                 break;
             case EMPTY:
             default:
-                selected.setVisible(false);
-                deselected.setVisible(false);
-                icon.setVisible(false);
+                selected.setOpacity(0);
+                deselected.setOpacity(0);
+                icon.setOpacity(0);
                 break;
         }
     }
