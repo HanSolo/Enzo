@@ -1,0 +1,41 @@
+.toggle-button {
+    -pbutton-base: rgb(0, 128, 255);
+    -fx-background-color : linear-gradient(to bottom,
+                                          derive(-pbutton-base, -20%) 0%,
+                                          -pbutton-base 100%),
+                           linear-gradient(to bottom,
+                                           derive(-pbutton-base, -30%) 0%,
+                                           derive(-pbutton-base, -45%) 100%),
+                           linear-gradient(to bottom,
+                                           derive(-pbutton-base, 15%) 0%,
+                                           derive(-pbutton-base, 5%) 72%,
+                                           derive(-pbutton-base, -5%) 100%),
+                           linear-gradient(to bottom,
+                                           derive(-pbutton-base, 15%) 0%,
+                                           derive(-pbutton-base, 10%) 50%,
+                                           derive(-pbutton-base, -10%) 50%,
+                                           derive(-pbutton-base, -15%) 100%);
+    -fx-background-insets: 0, 3, 5, 6;
+    -fx-background-radius: 9, 8, 7, 7;
+    -fx-text-fill        : white;
+    -fx-font-weight      : bold;
+    -fx-font-size        : 16px;
+}
+.toggle-button:selected {
+    -fx-background-color : linear-gradient(to bottom,
+                                           derive(-pbutton-base, -20%) 0%,
+                                           -pbutton-base 100%),
+                           linear-gradient(to bottom,
+                                           derive(-pbutton-base, -30%) 0%,
+                                           derive(-pbutton-base, -45%) 100%),
+                           linear-gradient(to bottom,
+                                           derive(-pbutton-base, 15%) 0%,
+                                           derive(-pbutton-base, 5%) 72%,
+                                           derive(-pbutton-base, -5%) 100%),
+                           linear-gradient(to bottom,
+                                           derive(-pbutton-base, -25%) 0%,
+                                           derive(-pbutton-base, -5%) 50%,
+                                           derive(-pbutton-base, 15%) 100%);
+    -fx-text-fill        : whitesmoke;
+    -fx-padding          : 0.333333em 0.666667em 0.5em 0.666667em; /* 4 8 4 8 */
+}

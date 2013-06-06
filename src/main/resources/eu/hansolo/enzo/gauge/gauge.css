@@ -1,0 +1,188 @@
+/*
+ * Copyright (c) 2013. Gerrit Grunwald
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+/******************************************************************************
+ * GAUGE class                                                                *
+ *****************************************************************************/
+.gauge {
+    -fx-skin        : "eu.hansolo.enzo.gauge.skin.GaugeSkin";
+    -base           : white;
+    -background     : ladder(-base, black 49%, white 50%);
+    -needle         : #F8907D;
+    -knob           : white;
+    -shape          : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+    -tick-mark-fill : black;
+    -tick-label-fill: black;
+    -section0-fill  : rgba(0, 0, 178, 0.5);
+    -section1-fill  : rgba(0, 128, 255, 0.5);
+    -section2-fill  : rgba(0, 255, 255, 0.5);
+    -section3-fill  : rgba(0, 255, 64, 0.5);
+    -section4-fill  : rgba(128, 255, 0, 0.5);
+    -section5-fill  : rgba(255, 255, 0, 0.5);
+    -section6-fill  : rgba(255, 191, 0, 0.5);
+    -section7-fill  : rgba(255, 128, 0, 0.5);
+    -section8-fill  : rgba(255, 64, 0, 0.5);
+    -section9-fill  : rgba(255, 0, 0, 0.5);
+}
+
+
+/******************************************************************************
+ * GAUGE components                                                           *
+ *****************************************************************************/
+.gauge .background {
+    -fx-background-color :linear-gradient(to bottom,
+                                          #e1e0e1 0%,
+                                          #b2b1b2 100%),
+                          linear-gradient(to bottom,
+                                          #fafafa 0%,
+                                          #cccccc 100%),
+                          linear-gradient(to bottom,
+                                          #eeeeee 0%,
+                                          #f0f0f0 100%),
+                          -background;
+    -fx-background-insets: 0, 6, 12, 18;
+    /*
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+    */
+    -fx-scale-shape      : true;
+    /*-fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";*/
+    -fx-shape            : -shape;
+}
+
+
+/******************************************************************************
+ * GAUGE needle                                                               *
+ *****************************************************************************/
+.gauge .needle-standard {
+    -fx-background-color : transparent,
+                           transparent,
+                           derive(-needle, -10%),
+                           linear-gradient(from 0% 0% to 0% 100%,
+                                           derive(-needle, 15%) 0%,
+                                           derive(-needle, -15%) 100%);
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 3.0313 0 L 0 74 L 7.9688 74 L 4.9375 0 L 3.0313 0 Z";
+}
+.gauge .needle-highlight {
+    -fx-background-color : linear-gradient(from 0% 0% to 100% 0%,
+                                           transparent 0%,
+                                           transparent 50%,
+                                           rgba(255, 255, 255, 0.2) 50%,
+                                           rgba(255, 255, 255, 0.2) 100%);
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 3.0313 0 L 0 74 L 7.9688 74 L 4.9375 0 L 3.0313 0 Z";
+}
+.gauge:touch-mode .needle-standard {
+    -needle: green;
+}
+
+
+/******************************************************************************
+ * GAUGE knob                                                                 *
+ *****************************************************************************/
+.gauge .knob {
+    -fx-background-color : transparent,
+                           transparent,
+                           linear-gradient(to bottom, derive(-knob, -5%) 0%, derive(-knob, -20%) 100%),
+                           linear-gradient(to bottom, derive(-knob, -10%) 0%, derive(-knob, -5%) 100%);
+    -fx-background-insets: 0, 0, 0, 5;
+    -fx-background-radius: 0em;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+}
+
+
+/******************************************************************************
+ * GAUGE title, unit                                                          *
+ *****************************************************************************/
+.gauge .title {
+    -fx-fill: ladder(-background, white 49%, #888888 50%);
+}
+
+.gauge .unit {
+    -fx-fill: ladder(-background, white 49%, #888888 50%);
+}
+
+
+/******************************************************************************
+ * GAUGE sections                                                             *
+ *****************************************************************************/
+.gauge .section0 {
+    -fx-fill: -section0-fill;
+}
+.gauge:highlighted .section0 {
+    -fx-fill: derive(-section0-fill, 30%);
+}
+.gauge .section1 {
+    -fx-fill: -section1-fill;
+}
+.gauge:highlighted .section1 {
+    -fx-fill: derive(-section1-fill, 30%);
+}
+.gauge .section2 {
+    -fx-fill: -section2-fill;
+}
+.gauge:highlighted .section2 {
+    -fx-fill: derive(-section2-fill, 30%);
+}
+.gauge .section3 {
+    -fx-fill: -section3-fill;
+}
+.gauge:highlighted .section3 {
+    -fx-fill: derive(-section3-fill, 30%);
+}
+.gauge .section4 {
+    -fx-fill: -section4-fill;
+}
+.gauge:highlighted .section4 {
+    -fx-fill: derive(-section4-fill, 30%);
+}
+.gauge .section5 {
+    -fx-fill: -section5-fill;
+}
+.gauge:highlighted .section5 {
+    -fx-fill: derive(-section5-fill, 30%);
+}
+.gauge .section6 {
+    -fx-fill: -section6-fill;
+}
+.gauge:highlighted .section6 {
+    -fx-fill: derive(-section6-fill, 30%);
+}
+.gauge .section7 {
+    -fx-fill: -section7-fill;
+}
+.gauge:highlighted .section7 {
+    -fx-fill: derive(-section7-fill, 30%);
+}
+.gauge .section8 {
+    -fx-fill: -section8-fill;
+}
+.gauge:highlighted .section8 {
+    -fx-fill: derive(-section8-fill, 30%);
+}
+.gauge .section9 {
+    -fx-fill: -section9-fill;
+}
+.gauge:highlighted .section9 {
+    -fx-fill: derive(-section9-fill, 30%);
+}

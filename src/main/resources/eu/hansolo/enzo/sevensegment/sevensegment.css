@@ -1,0 +1,127 @@
+/*
+ * Copyright (c) 2013. Gerrit Grunwald
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+/******************************************************************************
+* SEVEN SEGMENT class                                                         *
+******************************************************************************/
+.seven-segment {
+    -fx-skin              : "eu.hansolo.enzo.sevensegment.skin.SevenSegmentSkin";
+    -fx-segment-color     : rgb(180, 180, 180);
+    -fx-segment-off-color : rgb(180, 180, 180);
+    -fx-segment-glow-color: transparent;
+}
+
+
+/******************************************************************************
+* SEVEN SEGMENT components                                                    *
+******************************************************************************/
+.seven-segment .a {
+    -fx-background-color: -fx-segment-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 31.0 9.0 L 67.0 45.0 L 187.0 45.0 L 221.0 11.0 C 221.0 11.0 209.0 0.0 197.0 0.0 C 197.0 0.0 54.0 0.0 54.0 0.0 C 39.0 0.0 31.0 9.0 31.0 9.0 Z";
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
+}
+.seven-segment .b {
+    -fx-background-color: -fx-segment-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 223.0 12.0 C 223.0 12.0 233.0 25.0 233.0 37.0 C 233.0 37.0 233.0 50.0 233.0 50.0 L 224.0 155.0 L 201.0 177.0 L 180.0 156.0 L 189.0 46.0 L 223.0 12.0 Z";
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
+}
+.seven-segment .c {
+    -fx-background-color: -fx-segment-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 202.0 180.0 L 223.0 201.0 C 223.0 201.0 212.0 324.0 212.0 324.0 C 212.0 336.0 203.0 347.0 203.0 347.0 L 168.0 311.0 L 178.0 204.0 L 202.0 180.0 Z";
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
+}
+.seven-segment .d {
+    -fx-background-color: -fx-segment-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 166.0 312.0 L 46.0 312.0 L 12.0 346.0 C 12.0 346.0 21.0 357.0 37.0 357.0 C 37.0 357.0 179.0 357.0 179.0 357.0 C 193.0 357.0 201.0 348.0 201.0 348.0 L 166.0 312.0 Z";
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
+}
+.seven-segment .e {
+    -fx-background-color: -fx-segment-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 11.0 344.0 C 11.0 344.0 0.0 332.0 0.0 320.0 C 0.0 320.0 10.0 202.0 10.0 202.0 L 32.0 180.0 L 54.0 201.0 L 44.0 311.0 L 11.0 344.0 Z";
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
+}
+.seven-segment .f {
+    -fx-background-color: -fx-segment-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 29.0 10.0 L 64.0 46.0 L 56.0 154.0 L 32.0 178.0 L 10.0 155.0 C 10.0 155.0 20.0 33.0 20.0 33.0 C 20.0 22.0 29.0 10.0 29.0 10.0 Z";
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
+}
+.seven-segment .g {
+    -fx-background-color: -fx-segment-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 177.0 201.0 L 199.0 179.0 L 177.0 156.0 L 57.0 156.0 L 35.0 179.0 L 57.0 201.0 L 177.0 201.0 Z";
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
+}
+.seven-segment .dot {
+    -fx-background-color: -fx-segment-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 223.0 335.0 C 223.0 322.0 233.0 312.0 246.0 312.0 C 258.0 312.0 268.0 322.0 268.0 335.0 C 268.0 347.0 258.0 357.0 246.0 357.0 C 233.0 357.0 223.0 347.0 223.0 335.0 Z";
+    -fx-effect          : dropshadow(two-pass-box, -fx-segment-glow-color, 10, 0.0, 0, 0);
+}
+
+
+/******************************************************************************
+* SEVEN SEGMENT designs                                                       *
+******************************************************************************/
+.seven-segment-off {
+    -fx-background-color  : -fx-segment-off-color;
+    -fx-segment-glow-color: transparent;
+}
+.seven-segment-red {
+    -fx-segment-color     : rgb(202, 8, 20);
+    -fx-segment-glow-color: rgba(202, 8, 20, 0.5);
+}
+.seven-segment-green {
+    -fx-segment-color     : rgb(43, 202, 35);
+    -fx-segment-glow-color: rgba(43, 202, 35, 0.5);
+}
+.seven-segment-blue {
+    -fx-segment-color     : rgb(3, 59, 255);
+    -fx-segment-glow-color: rgba(3, 59, 255, 0.5);
+}
+.seven-segment-yellow {
+    -fx-segment-color     : rgb(250, 250, 0);
+    -fx-segment-glow-color: rgba(250, 250, 0, 0.5);
+}
+.seven-segment-orange {
+    -fx-segment-color     : rgb(252, 81, 0);
+    -fx-segment-glow-color: rgba(252, 81, 0, 0.5);
+}
+.seven-segment-cyan {
+    -fx-segment-color     : rgb(0, 255, 255);
+    -fx-segment-glow-color: rgba(0, 255, 255, 0.5);
+}
+.seven-segment-magenta {
+    -fx-segment-color     : rgb(255, 0, 255);
+    -fx-segment-glow-color: rgba(255, 0, 255, 0.5);
+}
+.seven-segment-purple {
+    -fx-segment-color     : rgb(121, 0, 255);
+    -fx-segment-glow-color: rgba(121, 0, 255, 0.5);
+}
+.seven-segment-white {
+    -fx-segment-color     : white;
+    -fx-segment-glow-color: rgba(255, 255, 255, 0.5);
+}
+.seven-segment-black {
+    -fx-segment-color     : black;
+    -fx-segment-glow-color: rgba(0, 0, 0, 0.5);
+}
