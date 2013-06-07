@@ -5,9 +5,10 @@
 *.war
 *.ear
 
-/out/
-/Enzo.iml
-/.idea/
-/META-INF/
-/classes/
-/.gradle/.DS_Store
+out/
+Enzo.iml
+.idea/
+META-INF/
+classes/
+.gradle/
+build/
