@@ -62,7 +62,6 @@
     -fx-scale-shape      : true;
     -fx-shape            : -shape;
 }
-
 .gauge .inner-background {
     -fx-background-color : linear-gradient(to bottom,
                                            rgb(245,245,245) 0%,
