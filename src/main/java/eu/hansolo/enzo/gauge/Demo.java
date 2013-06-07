@@ -79,7 +79,7 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        control.setTouchMode(true);
+        //control.setTouchMode(true);
         timer.start();
 
         calcNoOfNodes(scene.getRoot());

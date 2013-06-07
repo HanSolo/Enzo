@@ -25,6 +25,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -63,6 +64,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private double              size;
     private Pane                pane;
     private Region              background;
+    private Region              innerBackground;
     private Canvas              ticksAndSectionsCanvas;
     private GraphicsContext     ticksAndSections;
     private Region              needle;
@@ -71,6 +73,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private Region              knob;
     private Text                title;
     private Text                unit;
+    private Text                value;
     private double              angleStep;
     private Timeline            timeline;
 
@@ -111,6 +114,9 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         background = new Region();
         background.getStyleClass().setAll("background");
 
+        innerBackground = new Region();
+        innerBackground.getStyleClass().setAll("inner-background");
+
         ticksAndSectionsCanvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
         ticksAndSections = ticksAndSectionsCanvas.getGraphicsContext2D();
 
@@ -143,8 +149,12 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         unit.setTextOrigin(VPos.CENTER);
         unit.getStyleClass().setAll("unit");
 
+        value = new Text(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
+        value.setTextOrigin(VPos.CENTER);
+        value.getStyleClass().setAll("value");
+
         // Add all nodes
-        pane.getChildren().setAll(background, ticksAndSectionsCanvas, title, unit, shadowGroup);
+        pane.getChildren().setAll(background, innerBackground, ticksAndSectionsCanvas, title, shadowGroup, unit, value);
 
         getChildren().setAll(pane);
     }
@@ -163,7 +173,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         getSkinnable().animatedProperty().addListener(observable -> { handleControlPropertyChanged("ANIMATED"); });
         getSkinnable().angleRangeProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE_RANGE"); });
         getSkinnable().numberFormatProperty().addListener(observable -> { handleControlPropertyChanged("RECALC"); });
-        needleRotate.angleProperty().addListener(observable -> { handleControlPropertyChanged("LCD"); });
+        needleRotate.angleProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE"); });
 
     }
 
@@ -177,10 +187,9 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         } else if ("RECALC".equals(PROPERTY)) {
             angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
             resize();
-        } else if ("LCD".equals(PROPERTY)) {
-            if (getSkinnable().isLcdEnabled()) {
-                drawLcd(ticksAndSections);
-            }
+        } else if ("ANGLE".equals(PROPERTY)) {
+            value.setText(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
+            value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
         }
     }
 
@@ -223,10 +232,9 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         if (getSkinnable().isAnimated()) {
             timeline.stop();
-            final KeyValue KEY_VALUE = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
-            final KeyFrame KEY_FRAME = new KeyFrame(getSkinnable().getAnimationTime(), KEY_VALUE);
+            final KeyValue KEY_VALUE      = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
+            final KeyFrame KEY_FRAME      = new KeyFrame(getSkinnable().getAnimationTime(), KEY_VALUE);
             timeline.getKeyFrames().setAll(KEY_FRAME);
-            timeline.getKeyFrames().add(KEY_FRAME);
             timeline.play();
         } else {
             needleRotate.setAngle(targetAngle);
@@ -279,7 +287,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
                 // Draw text
                 CTX.save();
-                CTX.setFont(Font.font("Verdana", FontWeight.NORMAL, 0.04 * size));
+                CTX.setFont(Font.font("Verdana", FontWeight.NORMAL, 0.045 * size));
                 CTX.setTextAlign(TextAlignment.CENTER);
                 CTX.setTextBaseline(VPos.CENTER);
                 CTX.setFill(getSkinnable().getTickLabelFill());
@@ -296,8 +304,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private final void drawSections(final GraphicsContext CTX) {
-        final double xy     = (size - 0.8 * size) / 2;
-        final double wh     = size * 0.8;
+        final double xy     = (size - 0.83 * size) / 2;
+        final double wh     = size * 0.83;
         final double OFFSET = 90 - getSkinnable().getStartAngle();
         for (int i = 0 ; i < getSkinnable().getSections().size() ; i++) {
             final Section SECTION      = getSkinnable().getSections().get(i);
@@ -316,42 +324,29 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                 case 8: CTX.setStroke(getSkinnable().getSection8Fill()); break;
                 case 9: CTX.setStroke(getSkinnable().getSection9Fill()); break;
             }
-            CTX.setLineWidth(size * 0.07);
+            CTX.setLineWidth(size * 0.037);
             CTX.setLineCap(StrokeLineCap.BUTT);
             CTX.strokeArc(xy, xy, wh, wh, -(OFFSET + ANGLE_START), -ANGLE_EXTEND, ArcType.OPEN);
             CTX.restore();
         }
     }
 
-    private final void drawLcd(final GraphicsContext CTX) {
-        CTX.clearRect(0.3026548673 * size, 0.7610619469 * size, 0.396460177 * size, 0.1256637168 * size);
-        CTX.setFill(Color.rgb(98, 98, 98));
-        CTX.fillRoundRect(0.3026548673 * size, 0.7699115044 * size, 0.396460177 * size, 0.1061946903 * size, 0.0212389381 * size, 0.0212389381 * size);
-        CTX.setFill(Color.rgb(186, 186, 178));
-        CTX.fillRoundRect(0.3061946903 * size, 0.7734513565 * size, 0.389380531 * size, 0.0991150442 * size, 0.0194690265 * size, 0.0194690265 * size);
-        CTX.setFill(Color.rgb(73, 73, 73));
-        CTX.setTextAlign(TextAlignment.RIGHT);
-        CTX.setTextBaseline(VPos.CENTER);
-        CTX.setFont(Font.loadFont(getClass().getResource("eu/hansolo/enzo/fonts/digital.ttf").toExternalForm(), (0.1 * size)));
-        CTX.fillText(String.format(Locale.US, "%.2f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep), 0.68 * size, 0.817 * size);
-    }
-
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
-        //double emptySegmentHeight = size * (1.0 - Math.cos(Math.toRadians((360 - getSkinnable().getAngleRange()) * 0.5)));
         background.setPrefSize(size, size);
-        //background.setPrefWidth(size);
-        //background.setPrefHeight(size);
+
+        innerBackground.setPrefSize(size, size);
 
         ticksAndSectionsCanvas.setWidth(size);
         ticksAndSectionsCanvas.setHeight(size);
         ticksAndSections.clearRect(0, 0, size, size);
         drawSections(ticksAndSections);
         drawTickMarks(ticksAndSections);
-        if (getSkinnable().isLcdEnabled()) {
-            drawLcd(ticksAndSections);
-        }
+        ticksAndSectionsCanvas.setCache(true);
+        ticksAndSectionsCanvas.setCacheHint(CacheHint.QUALITY);
+
+        value.setText(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
 
         switch (getSkinnable().getNeedleType()) {
             default:
@@ -366,16 +361,20 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         needleHighlight.setTranslateX((size - needle.getPrefWidth()) * 0.5);
         needleHighlight.setTranslateY(size * 0.5 - needle.getPrefHeight());
 
-        knob.setPrefSize(size * 0.11, size * 0.11);
+        knob.setPrefSize(size * 0.35, size * 0.35);
         knob.setTranslateX((size - knob.getPrefWidth()) * 0.5);
         knob.setTranslateY((size - knob.getPrefHeight()) * 0.5);
 
         title.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.06));
         title.setTranslateX((size - title.getLayoutBounds().getWidth()) * 0.5);
-        title.setTranslateY(size * 0.35);
+        title.setTranslateY(size * 0.85);
 
         unit.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.05));
         unit.setTranslateX((size - unit.getLayoutBounds().getWidth()) * 0.5);
-        unit.setTranslateY(size * 0.65);
+        unit.setTranslateY(size * 0.41);
+
+        value.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.12));
+        value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+        value.setTranslateY(size * 0.51);
     }
 }

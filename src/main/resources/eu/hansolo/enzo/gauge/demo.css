@@ -15,9 +15,10 @@
  */
 
 .gauge {
-    -tick-mark-fill : blue;
-    -tick-label-fill: red;
-    -section0-fill  : rgba(0, 200, 0, 0.5);
-    -section1-fill  : rgba(255, 255, 0, 0.5);
-    -section2-fill  : rgba(255, 0, 0, 0.5);
+    -needle         : rgb(243,56,28);
+    -tick-mark-fill : rgb(146, 135, 136);
+    -tick-label-fill: rgb(87, 84, 85);
+    -section0-fill  : rgb(192, 215, 123);
+    -section1-fill  : rgb(217, 191, 78);
+    -section2-fill  : rgb(225, 75, 69);
 }

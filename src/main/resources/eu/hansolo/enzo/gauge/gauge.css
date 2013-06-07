@@ -20,6 +20,9 @@
 .gauge {
     -fx-skin        : "eu.hansolo.enzo.gauge.skin.GaugeSkin";
     -base           : white;
+    -background     : ladder(-base,
+                              linear-gradient(to bottom, rgb(90, 90, 90) 0%, rgb(70, 70, 70) 100%) 49%,
+                              linear-gradient(to bottom, rgb(245,245,245) 0%, rgb(235,235,235) 100%) 50%);
     -background     : ladder(-base, black 49%, white 50%);
     -needle         : #F8907D;
     -knob           : white;
@@ -44,24 +47,30 @@
  *****************************************************************************/
 .gauge .background {
     -fx-background-color :linear-gradient(to bottom,
-                                          #e1e0e1 0%,
-                                          #b2b1b2 100%),
+                                          rgb(224,224,224) 0%,
+                                          rgb(133,133,133) 26%,
+                                          rgb(84,84,84) 100%),
                           linear-gradient(to bottom,
-                                          #fafafa 0%,
-                                          #cccccc 100%),
+                                          rgb(255,255,255) 0%,
+                                          rgb(146,146,147) 50%,
+                                          rgb(135,136,138) 100%),
                           linear-gradient(to bottom,
-                                          #eeeeee 0%,
-                                          #f0f0f0 100%),
-                          -background;
-    -fx-background-insets: 0, 6, 12, 18;
-    /*
-    -fx-background-radius: 0em;
-    -fx-padding          : 0;
-    -fx-stroke           : transparent;
-    */
+                                          rgb(71,72,72) 0%,
+                                          rgb(110,106,107) 50%,
+                                          rgb(186,185,187) 100%);
+    -fx-background-insets: 0, 6, 7;
     -fx-scale-shape      : true;
-    /*-fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";*/
     -fx-shape            : -shape;
+}
+
+.gauge .inner-background {
+    -fx-background-color : linear-gradient(to bottom,
+                                           rgb(245,245,245) 0%,
+                                           rgb(235,235,235) 100%);
+    -fx-background-insets: 13;
+    -fx-scale-shape      : true;
+    -fx-shape            : -shape;
+    -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.3), 20, 0.0, 0, 10)
 }
 
 
@@ -102,9 +111,14 @@
 .gauge .knob {
     -fx-background-color : transparent,
                            transparent,
-                           linear-gradient(to bottom, derive(-knob, -5%) 0%, derive(-knob, -20%) 100%),
-                           linear-gradient(to bottom, derive(-knob, -10%) 0%, derive(-knob, -5%) 100%);
-    -fx-background-insets: 0, 0, 0, 5;
+                           linear-gradient(to bottom,
+                                           white 0%,
+                                           rgb(230,230,230) 52%,
+                                           rgb(240,240,240) 100%),
+                           linear-gradient(to bottom,
+                                           rgb(250,250,250) 0%,
+                                           rgb(230,230,230) 100%);
+    -fx-background-insets: 0, 0, 0, 2;
     -fx-background-radius: 0em;
     -fx-scale-shape      : true;
     -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
@@ -112,14 +126,18 @@
 
 
 /******************************************************************************
- * GAUGE title, unit                                                          *
+ * GAUGE title, unit, value                                                   *
  *****************************************************************************/
 .gauge .title {
-    -fx-fill: ladder(-background, white 49%, #888888 50%);
+    -fx-fill: ladder(-base, white 49%, #888888 50%);
 }
 
 .gauge .unit {
-    -fx-fill: ladder(-background, white 49%, #888888 50%);
+    -fx-fill: ladder(-base, white 49%, #888888 50%);
+}
+
+.gauge .value {
+    -fx-fill: ladder(-base, white 49%, black 50%);
 }
 
 

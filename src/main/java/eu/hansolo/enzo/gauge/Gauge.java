@@ -147,8 +147,6 @@ public class Gauge extends Control {
     private DoubleProperty                       majorTickSpace;
     private double                               _minorTickSpace;
     private DoubleProperty                       minorTickSpace;
-    private boolean                              _lcdEnabled;
-    private BooleanProperty                      lcdEnabled;
     private Duration                             animationTime;
 
     // CSS styleable properties
@@ -192,7 +190,6 @@ public class Gauge extends Control {
         _sections             = new ArrayList<>();
         _majorTickSpace       = 10;
         _minorTickSpace       = 1;
-        _lcdEnabled           = true;
         animationTime         = Duration.millis(800);
     }
 
@@ -572,36 +569,16 @@ public class Gauge extends Control {
         return minorTickSpace;
     }
 
-    public final boolean isLcdEnabled() {
-        return null == lcdEnabled ? _lcdEnabled : lcdEnabled.get();
-    }
-    public final void setLcdEnabled(final boolean LCD_ENABLED) {
-        if (null == lcdEnabled) {
-            _lcdEnabled = LCD_ENABLED;
-        } else {
-            lcdEnabled.set(LCD_ENABLED);
-        }
-    }
-    public final BooleanProperty lcdEnabledProperty() {
-        if (null == lcdEnabled) {
-            lcdEnabled = new SimpleBooleanProperty(this, "lcdEnabled", _lcdEnabled);
-        }
-        return lcdEnabled;
-    }
-
-
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {
         if (VALUE < MIN_VALUE) return MIN_VALUE;
         if (VALUE > MAX_VALUE) return MAX_VALUE;
         return VALUE;
     }
-
     private int clamp(final int MIN_VALUE, final int MAX_VALUE, final int VALUE) {
         if (VALUE < MIN_VALUE) return MIN_VALUE;
         if (VALUE > MAX_VALUE) return MAX_VALUE;
         return VALUE;
     }
-
     private Duration clamp(final Duration MIN_VALUE, final Duration MAX_VALUE, final Duration VALUE) {
         if (VALUE.lessThan(MIN_VALUE)) return MIN_VALUE;
         if (VALUE.greaterThan(MAX_VALUE)) return MAX_VALUE;
