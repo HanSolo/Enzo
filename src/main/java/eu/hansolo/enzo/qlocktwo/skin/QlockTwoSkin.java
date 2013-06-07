@@ -154,7 +154,7 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
         startY     = PREFERRED_WIDTH * 0.112;
         stepX      = PREFERRED_WIDTH * 0.072;
         stepY      = PREFERRED_WIDTH * 0.08;
-        font       = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/resources/din.otf"), PREFERRED_WIDTH * 0.048);
+        font       = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/din.otf"), PREFERRED_WIDTH * 0.048);
         background = new Region();
         background.getStyleClass().addAll("background", getSkinnable().getColor().STYLE_CLASS);
 

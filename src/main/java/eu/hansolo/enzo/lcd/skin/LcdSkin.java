@@ -456,21 +456,21 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         digitalFontSizeFactor = 1.0;
         switch(getSkinnable().getValueFont()) {
             case BUS:
-                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/resources/bus.otf"), (0.4583333333 * height));
+                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/bus.otf"), (0.4583333333 * height));
                 break;
             case LCD:
-                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/resources/digital.ttf"), (0.5833333333 * height));
+                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digital.ttf"), (0.5833333333 * height));
                 //digitalFontSizeFactor = 1.9098073909;
                 digitalFontSizeFactor = 1.3;
                 break;
             case PIXEL:
-                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/resources/pixel.ttf"), (0.5208333333 * height));
+                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/pixel.ttf"), (0.5208333333 * height));
                 break;
             case PHONE_LCD:
-                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/resources/phonelcd.ttf"), (0.4583333333 * height));
+                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/phonelcd.ttf"), (0.4583333333 * height));
                 break;
             case ELEKTRA:
-                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/resources/elektra.ttf"), (0.58333333 * height));
+                valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/elektra.ttf"), (0.58333333 * height));
                 break;
             case STANDARD:
             default:

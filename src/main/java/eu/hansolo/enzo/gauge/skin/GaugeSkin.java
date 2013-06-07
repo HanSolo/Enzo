@@ -332,7 +332,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         CTX.setFill(Color.rgb(73, 73, 73));
         CTX.setTextAlign(TextAlignment.RIGHT);
         CTX.setTextBaseline(VPos.CENTER);
-        CTX.setFont(Font.loadFont(getClass().getResource("eu/hansolo/enzo/resources/digital.ttf").toExternalForm(), (0.1 * size)));
+        CTX.setFont(Font.loadFont(getClass().getResource("eu/hansolo/enzo/fonts/digital.ttf").toExternalForm(), (0.1 * size)));
         CTX.fillText(String.format(Locale.US, "%.2f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep), 0.68 * size, 0.817 * size);
     }
 

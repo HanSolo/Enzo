@@ -185,8 +185,8 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
 
 
         //font = Font.font("Bebas Neue", PREFERRED_HEIGHT);
-        //font = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/resources/bebasneue.otf"), PREFERRED_HEIGHT);
-        font = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/resources/droidsansmono.ttf"), PREFERRED_HEIGHT);
+        //font = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/bebasneue.otf"), PREFERRED_HEIGHT);
+        font = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/droidsansmono.ttf"), PREFERRED_HEIGHT);
 
         upperTextFill = new LinearGradient(0, 0,
                                            0, flapHeight,
