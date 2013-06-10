@@ -52,7 +52,7 @@ public class Demo extends Application {
                             new Section(80, 100));
         control.setMajorTickSpace(20);
         //control.setMinorTickSpace(2);
-
+        //control.setHistogramEnabled(true);
         control.setPrefSize(400, 400);
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;

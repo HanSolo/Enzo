@@ -60,6 +60,7 @@ public class DemoMulti extends Application {
         for (int i = 0 ; i < 100 ; i++) {
             Gauge gauge = new Gauge();
             gauge.setPrefSize(50, 50);
+            gauge.setDropShadowEnabled(false);
             gauge.setAnimationTime(Duration.millis(80));
             gauge.setAnimated(false);
             gauges[i] = gauge;

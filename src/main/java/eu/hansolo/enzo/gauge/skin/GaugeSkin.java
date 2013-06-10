@@ -31,13 +31,18 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
+import javafx.scene.shape.FillRule;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -55,27 +60,33 @@ import java.util.Locale;
  * Time: 17:18
  */
 public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
-    private static final double PREFERRED_WIDTH  = 200;
-    private static final double PREFERRED_HEIGHT = 200;
-    private static final double MINIMUM_WIDTH    = 50;
-    private static final double MINIMUM_HEIGHT   = 50;
-    private static final double MAXIMUM_WIDTH    = 1024;
-    private static final double MAXIMUM_HEIGHT   = 1024;
-    private double              size;
-    private Pane                pane;
-    private Region              background;
-    private Region              innerBackground;
-    private Canvas              ticksAndSectionsCanvas;
-    private GraphicsContext     ticksAndSections;
-    private Region              needle;
-    private Region              needleHighlight;
-    private Rotate              needleRotate;
-    private Region              knob;
-    private Text                title;
-    private Text                unit;
-    private Text                value;
-    private double              angleStep;
-    private Timeline            timeline;
+    private static final double     PREFERRED_WIDTH  = 200;
+    private static final double     PREFERRED_HEIGHT = 200;
+    private static final double     MINIMUM_WIDTH    = 50;
+    private static final double     MINIMUM_HEIGHT   = 50;
+    private static final double     MAXIMUM_WIDTH    = 1024;
+    private static final double     MAXIMUM_HEIGHT   = 1024;
+    private double                  size;
+    private Pane                    pane;
+    private Region                  background;
+    private Region                  innerBackground;
+    private Canvas                  ticksAndSectionsCanvas;
+    private GraphicsContext         ticksAndSections;
+    private Region                  needle;
+    private Region                  needleHighlight;
+    private Rotate                  needleRotate;
+    private Region                  knob;
+    private Group                   shadowGroup;
+    private DropShadow              dropShadow;
+    private Text                    title;
+    private Text                    unit;
+    private Text                    value;
+    private DropShadow              valueBlendBottomShadow;
+    private InnerShadow             valueBlendTopShadow;
+    private Blend                   valueBlend;
+    private Path                    histogram;
+    private double                  angleStep;
+    private Timeline                timeline;
 
 
     // ******************** Constructors **************************************
@@ -111,6 +122,25 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private void initGraphics() {
+        valueBlendBottomShadow = new DropShadow();
+        valueBlendBottomShadow.setBlurType(BlurType.TWO_PASS_BOX);
+        valueBlendBottomShadow.setColor(Color.rgb(255, 255, 255, 0.5));
+        valueBlendBottomShadow.setOffsetX(0);
+        valueBlendBottomShadow.setOffsetY(0.005 * PREFERRED_WIDTH);
+        valueBlendBottomShadow.setRadius(0);
+
+        valueBlendTopShadow = new InnerShadow();
+        valueBlendTopShadow.setBlurType(BlurType.TWO_PASS_BOX);
+        valueBlendTopShadow.setColor(Color.rgb(0, 0, 0, 0.7));
+        valueBlendTopShadow.setOffsetX(0);
+        valueBlendTopShadow.setOffsetY(0.005 * PREFERRED_WIDTH);
+        valueBlendTopShadow.setRadius(0.005 * PREFERRED_WIDTH);
+
+        valueBlend = new Blend();
+        valueBlend.setMode(BlendMode.MULTIPLY);
+        valueBlend.setBottomInput(valueBlendBottomShadow);
+        valueBlend.setTopInput(valueBlendTopShadow);
+
         background = new Region();
         background.getStyleClass().setAll("background");
 
@@ -119,6 +149,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         ticksAndSectionsCanvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
         ticksAndSections = ticksAndSectionsCanvas.getGraphicsContext2D();
+
+        histogram = new Path();
+        histogram.setFillRule(FillRule.NON_ZERO);
+        histogram.getStyleClass().add("histogram-fill");
 
         needle = new Region();
         needle.getStyleClass().setAll(Gauge.STYLE_CLASS_NEEDLE_STANDARD);
@@ -132,14 +166,14 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         knob = new Region();
         knob.getStyleClass().setAll("knob");
 
-        DropShadow dropShadow = new DropShadow();
+        dropShadow = new DropShadow();
         dropShadow.setColor(Color.rgb(0, 0, 0, 0.25));
-        dropShadow.setRadius(3);
         dropShadow.setBlurType(BlurType.TWO_PASS_BOX);
-        dropShadow.setOffsetY(3);
+        dropShadow.setRadius(0.015 * PREFERRED_WIDTH);
+        dropShadow.setOffsetY(0.015 * PREFERRED_WIDTH);
 
-        Group shadowGroup = new Group(needle, needleHighlight, knob);
-        shadowGroup.setEffect(dropShadow);
+        shadowGroup = new Group(needle, needleHighlight, knob);
+        shadowGroup.setEffect(getSkinnable().isDropShadowEnabled() ? dropShadow : null);
 
         title = new Text(getSkinnable().getTitle());
         title.setTextOrigin(VPos.CENTER);
@@ -152,9 +186,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         value = new Text(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
         value.setTextOrigin(VPos.CENTER);
         value.getStyleClass().setAll("value");
+        value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
 
         // Add all nodes
-        pane.getChildren().setAll(background, innerBackground, ticksAndSectionsCanvas, title, shadowGroup, unit, value);
+        pane.getChildren().setAll(background, innerBackground, histogram, ticksAndSectionsCanvas, title, shadowGroup, unit, value);
 
         getChildren().setAll(pane);
     }
@@ -173,8 +208,11 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         getSkinnable().animatedProperty().addListener(observable -> { handleControlPropertyChanged("ANIMATED"); });
         getSkinnable().angleRangeProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE_RANGE"); });
         getSkinnable().numberFormatProperty().addListener(observable -> { handleControlPropertyChanged("RECALC"); });
-        needleRotate.angleProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE"); });
+        getSkinnable().plainValueProperty().addListener(observable -> { handleControlPropertyChanged("PLAIN_VALUE"); });
+        getSkinnable().histogramEnabledProperty().addListener(observable -> { handleControlPropertyChanged("HISTOGRAM"); });
+        getSkinnable().dropShadowEnabledProperty().addListener(observable -> { handleControlPropertyChanged("DROP_SHADOW"); });
 
+        needleRotate.angleProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE"); });
     }
 
 
@@ -190,6 +228,13 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         } else if ("ANGLE".equals(PROPERTY)) {
             value.setText(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
             value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+        } else if ("PLAIN_VALUE".equals(PROPERTY)) {
+            value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
+        } else if ("HISTOGRAM".equals(PROPERTY)) {
+            histogram.setVisible(getSkinnable().isHistogramEnabled());
+            histogram.setManaged(getSkinnable().isHistogramEnabled());
+        } else if ("DROP_SHADOW".equals(PROPERTY)) {
+            shadowGroup.setEffect(getSkinnable().isDropShadowEnabled() ? dropShadow : null);
         }
     }
 
@@ -265,6 +310,23 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private void drawTickMarks(final GraphicsContext CTX) {
+        if (getSkinnable().isHistogramEnabled()) {
+            double xy;
+            double wh;
+            double step         = 0;
+            double OFFSET       = 90 - getSkinnable().getStartAngle();
+            double ANGLE_EXTEND = (getSkinnable().getMaxValue()) * angleStep;
+            CTX.setStroke(Color.rgb(200, 200, 200));
+            CTX.setLineWidth(size * 0.001);
+            CTX.setLineCap(StrokeLineCap.BUTT);
+            for (int i = 0 ; i < 5 ; i++) {
+                xy = (size - (0.435 + step) * size) / 2;
+                wh = size * (0.435 + step);
+                CTX.strokeArc(xy, xy, wh, wh, -OFFSET, -ANGLE_EXTEND, ArcType.OPEN);
+                step += 0.075;
+            }
+        }
+
         double sinValue;
         double cosValue;
         double offset = getSkinnable().getStartAngle();
@@ -334,6 +396,14 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
+        valueBlendBottomShadow.setOffsetY(0.005 * size);
+
+        valueBlendTopShadow.setOffsetY(0.005 * size);
+        valueBlendTopShadow.setRadius(0.005 * size);
+
+        dropShadow.setRadius(0.015 * size);
+        dropShadow.setOffsetY(0.015 * size);
+
         background.setPrefSize(size, size);
 
         innerBackground.setPrefSize(size, size);
@@ -373,7 +443,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         unit.setTranslateX((size - unit.getLayoutBounds().getWidth()) * 0.5);
         unit.setTranslateY(size * 0.41);
 
-        value.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.12));
+        value.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.1));
         value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
         value.setTranslateY(size * 0.51);
     }

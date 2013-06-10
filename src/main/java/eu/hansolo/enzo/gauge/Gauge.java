@@ -58,19 +58,20 @@ import java.util.Locale;
  */
 public class Gauge extends Control {
     // Default section colors
-    private static final Color                   DEFAULT_SECTION_0_FILL      = Color.rgb(0, 0, 178, 0.5);
-    private static final Color                   DEFAULT_SECTION_1_FILL      = Color.rgb(0, 128, 255, 0.5);
-    private static final Color                   DEFAULT_SECTION_2_FILL      = Color.rgb(  0, 255, 255, 0.5);
-    private static final Color                   DEFAULT_SECTION_3_FILL      = Color.rgb(  0, 255,  64, 0.5);
-    private static final Color                   DEFAULT_SECTION_4_FILL      = Color.rgb(128, 255,   0, 0.5);
-    private static final Color                   DEFAULT_SECTION_5_FILL      = Color.rgb(255, 255,   0, 0.5);
-    private static final Color                   DEFAULT_SECTION_6_FILL      = Color.rgb(255, 191,   0, 0.5);
-    private static final Color                   DEFAULT_SECTION_7_FILL      = Color.rgb(255, 128,   0, 0.5);
-    private static final Color                   DEFAULT_SECTION_8_FILL      = Color.rgb(255,  64,   0, 0.5);
-    private static final Color                   DEFAULT_SECTION_9_FILL      = Color.rgb(255,   0,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_0_FILL      = Color.rgb(0, 0, 178, 0.5);
+    private static final Color       DEFAULT_SECTION_1_FILL      = Color.rgb(0, 128, 255, 0.5);
+    private static final Color       DEFAULT_SECTION_2_FILL      = Color.rgb(  0, 255, 255, 0.5);
+    private static final Color       DEFAULT_SECTION_3_FILL      = Color.rgb(  0, 255,  64, 0.5);
+    private static final Color       DEFAULT_SECTION_4_FILL      = Color.rgb(128, 255,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_5_FILL      = Color.rgb(255, 255,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_6_FILL      = Color.rgb(255, 191,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_7_FILL      = Color.rgb(255, 128,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_8_FILL      = Color.rgb(255,  64,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_9_FILL      = Color.rgb(255,   0,   0, 0.5);
+    private static final Color       DEFAULT_HISTOGRAM_FILL      = Color.rgb(  0, 200,   0, 0.3);
 
     // CSS Pseudo classes
-    private static final PseudoClass             TOUCH_MODE_PSEUDO_CLASS     = PseudoClass.getPseudoClass("touch-mode");
+    private static final PseudoClass TOUCH_MODE_PSEUDO_CLASS     = PseudoClass.getPseudoClass("touch-mode");
 
     public static enum NeedleType {
         STANDARD("needle-standard");
@@ -148,6 +149,12 @@ public class Gauge extends Control {
     private double                               _minorTickSpace;
     private DoubleProperty                       minorTickSpace;
     private Duration                             animationTime;
+    private boolean                              _plainValue;
+    private BooleanProperty                      plainValue;
+    private boolean                              _histogramEnabled;
+    private BooleanProperty                      histogramEnabled;
+    private boolean                              _dropShadowEnabled;
+    private BooleanProperty                      dropShadowEnabled;
 
     // CSS styleable properties
     private ObjectProperty<Paint>                tickMarkFill;
@@ -162,9 +169,11 @@ public class Gauge extends Control {
     private ObjectProperty<Paint>                section7Fill;
     private ObjectProperty<Paint>                section8Fill;
     private ObjectProperty<Paint>                section9Fill;
+    private ObjectProperty<Paint>                histogramFill;
 
     // CSS pseudo classes
     private BooleanProperty                      touchMode;
+
 
     // ******************** Constructors **************************************
     public Gauge() {
@@ -191,6 +200,9 @@ public class Gauge extends Control {
         _majorTickSpace       = 10;
         _minorTickSpace       = 1;
         animationTime         = Duration.millis(800);
+        _plainValue           = true;
+        _histogramEnabled     = false;
+        _dropShadowEnabled    = true;
     }
 
 
@@ -569,6 +581,65 @@ public class Gauge extends Control {
         return minorTickSpace;
     }
 
+    /**
+     * @return true if the value of the gauge will be drawn without a blend effect
+     */
+    public final boolean isPlainValue() {
+        return null == plainValue ? _plainValue : plainValue.get();
+    }
+
+    /**
+     * If set to true the value will be visualized without a blend effect
+     * @param PLAIN_VALUE
+     */
+    public final void setPlainValue(final boolean PLAIN_VALUE) {
+        if (null == plainValue) {
+            _plainValue = PLAIN_VALUE;
+        } else {
+            plainValue.set(PLAIN_VALUE);
+        }
+    }
+    public final BooleanProperty plainValueProperty() {
+        if (null == plainValue) {
+            plainValue = new SimpleBooleanProperty(this, "plainValue", _plainValue);
+        }
+        return plainValue;
+    }
+
+    public final boolean isHistogramEnabled() {
+        return null == histogramEnabled ? _histogramEnabled : histogramEnabled.get();
+    }
+    public final void setHistogramEnabled(final boolean HISTOGRAM_ENABLED) {
+        if (null == histogramEnabled) {
+            _histogramEnabled = HISTOGRAM_ENABLED;
+        } else {
+            histogramEnabled.set(HISTOGRAM_ENABLED);
+        }
+    }
+    public final BooleanProperty histogramEnabledProperty() {
+        if (null == histogramEnabled) {
+            histogramEnabled = new SimpleBooleanProperty(this, "histogramEnabled", _histogramEnabled);
+        }
+        return histogramEnabled;
+    }
+
+    public final boolean isDropShadowEnabled() {
+        return null == dropShadowEnabled ? _dropShadowEnabled : dropShadowEnabled.get();
+    }
+    public final void setDropShadowEnabled(final boolean DROP_SHADOW_ENABLED) {
+        if (null == dropShadowEnabled) {
+            _dropShadowEnabled = DROP_SHADOW_ENABLED;
+        } else {
+            dropShadowEnabled.set(DROP_SHADOW_ENABLED);
+        }
+    }
+    public final BooleanProperty dropShadowEnabledProperty() {
+        if (null == dropShadowEnabled) {
+            dropShadowEnabled = new SimpleBooleanProperty(this, "dropShadowEnabled", _dropShadowEnabled);
+        }
+        return dropShadowEnabled;
+    }
+
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {
         if (VALUE < MIN_VALUE) return MIN_VALUE;
         if (VALUE > MAX_VALUE) return MAX_VALUE;
@@ -801,6 +872,23 @@ public class Gauge extends Control {
         return section9Fill;
     }
 
+    public final Paint getHistogramFill() {
+        return null == histogramFill ? DEFAULT_HISTOGRAM_FILL : histogramFill.get();
+    }
+    public final void setHistogramFill(Paint value) {
+        histogramFillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> histogramFillProperty() {
+        if (null == histogramFill) {
+            histogramFill = new StyleableObjectProperty<Paint>(DEFAULT_HISTOGRAM_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.HISTOGRAM_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "histogramFill"; }
+            };
+        }
+        return section9Fill;
+    }
+
 
     // ******************** CSS Pseudo Classes ********************************
     public final boolean isTouchMode() {
@@ -1011,6 +1099,22 @@ public class Gauge extends Control {
                 }
             };
 
+        private static final CssMetaData<Gauge, Paint> HISTOGRAM_FILL =
+            new CssMetaData<Gauge, Paint>("-histogram-fill", PaintConverter.getInstance(), DEFAULT_HISTOGRAM_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.histogramFill || !gauge.histogramFill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.histogramFillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getHistogramFill();
+                }
+            };
+
         private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
@@ -1026,7 +1130,8 @@ public class Gauge extends Control {
                                SECTION_6_FILL,
                                SECTION_7_FILL,
                                SECTION_8_FILL,
-                               SECTION_9_FILL
+                               SECTION_9_FILL,
+                               HISTOGRAM_FILL
             );
             STYLEABLES = Collections.unmodifiableList(styleables);
         }
