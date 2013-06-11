@@ -110,5 +110,10 @@
     -qlock-on        : white;
     -qlock-off       : rgb(106, 106, 106);
 }
+.qlocktwo .canoo {
+    -qlock-background: rgb(173, 17, 47);
+    -qlock-on        : white;
+    -qlock-off       : rgb(107, 0, 26);
+}
 
 

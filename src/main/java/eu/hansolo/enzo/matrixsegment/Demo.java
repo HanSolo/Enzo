@@ -58,14 +58,14 @@ public class Demo extends Application {
 
 
     @Override public void init() {
-        seg1  = MatrixSegmentBuilder.create().character("J").build();
+        seg1  = MatrixSegmentBuilder.create().character("I").build();
         seg2  = MatrixSegmentBuilder.create().character("a").build();
         seg3  = MatrixSegmentBuilder.create().character("v").build();
         seg4  = MatrixSegmentBuilder.create().character("a").build();
         seg5  = MatrixSegmentBuilder.create().character("F").build();
         seg6  = MatrixSegmentBuilder.create().character("X").build();
 
-        seg7  = SquareMatrixSegmentBuilder.create().character("J").build();
+        seg7  = SquareMatrixSegmentBuilder.create().character("I").build();
         seg8  = SquareMatrixSegmentBuilder.create().character("a").build();
         seg9  = SquareMatrixSegmentBuilder.create().character("v").build();
         seg10 = SquareMatrixSegmentBuilder.create().character("a").build();

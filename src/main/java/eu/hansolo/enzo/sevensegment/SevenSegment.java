@@ -42,16 +42,7 @@ public class SevenSegment extends Control {
     public static final String           STYLE_CLASS_MAGENTA = "seven-segment-magenta";
     public static final String           STYLE_CLASS_WHITE   = "seven-segment-white";
     public static final String           STYLE_CLASS_BLACK   = "seven-segment-black";
-    public static enum                   Segment {
-        A,
-        B,
-        C,
-        D,
-        E,
-        F,
-        G,
-        DOT
-    }
+    public static enum                   Segment { A, B, C, D, E, F, G, DOT }
     public static enum                   SegmentStyle {
         OFF(STYLE_CLASS_OFF),
         RED(STYLE_CLASS_RED),

@@ -59,7 +59,8 @@ public class QlockTwo extends Control {
         LIME_JUICE("lime-juice"),
         DARK_CHOCOLATE("dark-chocolate"),
         BLUE_CANDY("blue-candy"),
-        STAINLESS_STEEL("stainless-steel");
+        STAINLESS_STEEL("stainless-steel"),
+        CANOO("canoo");
 
         public final String STYLE_CLASS;
 

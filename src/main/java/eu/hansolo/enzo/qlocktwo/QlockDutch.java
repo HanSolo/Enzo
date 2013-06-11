@@ -30,13 +30,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class QlockDutch implements Qlock {
     private static final QlockTwo.Language LANGUAGE = QlockTwo.Language.DUTCH;
     private static final String[][] MATRIX = {
-        {"H","E", "T", "K", "I", "S", "A", "V", "I", "J", "F"},
+        {"H","E", "T", "K", "I", "S", "A", "V", "I", "I", "F"},
         {"T", "I", "E", "N", "B", "T", "Z", "V", "O", "O","R"},
         {"O", "V", "E", "R","M", "E", "K", "W", "A", "R", "T"},
         {"H", "A", "L", "F", "S", "P", "W", "O", "V", "E", "R"},
         {"V", "O", "O", "R", "T", "H", "G", "É", "É", "N", "S"},
         {"T", "W", "E", "E", "P", "V", "C", "D", "R", "I", "E"},
-        {"V", "I", "E", "R", "V", "I", "J", "F", "Z", "E", "S"},
+        {"V", "I", "E", "R", "V", "I", "I", "F", "Z", "E", "S"},
         {"Z", "E", "V", "E", "N", "O", "N", "E", "G", "E", "N"},
         {"A", "C", "H", "T", "T", "I", "E", "N", "E", "L", "F"},
         {"T", "W", "A", "A", "L", "F", "B", "F", "U", "U", "R"}

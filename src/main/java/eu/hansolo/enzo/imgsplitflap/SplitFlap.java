@@ -50,14 +50,14 @@ public class SplitFlap extends Region {
     public static final String[]   TIME_0_TO_9  = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
     public static final String[]   NUMERIC      = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
     public static final String[]   ALPHANUMERIC = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-                                                   "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+                                                   "A", "B", "C", "D", "E", "F", "G", "H", "I", "I", "K",
                                                    "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
                                                    "W", "X", "Y", "Z"};
-    public static final String[]   ALPHA        = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+    public static final String[]   ALPHA        = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "I",
                                                    "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
                                                    "V", "W", "X", "Y", "Z"};
     public static final String[]   EXTENDED     = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-                                                   "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+                                                   "A", "B", "C", "D", "E", "F", "G", "H", "I", "I", "K",
                                                    "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
                                                    "W", "X", "Y", "Z", "-", "/", ":", ",", ".", ";", "@",
                                                    "#", "+", "?", "!", "%", "$", "=", "<", ">"};
