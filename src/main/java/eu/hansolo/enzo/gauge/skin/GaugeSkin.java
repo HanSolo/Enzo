@@ -366,12 +366,13 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private final void drawSections(final GraphicsContext CTX) {
-        final double xy     = (size - 0.83 * size) / 2;
-        final double wh     = size * 0.83;
+        final double xy        = (size - 0.83 * size) / 2;
+        final double wh        = size * 0.83;
+        final double MIN_VALUE = getSkinnable().getMinValue();
         final double OFFSET = 90 - getSkinnable().getStartAngle();
         for (int i = 0 ; i < getSkinnable().getSections().size() ; i++) {
             final Section SECTION      = getSkinnable().getSections().get(i);
-            final double  ANGLE_START  = SECTION.getStart() * angleStep;
+            final double  ANGLE_START  = (SECTION.getStart() - MIN_VALUE) * angleStep;
             final double  ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
             CTX.save();
             switch(i) {
