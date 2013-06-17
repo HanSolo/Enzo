@@ -169,7 +169,7 @@
     -fx-shape            : "M 62 8.4902 C 62 7.6672 62.6716 7 63.5 7 L 63.5 7 C 64.3284 7 65 7.6672 65 8.4902 L 65 13.5098 C 65 14.3328 64.3284 15 63.5 15 L 63.5 15 C 62.6716 15 62 14.3328 62 13.5098 L 62 8.4902 Z";
 }
 .clock .tick-label-braun {
-    -fx-fill          : -fx-major-tick-color;
+    -fx-fill: -fx-major-tick-color;
 }
 .clock .hour-pointer-braun {
     -fx-background-color : -fx-hour-pointer-color;
@@ -240,8 +240,8 @@
  *****************************************************************************/
 .clock .background-db {
     -fx-background-color : linear-gradient(from 16% 16% to 83% 83%,
-    derive(-fx-clock-background, -11%) 0%,
-    -fx-clock-background 100%);
+                                           derive(-fx-clock-background, -11%) 0%,
+                                           -fx-clock-background 100%);
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;

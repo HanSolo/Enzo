@@ -35,6 +35,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
@@ -543,7 +545,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
 
             if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 int tickLabelCounter = 0;
-                tickLabelFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/helvetica.ttf"), (0.075 * size));
+                //tickLabelFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/helvetica.ttf"), (0.075 * size));
+                tickLabelFont = Font.font("Helvetica", FontWeight.NORMAL, FontPosture.REGULAR, 0.075 * size);
                 for (double angle = 0 ; angle < 360 ; angle += 30.0) {
                     double x = 0.31 * size * Math.sin(Math.toRadians(150 - angle));
                     double y = 0.31 * size * Math.cos(Math.toRadians(150 - angle));
