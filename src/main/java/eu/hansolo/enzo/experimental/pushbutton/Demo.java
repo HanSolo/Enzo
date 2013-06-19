@@ -44,12 +44,8 @@ public class Demo extends Application {
                                               .prefHeight(128)
                                               .build();
 
-        button1.setOnSelect(selectionEvent -> {
-            System.out.println("Select");
-        });
-        button1.setOnDeselect(selectionEvent -> {
-            System.out.println("Deselect");
-        });
+        button1.setOnSelect(selectionEvent -> System.out.println("Select") );
+        button1.setOnDeselect(selectionEvent -> System.out.println("Deselect") );
 
         StackPane pane = new StackPane();
         pane.setPadding(new Insets(10, 10, 10, 10));

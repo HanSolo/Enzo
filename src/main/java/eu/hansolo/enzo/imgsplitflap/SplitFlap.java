@@ -210,8 +210,8 @@ public class SplitFlap extends Region {
     }
 
     private void registerListeners() {
-        widthProperty().addListener(observable -> { resize(); });
-        heightProperty().addListener(observable -> { resize(); });
+        widthProperty().addListener(observable -> resize() );
+        heightProperty().addListener(observable -> resize() );
     }
 
 

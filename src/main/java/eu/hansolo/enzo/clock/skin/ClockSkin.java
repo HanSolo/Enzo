@@ -150,7 +150,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
                 }
             }
         };
-        minute.addListener(observable -> { moveMinutePointer(minute.get()); });
+        minute.addListener(observable -> moveMinutePointer(minute.get()) );
 
         init();
         initGraphics();
@@ -338,12 +338,12 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().secondPointerVisibleProperty().addListener(observable -> { handleControlPropertyChanged("SECOND_POINTER_VISIBLE"); });
-        getSkinnable().nightModeProperty().addListener(observable -> { handleControlPropertyChanged("DESIGN"); });
-        getSkinnable().designProperty().addListener(observable -> { handleControlPropertyChanged("DESIGN"); });
-        getSkinnable().highlightVisibleProperty().addListener(observable -> { handleControlPropertyChanged("DESIGN"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().secondPointerVisibleProperty().addListener(observable -> handleControlPropertyChanged("SECOND_POINTER_VISIBLE") );
+        getSkinnable().nightModeProperty().addListener(observable -> handleControlPropertyChanged("DESIGN") );
+        getSkinnable().designProperty().addListener(observable -> handleControlPropertyChanged("DESIGN") );
+        getSkinnable().highlightVisibleProperty().addListener(observable -> handleControlPropertyChanged("DESIGN") );
     }
 
 

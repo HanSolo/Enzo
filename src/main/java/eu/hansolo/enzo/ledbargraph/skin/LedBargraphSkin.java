@@ -133,14 +133,14 @@ public class LedBargraphSkin extends SkinBase<LedBargraph> implements Skin<LedBa
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().valueProperty().addListener(observable -> { handleControlPropertyChanged("VALUE"); });
-        getSkinnable().ledTypeProperty().addListener(observable -> { handleControlPropertyChanged("LED_TYPE"); });
-        getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
-        getSkinnable().ledSizeProperty().addListener(observable -> { handleControlPropertyChanged("LED_SIZE"); });
-        getSkinnable().orientationProperty().addListener(observable -> { handleControlPropertyChanged("ORIENTATION"); });
-        getSkinnable().noOfLedsProperty().addListener(observable -> { handleControlPropertyChanged("LED_NUMBER"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().valueProperty().addListener(observable -> handleControlPropertyChanged("VALUE") );
+        getSkinnable().ledTypeProperty().addListener(observable -> handleControlPropertyChanged("LED_TYPE") );
+        getSkinnable().frameVisibleProperty().addListener(observable -> handleControlPropertyChanged("FRAME_VISIBLE") );
+        getSkinnable().ledSizeProperty().addListener(observable -> handleControlPropertyChanged("LED_SIZE") );
+        getSkinnable().orientationProperty().addListener(observable -> handleControlPropertyChanged("ORIENTATION") );
+        getSkinnable().noOfLedsProperty().addListener(observable -> handleControlPropertyChanged("LED_NUMBER") );
         getSkinnable().ledColorsProperty().addListener(new ListChangeListener<Color>() {
             @Override public void onChanged(Change<? extends Color> change) {
                 handleControlPropertyChanged("LED_COLOR");

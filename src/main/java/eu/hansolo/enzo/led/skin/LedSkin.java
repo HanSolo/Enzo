@@ -107,12 +107,12 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().ledColorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
-        getSkinnable().ledTypeProperty().addListener(observable -> { handleControlPropertyChanged("STYLE"); });
-        getSkinnable().onProperty().addListener(observable -> { handleControlPropertyChanged("ON"); } );
-        getSkinnable().frameVisibleProperty().addListener(observable -> { handleControlPropertyChanged("FRAME_VISIBLE"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().ledColorProperty().addListener(observable -> handleControlPropertyChanged("COLOR") );
+        getSkinnable().ledTypeProperty().addListener(observable -> handleControlPropertyChanged("STYLE") );
+        getSkinnable().onProperty().addListener(observable -> handleControlPropertyChanged("ON") );
+        getSkinnable().frameVisibleProperty().addListener(observable -> handleControlPropertyChanged("FRAME_VISIBLE") );
     }
 
 

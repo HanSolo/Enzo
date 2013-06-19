@@ -538,15 +538,15 @@ public class MatrixSegmentSkin extends SkinBase<MatrixSegment> implements Skin<M
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
-        getSkinnable().backgroundVisibleProperty().addListener(observable -> { handleControlPropertyChanged("BACKGROUND"); });
-        getSkinnable().highlightsVisibleProperty().addListener(observable -> { handleControlPropertyChanged("HIGHLIGHTS"); });
-        getSkinnable().characterProperty().addListener(observable -> { handleControlPropertyChanged("CHARACTER"); });
-        getSkinnable().glowEnabledProperty().addListener(observable -> { handleControlPropertyChanged("GLOW"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().prefWidthProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().prefHeightProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().colorProperty().addListener(observable -> handleControlPropertyChanged("COLOR") );
+        getSkinnable().backgroundVisibleProperty().addListener(observable -> handleControlPropertyChanged("BACKGROUND") );
+        getSkinnable().highlightsVisibleProperty().addListener(observable -> handleControlPropertyChanged("HIGHLIGHTS") );
+        getSkinnable().characterProperty().addListener(observable -> handleControlPropertyChanged("CHARACTER") );
+        getSkinnable().glowEnabledProperty().addListener(observable -> handleControlPropertyChanged("GLOW") );
 
         getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {

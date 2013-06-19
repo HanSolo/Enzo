@@ -55,8 +55,8 @@ public class PushButton extends Control {
     }
 
     private void registerListeners() {
-        setOnMousePressed(mouseEvent -> { toggle(); });
-        setOnTouchPressed(touchEvent -> { toggle(); });
+        setOnMousePressed(mouseEvent -> toggle() );
+        setOnTouchPressed(touchEvent -> toggle() );
     }
 
 

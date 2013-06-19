@@ -250,11 +250,11 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().selectedProperty().addListener(observable -> { handleControlPropertyChanged("SELECTED"); });
-        getSkinnable().textProperty().addListener(observable -> { handleControlPropertyChanged("TEXT"); });
-        getSkinnable().ledColorProperty().addListener(observable -> { handleControlPropertyChanged("LED_COLOR"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().selectedProperty().addListener(observable -> handleControlPropertyChanged("SELECTED") );
+        getSkinnable().textProperty().addListener(observable -> handleControlPropertyChanged("TEXT") );
+        getSkinnable().ledColorProperty().addListener(observable -> handleControlPropertyChanged("LED_COLOR") );
 
         on.setOnMousePressed(inputHandler);
         on.setOnTouchPressed(inputHandler);

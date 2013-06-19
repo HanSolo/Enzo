@@ -178,12 +178,12 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().statusProperty().addListener(observable -> { handleControlPropertyChanged("STATUS"); });
-        getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().prefWidthProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().prefHeightProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().statusProperty().addListener(observable -> handleControlPropertyChanged("STATUS") );
+        getSkinnable().colorProperty().addListener(observable -> handleControlPropertyChanged("COLOR") );
         getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {
                 resize();

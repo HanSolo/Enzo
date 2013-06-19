@@ -195,24 +195,24 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().valueProperty().addListener(observable -> { handleControlPropertyChanged("VALUE"); });
-        getSkinnable().minValueProperty().addListener(observable -> { handleControlPropertyChanged("RECALC"); });
-        getSkinnable().maxValueProperty().addListener(observable -> { handleControlPropertyChanged("RECALC"); });
-        getSkinnable().minMeasuredValueProperty().addListener(observable -> { handleControlPropertyChanged("MIN_MEASURED_VALUE"); });
-        getSkinnable().maxMeasuredValueProperty().addListener(observable -> { handleControlPropertyChanged("MAX_MEASURED_VALUE"); });
-        getSkinnable().tickLabelOrientationProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().needleTypeProperty().addListener(observable -> { handleControlPropertyChanged("NEEDLE_TYPE"); });
-        getSkinnable().needleColorProperty().addListener(observable -> { handleControlPropertyChanged("NEEDLE_COLOR"); });
-        getSkinnable().animatedProperty().addListener(observable -> { handleControlPropertyChanged("ANIMATED"); });
-        getSkinnable().angleRangeProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE_RANGE"); });
-        getSkinnable().numberFormatProperty().addListener(observable -> { handleControlPropertyChanged("RECALC"); });
-        getSkinnable().plainValueProperty().addListener(observable -> { handleControlPropertyChanged("PLAIN_VALUE"); });
-        getSkinnable().histogramEnabledProperty().addListener(observable -> { handleControlPropertyChanged("HISTOGRAM"); });
-        getSkinnable().dropShadowEnabledProperty().addListener(observable -> { handleControlPropertyChanged("DROP_SHADOW"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().valueProperty().addListener(observable -> handleControlPropertyChanged("VALUE") );
+        getSkinnable().minValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC") );
+        getSkinnable().maxValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC") );
+        getSkinnable().minMeasuredValueProperty().addListener(observable -> handleControlPropertyChanged("MIN_MEASURED_VALUE") );
+        getSkinnable().maxMeasuredValueProperty().addListener(observable -> handleControlPropertyChanged("MAX_MEASURED_VALUE") );
+        getSkinnable().tickLabelOrientationProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().needleTypeProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_TYPE") );
+        getSkinnable().needleColorProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_COLOR") );
+        getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED") );
+        getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE") );
+        getSkinnable().numberFormatProperty().addListener(observable -> handleControlPropertyChanged("RECALC") );
+        getSkinnable().plainValueProperty().addListener(observable -> handleControlPropertyChanged("PLAIN_VALUE") );
+        getSkinnable().histogramEnabledProperty().addListener(observable -> handleControlPropertyChanged("HISTOGRAM") );
+        getSkinnable().dropShadowEnabledProperty().addListener(observable -> handleControlPropertyChanged("DROP_SHADOW") );
 
-        needleRotate.angleProperty().addListener(observable -> { handleControlPropertyChanged("ANGLE"); });
+        needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE") );
     }
 
 

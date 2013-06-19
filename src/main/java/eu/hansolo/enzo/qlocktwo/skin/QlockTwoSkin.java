@@ -204,13 +204,13 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().colorProperty().addListener(observable -> { handleControlPropertyChanged("COLOR"); });
-        getSkinnable().languageProperty().addListener(observable -> { handleControlPropertyChanged("LANGUAGE"); });
-        getSkinnable().highlightVisibleProperty().addListener(observable -> { handleControlPropertyChanged( "HIGHLIGHT"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().prefWidthProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().prefHeightProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().colorProperty().addListener(observable -> handleControlPropertyChanged("COLOR") );
+        getSkinnable().languageProperty().addListener(observable -> handleControlPropertyChanged("LANGUAGE") );
+        getSkinnable().highlightVisibleProperty().addListener(observable -> handleControlPropertyChanged( "HIGHLIGHT") );
 
         getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {

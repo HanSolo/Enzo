@@ -255,16 +255,16 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().textProperty().addListener(observable -> { handleControlPropertyChanged("TEXT"); });
-        getSkinnable().flapColorProperty().addListener(observable -> { handleControlPropertyChanged("FLAP_COLOR"); });
-        getSkinnable().textColorProperty().addListener(observable -> { handleControlPropertyChanged("TEXT_COLOR"); });
-        getSkinnable().withFixtureProperty().addListener(observable -> { handleControlPropertyChanged("WITH_FIXTURE"); });
-        getSkinnable().darkFixtureProperty().addListener(observable -> { handleControlPropertyChanged("DARK_FIXTURE"); });
-        getSkinnable().squareFlapsProperty().addListener(observable -> { handleControlPropertyChanged("SQUARE_FLAPS"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().prefWidthProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().prefHeightProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().textProperty().addListener(observable -> handleControlPropertyChanged("TEXT") );
+        getSkinnable().flapColorProperty().addListener(observable -> handleControlPropertyChanged("FLAP_COLOR") );
+        getSkinnable().textColorProperty().addListener(observable -> handleControlPropertyChanged("TEXT_COLOR") );
+        getSkinnable().withFixtureProperty().addListener(observable -> handleControlPropertyChanged("WITH_FIXTURE") );
+        getSkinnable().darkFixtureProperty().addListener(observable -> handleControlPropertyChanged("DARK_FIXTURE") );
+        getSkinnable().squareFlapsProperty().addListener(observable -> handleControlPropertyChanged("SQUARE_FLAPS") );
 
         getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {

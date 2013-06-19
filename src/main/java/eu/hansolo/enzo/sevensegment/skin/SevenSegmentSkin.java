@@ -136,13 +136,13 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> implements Skin<Sev
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().prefWidthProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().prefHeightProperty().addListener(observable -> { handleControlPropertyChanged("PREF_SIZE"); });
-        getSkinnable().characterProperty().addListener(observable -> { handleControlPropertyChanged("CHARACTER"); });
-        getSkinnable().dotOnProperty().addListener(observable -> { handleControlPropertyChanged("DOT_ON"); });
-        getSkinnable().segmentStyleProperty().addListener(observable -> { handleControlPropertyChanged("UPDATE"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().prefWidthProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().prefHeightProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
+        getSkinnable().characterProperty().addListener(observable -> handleControlPropertyChanged("CHARACTER") );
+        getSkinnable().dotOnProperty().addListener(observable -> handleControlPropertyChanged("DOT_ON") );
+        getSkinnable().segmentStyleProperty().addListener(observable -> handleControlPropertyChanged("UPDATE") );
 
         getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {

@@ -91,9 +91,9 @@ public class SimpleIndicatorSkin extends SkinBase<SimpleIndicator> implements Sk
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().heightProperty().addListener(observable -> { handleControlPropertyChanged("RESIZE"); });
-        getSkinnable().indicatorStyleProperty().addListener(observable -> { handleControlPropertyChanged("UPDATE"); });
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
+        getSkinnable().indicatorStyleProperty().addListener(observable -> handleControlPropertyChanged("UPDATE") );
     }
 
 
