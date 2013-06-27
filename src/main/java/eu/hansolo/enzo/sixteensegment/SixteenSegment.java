@@ -32,19 +32,17 @@ import java.util.Map;
 
 
 public class SixteenSegment extends Control {
-    public static final String           STYLE_CLASS_OFF     = "sixteen-segment-off";
-    public static final String           STYLE_CLASS_RED     = "sixteen-segment-red";
-    public static final String           STYLE_CLASS_GREEN   = "sixteen-segment-green";
-    public static final String           STYLE_CLASS_BLUE    = "sixteen-segment-blue";
-    public static final String           STYLE_CLASS_YELLOW  = "sixteen-segment-yellow";
-    public static final String           STYLE_CLASS_ORANGE  = "sixteen-segment-orange";
-    public static final String           STYLE_CLASS_CYAN    = "sixteen-segment-cyan";
-    public static final String           STYLE_CLASS_MAGENTA = "sixteen-segment-magenta";
-    public static final String           STYLE_CLASS_WHITE   = "sixteen-segment-white";
-    public static final String           STYLE_CLASS_BLACK   = "sixteen-segment-black";
+    public static final String           STYLE_CLASS_RED     = "red";
+    public static final String           STYLE_CLASS_GREEN   = "green";
+    public static final String           STYLE_CLASS_BLUE    = "blue";
+    public static final String           STYLE_CLASS_YELLOW  = "yellow";
+    public static final String           STYLE_CLASS_ORANGE  = "orange";
+    public static final String           STYLE_CLASS_CYAN    = "cyan";
+    public static final String           STYLE_CLASS_MAGENTA = "magenta";
+    public static final String           STYLE_CLASS_WHITE   = "white";
+    public static final String           STYLE_CLASS_BLACK   = "black";
     public static enum                   Segment { A1, A2, B, C, D2, D1, E, F, G, H, I, K, L, M, N, P, DOT }
     public static enum                   SegmentStyle {
-        OFF(STYLE_CLASS_OFF),
         RED(STYLE_CLASS_RED),
         GREEN(STYLE_CLASS_GREEN),
         BLUE(STYLE_CLASS_BLUE),
@@ -55,10 +53,12 @@ public class SixteenSegment extends Control {
         WHITE(STYLE_CLASS_WHITE),
         BLACK(STYLE_CLASS_BLACK);
 
-        public final String CLASS;
+        public final String ON_CLASS;
+        public final String OFF_CLASS;
 
         private SegmentStyle(final String CLASS_NAME) {
-            CLASS = CLASS_NAME;
+            ON_CLASS  = CLASS_NAME;
+            OFF_CLASS = CLASS_NAME + "-off";
         }
     }
     private boolean                      keepAspect;
@@ -102,6 +102,23 @@ public class SixteenSegment extends Control {
 
     // ******************** Initialization ************************************
     private void initMapping() {
+        /*
+         * Sixteen Segments
+         *
+         *         A1A1A1 A2A2A2
+         *        F G    H    I B
+         *        F  G   H   I  B
+         *        F   G  H  I   B
+         *        F    G H I    B
+         *         PPPPPP KKKKKK
+         *        E    N M L    C
+         *        E   N  M  L   C
+         *        E  N   M   L  C
+         *        E N    M    L C
+         *         D1D1D1 D2D2D2
+         *
+         */
+
         // Space
         mapping.put(20, Arrays.asList(new Segment[] {}));
         // * + , - . /
@@ -149,6 +166,8 @@ public class SixteenSegment extends Control {
         mapping.put(88, Arrays.asList(new Segment[]{Segment.G, Segment.I, Segment.L, Segment.N}));
         mapping.put(89, Arrays.asList(new Segment[]{Segment.G, Segment.I, Segment.M}));
         mapping.put(90, Arrays.asList(new Segment[]{Segment.A1, Segment.A2, Segment.D2, Segment.D1, Segment.I, Segment.N}));
+
+        mapping.put(186, Arrays.asList(new Segment[] {Segment.A1, Segment.F, Segment.H, Segment.P}));
     }
 
 

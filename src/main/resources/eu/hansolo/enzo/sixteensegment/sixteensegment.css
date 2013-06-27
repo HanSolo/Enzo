@@ -33,7 +33,6 @@
 .sixteen-segment {
     -fx-skin           : "eu.hansolo.enzo.sixteensegment.skin.SixteenSegmentSkin";
     -segment-color     : rgb(180, 180, 180);
-    -segment-off-color : rgb(180, 180, 180);
     -segment-glow-color: transparent;
 }
 
@@ -45,166 +44,203 @@
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 31.0 5.0 L 36.0 0.0 L 118.0 0.0 L 131.0 11.0 L 131.0 12.0 L 117.0 26.0 L 52.0 26.0 L 31.0 6.0 L 31.0 5.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .a2 {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 234.0 7.0 L 226.0 0.0 L 146.0 0.0 L 133.0 11.0 L 133.0 12.0 L 147.0 26.0 L 214.0 26.0 L 234.0 8.0 L 234.0 7.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .b {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 236.0 9.0 L 243.0 15.0 L 243.0 30.0 L 233.0 166.0 L 219.0 178.0 L 205.0 165.0 L 216.0 27.0 L 236.0 9.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .c {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 219.0 179.0 L 231.0 190.0 L 219.0 345.0 L 214.0 350.0 L 193.0 331.0 L 203.0 194.0 L 219.0 179.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .d2 {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 190.0 331.0 L 211.0 351.0 L 211.0 353.0 L 206.0 357.0 L 125.0 357.0 L 113.0 346.0 L 113.0 345.0 L 127.0 331.0 L 190.0 331.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .d1 {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 95.0 331.0 L 109.0 345.0 L 109.0 346.0 L 97.0 357.0 L 18.0 357.0 L 10.0 350.0 L 10.0 349.0 L 29.0 331.0 L 95.0 331.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .e {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 8.0 348.0 L 0.0 340.0 L 0.0 327.0 L 11.0 192.0 L 25.0 179.0 L 37.0 191.0 L 27.0 330.0 L 8.0 348.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .f {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 29.0 7.0 L 50.0 26.0 L 40.0 164.0 L 25.0 178.0 L 12.0 166.0 L 24.0 12.0 L 29.0 7.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .g {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 52.0 27.0 L 63.0 41.0 L 108.0 124.0 L 118.0 173.0 L 90.0 148.0 L 48.0 70.0 L 52.0 27.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .h {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 132.0 14.0 L 145.0 26.0 L 143.0 53.0 L 138.0 123.0 L 121.0 176.0 L 110.0 125.0 L 118.0 27.0 L 132.0 14.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .i {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 214.0 27.0 L 211.0 68.0 L 158.0 142.0 L 125.0 173.0 L 141.0 120.0 L 195.0 44.0 L 214.0 27.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .k {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 123.0 178.0 L 136.0 165.0 L 203.0 165.0 L 217.0 178.0 L 203.0 192.0 L 137.0 192.0 L 123.0 178.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .l {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 191.0 330.0 L 191.0 324.0 L 193.0 295.0 L 193.0 286.0 L 152.0 209.0 L 125.0 184.0 L 134.0 230.0 L 181.0 316.0 L 191.0 330.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .m {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 111.0 343.0 L 98.0 331.0 L 98.0 318.0 L 105.0 234.0 L 122.0 180.0 L 133.0 232.0 L 125.0 330.0 L 111.0 343.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .n {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 29.0 330.0 L 31.0 289.0 L 60.0 249.0 L 85.0 215.0 L 118.0 184.0 L 104.0 232.0 L 101.0 239.0 L 48.0 313.0 L 29.0 330.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .p {
     -fx-background-color: -segment-color;
     -fx-scale-shape     : true;
     -fx-shape           : "M 27.0 178.0 L 41.0 165.0 L 107.0 165.0 L 120.0 178.0 L 106.0 192.0 L 41.0 192.0 L 27.0 178.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 .sixteen-segment .dot {
-    -fx-background-color: -segment-color;
-    -fx-scale-shape     : true;
-    -fx-shape           : "M 232.0 339.0 C 232.0 329.0 240.0 321.0 250.0 321.0 C 260.0 321.0 268.0 329.0 268.0 339.0 C 268.0 349.0 260.0 357.0 250.0 357.0 C 240.0 357.0 232.0 349.0 232.0 339.0 Z";
-    -fx-effect          : dropshadow(two-pass-box, -segment-glow-color, 10, 0.0, 0, 0);
+    -fx-background-color : -segment-color;
+    -fx-background-insets: 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 232.0 339.0 C 232.0 329.0 240.0 321.0 250.0 321.0 C 260.0 321.0 268.0 329.0 268.0 339.0 C 268.0 349.0 260.0 357.0 250.0 357.0 C 240.0 357.0 232.0 349.0 232.0 339.0 Z";
+    -fx-effect           : dropshadow(two-pass-box, -segment-glow-color, 10, 0.5, 0, 0);
 }
 
 
 /******************************************************************************
 * SIXTEEN SEGMENT designs                                                     *
 ******************************************************************************/
-.sixteen-segment-off {
-    -fx-background-color  : -segment-off-color;
-    -segment-glow-color: transparent;
-}
-.sixteen-segment-red {
+.red {
     -segment-color     : rgb(202, 8, 20);
     -segment-glow-color: rgba(202, 8, 20, 0.5);
 }
-.sixteen-segment-green {
+.red-off {
+    -segment-color     : rgba(101, 4, 10, 0.6);
+    -segment-glow-color: transparent;
+}
+.green {
     -segment-color     : rgb(43, 202, 35);
     -segment-glow-color: rgba(43, 202, 35, 0.5);
 }
-.sixteen-segment-blue {
+.green-off {
+    -segment-color     : rgba(20, 100, 15, 0.6);
+    -segment-glow-color: transparent;
+}
+.blue {
     -segment-color     : rgb(3, 59, 255);
     -segment-glow-color: rgba(3, 59, 255, 0.5);
 }
-.sixteen-segment-yellow {
+.blue-off {
+    -segment-color     : rgba(0, 25, 127, 0.6);
+    -segment-glow-color: transparent;
+}
+.yellow {
     -segment-color     : rgb(250, 250, 0);
     -segment-glow-color: rgba(250, 250, 0, 0.5);
 }
-.sixteen-segment-orange {
+.yellow-off {
+    -segment-color     : rgba(125, 125, 0, 0.6);
+    -segment-glow-color: transparent;
+}
+.orange {
     -segment-color     : rgb(252, 81, 0);
     -segment-glow-color: rgba(252, 81, 0, 0.5);
 }
-.sixteen-segment-cyan {
+.yellow-off {
+    -segment-color     : rgba(126, 90, 0, 0.6);
+    -segment-glow-color: transparent;
+}
+.cyan {
     -segment-color     : rgb(0, 255, 255);
     -segment-glow-color: rgba(0, 255, 255, 0.5);
 }
-.sixteen-segment-magenta {
+.cyan-off {
+    -segment-color     : rgba(0, 127, 127, 0.6);
+    -segment-glow-color: transparent;
+}
+.magenta {
     -segment-color     : rgb(255, 0, 255);
     -segment-glow-color: rgba(255, 0, 255, 0.5);
 }
-.sixteen-segment-purple {
+.magenta-off {
+    -segment-color     : rgba(127, 0, 127, 0.6);
+    -segment-glow-color: transparent;
+}
+.purple {
     -segment-color     : rgb(121, 0, 255);
     -segment-glow-color: rgba(121, 0, 255, 0.5);
 }
-.sixteen-segment-white {
+.purple-off {
+    -segment-color     : rgba(60, 0, 127, 0.6);
+    -segment-glow-color: transparent;
+}
+.white {
     -segment-color     : white;
     -segment-glow-color: rgba(255, 255, 255, 0.5);
 }
-.sixteen-segment-black {
+.white-off {
+    -segment-color     : rgba(127, 127, 127, 0.6);
+    -segment-glow-color: transparent;
+}
+.black {
     -segment-color     : black;
     -segment-glow-color: rgba(0, 0, 0, 0.5);
+}
+.black-off {
+    -segment-color     : rgba(127, 127, 127, 0.6);
+    -segment-glow-color: transparent;
 }

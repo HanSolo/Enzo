@@ -213,25 +213,26 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> implements Skin<Sev
 
     // ******************** Update ********************************************
     private void update() {
-        final int    ASCII    = getSkinnable().getCharacter().isEmpty() ? 20 : getSkinnable().getCharacter().toUpperCase().charAt(0);
-        final String ON_STYLE = getSkinnable().getSegmentStyle().CLASS;
+        final int    ASCII     = getSkinnable().getCharacter().isEmpty() ? 20 : getSkinnable().getCharacter().toUpperCase().charAt(0);
+        final String ON_STYLE  = getSkinnable().getSegmentStyle().ON_CLASS;
+        final String OFF_STYLE = getSkinnable().getSegmentStyle().OFF_CLASS;
 
         for (SevenSegment.Segment segment : segmentMap.keySet()) {
             if (getSkinnable().getSegmentMapping().containsKey(ASCII)) {
                 if (getSkinnable().getSegmentMapping().get(ASCII).contains(segment)) {
                     segmentMap.get(segment).getStyleClass().setAll(segment.name().toLowerCase(), ON_STYLE);
                 } else {
-                    segmentMap.get(segment).getStyleClass().setAll(segment.name().toLowerCase(), SevenSegment.STYLE_CLASS_OFF);
+                    segmentMap.get(segment).getStyleClass().setAll(segment.name().toLowerCase(), OFF_STYLE);
                 }
             } else {
-                segmentMap.get(segment).getStyleClass().setAll(segment.name().toLowerCase(), SevenSegment.STYLE_CLASS_OFF);
+                segmentMap.get(segment).getStyleClass().setAll(segment.name().toLowerCase(), OFF_STYLE);
             }
         }
 
         if (getSkinnable().isDotOn()) {
             segmentMap.get(SevenSegment.Segment.DOT).getStyleClass().setAll("dot", ON_STYLE);
         } else {
-            segmentMap.get(SevenSegment.Segment.DOT).getStyleClass().setAll("dot", SevenSegment.STYLE_CLASS_OFF);
+            segmentMap.get(SevenSegment.Segment.DOT).getStyleClass().setAll("dot", OFF_STYLE);
         }
     }
 

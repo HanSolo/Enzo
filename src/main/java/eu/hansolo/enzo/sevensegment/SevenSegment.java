@@ -32,19 +32,17 @@ import java.util.Map;
 
 
 public class SevenSegment extends Control {
-    public static final String           STYLE_CLASS_OFF     = "seven-segment-off";
-    public static final String           STYLE_CLASS_RED     = "seven-segment-red";
-    public static final String           STYLE_CLASS_GREEN   = "seven-segment-green";
-    public static final String           STYLE_CLASS_BLUE    = "seven-segment-blue";
-    public static final String           STYLE_CLASS_YELLOW  = "seven-segment-yellow";
-    public static final String           STYLE_CLASS_ORANGE  = "seven-segment-orange";
-    public static final String           STYLE_CLASS_CYAN    = "seven-segment-cyan";
-    public static final String           STYLE_CLASS_MAGENTA = "seven-segment-magenta";
-    public static final String           STYLE_CLASS_WHITE   = "seven-segment-white";
-    public static final String           STYLE_CLASS_BLACK   = "seven-segment-black";
+    public static final String           STYLE_CLASS_RED     = "red";
+    public static final String           STYLE_CLASS_GREEN   = "green";
+    public static final String           STYLE_CLASS_BLUE    = "blue";
+    public static final String           STYLE_CLASS_YELLOW  = "yellow";
+    public static final String           STYLE_CLASS_ORANGE  = "orange";
+    public static final String           STYLE_CLASS_CYAN    = "cyan";
+    public static final String           STYLE_CLASS_MAGENTA = "magenta";
+    public static final String           STYLE_CLASS_WHITE   = "white";
+    public static final String           STYLE_CLASS_BLACK   = "black";
     public static enum                   Segment { A, B, C, D, E, F, G, DOT }
     public static enum                   SegmentStyle {
-        OFF(STYLE_CLASS_OFF),
         RED(STYLE_CLASS_RED),
         GREEN(STYLE_CLASS_GREEN),
         BLUE(STYLE_CLASS_BLUE),
@@ -55,10 +53,12 @@ public class SevenSegment extends Control {
         WHITE(STYLE_CLASS_WHITE),
         BLACK(STYLE_CLASS_BLACK);
 
-        public final String CLASS;
+        public final String ON_CLASS;
+        public final String OFF_CLASS;
 
         private SegmentStyle(final String CLASS_NAME) {
-            CLASS = CLASS_NAME;
+            ON_CLASS  = CLASS_NAME;
+            OFF_CLASS = CLASS_NAME + "-off";
         }
     }
     private boolean                      keepAspect;

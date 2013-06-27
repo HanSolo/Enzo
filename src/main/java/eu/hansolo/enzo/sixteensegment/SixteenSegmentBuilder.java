@@ -16,10 +16,12 @@
 
 package eu.hansolo.enzo.sixteensegment;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -64,6 +66,11 @@ public class SixteenSegmentBuilder<B extends SixteenSegmentBuilder<B>> {
 
     public final SixteenSegmentBuilder character(final int CHARACTER) {
         properties.put("characterInt", new SimpleIntegerProperty(CHARACTER));
+        return this;
+    }
+
+    public final SixteenSegmentBuilder dotOn(final boolean DOT_ON) {
+        properties.put("dotOn", new SimpleBooleanProperty(DOT_ON));
         return this;
     }
 
@@ -158,6 +165,8 @@ public class SixteenSegmentBuilder<B extends SixteenSegmentBuilder<B>> {
                 CONTROL.setCharacter(((ObjectProperty<Character>) properties.get(key)).get());
             } else if ("characterInt".equals(key)) {
                 CONTROL.setCharacter(((IntegerProperty) properties.get(key)).get());
+            } else if ("dotOn".equals(key)) {
+                CONTROL.setDotOn(((BooleanProperty) properties.get(key)).get());
             }
         }
 
