@@ -78,15 +78,15 @@ public class Demo extends Application {
                     double v = RND.nextDouble() * 20.0 + 10.0;
 
                     if (Double.compare(v, 10) > 0 && Double.compare(v, 16) <= 0) {
-                        setLcdColor(SevenSegment.SegmentStyle.BLUE);
+                        setSegmentColor(SevenSegment.SegmentStyle.BLUE);
                     } else if (Double.compare(v, 16) > 0 && Double.compare(v, 20) <= 0) {
-                        setLcdColor(SevenSegment.SegmentStyle.CYAN);
+                        setSegmentColor(SevenSegment.SegmentStyle.CYAN);
                     } else if (Double.compare(v, 20) > 0 && Double.compare(v, 24) <= 0) {
-                        setLcdColor(SevenSegment.SegmentStyle.GREEN);
+                        setSegmentColor(SevenSegment.SegmentStyle.GREEN);
                     } else if (Double.compare(v, 24) > 0 && Double.compare(v, 28) <= 0) {
-                        setLcdColor(SevenSegment.SegmentStyle.YELLOW);
+                        setSegmentColor(SevenSegment.SegmentStyle.YELLOW);
                     } else {
-                        setLcdColor(SevenSegment.SegmentStyle.RED);
+                        setSegmentColor(SevenSegment.SegmentStyle.RED);
                     }
 
                     String value = String.format(Locale.US, "%.2f", v);
@@ -101,7 +101,7 @@ public class Demo extends Application {
         };
     }
 
-    private void setLcdColor(final SevenSegment.SegmentStyle STYLE) {
+    private void setSegmentColor(final SevenSegment.SegmentStyle STYLE) {
         seg0.setSegmentStyle(STYLE);
         seg1.setSegmentStyle(STYLE);
         seg2.setSegmentStyle(STYLE);
@@ -138,4 +138,3 @@ public class Demo extends Application {
         Application.launch(args);
     }
 }
-

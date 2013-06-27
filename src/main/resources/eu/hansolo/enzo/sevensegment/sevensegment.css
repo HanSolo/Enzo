@@ -160,7 +160,7 @@
     -segment-glow-color: rgba(255, 255, 255, 0.5);
 }
 .white-off {
-    -segment-color     : rgba(127, 127, 127, 0.6);
+    -segment-color     : rgba(127, 127, 127, 0.3);
     -segment-glow-color: transparent;
 }
 .black {
@@ -168,6 +168,6 @@
     -segment-glow-color: rgba(0, 0, 0, 0.5);
 }
 .black-off {
-    -segment-color     : rgba(127, 127, 127, 0.6);
+    -segment-color     : rgba(127, 127, 127, 0.3);
     -segment-glow-color: transparent;
 }
