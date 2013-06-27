@@ -156,7 +156,7 @@ public class SixteenSegmentBuilder<B extends SixteenSegmentBuilder<B>> {
             } else if ("translateY".equals(key)) {
                 CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             } else if ("styleClass".equals(key)) {
-                CONTROL.getStyleClass().setAll("seven-segment", ((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("sixteen-segment", ((StringProperty) properties.get(key)).get());
             } else if ("segmentStyle".equals(key)) {
                 CONTROL.setSegmentStyle(((ObjectProperty<SixteenSegment.SegmentStyle>) properties.get(key)).get());
             } else if ("characterString".equals(key)) {
