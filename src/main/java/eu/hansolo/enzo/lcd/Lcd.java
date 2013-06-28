@@ -83,6 +83,7 @@ public class Lcd extends Control {
         STANDARD,
         LCD,
         DIGITAL,
+        DIGITAL_BOLD,
         BUS,
         PIXEL,
         PHONE_LCD,

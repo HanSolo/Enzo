@@ -146,12 +146,13 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
 
     private void initGraphics() {
         // load the fonts
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/bus.otf"), (0.4583333333 * PREFERRED_HEIGHT));            // "Bus Normal", "Bus-Regular"
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digital.ttf"), (0.5833333333 * PREFERRED_HEIGHT));        // "Digital-7"
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadout.ttf"), (0.5833333333 * PREFERRED_HEIGHT)); // "Digital Readout Upright"
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/pixel.ttf"), (0.5208333333 * PREFERRED_HEIGHT));          // "Electronic Highway Sign"
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/phonelcd.ttf"), (0.4583333333 * PREFERRED_HEIGHT));       // "Nokian"
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/elektra.ttf"), (0.58333333 * PREFERRED_HEIGHT));          // "Elektra"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/bus.otf"), (0.4583333333 * PREFERRED_HEIGHT));             // "Bus-Regular"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digital.ttf"), (0.5833333333 * PREFERRED_HEIGHT));         // "Digital-7"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadout.ttf"), (0.5833333333 * PREFERRED_HEIGHT));  // "Digital Readout Upright"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadoutb.ttf"), (0.5833333333 * PREFERRED_HEIGHT)); // "Digital Readout Thick Upright"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/pixel.ttf"), (0.5208333333 * PREFERRED_HEIGHT));           // "Electronic Highway Sign"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/phonelcd.ttf"), (0.4583333333 * PREFERRED_HEIGHT));        // "Nokian"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/elektra.ttf"), (0.58333333 * PREFERRED_HEIGHT));           // "Elektra"
 
         frame = new Region();
         frame.getStyleClass().setAll("frame");
@@ -465,7 +466,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         switch(getSkinnable().getValueFont()) {
             case BUS:
                 //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/bus.otf"), (0.4583333333 * height));
-                valueFont = Font.font("Bus Normal", (0.4583333333 * height));
+                valueFont = Font.font("Bus-Regular", (0.4583333333 * height));
                 break;
             case LCD:
                 //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digital.ttf"), (0.5833333333 * height));
@@ -476,6 +477,10 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             case DIGITAL:
                 //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadout.ttf"), (0.5833333333 * height));
                 valueFont = Font.font("Digital Readout Upright", (0.5833333333 * height));
+                break;
+            case DIGITAL_BOLD:
+                //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadoutb.ttf"), (0.5833333333 * height));
+                valueFont = Font.font("Digital Readout Thick Upright", (0.5833333333 * height));
                 break;
             case PIXEL:
                 //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/pixel.ttf"), (0.5208333333 * height));
@@ -495,7 +500,10 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
                 break;
         }
         backgroundText.setFont(valueFont);
-        backgroundText.setOpacity((Lcd.LcdFont.LCD == getSkinnable().getValueFont() || Lcd.LcdFont.DIGITAL == getSkinnable().getValueFont() || Lcd.LcdFont.ELEKTRA == getSkinnable().getValueFont()) ? 1 : 0);
+        backgroundText.setOpacity((Lcd.LcdFont.LCD == getSkinnable().getValueFont() ||
+                                   Lcd.LcdFont.DIGITAL == getSkinnable().getValueFont() ||
+                                   Lcd.LcdFont.DIGITAL_BOLD == getSkinnable().getValueFont() ||
+                                   Lcd.LcdFont.ELEKTRA == getSkinnable().getValueFont()) ? 1 : 0);
         text.setFont(valueFont);
         unitFont  = Font.font(getSkinnable().getUnitFont(), FontWeight.NORMAL, (0.26 * height));
         titleFont = Font.font(getSkinnable().getTitleFont(), FontWeight.BOLD, (0.1666666667 * height));
@@ -562,6 +570,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         if (Lcd.LcdFont.LCD == getSkinnable().getValueFont()) {
             oneSegment.setText("8");
         } else if (Lcd.LcdFont.DIGITAL == getSkinnable().getValueFont()) {
+            oneSegment.setText("_");
+        } else if (Lcd.LcdFont.DIGITAL_BOLD == getSkinnable().getValueFont()) {
             oneSegment.setText("_");
         } else if (Lcd.LcdFont.ELEKTRA == getSkinnable().getValueFont()) {
             oneSegment.setText("_");
