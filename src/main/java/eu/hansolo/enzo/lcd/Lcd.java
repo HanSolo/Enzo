@@ -82,6 +82,7 @@ public class Lcd extends Control {
     public static enum LcdFont {
         STANDARD,
         LCD,
+        DIGITAL,
         BUS,
         PIXEL,
         PHONE_LCD,

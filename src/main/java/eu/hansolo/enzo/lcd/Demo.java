@@ -97,6 +97,7 @@ public class Demo extends Application {
                             .lowerRightTextVisible(true)
                             .lowerRightText("Info")
                             .valueFont(Lcd.LcdFont.ELEKTRA)
+                            //.valueFont(Lcd.LcdFont.DIGITAL)
                             .valueAnimationEnabled(true)
                             .build();
         charge = 0.0;
