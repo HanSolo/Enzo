@@ -69,7 +69,6 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private double                  size;
     private Pane                    pane;
     private Region                  background;
-    private Region                  innerBackground;
     private Canvas                  ticksAndSectionsCanvas;
     private GraphicsContext         ticksAndSections;
     private Region                  needle;
@@ -92,9 +91,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     // ******************** Constructors **************************************
     public GaugeSkin(Gauge gauge) {
         super(gauge);
-        pane             = new Pane();
-        angleStep        = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
-        timeline         = new Timeline();
+        angleStep = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
+        timeline  = new Timeline();
         init();
         initGraphics();
         registerListeners();
@@ -144,9 +142,6 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         background = new Region();
         background.getStyleClass().setAll("background");
 
-        innerBackground = new Region();
-        innerBackground.getStyleClass().setAll("inner-background");
-
         ticksAndSectionsCanvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
         ticksAndSections = ticksAndSectionsCanvas.getGraphicsContext2D();
 
@@ -189,7 +184,14 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
 
         // Add all nodes
-        pane.getChildren().setAll(background, innerBackground, histogram, ticksAndSectionsCanvas, title, shadowGroup, unit, value);
+        pane = new Pane();
+        pane.getChildren().setAll(background,
+                                  histogram,
+                                  ticksAndSectionsCanvas,
+                                  title,
+                                  shadowGroup,
+                                  unit,
+                                  value);
 
         getChildren().setAll(pane);
     }
@@ -406,8 +408,6 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         dropShadow.setOffsetY(0.015 * size);
 
         background.setPrefSize(size, size);
-
-        innerBackground.setPrefSize(size, size);
 
         ticksAndSectionsCanvas.setWidth(size);
         ticksAndSectionsCanvas.setHeight(size);

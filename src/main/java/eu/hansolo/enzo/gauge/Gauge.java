@@ -134,6 +134,8 @@ public class Gauge extends Control {
     private DoubleProperty                       startAngle;
     private double                               _angleRange;
     private DoubleProperty                       angleRange;
+    private boolean                              _clockwise;
+    private BooleanProperty                      clockwise;
     private Gauge.NeedleType                     _needleType;
     private ObjectProperty<NeedleType>           needleType;
     private Color                                _needleColor;
@@ -192,6 +194,7 @@ public class Gauge extends Control {
         _alwaysRound          = true;
         _startAngle           = -40;
         _angleRange           = 280;
+        _clockwise            = true;
         _needleType           = NeedleType.STANDARD;
         _needleColor          = Color.RED;
         _tickLabelOrientation = TickLabelOrientation.HORIZONTAL;
@@ -445,9 +448,9 @@ public class Gauge extends Control {
     }
     public final void setAngleRange(final double ANGLE_RANGE) {
         if (null == angleRange) {
-            _angleRange = clamp(0, 360, ANGLE_RANGE);
+            _angleRange = clamp(0.0, 360.0, ANGLE_RANGE);
         } else {
-            angleRange.set(clamp(0, 360, ANGLE_RANGE));
+            angleRange.set(clamp(0.0, 360.0, ANGLE_RANGE));
         }
     }
     public final DoubleProperty angleRangeProperty() {
@@ -455,6 +458,23 @@ public class Gauge extends Control {
             angleRange = new SimpleDoubleProperty(this, "angleRange", _angleRange);
         }
         return angleRange;
+    }
+
+    public final boolean isClockwise() {
+        return null == clockwise ? _clockwise : clockwise.get();
+    }
+    public final void setClockwise(final boolean CLOCKWISE) {
+        if (null == clockwise) {
+            _clockwise = CLOCKWISE;
+        } else {
+            clockwise.set(CLOCKWISE);
+        }
+    }
+    public final BooleanProperty clockwiseProperty() {
+        if (null == clockwise) {
+            clockwise = new SimpleBooleanProperty(this, "clockwise", _clockwise);
+        }
+        return clockwise;
     }
 
     // Properties related to visualization
