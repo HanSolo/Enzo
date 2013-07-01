@@ -4,7 +4,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -46,8 +45,8 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = new Gauge();
-        control.setStartAngle(300);
-        control.setAngleRange(210);
+        control.setStartAngle(90);
+        control.setAngleRange(120);
         //control.setStyle("-tick-label-fill: blue;");
         control.setSections(new Section(40, 60),
                             new Section(60, 80),
@@ -55,6 +54,7 @@ public class Demo extends Application {
         control.setMajorTickSpace(20);
         //control.setMinorTickSpace(2);
         //control.setHistogramEnabled(true);
+        //control.setTouchMode(true);
         control.setPrefSize(400, 400);
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
