@@ -134,8 +134,6 @@ public class Gauge extends Control {
     private StringProperty                       unit;
     private boolean                              _animated;
     private BooleanProperty                      animated;
-    private boolean                              _alwaysRound;
-    private BooleanProperty                      alwaysRound;
     private double                               _startAngle;
     private DoubleProperty                       startAngle;
     private double                               _angleRange;
@@ -163,6 +161,8 @@ public class Gauge extends Control {
     private BooleanProperty                      histogramEnabled;
     private boolean                              _dropShadowEnabled;
     private BooleanProperty                      dropShadowEnabled;
+    private String                               _interactiveText;
+    private StringProperty                       interactiveText;
 
     // CSS styleable properties
     private ObjectProperty<Paint>                tickMarkFill;
@@ -194,7 +194,6 @@ public class Gauge extends Control {
         _title                = "title";
         _unit                 = "unit";
         _animated             = true;
-        _alwaysRound          = true;
         _startAngle           = -40;
         _angleRange           = 280;
         _clockwise            = true;
@@ -209,6 +208,7 @@ public class Gauge extends Control {
         _plainValue           = true;
         _histogramEnabled     = false;
         _dropShadowEnabled    = true;
+        _interactiveText      = "INTERACTIVE";
     }
 
 
@@ -217,6 +217,7 @@ public class Gauge extends Control {
         return null == value ? _value : value.get();
     }
     public final void setValue(final double VALUE) {
+        if (isInteractive()) return;
         if (null == value) {
             _oldValue = _value;
             _value = clamp(_minValue, _maxValue, VALUE);
@@ -232,7 +233,7 @@ public class Gauge extends Control {
             setMaxMeasuredValue(_value);
         }
     }
-    public final DoubleProperty valueProperty() {
+    public final ReadOnlyDoubleProperty valueProperty() {
         if (null == value) {
             value = new SimpleDoubleProperty(this, "value", _value);
         }
@@ -405,23 +406,6 @@ public class Gauge extends Control {
         return animated;
     }
 
-    public final boolean isAlwaysRound() {
-        return null == alwaysRound ? _alwaysRound : alwaysRound.get();
-    }
-    public final void setAlwaysRound(final boolean ALWAYS_ROUND) {
-        if (null == alwaysRound) {
-            _alwaysRound = ALWAYS_ROUND;
-        } else {
-            alwaysRound.set(ALWAYS_ROUND);
-        }
-    }
-    public final BooleanProperty alwaysRoundProperty() {
-        if (null == alwaysRound) {
-            alwaysRound = new SimpleBooleanProperty(this, "alwaysRound", _alwaysRound);
-        }
-        return alwaysRound;
-    }
-
     public double getStartAngle() {
         return null == startAngle ? _startAngle : startAngle.get();
     }
@@ -479,6 +463,7 @@ public class Gauge extends Control {
         }
         return clockwise;
     }
+
 
     // Properties related to visualization
     public final Gauge.NeedleType getNeedleType() {
@@ -661,6 +646,23 @@ public class Gauge extends Control {
             dropShadowEnabled = new SimpleBooleanProperty(this, "dropShadowEnabled", _dropShadowEnabled);
         }
         return dropShadowEnabled;
+    }
+
+    public final String getInteractiveText() {
+        return null == interactiveText ? _interactiveText : interactiveText.get();
+    }
+    public final void setInteractiveText(final String INTERACTIVE_TEXT) {
+        if (null == interactiveText) {
+            _interactiveText = INTERACTIVE_TEXT;
+        } else {
+            interactiveText.set(INTERACTIVE_TEXT);
+        }
+    }
+    public final StringProperty interactiveTextProperty() {
+        if (null == interactiveText) {
+            interactiveText = new SimpleStringProperty(this, "interactiveText", _interactiveText);
+        }
+        return interactiveText;
     }
 
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {

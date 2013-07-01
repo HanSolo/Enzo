@@ -42,7 +42,6 @@
 
     -needle          : #F8907D;
     -knob            : white;
-    -shape           : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
     -tick-mark-fill  : black;
     -tick-label-fill : black;
     -section0-fill   : rgba(  0,   0, 178, 0.5);
@@ -129,7 +128,7 @@
 
 
 /******************************************************************************
- * GAUGE title, unit, value                                                   *
+ * GAUGE title, unit, value, interactive-text                                 *
  *****************************************************************************/
 .gauge .title {
     -fx-fill: ladder(-base, #888888 49%, white 50%);

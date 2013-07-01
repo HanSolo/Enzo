@@ -45,8 +45,8 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = new Gauge();
-        control.setStartAngle(90);
-        control.setAngleRange(120);
+        control.setStartAngle(330);
+        control.setAngleRange(300);
         //control.setStyle("-tick-label-fill: blue;");
         control.setSections(new Section(40, 60),
                             new Section(60, 80),
