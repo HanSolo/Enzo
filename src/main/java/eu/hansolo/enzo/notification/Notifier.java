@@ -15,10 +15,13 @@
 
 package eu.hansolo.enzo.notification;
 
-import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableMap;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.ContentDisplay;
@@ -51,31 +54,80 @@ import javafx.util.Duration;
 public enum Notifier {
     INSTANCE;
 
-    private static final Duration              LIFE_TIME = Duration.millis(5000);
-    private static final Image                 INFO      = null;
-    private static final Image                 WARNING   = null;
-    private static final Image                 SUCCESS   = null;
-    private static final Image                 ERROR     = null;
-    private ObservableMap<Notification, Popup> notifications;
+    private static final double   WIDTH     = 300;
+    private static final double   HEIGHT    = 80;
+    private static final double   OFFSET_Y  = 25;
+    private static final double   SPACING_Y = 5;
+    private Duration              lifetime;
+    private Color                 popupBackground;
+    private Color                 popupForeground;
+    private Stage                 stage;
+    private StackPane             pane;
+    private Scene                 scene;
+    private InnerShadow           innerShadow;
+    private ObservableList<Popup> popups;
 
 
     // ******************** Constructor ***************************************
     private Notifier() {
-        notifications = FXCollections.observableHashMap();
+        init();
+        initGraphics();
     }
 
 
     // ******************** Initialization ************************************
-    private void registerListeners() {
-        notifications.addListener((MapChangeListener<Notification, Popup>) change -> reOrder() );
+    private void init() {
+        lifetime        = Duration.millis(5000);
+        popupBackground = Color.rgb(30, 30, 30, 0.8);
+        popupForeground = Color.WHITE;
+        popups          = FXCollections.observableArrayList();
+    }
+
+    private void initGraphics() {
+        pane  = new StackPane();
+        scene = new Scene(pane);
+        scene.setFill(null);
+
+        stage = new Stage();
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setScene(scene);
+        stage.show();
+
+        innerShadow = new InnerShadow();
+        innerShadow.setRadius(4);
+        innerShadow.setBlurType(BlurType.GAUSSIAN);
+        innerShadow.setColor(Color.rgb(255, 255, 255, 0.6));
+        innerShadow.setOffsetX(0);
+        innerShadow.setOffsetY(0);
     }
 
 
     // ******************** Methods *******************************************
+    public Duration getPopupLifeTime() {
+        return lifetime;
+    }
+    public void setPopupLifetime(final Duration DURATION) {
+        lifetime = DURATION;
+    }
+
+    public Color getPopupBackground() {
+        return popupBackground;
+    }
+    public void setPopupBackground(final Color POPUP_BACKGROUND) {
+        popupBackground = POPUP_BACKGROUND;
+    }
+
+    public Color getPopupForeground() {
+        return popupForeground;
+    }
+    public void setPopupForeground(final Color POPUP_FOREGROUND) {
+        popupForeground = POPUP_FOREGROUND;
+    }
+
     // Custom notification
     public void fire(final Notification NOTIFICATION) {
-        notifications.put(NOTIFICATION, createPopup(NOTIFICATION));
-
+        preOrder();
+        showPopup(NOTIFICATION);
     }
     public void fire(final String TITLE, final String MESSAGE, final Image IMAGE) {
         fire(new Notification(TITLE, MESSAGE, IMAGE));
@@ -83,77 +135,44 @@ public enum Notifier {
 
     // Predefined notifications
     public void fireInfo(final String MESSAGE) {
-        fire(new Notification("Info", MESSAGE, INFO));
+        fire(new Notification("Info", MESSAGE, Notification.INFO_ICON));
     }
     public void fireWarning(final String MESSAGE) {
-        fire(new Notification("Warning", MESSAGE, WARNING));
+        fire(new Notification("Warning", MESSAGE, Notification.WARNING_ICON));
     }
     public void fireSuccess(final String MESSAGE) {
-        fire(new Notification("Success", MESSAGE, SUCCESS));
+        fire(new Notification("Success", MESSAGE, Notification.SUCCESS_ICON));
     }
     public void fireError(final String MESSAGE) {
-        fire(new Notification("Error", MESSAGE, ERROR));
+        fire(new Notification("Error", MESSAGE, Notification.ERROR_ICON));
     }
 
-    private Popup createPopup(final Notification NOTIFICATION) {
-        final Popup POPUP = new Popup();
-
-        return POPUP;
+    private void preOrder() {
+        if (popups.isEmpty()) return;
+        for (int i = 0 ; i < popups.size() ; i++) {
+            popups.get(i).setY(popups.get(i).getY() + HEIGHT+ SPACING_Y);
+        }
     }
 
-    private void reOrder() {
-        // make sure that the latest notification stays on top
-    }
-
-    public void showPopup(final Notification NOTIFICATION) {
-        final Stage popupStage = createPopupStage(NOTIFICATION, notifications.size());
-
-        final FadeTransition popupFadeOut = new FadeTransition();
-        popupFadeOut.setDuration(Duration.millis(500));
-        popupFadeOut.setDelay(LIFE_TIME);
-        popupFadeOut.setNode(popupStage.getScene().getRoot());
-        popupFadeOut.setFromValue(0.8);
-        popupFadeOut.setToValue(0.0);
-        popupFadeOut.setOnFinished(actionEvent -> {
-            notifications.remove(NOTIFICATION);
-            popupStage.close();
-        });
-
-        popupStage.show();
-        popupFadeOut.play();
-    }
-
-    public Stage createPopupStage(final Notification NOTIFICATION, final int NO_OF_POPUPS) {
-        final Stage popup = new Stage();
-        popup.setResizable(false);
-        popup.setX(Screen.getPrimary().getBounds().getMaxX() - 310);
-        popup.setY(25 + (75 * NO_OF_POPUPS));
-        popup.initStyle(StageStyle.TRANSPARENT);
-
-        Rectangle shape = new Rectangle(300, 70, Color.rgb(30, 30, 30, 0.8));
+    // Create and show a popup with the given Notification
+    private void showPopup(final Notification NOTIFICATION) {
+        Rectangle shape = new Rectangle(WIDTH, HEIGHT, popupBackground);
         shape.setArcWidth(10);
         shape.setArcHeight(10);
-
-        InnerShadow innerShadow = new InnerShadow();
-        innerShadow.setRadius(4);
-        innerShadow.setBlurType(BlurType.GAUSSIAN);
-        innerShadow.setColor(Color.rgb(255, 255, 255, 0.6));
-        innerShadow.setOffsetX(0);
-        innerShadow.setOffsetY(0);
-
         shape.setEffect(innerShadow);
 
         Text title = new Text(NOTIFICATION.TITLE);
         title.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 13));
-        title.setFill(Color.WHITE);
+        title.setFill(popupForeground);
 
         ImageView image = new ImageView(NOTIFICATION.IMAGE);
         image.setFitWidth(24);
         image.setFitHeight(24);
 
         Label message = new Label(NOTIFICATION.MESSAGE, image);
+        message.setGraphicTextGap(10);
         message.setContentDisplay(ContentDisplay.LEFT);
-        message.setTextFill(Color.WHITE);
+        message.setTextFill(popupForeground);
         message.setFont(Font.font("Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 12));
 
         VBox popupLayout = new VBox();
@@ -164,10 +183,30 @@ public enum Notifier {
         StackPane popupPane = new StackPane();
         popupPane.getChildren().addAll(shape, popupLayout);
 
-        Scene scene = new Scene(popupPane, 300, 70, null);
+        Popup popup = new Popup();
+        popup.setX(Screen.getPrimary().getBounds().getWidth() - WIDTH - 10);
+        popup.setY(OFFSET_Y);
+        popup.getContent().add(popupPane);
 
-        popup.setScene(scene);
+        popups.add(popup);
 
-        return popup;
+        KeyValue fadeOutBegin = new KeyValue(popup.opacityProperty(), 1.0);
+        KeyValue fadeOutEnd   = new KeyValue(popup.opacityProperty(), 0.0, Interpolator.EASE_OUT);
+
+        KeyFrame kfBegin = new KeyFrame(Duration.ZERO, fadeOutBegin);
+        KeyFrame kfEnd   = new KeyFrame(Duration.millis(500), fadeOutEnd);
+
+        Timeline timeline = new Timeline(kfBegin, kfEnd);
+        timeline.setDelay(lifetime);
+        timeline.setOnFinished(actionEvent -> {
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    popup.hide();
+                    popups.remove(popup);
+                }
+            });
+        });
+        popup.show(stage);
+        timeline.play();
     }
 }
