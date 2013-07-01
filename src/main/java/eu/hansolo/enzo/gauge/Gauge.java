@@ -57,22 +57,6 @@ import java.util.Locale;
  * Time: 17:10
  */
 public class Gauge extends Control {
-    // Default section colors
-    private static final Color       DEFAULT_SECTION_0_FILL      = Color.rgb(0, 0, 178, 0.5);
-    private static final Color       DEFAULT_SECTION_1_FILL      = Color.rgb(0, 128, 255, 0.5);
-    private static final Color       DEFAULT_SECTION_2_FILL      = Color.rgb(  0, 255, 255, 0.5);
-    private static final Color       DEFAULT_SECTION_3_FILL      = Color.rgb(  0, 255,  64, 0.5);
-    private static final Color       DEFAULT_SECTION_4_FILL      = Color.rgb(128, 255,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_5_FILL      = Color.rgb(255, 255,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_6_FILL      = Color.rgb(255, 191,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_7_FILL      = Color.rgb(255, 128,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_8_FILL      = Color.rgb(255,  64,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_9_FILL      = Color.rgb(255,   0,   0, 0.5);
-    private static final Color       DEFAULT_HISTOGRAM_FILL      = Color.rgb(  0, 200,   0, 0.3);
-
-    // CSS Pseudo classes
-    private static final PseudoClass TOUCH_MODE_PSEUDO_CLASS     = PseudoClass.getPseudoClass("touch-mode");
-
     public static enum NeedleType {
         STANDARD("needle-standard");
 
@@ -106,7 +90,29 @@ public class Gauge extends Control {
             return DF.format(NUMBER);
         }
     }
-    public static final String                   STYLE_CLASS_NEEDLE_STANDARD = NeedleType.STANDARD.STYLE_CLASS;
+
+    public static final String       STYLE_CLASS_NEEDLE_STANDARD = NeedleType.STANDARD.STYLE_CLASS;
+
+    // Default section colors
+    private static final Color       DEFAULT_SECTION_0_FILL      = Color.rgb(0, 0, 178, 0.5);
+    private static final Color       DEFAULT_SECTION_1_FILL      = Color.rgb(0, 128, 255, 0.5);
+    private static final Color       DEFAULT_SECTION_2_FILL      = Color.rgb(  0, 255, 255, 0.5);
+    private static final Color       DEFAULT_SECTION_3_FILL      = Color.rgb(  0, 255,  64, 0.5);
+    private static final Color       DEFAULT_SECTION_4_FILL      = Color.rgb(128, 255,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_5_FILL      = Color.rgb(255, 255,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_6_FILL      = Color.rgb(255, 191,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_7_FILL      = Color.rgb(255, 128,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_8_FILL      = Color.rgb(255,  64,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_9_FILL      = Color.rgb(255,   0,   0, 0.5);
+    private static final Color       DEFAULT_HISTOGRAM_FILL      = Color.rgb(  0, 200,   0, 0.3);
+
+    // CSS Pseudo classes
+    private static final PseudoClass TOUCH_MODE_PSEUDO_CLASS     = PseudoClass.getPseudoClass("touch-mode");
+    private static final PseudoClass INTERACTIVE_PSEUDO_CLASS    = PseudoClass.getPseudoClass("interactive");
+
+    private BooleanProperty                      touchMode;
+    private BooleanProperty                      interactive;
+
     private double                               _value;
     private DoubleProperty                       value;
     private double                               _oldValue;
@@ -172,9 +178,6 @@ public class Gauge extends Control {
     private ObjectProperty<Paint>                section8Fill;
     private ObjectProperty<Paint>                section9Fill;
     private ObjectProperty<Paint>                histogramFill;
-
-    // CSS pseudo classes
-    private BooleanProperty                      touchMode;
 
 
     // ******************** Constructors **************************************
@@ -926,6 +929,23 @@ public class Gauge extends Control {
             };
         }
         return touchMode;
+    }
+
+    public final boolean isInteractive() {
+        return null == interactive ? false : interactive.get();
+    }
+    public final void setInteractive(final boolean INTERACTIVE) {
+        interactiveProperty().set(INTERACTIVE);
+    }
+    public final BooleanProperty interactiveProperty() {
+        if (null == interactive) {
+            interactive = new BooleanPropertyBase(false) {
+                @Override protected void invalidated() { pseudoClassStateChanged(INTERACTIVE_PSEUDO_CLASS, get()); }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "interactive"; }
+            };
+        }
+        return interactive;
     }
 
 

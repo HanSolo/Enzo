@@ -83,6 +83,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private DropShadow              valueBlendBottomShadow;
     private InnerShadow             valueBlendTopShadow;
     private Blend                   valueBlend;
+    private Text                    knobText;
     private Path                    histogram;
     private double                  angleStep;
     private Timeline                timeline;
@@ -167,7 +168,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         dropShadow.setRadius(0.015 * PREFERRED_WIDTH);
         dropShadow.setOffsetY(0.015 * PREFERRED_WIDTH);
 
-        shadowGroup = new Group(needle, needleHighlight, knob);
+        shadowGroup = new Group(needle, needleHighlight);//, knob);
         shadowGroup.setEffect(getSkinnable().isDropShadowEnabled() ? dropShadow : null);
 
         title = new Text(getSkinnable().getTitle());
@@ -175,13 +176,24 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         title.getStyleClass().setAll("title");
 
         unit = new Text(getSkinnable().getUnit());
+        unit.setMouseTransparent(true);
         unit.setTextOrigin(VPos.CENTER);
         unit.getStyleClass().setAll("unit");
+        unit.setVisible(getSkinnable().isInteractive());
 
         value = new Text(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
+        value.setMouseTransparent(true);
         value.setTextOrigin(VPos.CENTER);
         value.getStyleClass().setAll("value");
         value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
+        value.setVisible(!getSkinnable().isInteractive());
+
+        knobText = new Text("INTERACTIVE");
+        knobText.setMouseTransparent(true);
+        knobText.setTextOrigin(VPos.CENTER);
+        knobText.getStyleClass().setAll("value");
+        knobText.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
+        knobText.setVisible(getSkinnable().isInteractive());
 
         // Add all nodes
         pane = new Pane();
@@ -190,8 +202,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                                   ticksAndSectionsCanvas,
                                   title,
                                   shadowGroup,
+                                  knob,
                                   unit,
-                                  value);
+                                  value,
+                                  knobText);
 
         getChildren().setAll(pane);
     }
@@ -213,8 +227,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         getSkinnable().plainValueProperty().addListener(observable -> handleControlPropertyChanged("PLAIN_VALUE") );
         getSkinnable().histogramEnabledProperty().addListener(observable -> handleControlPropertyChanged("HISTOGRAM") );
         getSkinnable().dropShadowEnabledProperty().addListener(observable -> handleControlPropertyChanged("DROP_SHADOW") );
+        getSkinnable().interactiveProperty().addListener(observable -> handleControlPropertyChanged("INTERACTIVE") );
 
         needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE") );
+        knob.setOnMousePressed(event -> getSkinnable().setInteractive(!getSkinnable().isInteractive()) );
     }
 
 
@@ -223,7 +239,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("VALUE".equals(PROPERTY)) {
-            rotateNeedle();
+            if (!getSkinnable().isInteractive()) rotateNeedle();
         } else if ("RECALC".equals(PROPERTY)) {
             angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
             resize();
@@ -237,6 +253,11 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             histogram.setManaged(getSkinnable().isHistogramEnabled());
         } else if ("DROP_SHADOW".equals(PROPERTY)) {
             shadowGroup.setEffect(getSkinnable().isDropShadowEnabled() ? dropShadow : null);
+        } else if ("INTERACTIVE".equals(PROPERTY)) {
+            value.setVisible(!getSkinnable().isInteractive());
+            unit.setVisible(!getSkinnable().isInteractive());
+            knobText.setVisible(getSkinnable().isInteractive());
+            getSkinnable().setTouchMode(getSkinnable().isInteractive());
         }
     }
 
@@ -447,5 +468,9 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         value.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.1));
         value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
         value.setTranslateY(size * 0.51);
+
+        knobText.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.04));
+        knobText.setTranslateX((size - knobText.getLayoutBounds().getWidth()) * 0.5);
+        knobText.setTranslateY(size * 0.51);
     }
 }

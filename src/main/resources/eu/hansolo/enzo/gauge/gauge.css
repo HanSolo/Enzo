@@ -114,6 +114,17 @@
     -fx-background-radius: 0em;
     -fx-scale-shape      : true;
     -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+    -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 7, 0.0, 0, 7);
+}
+.gauge:interactive .knob {
+    -fx-background-color : linear-gradient(to bottom,
+                                           white 0%,
+                                           rgb(230,230,230) 52%,
+                                           rgb(240,240,240) 100%),
+                           linear-gradient(to bottom,
+                                           rgb(230,230,230) 0%,
+                                           rgb(250,250,250) 100%);
+    -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
 
 
