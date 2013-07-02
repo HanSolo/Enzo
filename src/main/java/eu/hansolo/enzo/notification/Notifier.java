@@ -15,7 +15,6 @@
 
 package eu.hansolo.enzo.notification;
 
-import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -24,20 +23,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -54,17 +45,16 @@ import javafx.util.Duration;
 public enum Notifier {
     INSTANCE;
 
-    private static final double   WIDTH     = 300;
-    private static final double   HEIGHT    = 80;
-    private static final double   OFFSET_Y  = 25;
-    private static final double   SPACING_Y = 5;
+    private static final double   WIDTH       = 300;
+    private static final double   HEIGHT      = 80;
+    private static final double   OFFSET_Y    = 25;
+    private static final double   SPACING_Y   = 5;
+    private static final double   ICON_WIDTH  = 24;
+    private static final double   ICON_HEIGHT = 24;
     private Duration              lifetime;
-    private Color                 popupBackground;
-    private Color                 popupForeground;
     private Stage                 stage;
     private StackPane             pane;
     private Scene                 scene;
-    private InnerShadow           innerShadow;
     private ObservableList<Popup> popups;
 
 
@@ -78,8 +68,6 @@ public enum Notifier {
     // ******************** Initialization ************************************
     private void init() {
         lifetime        = Duration.millis(5000);
-        popupBackground = Color.rgb(30, 30, 30, 0.8);
-        popupForeground = Color.WHITE;
         popups          = FXCollections.observableArrayList();
     }
 
@@ -87,18 +75,12 @@ public enum Notifier {
         pane  = new StackPane();
         scene = new Scene(pane);
         scene.setFill(null);
+        scene.getStylesheets().add(getClass().getResource("notifier.css").toExternalForm());
 
         stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
         stage.show();
-
-        innerShadow = new InnerShadow();
-        innerShadow.setRadius(4);
-        innerShadow.setBlurType(BlurType.GAUSSIAN);
-        innerShadow.setColor(Color.rgb(255, 255, 255, 0.6));
-        innerShadow.setOffsetX(0);
-        innerShadow.setOffsetY(0);
     }
 
 
@@ -110,41 +92,27 @@ public enum Notifier {
         lifetime = DURATION;
     }
 
-    public Color getPopupBackground() {
-        return popupBackground;
-    }
-    public void setPopupBackground(final Color POPUP_BACKGROUND) {
-        popupBackground = POPUP_BACKGROUND;
-    }
-
-    public Color getPopupForeground() {
-        return popupForeground;
-    }
-    public void setPopupForeground(final Color POPUP_FOREGROUND) {
-        popupForeground = POPUP_FOREGROUND;
-    }
-
     // Custom notification
-    public void fire(final Notification NOTIFICATION) {
+    public void notify(final Notification NOTIFICATION) {
         preOrder();
         showPopup(NOTIFICATION);
     }
-    public void fire(final String TITLE, final String MESSAGE, final Image IMAGE) {
-        fire(new Notification(TITLE, MESSAGE, IMAGE));
+    public void notify(final String TITLE, final String MESSAGE, final Image IMAGE) {
+        notify(new Notification(TITLE, MESSAGE, IMAGE));
     }
 
     // Predefined notifications
-    public void fireInfo(final String MESSAGE) {
-        fire(new Notification("Info", MESSAGE, Notification.INFO_ICON));
+    public void notifyInfo(final String MESSAGE) {
+        notify(new Notification("Info", MESSAGE, Notification.INFO_ICON));
     }
-    public void fireWarning(final String MESSAGE) {
-        fire(new Notification("Warning", MESSAGE, Notification.WARNING_ICON));
+    public void notifyWarning(final String MESSAGE) {
+        notify(new Notification("Warning", MESSAGE, Notification.WARNING_ICON));
     }
-    public void fireSuccess(final String MESSAGE) {
-        fire(new Notification("Success", MESSAGE, Notification.SUCCESS_ICON));
+    public void notifySuccess(final String MESSAGE) {
+        notify(new Notification("Success", MESSAGE, Notification.SUCCESS_ICON));
     }
-    public void fireError(final String MESSAGE) {
-        fire(new Notification("Error", MESSAGE, Notification.ERROR_ICON));
+    public void notifyError(final String MESSAGE) {
+        notify(new Notification("Error", MESSAGE, Notification.ERROR_ICON));
     }
 
     private void preOrder() {
@@ -156,24 +124,19 @@ public enum Notifier {
 
     // Create and show a popup with the given Notification
     private void showPopup(final Notification NOTIFICATION) {
-        Rectangle shape = new Rectangle(WIDTH, HEIGHT, popupBackground);
-        shape.setArcWidth(10);
-        shape.setArcHeight(10);
-        shape.setEffect(innerShadow);
+        Region body = new Region();
+        body.getStyleClass().addAll("body");
+        body.setPrefSize(WIDTH, HEIGHT);
 
-        Text title = new Text(NOTIFICATION.TITLE);
-        title.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 13));
-        title.setFill(popupForeground);
+        Label title = new Label(NOTIFICATION.TITLE);
+        title.getStyleClass().add("title");
 
-        ImageView image = new ImageView(NOTIFICATION.IMAGE);
-        image.setFitWidth(24);
-        image.setFitHeight(24);
+        ImageView icon = new ImageView(NOTIFICATION.IMAGE);
+        icon.setFitWidth(ICON_WIDTH);
+        icon.setFitHeight(ICON_HEIGHT);
 
-        Label message = new Label(NOTIFICATION.MESSAGE, image);
-        message.setGraphicTextGap(10);
-        message.setContentDisplay(ContentDisplay.LEFT);
-        message.setTextFill(popupForeground);
-        message.setFont(Font.font("Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 12));
+        Label message = new Label(NOTIFICATION.MESSAGE, icon);
+        message.getStyleClass().add("message");
 
         VBox popupLayout = new VBox();
         popupLayout.setSpacing(10);
@@ -181,7 +144,8 @@ public enum Notifier {
         popupLayout.getChildren().addAll(title, message);
 
         StackPane popupPane = new StackPane();
-        popupPane.getChildren().addAll(shape, popupLayout);
+        popupPane.getStyleClass().add("notification");
+        popupPane.getChildren().addAll(body, popupLayout);
 
         Popup popup = new Popup();
         popup.setX(Screen.getPrimary().getBounds().getWidth() - WIDTH - 10);
@@ -190,8 +154,9 @@ public enum Notifier {
 
         popups.add(popup);
 
+        // Add a timeline for popup fade out
         KeyValue fadeOutBegin = new KeyValue(popup.opacityProperty(), 1.0);
-        KeyValue fadeOutEnd   = new KeyValue(popup.opacityProperty(), 0.0, Interpolator.EASE_OUT);
+        KeyValue fadeOutEnd   = new KeyValue(popup.opacityProperty(), 0.0);
 
         KeyFrame kfBegin = new KeyFrame(Duration.ZERO, fadeOutBegin);
         KeyFrame kfEnd   = new KeyFrame(Duration.millis(500), fadeOutEnd);
@@ -206,6 +171,10 @@ public enum Notifier {
                 }
             });
         });
+
+        // Move popup to the right during fade out
+        //popup.opacityProperty().addListener((observableValue, oldOpacity, opacity) -> popup.setX(popup.getX() + (1.0 - opacity.doubleValue()) * popup.getWidth()) );
+
         popup.show(stage);
         timeline.play();
     }

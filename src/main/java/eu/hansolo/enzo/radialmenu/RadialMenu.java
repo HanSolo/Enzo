@@ -243,8 +243,8 @@ public class RadialMenu extends Pane {
             closeTimeLines[i] = createItemCloseTimeLine(NODE, x, y, delay);
 
             // Add mouse event handler to each item
-            //NODE.setOnMouseEntered(mouseHandler);
-            //NODE.setOnMouseClicked(mouseHandler);
+            //REGION.setOnMouseEntered(mouseHandler);
+            //REGION.setOnMouseClicked(mouseHandler);
             NODE.setOnMousePressed(mouseHandler);
             NODE.setOnMouseReleased(mouseHandler);
 

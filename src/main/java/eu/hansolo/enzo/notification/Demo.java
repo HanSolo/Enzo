@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.notification;/**
+package eu.hansolo.enzo.notification;
+
+/**
  * Created by
  * User: hansolo
  * Date: 01.07.13
@@ -21,6 +23,7 @@ package eu.hansolo.enzo.notification;/**
  */
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -33,9 +36,9 @@ public class Demo extends Application {
     private static final Random RND = new Random();
     private static final Notification[] NOTIFICATIONS = {
         new Notification("Info", "Information", Notification.INFO_ICON),
-        new Notification("Info", "Information", Notification.WARNING_ICON),
-        new Notification("Info", "Information", Notification.SUCCESS_ICON),
-        new Notification("Info", "Information", Notification.ERROR_ICON)
+        new Notification("Warning", "Warning", Notification.WARNING_ICON),
+        new Notification("Success", "Success", Notification.SUCCESS_ICON),
+        new Notification("Error", "Error", Notification.ERROR_ICON)
     };
     private Notifier notifier;
     private Button   button;
@@ -45,7 +48,7 @@ public class Demo extends Application {
     @Override public void init() {
         button = new Button("Notify");
         button.setOnAction(event -> {
-            notifier.fire(NOTIFICATIONS[RND.nextInt(4)]);
+            notifier.notify(NOTIFICATIONS[RND.nextInt(4)]);
         });
     }
 
@@ -55,6 +58,7 @@ public class Demo extends Application {
         notifier = Notifier.INSTANCE;
 
         StackPane pane = new StackPane();
+        pane.setPadding(new Insets(10, 10, 10, 10));
         pane.getChildren().addAll(button);
 
         Scene scene = new Scene(pane);

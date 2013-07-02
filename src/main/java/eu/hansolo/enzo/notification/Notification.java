@@ -35,8 +35,8 @@ public class Notification {
 
 
     // ******************** Constructors **************************************
-    public Notification(final String MESSAGE) {
-        this("", MESSAGE, null);
+    public Notification(final String TITLE, final String MESSAGE) {
+        this(TITLE, MESSAGE, null);
     }
     public Notification(final String MESSAGE, final Image IMAGE) {
         this("", MESSAGE, IMAGE);
