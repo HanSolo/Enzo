@@ -1,9 +1,15 @@
 package eu.hansolo.enzo.gauge;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventTarget;
+import javafx.event.EventType;
 
 
 /**
@@ -67,6 +73,41 @@ public class Marker {
         return text;
     }
 
+
+    // ******************** Event handling ************************************
+    public final ObjectProperty<EventHandler<MarkerEvent>> onMarkerExceededProperty() { return onMarkerExceeded; }
+    public final void setOnMarkerExceeded(EventHandler<MarkerEvent> value) { onMarkerExceededProperty().set(value); }
+    public final EventHandler<MarkerEvent> getOnMarkerExceeded() { return onMarkerExceededProperty().get(); }
+    private ObjectProperty<EventHandler<MarkerEvent>> onMarkerExceeded = new ObjectPropertyBase<EventHandler<MarkerEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onMarkerExceeded";}
+    };
+
+    public final ObjectProperty<EventHandler<MarkerEvent>> onMarkerUnderrunProperty() { return onMarkerUnderrun; }
+    public final void setOnMarkerUnderrung(EventHandler<MarkerEvent> value) { onMarkerUnderrunProperty().set(value); }
+    public final EventHandler<MarkerEvent> getOnMarkerUnderrun() { return onMarkerUnderrunProperty().get(); }
+    private ObjectProperty<EventHandler<MarkerEvent>> onMarkerUnderrun = new ObjectPropertyBase<EventHandler<MarkerEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onMarkerUnderRun";}
+    };
+
+    public void fireMarkerEvent(final MarkerEvent EVENT) {
+        final EventHandler<MarkerEvent> HANDLER;
+        final EventType TYPE = EVENT.getEventType();
+        if (MarkerEvent.MARKER_EXCEEDED == TYPE) {
+            HANDLER = getOnMarkerExceeded();
+        } else if (MarkerEvent.MARKER_UNDERRUN == TYPE) {
+            HANDLER = getOnMarkerUnderrun();
+        } else {
+            HANDLER = null;
+        }
+
+        if (null == HANDLER) return;
+
+        HANDLER.handle(EVENT);
+    }
+    
+    
     public boolean equals(final Marker MARKER) {
         return (Double.compare(MARKER.getValue(), getValue()) == 0 &&
             MARKER.getText().equals(getText()));
@@ -78,5 +119,18 @@ public class Marker {
         NAME.append("text   : ").append(text.get()).append("\n");
         NAME.append("value  : ").append(value.get()).append("\n");
         return NAME.toString();
+    }
+
+    
+    // ******************** Inner Classes *************************************
+    public static class MarkerEvent extends Event {
+        public static final EventType<MarkerEvent> MARKER_EXCEEDED = new EventType(ANY, "markerExceeded");
+        public static final EventType<MarkerEvent> MARKER_UNDERRUN = new EventType(ANY, "markerUnderRun");
+    
+    
+        // ******************** Constructors **************************************
+        public MarkerEvent(final Object SOURCE, final EventTarget TARGET, EventType<MarkerEvent> TYPE) {
+            super(SOURCE, TARGET, TYPE);
+        }
     }
 }

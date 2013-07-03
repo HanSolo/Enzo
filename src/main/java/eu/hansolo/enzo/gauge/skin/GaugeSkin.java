@@ -17,11 +17,18 @@
 package eu.hansolo.enzo.gauge.skin;
 
 import eu.hansolo.enzo.gauge.Gauge;
+import eu.hansolo.enzo.gauge.GaugeEvent;
 import eu.hansolo.enzo.gauge.Section;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
@@ -71,6 +78,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private Region                  background;
     private Canvas                  ticksAndSectionsCanvas;
     private GraphicsContext         ticksAndSections;
+    private ObservableList<Region>  markers;
     private Region                  needle;
     private Region                  needleHighlight;
     private Rotate                  needleRotate;
@@ -229,6 +237,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         getSkinnable().histogramEnabledProperty().addListener(observable -> handleControlPropertyChanged("HISTOGRAM") );
         getSkinnable().dropShadowEnabledProperty().addListener(observable -> handleControlPropertyChanged("DROP_SHADOW") );
         getSkinnable().interactiveProperty().addListener(observable -> handleControlPropertyChanged("INTERACTIVE") );
+        getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("CANVAS_REFRESH"));
+        //getSkinnable().getMarkers().addListener((ListChangeListener<Marker>) change -> handleControlPropertyChanged("CANVAS_REFRESH"));
 
         needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE") );
         knob.setOnMousePressed(event -> getSkinnable().setInteractive(!getSkinnable().isInteractive()) );
@@ -263,6 +273,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             interactiveText.setText(getSkinnable().getInteractiveText());
             interactiveText.setVisible(getSkinnable().isInteractive());
             getSkinnable().setTouchMode(getSkinnable().isInteractive());
+        } else if ("CANVAS_REFRESH".equals(PROPERTY)) {
+            ticksAndSections.clearRect(0, 0, size, size);
+            drawSections(ticksAndSections);
+            drawTickMarks(ticksAndSections);
         }
     }
 
@@ -468,5 +482,38 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         interactiveText.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.04));
         interactiveText.setTranslateX((size - interactiveText.getLayoutBounds().getWidth()) * 0.5);
         interactiveText.setTranslateY(size * 0.51);
+    }
+
+    // ******************** Event handling ************************************
+    public final ObjectProperty<EventHandler<GaugeEvent>> onThresholdExceededProperty() { return onThresholdExceeded; }
+    public final void setOnThresholdExceeded(EventHandler<GaugeEvent> value) { onThresholdExceededProperty().set(value); }
+    public final EventHandler<GaugeEvent> getOnThresholdExceeded() { return onThresholdExceededProperty().get(); }
+    private ObjectProperty<EventHandler<GaugeEvent>> onThresholdExceeded = new ObjectPropertyBase<EventHandler<GaugeEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onThresholdExceeded";}
+    };
+
+    public final ObjectProperty<EventHandler<GaugeEvent>> onThresholdUnderrunProperty() { return onThresholdUnderrun; }
+    public final void setOnThresholdUnderrung(EventHandler<GaugeEvent> value) { onThresholdUnderrunProperty().set(value); }
+    public final EventHandler<GaugeEvent> getOnThresholdUnderrun() { return onThresholdUnderrunProperty().get(); }
+    private ObjectProperty<EventHandler<GaugeEvent>> onThresholdUnderrun = new ObjectPropertyBase<EventHandler<GaugeEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onThresholdUnderRun";}
+    };
+
+    public void fireGaugeEvent(final GaugeEvent EVENT) {
+        final EventHandler<GaugeEvent> HANDLER;
+        final EventType TYPE = EVENT.getEventType();
+        if (GaugeEvent.THRESHOLD_EXCEEDED == TYPE) {
+            HANDLER = getOnThresholdExceeded();
+        } else if (GaugeEvent.THRESHOLD_UNDERRUN == TYPE) {
+            HANDLER = getOnThresholdUnderrun();
+        } else {
+            HANDLER = null;
+        }
+
+        if (null == HANDLER) return;
+
+        HANDLER.handle(EVENT);
     }
 }

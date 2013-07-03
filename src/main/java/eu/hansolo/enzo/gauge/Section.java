@@ -17,9 +17,15 @@
 package eu.hansolo.enzo.gauge;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventTarget;
+import javafx.event.EventType;
 
 
 /**
@@ -105,6 +111,41 @@ public class Section {
         return ((Double.compare(VALUE, start.get()) >= 0 && Double.compare(VALUE, stop.get()) <= 0));
     }
 
+
+    // ******************** Event handling ************************************
+    public final ObjectProperty<EventHandler<SectionEvent>> onEnteringSectionProperty() { return onEnteringSection; }
+    public final void setOnEnteringSection(EventHandler<SectionEvent> value) { onEnteringSectionProperty().set(value); }
+    public final EventHandler<SectionEvent> getOnEnteringSection() { return onEnteringSectionProperty().get(); }
+    private ObjectProperty<EventHandler<SectionEvent>> onEnteringSection = new ObjectPropertyBase<EventHandler<SectionEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onEnteringSection";}
+    };
+
+    public final ObjectProperty<EventHandler<SectionEvent>> onLeavingSectionProperty() { return onLeavingSection; }
+    public final void setOnLeavingSection(EventHandler<SectionEvent> value) { onLeavingSectionProperty().set(value); }
+    public final EventHandler<SectionEvent> getOnLeavingSection() { return onLeavingSectionProperty().get(); }
+    private ObjectProperty<EventHandler<SectionEvent>> onLeavingSection = new ObjectPropertyBase<EventHandler<SectionEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onLeavingSection";}
+    };
+
+    public void fireSectionEvent(final SectionEvent EVENT) {
+        final EventHandler<SectionEvent> HANDLER;
+        final EventType TYPE = EVENT.getEventType();
+        if (SectionEvent.ENTERING_SECTION == TYPE) {
+            HANDLER = getOnEnteringSection();
+        } else if (SectionEvent.LEAVING_SECTION == TYPE) {
+            HANDLER = getOnLeavingSection();
+        } else {
+            HANDLER = null;
+        }
+
+        if (null == HANDLER) return;
+
+        HANDLER.handle(EVENT);
+    }
+    
+    
     public boolean equals(final Section SECTION) {
         return (Double.compare(SECTION.getStart(), getStart()) == 0 &&
                 Double.compare(SECTION.getStop(), getStop()) == 0 &&
@@ -118,5 +159,17 @@ public class Section {
         NAME.append("startValue: ").append(start.get()).append("\n");
         NAME.append("stopValue : ").append(stop.get()).append("\n");
         return NAME.toString();
+    }
+
+
+    // ******************** Inner Classes *************************************
+    public static class SectionEvent extends Event {
+        public static final EventType<SectionEvent> ENTERING_SECTION = new EventType(ANY, "enteringSection");
+        public static final EventType<SectionEvent> LEAVING_SECTION  = new EventType(ANY, "leavingSection");
+
+        // ******************** Constructors **************************************
+        public SectionEvent(final Object SOURCE, final EventTarget TARGET, EventType<SectionEvent> TYPE) {
+            super(SOURCE, TARGET, TYPE);
+        }
     }
 }
