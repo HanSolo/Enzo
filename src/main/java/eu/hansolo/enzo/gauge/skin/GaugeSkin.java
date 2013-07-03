@@ -18,17 +18,14 @@ package eu.hansolo.enzo.gauge.skin;
 
 import eu.hansolo.enzo.gauge.Gauge;
 import eu.hansolo.enzo.gauge.GaugeEvent;
+import eu.hansolo.enzo.gauge.Marker;
 import eu.hansolo.enzo.gauge.Section;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
@@ -79,6 +76,9 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private Canvas                  ticksAndSectionsCanvas;
     private GraphicsContext         ticksAndSections;
     private ObservableList<Region>  markers;
+    private Region                  threshold;
+    private Rotate                  thresholdRotate;
+    private boolean                 thresholdExceeded;
     private Region                  needle;
     private Region                  needleHighlight;
     private Rotate                  needleRotate;
@@ -158,6 +158,12 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         histogram.setFillRule(FillRule.NON_ZERO);
         histogram.getStyleClass().add("histogram-fill");
 
+        threshold = new Region();
+        threshold.getStyleClass().setAll("threshold");
+        thresholdRotate = new Rotate(180 - getSkinnable().getStartAngle());
+        threshold.getTransforms().setAll(thresholdRotate);
+        thresholdExceeded = false;
+
         needle = new Region();
         needle.getStyleClass().setAll(Gauge.STYLE_CLASS_NEEDLE_STANDARD);
         needleRotate = new Rotate(180 - getSkinnable().getStartAngle());
@@ -204,17 +210,22 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         interactiveText.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
         interactiveText.setVisible(getSkinnable().isInteractive());
 
+        for (Marker marker : getSkinnable().getMarkers()) {
+            markers.add(new Region());
+        }
+
         // Add all nodes
         pane = new Pane();
         pane.getChildren().setAll(background,
                                   histogram,
                                   ticksAndSectionsCanvas,
+                                  threshold,
                                   title,
                                   shadowGroup,
                                   knob,
                                   unit,
                                   value,
-            interactiveText);
+                                  interactiveText);
 
         getChildren().setAll(pane);
     }
@@ -231,6 +242,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         getSkinnable().needleTypeProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_TYPE") );
         getSkinnable().needleColorProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_COLOR") );
         getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED") );
+        getSkinnable().thresholdProperty().addListener(observable -> handleControlPropertyChanged("THRESHOLD"));
         getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE") );
         getSkinnable().numberFormatProperty().addListener(observable -> handleControlPropertyChanged("RECALC") );
         getSkinnable().plainValueProperty().addListener(observable -> handleControlPropertyChanged("PLAIN_VALUE") );
@@ -259,6 +271,17 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             if (!getSkinnable().isInteractive()) {
                 value.setText(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
                 value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+                if (thresholdExceeded) {
+                    if (Double.parseDouble(value.getText()) < getSkinnable().getThreshold()) {
+                        getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_UNDERRUN));
+                        thresholdExceeded = false;
+                    }
+                } else {
+                    if (Double.parseDouble(value.getText()) > getSkinnable().getThreshold()) {
+                        getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_EXCEEDED));
+                        thresholdExceeded = true;
+                    }
+                }
             }
         } else if ("PLAIN_VALUE".equals(PROPERTY)) {
             value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
@@ -277,6 +300,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             ticksAndSections.clearRect(0, 0, size, size);
             drawSections(ticksAndSections);
             drawTickMarks(ticksAndSections);
+        } else if ("THRESHOLD".equals(PROPERTY)) {
+            thresholdRotate.setAngle(getSkinnable().getThreshold() * angleStep - 180 - getSkinnable().getStartAngle());
         }
     }
 
@@ -448,15 +473,20 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         ticksAndSectionsCanvas.setCache(true);
         ticksAndSectionsCanvas.setCacheHint(CacheHint.QUALITY);
 
+        threshold.setPrefSize(0.05 * size, 0.0425 * size);
+        threshold.relocate((size - threshold.getPrefWidth()) * 0.5, size * 0.11);
+        thresholdRotate.setPivotX(threshold.getPrefWidth() * 0.5);
+        thresholdRotate.setPivotY(size * 0.39);
+        thresholdRotate.setAngle(getSkinnable().getThreshold() * angleStep - 180 - getSkinnable().getStartAngle());
+
         value.setText(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
 
         switch (getSkinnable().getNeedleType()) {
             default:
                 needle.setPrefSize(size * 0.04, size * 0.425);
         }
-        needle.setTranslateX((size - needle.getPrefWidth()) * 0.5);
-        needle.setTranslateY(size * 0.5 - needle.getPrefHeight());
-        needleRotate.setPivotX((needle.getPrefWidth()) * 0.5);
+        needle.relocate((size - needle.getPrefWidth()) * 0.5, size * 0.5 - needle.getPrefHeight());
+        needleRotate.setPivotX(needle.getPrefWidth() * 0.5);
         needleRotate.setPivotY(needle.getPrefHeight());
 
         needleHighlight.setPrefSize(size * 0.04, size * 0.425);
@@ -482,38 +512,5 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         interactiveText.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.04));
         interactiveText.setTranslateX((size - interactiveText.getLayoutBounds().getWidth()) * 0.5);
         interactiveText.setTranslateY(size * 0.51);
-    }
-
-    // ******************** Event handling ************************************
-    public final ObjectProperty<EventHandler<GaugeEvent>> onThresholdExceededProperty() { return onThresholdExceeded; }
-    public final void setOnThresholdExceeded(EventHandler<GaugeEvent> value) { onThresholdExceededProperty().set(value); }
-    public final EventHandler<GaugeEvent> getOnThresholdExceeded() { return onThresholdExceededProperty().get(); }
-    private ObjectProperty<EventHandler<GaugeEvent>> onThresholdExceeded = new ObjectPropertyBase<EventHandler<GaugeEvent>>() {
-        @Override public Object getBean() { return this; }
-        @Override public String getName() { return "onThresholdExceeded";}
-    };
-
-    public final ObjectProperty<EventHandler<GaugeEvent>> onThresholdUnderrunProperty() { return onThresholdUnderrun; }
-    public final void setOnThresholdUnderrung(EventHandler<GaugeEvent> value) { onThresholdUnderrunProperty().set(value); }
-    public final EventHandler<GaugeEvent> getOnThresholdUnderrun() { return onThresholdUnderrunProperty().get(); }
-    private ObjectProperty<EventHandler<GaugeEvent>> onThresholdUnderrun = new ObjectPropertyBase<EventHandler<GaugeEvent>>() {
-        @Override public Object getBean() { return this; }
-        @Override public String getName() { return "onThresholdUnderRun";}
-    };
-
-    public void fireGaugeEvent(final GaugeEvent EVENT) {
-        final EventHandler<GaugeEvent> HANDLER;
-        final EventType TYPE = EVENT.getEventType();
-        if (GaugeEvent.THRESHOLD_EXCEEDED == TYPE) {
-            HANDLER = getOnThresholdExceeded();
-        } else if (GaugeEvent.THRESHOLD_UNDERRUN == TYPE) {
-            HANDLER = getOnThresholdUnderrun();
-        } else {
-            HANDLER = null;
-        }
-
-        if (null == HANDLER) return;
-
-        HANDLER.handle(EVENT);
     }
 }

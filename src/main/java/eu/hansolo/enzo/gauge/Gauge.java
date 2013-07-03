@@ -22,6 +22,7 @@ import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -36,6 +37,8 @@ import javafx.css.PseudoClass;
 import javafx.css.Styleable;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -1379,5 +1382,39 @@ public class Gauge extends Control {
 
     @Override public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
         return getClassCssMetaData();
+    }
+
+
+    // ******************** Event handling ************************************
+    public final ObjectProperty<EventHandler<GaugeEvent>> onThresholdExceededProperty() { return onThresholdExceeded; }
+    public final void setOnThresholdExceeded(EventHandler<GaugeEvent> value) { onThresholdExceededProperty().set(value); }
+    public final EventHandler<GaugeEvent> getOnThresholdExceeded() { return onThresholdExceededProperty().get(); }
+    private ObjectProperty<EventHandler<GaugeEvent>> onThresholdExceeded = new ObjectPropertyBase<EventHandler<GaugeEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onThresholdExceeded";}
+    };
+
+    public final ObjectProperty<EventHandler<GaugeEvent>> onThresholdUnderrunProperty() { return onThresholdUnderrun; }
+    public final void setOnThresholdUnderrun(EventHandler<GaugeEvent> value) { onThresholdUnderrunProperty().set(value); }
+    public final EventHandler<GaugeEvent> getOnThresholdUnderrun() { return onThresholdUnderrunProperty().get(); }
+    private ObjectProperty<EventHandler<GaugeEvent>> onThresholdUnderrun = new ObjectPropertyBase<EventHandler<GaugeEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onThresholdUnderrun";}
+    };
+
+    public void fireGaugeEvent(final GaugeEvent EVENT) {
+        final EventHandler<GaugeEvent> HANDLER;
+        final EventType TYPE = EVENT.getEventType();
+        if (GaugeEvent.THRESHOLD_EXCEEDED == TYPE) {
+            HANDLER = getOnThresholdExceeded();
+        } else if (GaugeEvent.THRESHOLD_UNDERRUN == TYPE) {
+            HANDLER = getOnThresholdUnderrun();
+        } else {
+            HANDLER = null;
+        }
+
+        if (null == HANDLER) return;
+
+        HANDLER.handle(EVENT);
     }
 }

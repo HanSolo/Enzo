@@ -13,7 +13,7 @@ import javafx.event.EventType;
  */
 public class GaugeEvent extends Event {
     public static final EventType<GaugeEvent> THRESHOLD_EXCEEDED = new EventType(ANY, "thresholdExceeded");
-    public static final EventType<GaugeEvent> THRESHOLD_UNDERRUN = new EventType(ANY, "thresholdUnderRun");
+    public static final EventType<GaugeEvent> THRESHOLD_UNDERRUN = new EventType(ANY, "thresholdUnderrun");
 
 
     // ******************** Constructors **************************************

@@ -84,11 +84,11 @@ public class Marker {
     };
 
     public final ObjectProperty<EventHandler<MarkerEvent>> onMarkerUnderrunProperty() { return onMarkerUnderrun; }
-    public final void setOnMarkerUnderrung(EventHandler<MarkerEvent> value) { onMarkerUnderrunProperty().set(value); }
+    public final void setOnMarkerUnderrun(EventHandler<MarkerEvent> value) { onMarkerUnderrunProperty().set(value); }
     public final EventHandler<MarkerEvent> getOnMarkerUnderrun() { return onMarkerUnderrunProperty().get(); }
     private ObjectProperty<EventHandler<MarkerEvent>> onMarkerUnderrun = new ObjectPropertyBase<EventHandler<MarkerEvent>>() {
         @Override public Object getBean() { return this; }
-        @Override public String getName() { return "onMarkerUnderRun";}
+        @Override public String getName() { return "onMarkerUnderrun";}
     };
 
     public void fireMarkerEvent(final MarkerEvent EVENT) {
@@ -125,7 +125,7 @@ public class Marker {
     // ******************** Inner Classes *************************************
     public static class MarkerEvent extends Event {
         public static final EventType<MarkerEvent> MARKER_EXCEEDED = new EventType(ANY, "markerExceeded");
-        public static final EventType<MarkerEvent> MARKER_UNDERRUN = new EventType(ANY, "markerUnderRun");
+        public static final EventType<MarkerEvent> MARKER_UNDERRUN = new EventType(ANY, "markerUnderrun");
     
     
         // ******************** Constructors **************************************
