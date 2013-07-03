@@ -10,6 +10,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
+import javafx.scene.layout.Region;
 
 
 /**
@@ -18,11 +19,12 @@ import javafx.event.EventType;
  * Date: 03.07.13
  * Time: 08:12
  */
-public class Marker {
+public class Marker extends Region {
     private double         _start;
     private DoubleProperty value;
     private String         _text;
     private StringProperty text;
+    private boolean        exceeded;
 
 
     // ******************** Constructors **************************************
@@ -33,8 +35,9 @@ public class Marker {
         this(VALUE, "");
     }
     public Marker(final double VALUE, final String TEXT) {
-        _start = VALUE;
-        _text  = TEXT;
+        _start   = VALUE;
+        _text    = TEXT;
+        exceeded = false;
     }
 
 
@@ -73,6 +76,13 @@ public class Marker {
         return text;
     }
 
+    public final boolean isExceeded() {
+        return exceeded;
+    }
+    public final void setExceeded(final boolean EXCEEDED) {
+        exceeded = EXCEEDED;
+    }
+
 
     // ******************** Event handling ************************************
     public final ObjectProperty<EventHandler<MarkerEvent>> onMarkerExceededProperty() { return onMarkerExceeded; }
@@ -106,8 +116,7 @@ public class Marker {
 
         HANDLER.handle(EVENT);
     }
-    
-    
+
     public boolean equals(final Marker MARKER) {
         return (Double.compare(MARKER.getValue(), getValue()) == 0 &&
             MARKER.getText().equals(getText()));

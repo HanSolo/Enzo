@@ -52,13 +52,20 @@ public class Demo extends Application {
                             new Section(60, 80),
                             new Section(80, 100));
         control.setMajorTickSpace(20);
-        control.setThreshold(70);
+
         //control.setMinorTickSpace(2);
         //control.setHistogramEnabled(true);
         //control.setTouchMode(true);
         control.setPrefSize(400, 400);
+
+        control.setThreshold(70);
         control.setOnThresholdExceeded(observable -> System.out.println("Threshold exceeded") );
         control.setOnThresholdUnderrun(observable -> System.out.println("Threshold underrun"));
+
+        Marker marker0 = new Marker(25);
+        control.addMarker(marker0);
+        marker0.setOnMarkerExceeded(observable -> System.out.println("Marker exceeded"));
+        marker0.setOnMarkerUnderrun(observable -> System.out.println("Marker underrun"));
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {
@@ -86,6 +93,7 @@ public class Demo extends Application {
 
         //control.setTouchMode(true);
         timer.start();
+
 
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes + " Nodes in SceneGraph");

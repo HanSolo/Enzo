@@ -24,8 +24,9 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
@@ -63,44 +64,45 @@ import java.util.Locale;
  * Time: 17:18
  */
 public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
-    private static final double     PREFERRED_WIDTH  = 200;
-    private static final double     PREFERRED_HEIGHT = 200;
-    private static final double     MINIMUM_WIDTH    = 50;
-    private static final double     MINIMUM_HEIGHT   = 50;
-    private static final double     MAXIMUM_WIDTH    = 1024;
-    private static final double     MAXIMUM_HEIGHT   = 1024;
-    private Point2D                 clickPoint;
-    private double                  size;
-    private Pane                    pane;
-    private Region                  background;
-    private Canvas                  ticksAndSectionsCanvas;
-    private GraphicsContext         ticksAndSections;
-    private ObservableList<Region>  markers;
-    private Region                  threshold;
-    private Rotate                  thresholdRotate;
-    private boolean                 thresholdExceeded;
-    private Region                  needle;
-    private Region                  needleHighlight;
-    private Rotate                  needleRotate;
-    private Region                  knob;
-    private Group                   shadowGroup;
-    private DropShadow              dropShadow;
-    private Text                    title;
-    private Text                    unit;
-    private Text                    value;
-    private DropShadow              valueBlendBottomShadow;
-    private InnerShadow             valueBlendTopShadow;
-    private Blend                   valueBlend;
-    private Text                    interactiveText;
-    private Path                    histogram;
-    private double                  angleStep;
-    private Timeline                timeline;
+    private static final double           PREFERRED_WIDTH  = 200;
+    private static final double           PREFERRED_HEIGHT = 200;
+    private static final double           MINIMUM_WIDTH    = 50;
+    private static final double           MINIMUM_HEIGHT   = 50;
+    private static final double           MAXIMUM_WIDTH    = 1024;
+    private static final double           MAXIMUM_HEIGHT   = 1024;
+    private Point2D                       clickPoint;
+    private double                        size;
+    private Pane                          pane;
+    private Region                        background;
+    private Canvas                        ticksAndSectionsCanvas;
+    private GraphicsContext               ticksAndSections;
+    private ObservableMap<Marker, Rotate> markers;
+    private Region                        threshold;
+    private Rotate                        thresholdRotate;
+    private boolean                       thresholdExceeded;
+    private Region                        needle;
+    private Region                        needleHighlight;
+    private Rotate                        needleRotate;
+    private Region                        knob;
+    private Group                         shadowGroup;
+    private DropShadow                    dropShadow;
+    private Text                          title;
+    private Text                          unit;
+    private Text                          value;
+    private DropShadow                    valueBlendBottomShadow;
+    private InnerShadow                   valueBlendTopShadow;
+    private Blend                         valueBlend;
+    private Text                          interactiveText;
+    private Path                          histogram;
+    private double                        angleStep;
+    private Timeline                      timeline;
 
 
     // ******************** Constructors **************************************
     public GaugeSkin(Gauge gauge) {
         super(gauge);
         angleStep = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
+        markers   = FXCollections.observableHashMap();
         timeline  = new Timeline();
         init();
         initGraphics();
@@ -210,10 +212,6 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         interactiveText.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
         interactiveText.setVisible(getSkinnable().isInteractive());
 
-        for (Marker marker : getSkinnable().getMarkers()) {
-            markers.add(new Region());
-        }
-
         // Add all nodes
         pane = new Pane();
         pane.getChildren().setAll(background,
@@ -227,7 +225,22 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                                   value,
                                   interactiveText);
 
+        initMarkers();
+        pane.getChildren().addAll(markers.keySet());
+
         getChildren().setAll(pane);
+    }
+
+    private void initMarkers() {
+        if (getSkinnable().getMarkers().isEmpty()) return;
+        int markerCounter = 0;
+        for (Marker marker : getSkinnable().getMarkers()) {
+            marker.getStyleClass().add("marker" + markerCounter);
+            Rotate markerRotate = new Rotate(180 - getSkinnable().getStartAngle());
+            marker.getTransforms().setAll(markerRotate);
+            markers.put(marker, markerRotate);
+            markerCounter++;
+        }
     }
 
     private void registerListeners() {
@@ -250,7 +263,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         getSkinnable().dropShadowEnabledProperty().addListener(observable -> handleControlPropertyChanged("DROP_SHADOW") );
         getSkinnable().interactiveProperty().addListener(observable -> handleControlPropertyChanged("INTERACTIVE") );
         getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("CANVAS_REFRESH"));
-        //getSkinnable().getMarkers().addListener((ListChangeListener<Marker>) change -> handleControlPropertyChanged("CANVAS_REFRESH"));
+        getSkinnable().getMarkers().addListener((ListChangeListener<Marker>) change -> handleControlPropertyChanged("MARKER"));
 
         needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE") );
         knob.setOnMousePressed(event -> getSkinnable().setInteractive(!getSkinnable().isInteractive()) );
@@ -269,17 +282,31 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             resize();
         } else if ("ANGLE".equals(PROPERTY)) {
             if (!getSkinnable().isInteractive()) {
-                value.setText(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
+                double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep;
+                value.setText(String.format(Locale.US, "%.1f", currentValue));
                 value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
                 if (thresholdExceeded) {
-                    if (Double.parseDouble(value.getText()) < getSkinnable().getThreshold()) {
+                    if (currentValue < getSkinnable().getThreshold()) {
                         getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_UNDERRUN));
                         thresholdExceeded = false;
                     }
                 } else {
-                    if (Double.parseDouble(value.getText()) > getSkinnable().getThreshold()) {
+                    if (currentValue > getSkinnable().getThreshold()) {
                         getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_EXCEEDED));
                         thresholdExceeded = true;
+                    }
+                }
+                for (Marker marker : markers.keySet()) {
+                    if (marker.isExceeded()) {
+                        if (currentValue < marker.getValue()) {
+                            marker.fireMarkerEvent(new Marker.MarkerEvent(this, null, Marker.MarkerEvent.MARKER_UNDERRUN));
+                            marker.setExceeded(false);
+                        }
+                    } else {
+                        if (currentValue > marker.getValue()) {
+                            marker.fireMarkerEvent(new Marker.MarkerEvent(this, null, Marker.MarkerEvent.MARKER_EXCEEDED));
+                            marker.setExceeded(true);
+                        }
                     }
                 }
             }
@@ -295,13 +322,28 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             unit.setVisible(!getSkinnable().isInteractive());
             interactiveText.setText(getSkinnable().getInteractiveText());
             interactiveText.setVisible(getSkinnable().isInteractive());
-            getSkinnable().setTouchMode(getSkinnable().isInteractive());
         } else if ("CANVAS_REFRESH".equals(PROPERTY)) {
             ticksAndSections.clearRect(0, 0, size, size);
             drawSections(ticksAndSections);
             drawTickMarks(ticksAndSections);
         } else if ("THRESHOLD".equals(PROPERTY)) {
             thresholdRotate.setAngle(getSkinnable().getThreshold() * angleStep - 180 - getSkinnable().getStartAngle());
+        } else if ("MARKER".equals(PROPERTY)) {
+            int markerCounter = 0;
+            for (Marker marker : getSkinnable().getMarkers()) {
+                if (markers.containsKey(marker)) {
+                    markerCounter++;
+                    continue;
+                }
+                marker.getStyleClass().add("marker" + markerCounter);
+                Rotate markerRotate = new Rotate(180 - getSkinnable().getStartAngle());
+                marker.getTransforms().setAll(markerRotate);
+                markers.put(marker, markerRotate);
+                pane.getChildren().add(marker);
+                markerCounter++;
+            }
+
+            drawMarkers();
         }
     }
 
@@ -452,6 +494,16 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         }
     }
 
+    private final void drawMarkers() {
+        for (Marker marker : getSkinnable().getMarkers()) {
+            marker.setPrefSize(0.0375 * size, 0.05 * size);
+            marker.relocate((size - marker.getPrefWidth()) * 0.5, size * 0.04);
+            markers.get(marker).setPivotX(marker.getPrefWidth() * 0.5);
+            markers.get(marker).setPivotY(size * 0.46);
+            markers.get(marker).setAngle(marker.getValue() * angleStep - 180 - getSkinnable().getStartAngle());
+        }
+    }
+
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
@@ -472,6 +524,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         drawTickMarks(ticksAndSections);
         ticksAndSectionsCanvas.setCache(true);
         ticksAndSectionsCanvas.setCacheHint(CacheHint.QUALITY);
+
+        drawMarkers();
 
         threshold.setPrefSize(0.05 * size, 0.0425 * size);
         threshold.relocate((size - threshold.getPrefWidth()) * 0.5, size * 0.11);

@@ -116,10 +116,8 @@ public class Gauge extends Control {
     private static final Color       DEFAULT_MARKER_4_FILL       = Color.rgb(  0, 200, 200, 0.5);
 
     // CSS Pseudo classes
-    private static final PseudoClass TOUCH_MODE_PSEUDO_CLASS     = PseudoClass.getPseudoClass("touch-mode");
     private static final PseudoClass INTERACTIVE_PSEUDO_CLASS    = PseudoClass.getPseudoClass("interactive");
 
-    private BooleanProperty                      touchMode;
     private BooleanProperty                      interactive;
 
     private double                               _value;
@@ -1028,23 +1026,6 @@ public class Gauge extends Control {
 
 
     // ******************** CSS Pseudo Classes ********************************
-    public final boolean isTouchMode() {
-        return null == touchMode ? false : touchMode.get();
-    }
-    public final void setTouchMode(final boolean TOUCH_MODE) {
-        touchModeProperty().set(TOUCH_MODE);
-    }
-    public final BooleanProperty touchModeProperty() {
-        if (null == touchMode) {
-            touchMode = new BooleanPropertyBase(false) {
-                @Override protected void invalidated() { pseudoClassStateChanged(TOUCH_MODE_PSEUDO_CLASS, get()); }
-                @Override public Object getBean() { return this; }
-                @Override public String getName() { return "touchMode"; }
-            };
-        }
-        return touchMode;
-    }
-
     public final boolean isInteractive() {
         return null == interactive ? false : interactive.get();
     }
