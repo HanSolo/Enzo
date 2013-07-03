@@ -21,17 +21,16 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.css.CssMetaData;
 import javafx.css.PseudoClass;
 import javafx.css.Styleable;
@@ -106,6 +105,13 @@ public class Gauge extends Control {
     private static final Color       DEFAULT_SECTION_9_FILL      = Color.rgb(255,   0,   0, 0.5);
     private static final Color       DEFAULT_HISTOGRAM_FILL      = Color.rgb(  0, 200,   0, 0.3);
 
+    // Default marker colors
+    private static final Color       DEFAULT_MARKER_0_FILL       = Color.rgb(  0, 200,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_1_FILL       = Color.rgb(200, 200,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_2_FILL       = Color.rgb(200,   0,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_3_FILL       = Color.rgb(  0,   0, 200, 0.5);
+    private static final Color       DEFAULT_MARKER_4_FILL       = Color.rgb(  0, 200, 200, 0.5);
+
     // CSS Pseudo classes
     private static final PseudoClass TOUCH_MODE_PSEUDO_CLASS     = PseudoClass.getPseudoClass("touch-mode");
     private static final PseudoClass INTERACTIVE_PSEUDO_CLASS    = PseudoClass.getPseudoClass("interactive");
@@ -148,8 +154,8 @@ public class Gauge extends Control {
     private ObjectProperty<TickLabelOrientation> tickLabelOrientation;
     private Gauge.NumberFormat                   _numberFormat;
     private ObjectProperty<NumberFormat>         numberFormat;
-    private List<Section>                        _sections;
-    private ListProperty<Section>                sections;
+    private ObservableList<Section>              sections;
+    private ObservableList<Marker>               markers;
     private double                               _majorTickSpace;
     private DoubleProperty                       majorTickSpace;
     private double                               _minorTickSpace;
@@ -178,6 +184,11 @@ public class Gauge extends Control {
     private ObjectProperty<Paint>                section8Fill;
     private ObjectProperty<Paint>                section9Fill;
     private ObjectProperty<Paint>                histogramFill;
+    private ObjectProperty<Paint>                marker0Fill;
+    private ObjectProperty<Paint>                marker1Fill;
+    private ObjectProperty<Paint>                marker2Fill;
+    private ObjectProperty<Paint>                marker3Fill;
+    private ObjectProperty<Paint>                marker4Fill;
 
 
     // ******************** Constructors **************************************
@@ -201,7 +212,8 @@ public class Gauge extends Control {
         _needleColor          = Color.RED;
         _tickLabelOrientation = TickLabelOrientation.HORIZONTAL;
         _numberFormat         = NumberFormat.STANDARD;
-        _sections             = new ArrayList<>();
+        sections              = FXCollections.observableArrayList();
+        markers               = FXCollections.observableArrayList();
         _majorTickSpace       = 10;
         _minorTickSpace       = 1;
         animationTime         = Duration.millis(800);
@@ -534,25 +546,36 @@ public class Gauge extends Control {
         return numberFormat;
     }
 
-    public final List<Section> getSections() {
-        return null == sections ? _sections : sections.get();
+    public final ObservableList<Section> getSections() {
+        return sections;
     }
     public final void setSections(final List<Section> SECTIONS) {
-        if (null == sections) {
-            _sections.clear();
-            _sections.addAll(SECTIONS);
-        } else {
-            sections.setAll(SECTIONS);
-        }
+        sections.setAll(SECTIONS);
     }
     public final void setSections(final Section... SECTIONS) {
         setSections(Arrays.asList(SECTIONS));
     }
-    public final ListProperty<Section> sectionsProperty() {
-        if (null == sections) {
-            sections = new SimpleListProperty<>(this, "sections", FXCollections.observableArrayList(_sections));
-        }
-        return sections;
+    public final void addSection(final Section SECTION) {
+        if (!sections.contains(SECTION)) sections.add(SECTION);
+    }
+    public final void removeSection(final Section SECTION) {
+        if (sections.contains(SECTION)) sections.remove(SECTION);
+    }
+
+    public final ObservableList<Marker> getMarkers() {
+        return markers;
+    }
+    public final void setMarkers(final List<Marker> MARKERS) {
+        markers.setAll(MARKERS);
+    }
+    public final void setMarkers(final Marker... MARKERS) {
+        setMarkers(Arrays.asList(MARKERS));
+    }
+    public final void addMarker(final Marker MARKER) {
+        if (!markers.contains(MARKER)) markers.add(MARKER);
+    }
+    public final void removeMarker(final Marker MARKER) {
+        if (markers.contains(MARKER)) markers.remove(MARKER);
     }
 
     public final double getMajorTickSpace() {
@@ -914,6 +937,92 @@ public class Gauge extends Control {
         return section9Fill;
     }
 
+    public final Paint getMarker0Fill() {
+        return null == marker0Fill ? DEFAULT_MARKER_0_FILL : marker0Fill.get();
+    }
+    public final void setMarker0Fill(Paint value) {
+        marker0FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> marker0FillProperty() {
+        if (null == marker0Fill) {
+            marker0Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_0_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_0_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "marker0Fill"; }
+            };
+        }
+        return section0Fill;
+    }
+
+    public final Paint getMarker1Fill() {
+        return null == marker1Fill ? DEFAULT_MARKER_1_FILL : marker1Fill.get();
+    }
+    public final void setMarker1Fill(Paint value) {
+        marker1FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> marker1FillProperty() {
+        if (null == marker1Fill) {
+            marker1Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_1_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_1_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "marker1Fill"; }
+            };
+        }
+        return marker1Fill;
+    }
+
+    public final Paint getMarker2Fill() {
+        return null == marker2Fill ? DEFAULT_MARKER_2_FILL : marker2Fill.get();
+    }
+    public final void setMarker2Fill(Paint value) {
+        marker2FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> marker2FillProperty() {
+        if (null == marker2Fill) {
+            marker2Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_2_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_2_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "marker2Fill"; }
+            };
+        }
+        return marker2Fill;
+    }
+
+    public final Paint getMarker3Fill() {
+        return null == marker3Fill ? DEFAULT_MARKER_3_FILL : marker3Fill.get();
+    }
+    public final void setMarker3Fill(Paint value) {
+        marker3FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> marker3FillProperty() {
+        if (null == marker3Fill) {
+            marker3Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_3_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_3_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "marker3Fill"; }
+            };
+        }
+        return marker3Fill;
+    }
+
+    public final Paint getMarker4Fill() {
+        return null == marker4Fill ? DEFAULT_MARKER_4_FILL : marker4Fill.get();
+    }
+    public final void setMarker4Fill(Paint value) {
+        marker4FillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> marker4FillProperty() {
+        if (null == marker4Fill) {
+            marker4Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_4_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_4_FILL; }
+                @Override public Object getBean() { return Gauge.this; }
+                @Override public String getName() { return "marker4Fill"; }
+            };
+        }
+        return marker4Fill;
+    }
+
+
 
     // ******************** CSS Pseudo Classes ********************************
     public final boolean isTouchMode() {
@@ -1157,6 +1266,86 @@ public class Gauge extends Control {
                 }
             };
 
+        private static final CssMetaData<Gauge, Paint> MARKER_0_FILL =
+            new CssMetaData<Gauge, Paint>("-marker0-fill", PaintConverter.getInstance(), DEFAULT_MARKER_0_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.marker0Fill || !gauge.marker0Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.marker0FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getMarker0Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> MARKER_1_FILL =
+            new CssMetaData<Gauge, Paint>("-marker1-fill", PaintConverter.getInstance(), DEFAULT_MARKER_1_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.marker1Fill || !gauge.marker1Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.marker1FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getMarker1Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> MARKER_2_FILL =
+            new CssMetaData<Gauge, Paint>("-marker2-fill", PaintConverter.getInstance(), DEFAULT_MARKER_2_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.marker2Fill || !gauge.marker2Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.marker2FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getMarker2Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> MARKER_3_FILL =
+            new CssMetaData<Gauge, Paint>("-marker3-fill", PaintConverter.getInstance(), DEFAULT_MARKER_3_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.marker3Fill || !gauge.marker3Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.marker3FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getMarker3Fill();
+                }
+            };
+
+        private static final CssMetaData<Gauge, Paint> MARKER_4_FILL =
+            new CssMetaData<Gauge, Paint>("-marker4-fill", PaintConverter.getInstance(), DEFAULT_MARKER_4_FILL) {
+
+                @Override public boolean isSettable(Gauge gauge) {
+                    return null == gauge.marker4Fill || !gauge.marker4Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
+                    return (StyleableProperty) gauge.marker4FillProperty();
+                }
+
+                @Override public Paint getInitialValue(Gauge gauge) {
+                    return gauge.getMarker4Fill();
+                }
+            };
+
         private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
@@ -1173,7 +1362,12 @@ public class Gauge extends Control {
                                SECTION_7_FILL,
                                SECTION_8_FILL,
                                SECTION_9_FILL,
-                               HISTOGRAM_FILL
+                               HISTOGRAM_FILL,
+                               MARKER_0_FILL,
+                               MARKER_1_FILL,
+                               MARKER_2_FILL,
+                               MARKER_3_FILL,
+                               MARKER_4_FILL
             );
             STYLEABLES = Collections.unmodifiableList(styleables);
         }

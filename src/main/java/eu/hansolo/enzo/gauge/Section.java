@@ -20,7 +20,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.shape.Shape;
 
 
 /**
@@ -28,12 +27,12 @@ import javafx.scene.shape.Shape;
  * @author hansolo
  */
 public class Section {
-    private double                _start;
-    private DoubleProperty        start;
-    private double                _stop;
-    private DoubleProperty        stop;
-    private String                _text;
-    private StringProperty        text;
+    private double         _start;
+    private DoubleProperty start;
+    private double         _stop;
+    private DoubleProperty stop;
+    private String         _text;
+    private StringProperty text;
 
 
     // ******************** Constructors **************************************
@@ -44,12 +43,9 @@ public class Section {
         this(START, STOP, "");
     }
     public Section(final double START, final double STOP, final String TEXT) {
-        this(START, STOP, null, null, TEXT);
-    }
-    public Section(final double START, final double STOP, final Shape SECTION_AREA, final Shape FILLED_AREA, final String TEXT) {
-        _start                     = START;
-        _stop                      = STOP;
-        _text                      = TEXT;
+        _start = START;
+        _stop  = STOP;
+        _text  = TEXT;
     }
 
 

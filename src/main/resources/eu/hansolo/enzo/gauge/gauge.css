@@ -55,6 +55,11 @@
     -section8-fill   : rgba(255,  64,   0, 0.5);
     -section9-fill   : rgba(255,   0,   0, 0.5);
     -histogram-fill  : rgba(  0, 200,   0, 0.3);
+    -marker0-fill    : rgba(  0, 200,   0, 0.5);
+    -marker1-fill    : rgba(200, 200,   0, 0.5);
+    -marker2-fill    : rgba(200,   0,   0, 0.5);
+    -marker3-fill    : rgba(  0,   0, 200, 0.5);
+    -marker4-fill    : rgba(  0, 200, 200, 0.5);
 }
 
 
@@ -205,4 +210,49 @@
 }
 .gauge:highlighted .section9 {
     -fx-fill: derive(-section9-fill, 30%);
+}
+
+
+/******************************************************************************
+ * GAUGE markers                                                              *
+ *****************************************************************************/
+.gauge .marker0 {
+    -fx-fill       : -marker0-fill;
+    -fx-scale-shape: true;
+    -fx-shape      : "";
+}
+.gauge:interactive .marker0 {
+    -fx-fill: derive(-marker0-fill, 30%);
+}
+.gauge .marker1 {
+    -fx-fill       : -marker1-fill;
+    -fx-scale-shape: true;
+    -fx-shape      : "";
+}
+.gauge:interactive .marker1 {
+    -fx-fill: derive(-marker1-fill, 30%);
+}
+.gauge .marker2 {
+    -fx-fill       : -marker2-fill;
+    -fx-scale-shape: true;
+    -fx-shape      : "";
+}
+.gauge:interactive .marker2 {
+    -fx-fill: derive(-marker2-fill, 30%);
+}
+.gauge .marker3 {
+    -fx-fill       : -marker3-fill;
+    -fx-scale-shape: true;
+    -fx-shape      : "";
+}
+.gauge:interactive .marker3 {
+    -fx-fill: derive(-marker3-fill, 30%);
+}
+.gauge .marker4 {
+    -fx-fill       : -marker4-fill;
+    -fx-scale-shape: true;
+    -fx-shape      : "";
+}
+.gauge:interactive .marker4 {
+    -fx-fill: derive(-marker4-fill, 30%);
 }
