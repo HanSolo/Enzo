@@ -318,10 +318,18 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         } else if ("DROP_SHADOW".equals(PROPERTY)) {
             shadowGroup.setEffect(getSkinnable().isDropShadowEnabled() ? dropShadow : null);
         } else if ("INTERACTIVE".equals(PROPERTY)) {
-            value.setVisible(!getSkinnable().isInteractive());
-            unit.setVisible(!getSkinnable().isInteractive());
-            interactiveText.setText(getSkinnable().getInteractiveText());
-            interactiveText.setVisible(getSkinnable().isInteractive());
+            if (getSkinnable().isInteractive()) {
+                interactiveText.setText(getSkinnable().getInteractiveText());
+                interactiveText.setVisible(true);
+                value.setVisible(false);
+                unit.setVisible(false);
+                shadowGroup.setEffect(null);
+            } else {
+                interactiveText.setVisible(false);
+                value.setVisible(true);
+                unit.setVisible(true);
+                shadowGroup.setEffect(dropShadow);
+            }
         } else if ("CANVAS_REFRESH".equals(PROPERTY)) {
             ticksAndSections.clearRect(0, 0, size, size);
             drawSections(ticksAndSections);
