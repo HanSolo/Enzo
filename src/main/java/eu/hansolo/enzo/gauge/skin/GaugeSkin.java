@@ -496,7 +496,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
     private final void drawMarkers() {
         for (Marker marker : getSkinnable().getMarkers()) {
-            marker.setPrefSize(0.0375 * size, 0.05 * size);
+            marker.setPrefSize(0.0325 * size, 0.0325 * size);
             marker.relocate((size - marker.getPrefWidth()) * 0.5, size * 0.04);
             markers.get(marker).setPivotX(marker.getPrefWidth() * 0.5);
             markers.get(marker).setPivotY(size * 0.46);
@@ -527,7 +527,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         drawMarkers();
 
-        threshold.setPrefSize(0.05 * size, 0.0425 * size);
+        threshold.setPrefSize(0.03 * size, 0.0275 * size);
         threshold.relocate((size - threshold.getPrefWidth()) * 0.5, size * 0.11);
         thresholdRotate.setPivotX(threshold.getPrefWidth() * 0.5);
         thresholdRotate.setPivotY(size * 0.39);
