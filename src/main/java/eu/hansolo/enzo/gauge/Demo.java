@@ -38,11 +38,13 @@ import java.util.Random;
  */
 
 public class Demo extends Application {
-    private static final Random RND = new Random();
+    private static final Random RND       = new Random();
     private static int          noOfNodes = 0;
     private Gauge               control;
     private long                lastTimerCall;
     private AnimationTimer      timer;
+    private Marker              marker0;
+
 
     @Override public void init() {
         control = new Gauge();
@@ -63,7 +65,7 @@ public class Demo extends Application {
         control.setOnThresholdExceeded(observable -> System.out.println("Threshold exceeded") );
         control.setOnThresholdUnderrun(observable -> System.out.println("Threshold underrun"));
 
-        Marker marker0 = new Marker(25);
+        marker0 = new Marker(25);
         control.addMarker(marker0);
         marker0.setOnMarkerExceeded(observable -> System.out.println("Marker exceeded"));
         marker0.setOnMarkerUnderrun(observable -> System.out.println("Marker underrun"));
@@ -96,6 +98,7 @@ public class Demo extends Application {
         //control.setTouchMode(true);
         timer.start();
 
+        control.removeMarker(marker0);
 
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes + " Nodes in SceneGraph");

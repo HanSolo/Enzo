@@ -32,6 +32,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.css.CssMetaData;
 import javafx.css.PseudoClass;
 import javafx.css.Styleable;
@@ -42,6 +43,7 @@ import javafx.event.EventType;
 import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.text.DecimalFormat;
@@ -156,7 +158,7 @@ public class Gauge extends Control {
     private Gauge.NumberFormat                   _numberFormat;
     private ObjectProperty<NumberFormat>         numberFormat;
     private ObservableList<Section>              sections;
-    private ObservableList<Marker>               markers;
+    private ObservableMap<Marker, Rotate>        markers;
     private double                               _majorTickSpace;
     private DoubleProperty                       majorTickSpace;
     private double                               _minorTickSpace;
@@ -214,7 +216,7 @@ public class Gauge extends Control {
         _tickLabelOrientation = TickLabelOrientation.HORIZONTAL;
         _numberFormat         = NumberFormat.STANDARD;
         sections              = FXCollections.observableArrayList();
-        markers               = FXCollections.observableArrayList();
+        markers               = FXCollections.observableHashMap();
         _majorTickSpace       = 10;
         _minorTickSpace       = 1;
         animationTime         = Duration.millis(800);
@@ -563,20 +565,32 @@ public class Gauge extends Control {
         if (sections.contains(SECTION)) sections.remove(SECTION);
     }
 
-    public final ObservableList<Marker> getMarkers() {
+    public final ObservableMap<Marker, Rotate> getMarkers() {
         return markers;
     }
     public final void setMarkers(final List<Marker> MARKERS) {
-        markers.setAll(MARKERS);
+        int markerCounter = 0;
+        for (Marker marker : MARKERS) {
+            Rotate markerRotate = new Rotate(180 - getStartAngle());
+            marker.getTransforms().setAll(markerRotate);
+            marker.getStyleClass().add("marker" + markerCounter);
+            markers.put(marker, markerRotate);
+            markerCounter++;
+        }
     }
     public final void setMarkers(final Marker... MARKERS) {
         setMarkers(Arrays.asList(MARKERS));
     }
     public final void addMarker(final Marker MARKER) {
-        if (!markers.contains(MARKER)) markers.add(MARKER);
+        if (!markers.keySet().contains(MARKER)) {
+            Rotate markerRotate = new Rotate(180 - getStartAngle());
+            MARKER.getTransforms().setAll(markerRotate);
+            MARKER.getStyleClass().add("marker" + markers.size());
+            markers.put(MARKER, markerRotate);
+        }
     }
     public final void removeMarker(final Marker MARKER) {
-        if (markers.contains(MARKER)) markers.remove(MARKER);
+        if (markers.keySet().contains(MARKER)) markers.remove(MARKER);
     }
 
     public final double getMajorTickSpace() {
