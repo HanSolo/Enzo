@@ -68,8 +68,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private static final double MINIMUM_HEIGHT   = 50;
     private static final double MAXIMUM_WIDTH    = 1024;
     private static final double MAXIMUM_HEIGHT   = 1024;
-    private Point2D             touchPoint;
+    private double              thetaStart;
     private double              size;
+    private double              centerX;
+    private double              centerY;
     private Pane                pane;
     private Region              background;
     private Canvas              ticksAndSectionsCanvas;
@@ -93,6 +95,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private Path                histogram;
     private double              angleStep;
     private Timeline            timeline;
+    private double              interactiveAngle;
 
 
     // ******************** Constructors **************************************
@@ -227,42 +230,32 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private void registerListeners() {
-        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
-        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
-        getSkinnable().valueProperty().addListener(observable -> handleControlPropertyChanged("VALUE") );
-        getSkinnable().minValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC") );
-        getSkinnable().maxValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC") );
-        getSkinnable().minMeasuredValueProperty().addListener(observable -> handleControlPropertyChanged("MIN_MEASURED_VALUE") );
-        getSkinnable().maxMeasuredValueProperty().addListener(observable -> handleControlPropertyChanged("MAX_MEASURED_VALUE") );
-        getSkinnable().tickLabelOrientationProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
-        getSkinnable().needleTypeProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_TYPE") );
-        getSkinnable().needleColorProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_COLOR") );
-        getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED") );
+        getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
+        getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
+        getSkinnable().valueProperty().addListener(observable -> handleControlPropertyChanged("VALUE"));
+        getSkinnable().minValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
+        getSkinnable().maxValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
+        getSkinnable().minMeasuredValueProperty().addListener(observable -> handleControlPropertyChanged("MIN_MEASURED_VALUE"));
+        getSkinnable().maxMeasuredValueProperty().addListener(observable -> handleControlPropertyChanged("MAX_MEASURED_VALUE"));
+        getSkinnable().tickLabelOrientationProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
+        getSkinnable().needleTypeProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_TYPE"));
+        getSkinnable().needleColorProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_COLOR"));
+        getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED"));
         getSkinnable().thresholdProperty().addListener(observable -> handleControlPropertyChanged("THRESHOLD"));
-        getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE") );
-        getSkinnable().numberFormatProperty().addListener(observable -> handleControlPropertyChanged("RECALC") );
-        getSkinnable().plainValueProperty().addListener(observable -> handleControlPropertyChanged("PLAIN_VALUE") );
-        getSkinnable().histogramEnabledProperty().addListener(observable -> handleControlPropertyChanged("HISTOGRAM") );
-        getSkinnable().dropShadowEnabledProperty().addListener(observable -> handleControlPropertyChanged("DROP_SHADOW") );
-        getSkinnable().interactiveProperty().addListener(observable -> handleControlPropertyChanged("INTERACTIVE") );
+        getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE"));
+        getSkinnable().numberFormatProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
+        getSkinnable().plainValueProperty().addListener(observable -> handleControlPropertyChanged("PLAIN_VALUE"));
+        getSkinnable().histogramEnabledProperty().addListener(observable -> handleControlPropertyChanged("HISTOGRAM"));
+        getSkinnable().dropShadowEnabledProperty().addListener(observable -> handleControlPropertyChanged("DROP_SHADOW"));
+        getSkinnable().interactiveProperty().addListener(observable -> handleControlPropertyChanged("INTERACTIVE"));
         getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("CANVAS_REFRESH"));
         getSkinnable().getMarkers().addListener((MapChangeListener<Marker, Rotate>) change -> handleControlPropertyChanged("MARKER"));
 
-        needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE") );
-        knob.setOnMousePressed(event -> getSkinnable().setInteractive(!getSkinnable().isInteractive()) );
+        needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE"));
+        knob.setOnMousePressed(event -> getSkinnable().setInteractive(!getSkinnable().isInteractive()));
 
-        threshold.setOnMousePressed(event -> {
-            if (getSkinnable().isInteractive()) {
-                touchPoint = new Point2D(event.getX(), event.getY());
-                //TODO: move the needle manually here
-            }
-        });
-        threshold.setOnTouchPressed(event -> {
-            if (getSkinnable().isInteractive()) {
-                touchPoint = new Point2D(event.getTouchPoint().getSceneX(), event.getTouchPoint().getSceneY());
-                //TODO: move the needle manually here
-            }
-        });
+        threshold.setOnMouseDragged(event -> touchRotate(event.getSceneX(), event.getSceneY(), thresholdRotate));
+        threshold.setOnTouchMoved(event -> touchRotate(event.getTouchPoint().getSceneX(), event.getTouchPoint().getSceneY(), thresholdRotate));
     }
 
 
@@ -372,6 +365,23 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
 
     // ******************** Private Methods ***********************************
+    private double getTheta(double x, double y) {
+        double deltaX = x - centerX;
+        double deltaY = y - centerY;
+        double radius = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+        double nx     = deltaX / radius;
+        double ny     = deltaY / radius;
+        double theta  = Math.toDegrees(Math.atan2(ny, nx));
+        return theta;
+        //return (theta < 360) ? theta + 360.0 : theta;
+    }
+
+    private void touchRotate(final double X, final double Y, final Rotate ROTATE) {
+        double theta     = getTheta(X, Y);
+        interactiveAngle = theta + 90;
+        ROTATE.setAngle(interactiveAngle);
+    }
+
     private void rotateNeedle() {
         double range       = (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
         double angleRange  = getSkinnable().getAngleRange();
@@ -493,6 +503,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
+        centerX = size * 0.5;
+        centerY = size * 0.5;
 
         valueBlendBottomShadow.setOffsetY(0.005 * size);
 
