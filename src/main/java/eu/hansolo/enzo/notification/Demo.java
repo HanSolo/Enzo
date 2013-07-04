@@ -36,10 +36,10 @@ import java.util.Random;
 public class Demo extends Application {
     private static final Random RND = new Random();
     private static final Notification[] NOTIFICATIONS = {
-        new Notification("Info", "Information", Notification.INFO_ICON),
-        new Notification("Warning", "Warning", Notification.WARNING_ICON),
-        new Notification("Success", "Success", Notification.SUCCESS_ICON),
-        new Notification("Error", "Error", Notification.ERROR_ICON)
+        new Notification("Info", "New information", Notification.INFO_ICON),
+        new Notification("Warning", "Attention, somethings wrong", Notification.WARNING_ICON),
+        new Notification("Success", "Great it works", Notification.SUCCESS_ICON),
+        new Notification("Error", "ZOMG", Notification.ERROR_ICON)
     };
     private Notifier notifier;
     private Button   button;

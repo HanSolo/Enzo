@@ -68,8 +68,8 @@ public enum Notifier {
 
     // ******************** Initialization ************************************
     private void init() {
-        lifetime        = Duration.millis(5000);
-        popups          = FXCollections.observableArrayList();
+        lifetime = Duration.millis(5000);
+        popups   = FXCollections.observableArrayList();
     }
 
     private void initGraphics() {
@@ -90,7 +90,7 @@ public enum Notifier {
         return lifetime;
     }
     public void setPopupLifetime(final Duration DURATION) {
-        lifetime = DURATION;
+        lifetime = Duration.millis(clamp(2000, 20000, DURATION.toMillis()));
     }
 
     // Custom notification
@@ -103,17 +103,23 @@ public enum Notifier {
     }
 
     // Predefined notifications
-    public void notifyInfo(final String MESSAGE) {
-        notify(new Notification("Info", MESSAGE, Notification.INFO_ICON));
+    public void notifyInfo(final String TITLE, final String MESSAGE) {
+        notify(new Notification(TITLE, MESSAGE, Notification.INFO_ICON));
     }
-    public void notifyWarning(final String MESSAGE) {
-        notify(new Notification("Warning", MESSAGE, Notification.WARNING_ICON));
+    public void notifyWarning(final String TITLE, final String MESSAGE) {
+        notify(new Notification(TITLE, MESSAGE, Notification.WARNING_ICON));
     }
-    public void notifySuccess(final String MESSAGE) {
-        notify(new Notification("Success", MESSAGE, Notification.SUCCESS_ICON));
+    public void notifySuccess(final String TITLE, final String MESSAGE) {
+        notify(new Notification(TITLE, MESSAGE, Notification.SUCCESS_ICON));
     }
-    public void notifyError(final String MESSAGE) {
-        notify(new Notification("Error", MESSAGE, Notification.ERROR_ICON));
+    public void notifyError(final String TITLE, final String MESSAGE) {
+        notify(new Notification(TITLE, MESSAGE, Notification.ERROR_ICON));
+    }
+
+    private double clamp(final double MIN, final double MAX, final double VALUE) {
+        if (VALUE < MIN) return MIN;
+        if (VALUE > MAX) return MAX;
+        return VALUE;
     }
 
     private void preOrder() {
