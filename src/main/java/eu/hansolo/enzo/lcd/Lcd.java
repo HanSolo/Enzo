@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.lcd;
 
+import eu.hansolo.enzo.lcd.skin.LcdSkin;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
@@ -39,6 +40,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 import javafx.util.Duration;
 
 
@@ -1171,6 +1173,10 @@ public class Lcd extends Control {
 
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new LcdSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
     }

@@ -16,9 +16,11 @@
 
 package eu.hansolo.enzo.simpleindicator;
 
+import eu.hansolo.enzo.simpleindicator.skin.SimpleIndicatorSkin;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 
 
 /**
@@ -86,6 +88,10 @@ public class SimpleIndicator extends Control {
 
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new SimpleIndicatorSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource("simpleindicator.css").toExternalForm();
     }

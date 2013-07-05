@@ -18,6 +18,7 @@ package eu.hansolo.enzo.led;
 
 import com.sun.javafx.css.converters.EnumConverter;
 import com.sun.javafx.css.converters.PaintConverter;
+import eu.hansolo.enzo.led.skin.LedSkin;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
@@ -31,6 +32,7 @@ import javafx.css.Styleable;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -230,6 +232,10 @@ public class Led extends Control {
 
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new LedSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource("led.css").toExternalForm();
     }

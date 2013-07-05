@@ -29,6 +29,7 @@ import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -331,6 +332,10 @@ public class SplitFlap extends Control {
     
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new SplitFlapSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
     }

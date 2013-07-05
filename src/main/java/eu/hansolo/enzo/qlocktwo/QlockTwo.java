@@ -16,11 +16,13 @@
 
 package eu.hansolo.enzo.qlocktwo;
 
+import eu.hansolo.enzo.qlocktwo.skin.QlockTwoSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -422,6 +424,10 @@ public class QlockTwo extends Control {
 
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new QlockTwoSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
     }

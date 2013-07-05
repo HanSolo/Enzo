@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.sevensegment;
 
+import eu.hansolo.enzo.sevensegment.skin.SevenSegmentSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -24,6 +25,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -232,6 +234,10 @@ public class SevenSegment extends Control {
     
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new SevenSegmentSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
     }

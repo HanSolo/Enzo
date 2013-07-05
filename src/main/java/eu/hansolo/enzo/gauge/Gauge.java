@@ -17,6 +17,7 @@
 package eu.hansolo.enzo.gauge;
 
 import com.sun.javafx.css.converters.PaintConverter;
+import eu.hansolo.enzo.gauge.skin.GaugeSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
@@ -41,6 +42,7 @@ import javafx.css.StyleableProperty;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.transform.Rotate;
@@ -1059,6 +1061,10 @@ public class Gauge extends Control {
 
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new GaugeSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource("gauge.css").toExternalForm();
     }

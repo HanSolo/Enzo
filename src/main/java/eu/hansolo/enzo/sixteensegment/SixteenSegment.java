@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.sixteensegment;
 
+import eu.hansolo.enzo.sixteensegment.skin.SixteenSegmentSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -24,6 +25,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -276,6 +278,10 @@ public class SixteenSegment extends Control {
     
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new SixteenSegmentSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
     }

@@ -17,6 +17,7 @@
 package eu.hansolo.enzo.ledbargraph;
 
 import eu.hansolo.enzo.led.Led;
+import eu.hansolo.enzo.ledbargraph.skin.LedBargraphSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -30,6 +31,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 import javafx.scene.paint.Color;
 
 import java.util.List;
@@ -231,6 +233,10 @@ public class LedBargraph extends Control {
 
 
     // ******************** Stylesheet handling *******************************
+    @Override protected Skin createDefaultSkin() {
+        return new LedBargraphSkin(this);
+    }
+
     @Override public String getUserAgentStylesheet() {
         return getClass().getResource("ledbargraph.css").toExternalForm();
     }

@@ -16,11 +16,13 @@
 
 package eu.hansolo.enzo.clock;
 
+import eu.hansolo.enzo.clock.skin.ClockSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
 
 
 /**
@@ -145,6 +147,10 @@ public class Clock extends Control {
 
 
     // ******************** Style related *************************************
+    @Override protected Skin createDefaultSkin() {
+        return new ClockSkin(this);
+    }
+
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource("clock.css").toExternalForm();
     }
