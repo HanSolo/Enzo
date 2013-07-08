@@ -18,7 +18,10 @@ package eu.hansolo.enzo.lcd;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -29,6 +32,7 @@ import java.util.Random;
 
 public class Demo extends Application {
     private static final Random   RND = new Random();
+    private static int            noOfNodes = 0;
     private static final String[] STYLE_CLASSES = {
     "lcd-beige",
     "lcd-blue",
@@ -97,8 +101,8 @@ public class Demo extends Application {
                             //.numberSystemVisible(false)
                             .lowerRightTextVisible(true)
                             .lowerRightText("Info")
-                            .valueFont(Lcd.LcdFont.BUS)
-                            //.valueFont(Lcd.LcdFont.DIGITAL)
+                            //.valueFont(Lcd.LcdFont.BUS)
+                            .valueFont(Lcd.LcdFont.DIGITAL_BOLD)
                             .valueAnimationEnabled(true)
                             .build();
         charge = 0.0;
@@ -135,12 +139,29 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        //timer.start();
-        control.setSignalStrength(0.76);
+        timer.start();
+
+        calcNoOfNodes(scene.getRoot());
+        System.out.println(noOfNodes + " Nodes in SceneGraph");
     }
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+
+    // ******************** Misc **********************************************
+    private static void calcNoOfNodes(Node node) {
+        if (node instanceof Parent) {
+            if (((Parent) node).getChildrenUnmodifiable().size() != 0) {
+                ObservableList<Node> tempChildren = ((Parent) node).getChildrenUnmodifiable();
+                noOfNodes += tempChildren.size();
+                for (Node n : tempChildren) {
+                    calcNoOfNodes(n);
+                    //System.out.println(n.getStyleClass().toString());
+                }
+            }
+        }
     }
 }
 
