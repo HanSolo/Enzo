@@ -173,6 +173,8 @@ public class Lcd extends Control {
     private ObjectProperty<Trend>        trend;
     private double                       _batteryCharge = 0.0;
     private DoubleProperty               batteryCharge;
+    private double                       _signalStrength = 0.0;
+    private DoubleProperty               signalStrength;
     private boolean                      _valueVisible = true;
     private BooleanProperty              valueVisible;
     private boolean                      _minMeasuredValueVisible = false;
@@ -211,6 +213,8 @@ public class Lcd extends Control {
     private BooleanProperty              trendVisible;
     private boolean                      _batteryVisible = false;
     private BooleanProperty              batteryVisible;
+    private boolean                      _signalVisible = false;
+    private BooleanProperty              signalVisible;
     private boolean                      _AlarmVisible = false;
     private BooleanProperty              alarmVisible;
     private Transition                   toValueAnimation;
@@ -770,6 +774,23 @@ public class Lcd extends Control {
         return batteryCharge;
     }
 
+    public final double getSignalStrength() {
+        return null == signalStrength ? _signalStrength : signalStrength.get();
+    }
+    public final void setSignalStrength(final double SIGNAL_STRENGTH) {
+        if (null == signalStrength) {
+            _signalStrength = clamp(0.0, 1.0, SIGNAL_STRENGTH);
+        } else {
+            signalStrength.set(clamp(0.0, 1.0, SIGNAL_STRENGTH));
+        }
+    }
+    public final DoubleProperty signalStrengthProperty() {
+        if (null == signalStrength) {
+            signalStrength = new SimpleDoubleProperty(this, "signalStrength", _signalStrength);
+        }
+        return signalStrength;
+    }
+
     public final boolean isValueVisible() {
         return null == valueVisible ? _valueVisible : valueVisible.get();
     }
@@ -1081,6 +1102,23 @@ public class Lcd extends Control {
             batteryVisible = new SimpleBooleanProperty(this, "batteryVisible", _batteryVisible);
         }
         return batteryVisible;
+    }
+
+    public final boolean isSignalVisible() {
+        return null == signalVisible ? _signalVisible : signalVisible.get();
+    }
+    public final void setSignalVisible(final boolean SIGNAL_VISIBLE) {
+        if (null == signalVisible) {
+            _signalVisible = SIGNAL_VISIBLE;
+        } else {
+            signalVisible.set(SIGNAL_VISIBLE);
+        }
+    }
+    public final BooleanProperty signalVisibleProperty() {
+        if (null == signalVisible) {
+            signalVisible = new SimpleBooleanProperty(this, "signalVisible", _signalVisible);
+        }
+        return signalVisible;
     }
 
     public final boolean isAlarmVisible() {

@@ -205,13 +205,23 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
         return this;
     }
 
-    public final LcdBuilder batterCharge(final double BATTERY_CHARGE) {
+    public final LcdBuilder batteryCharge(final double BATTERY_CHARGE) {
         properties.put("batteryCharge", new SimpleDoubleProperty(BATTERY_CHARGE));
         return this;
     }
 
     public final LcdBuilder batteryVisible(final boolean BATTERY_VISIBLE) {
         properties.put("batteryVisible", new SimpleBooleanProperty(BATTERY_VISIBLE));
+        return this;
+    }
+
+    public final LcdBuilder signalStrength(final double SIGNAL_STRENGTH) {
+        properties.put("signalStrength", new SimpleDoubleProperty(SIGNAL_STRENGTH));
+        return this;
+    }
+
+    public final LcdBuilder signalVisible(final boolean SIGNAL_VISIBLE) {
+        properties.put("signalVisible", new SimpleBooleanProperty(SIGNAL_VISIBLE));
         return this;
     }
 
@@ -407,6 +417,10 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
                 CONTROL.setBatteryCharge(((DoubleProperty) properties.get(key)).get());
             } else if ("batteryVisible".equals(key)) {
                 CONTROL.setBatteryVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("signalStrength".equals(key)) {
+                CONTROL.setSignalStrength(((DoubleProperty) properties.get(key)).get());
+            } else if ("signalVisible".equals(key)) {
+                CONTROL.setSignalVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("alarmVisible".equals(key)) {
                 CONTROL.setAlarmVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("thresholdVisible".equals(key)) {

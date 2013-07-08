@@ -81,6 +81,7 @@ public class Demo extends Application {
                             .crystalOverlayVisible(true)
                             .title("Room Temp")
                             .batteryVisible(true)
+                            .signalVisible(true)
                             .alarmVisible(true)
                             .unit("°C")
                             .unitVisible(true)
@@ -114,6 +115,7 @@ public class Demo extends Application {
                     charge += 0.02;
                     if (charge > 1.0) charge = 0.0;
                     control.setBatteryCharge(charge);
+                    control.setSignalStrength(charge);
                     lastTimerCall = now;
                 }
             }
@@ -133,7 +135,8 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        timer.start();
+        //timer.start();
+        control.setSignalStrength(0.76);
     }
 
     public static void main(String[] args) {

@@ -75,6 +75,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     private Region                     trendRising;
     private Region                     trendUp;
     private Region                     battery;
+    private Region                     signal;
     private Region                     alarm;
     private Text                       text;
     private Text                       backgroundText;
@@ -217,6 +218,10 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         battery.getStyleClass().setAll("battery-empty");
         battery.setOpacity(getSkinnable().isBatteryVisible() ? 1 : 0);
 
+        signal = new Region();
+        signal.getStyleClass().setAll("signal");
+        signal.setOpacity(getSkinnable().isSignalVisible() ? 1 : 0);
+
         alarm = new Region();
         alarm.getStyleClass().setAll("alarm");
         alarm.setOpacity(getSkinnable().isAlarmVisible() ? 1 : 0);
@@ -260,6 +265,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
                                          trendRising,
                                          trendUp,
                                          battery,
+                                         signal,
                                          alarm,
                                          text,
                                          unitText,
@@ -297,6 +303,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         getSkinnable().upperLeftTextProperty().addListener(observable -> handleControlPropertyChanged("UPDATE") );
         getSkinnable().upperRightTextProperty().addListener(observable -> handleControlPropertyChanged("UPDATE") );
         getSkinnable().batteryChargeProperty().addListener(observable -> handleControlPropertyChanged("UPDATE") );
+        getSkinnable().signalStrengthProperty().addListener(observable -> handleControlPropertyChanged("UPDATE"));
         getSkinnable().prefWidthProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
         getSkinnable().prefHeightProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE") );
         getSkinnable().valueFontProperty().addListener(observable -> handleControlPropertyChanged("FONT") );
@@ -316,6 +323,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         getSkinnable().upperLeftTextVisibleProperty().addListener(observable -> handleControlPropertyChanged("UPPER_LEFT_VISIBLE") );
         getSkinnable().upperRightTextVisibleProperty().addListener(observable -> handleControlPropertyChanged("UPPER_RIGHT_VISIBLE") );
         getSkinnable().batteryVisibleProperty().addListener(observable -> handleControlPropertyChanged("BATTERY_VISIBLE") );
+        getSkinnable().signalVisibleProperty().addListener(observable -> handleControlPropertyChanged("SIGNAL_VISIBLE"));
         getSkinnable().alarmVisibleProperty().addListener(observable -> handleControlPropertyChanged("ALARM_VISIBLE") );
         getSkinnable().formerValueVisibleProperty().addListener(observable -> handleControlPropertyChanged("FORMER_VALUE_VISIBLE") );
         getSkinnable().maxMeasuredValueVisibleProperty().addListener(observable -> handleControlPropertyChanged("MAX_MEASURED_VISIBLE") );
@@ -375,6 +383,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             upperRightText.setOpacity(getSkinnable().isUpperRightTextVisible() ? 1 : 0);
         } else if ("BATTERY_VISIBLE".equals(PROPERTY)) {
             battery.setOpacity(getSkinnable().isBatteryVisible() ? 1 : 0);
+        } else if ("SIGNAL_VISIBLE".equals(PROPERTY)) {
+            signal.setOpacity(getSkinnable().isSignalVisible() ? 1 : 0);
         } else if ("ALARM_VISIBLE".equals(PROPERTY)) {
             alarm.setOpacity(getSkinnable().isAlarmVisible() ? 1 : 0);
         }
@@ -683,6 +693,19 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         } else {
             battery.getStyleClass().setAll("battery-full");
         }
+
+        // Update signal strength
+        if (getSkinnable().getSignalStrength() < 0.06) {
+            signal.getStyleClass().setAll("signal", "signal-0");
+        } else if (getSkinnable().getSignalStrength() < 0.26) {
+            signal.getStyleClass().setAll("signal", "signal-25");
+        } else if (getSkinnable().getSignalStrength() < 0.51) {
+            signal.getStyleClass().setAll("signal", "signal-50");
+        } else if (getSkinnable().getSignalStrength() < 0.85) {
+            signal.getStyleClass().setAll("signal", "signal-75");
+        } else {
+            signal.getStyleClass().setAll("signal", "signal-100");
+        }
     }
 
     private void resize() {
@@ -741,6 +764,10 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             battery.setPrefSize(0.0833333333 * width, 0.1458333333 * height);
             battery.setTranslateX(0.6439393939 * width);
             battery.setTranslateY(0.81 * height);
+
+            signal.setPrefSize(0.0416666667 * height, 0.5 * height);
+            signal.setTranslateX(0.0151515152 * width);
+            signal.setTranslateY(0.28 * height);
 
             alarm.setPrefSize(0.1666666667 * height, 0.1666666667 * height);
             alarm.setTranslateX(0.2651515152 * width);
