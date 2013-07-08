@@ -16,3 +16,4 @@ build/
 /.gradle/1.5/taskArtifacts/fileSnapshots.bin
 /.gradle/1.5/taskArtifacts/outputFileStates.bin
 /.gradle/1.5/taskArtifacts/taskArtifacts.bin
+/.DS_Store
