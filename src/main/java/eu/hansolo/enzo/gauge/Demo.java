@@ -48,8 +48,9 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = new Gauge();
-        control.setStartAngle(330);
-        control.setAngleRange(300);
+        //control.setStartAngle(330);
+        //control.setAngleRange(300);
+        control.setStartAngle(320);
         //control.setStyle("-tick-label-fill: blue;");
         control.setSections(new Section(40, 60),
                             new Section(60, 80),
@@ -66,10 +67,9 @@ public class Demo extends Application {
         control.setOnThresholdUnderrun(observable -> System.out.println("Threshold underrun"));
 
         marker0 = new Marker(25);
-        control.addMarker(marker0);
         marker0.setOnMarkerExceeded(observable -> System.out.println("Marker exceeded"));
         marker0.setOnMarkerUnderrun(observable -> System.out.println("Marker underrun"));
-        control.addMarker(new Marker(50));
+        control.addMarker(marker0);
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {

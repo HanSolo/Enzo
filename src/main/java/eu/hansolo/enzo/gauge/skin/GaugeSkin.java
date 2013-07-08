@@ -91,7 +91,6 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private DropShadow          valueBlendBottomShadow;
     private InnerShadow         valueBlendTopShadow;
     private Blend               valueBlend;
-    private Text                interactiveText;
     private Path                histogram;
     private double              angleStep;
     private Timeline            timeline;
@@ -195,21 +194,12 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         unit.setMouseTransparent(true);
         unit.setTextOrigin(VPos.CENTER);
         unit.getStyleClass().setAll("unit");
-        unit.setVisible(getSkinnable().isInteractive());
 
         value = new Text(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
         value.setMouseTransparent(true);
         value.setTextOrigin(VPos.CENTER);
         value.getStyleClass().setAll("value");
         value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
-        value.setVisible(!getSkinnable().isInteractive());
-
-        interactiveText = new Text(getSkinnable().getInteractiveText());
-        interactiveText.setMouseTransparent(true);
-        interactiveText.setTextOrigin(VPos.CENTER);
-        interactiveText.getStyleClass().setAll("value");
-        interactiveText.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
-        interactiveText.setVisible(getSkinnable().isInteractive());
 
         // Add all nodes
         pane = new Pane();
@@ -221,8 +211,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                                   shadowGroup,
                                   knob,
                                   unit,
-                                  value,
-                                  interactiveText);
+                                  value);
 
         pane.getChildren().addAll(getSkinnable().getMarkers().keySet());
 
@@ -254,8 +243,30 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE"));
         knob.setOnMousePressed(event -> getSkinnable().setInteractive(!getSkinnable().isInteractive()));
 
-        threshold.setOnMouseDragged(event -> touchRotate(event.getSceneX(), event.getSceneY(), thresholdRotate));
+        threshold.setOnMouseDragged(event -> touchRotate(event.getSceneX(), event.getSceneY(), thresholdRotate) );
+        threshold.setOnMousePressed(event -> {
+            unit.setText("Threshold");
+            value.setText(String.format(Locale.US, "%.2f", getSkinnable().getThreshold()));
+            resizeUnitAndValue();
+        });
+        threshold.setOnMouseReleased(event -> {
+            getSkinnable().setThreshold(Double.parseDouble(value.getText()));
+            unit.setText("Interactive");
+            value.setText("");
+            resizeUnitAndValue();
+        });
         threshold.setOnTouchMoved(event -> touchRotate(event.getTouchPoint().getSceneX(), event.getTouchPoint().getSceneY(), thresholdRotate));
+        threshold.setOnTouchPressed(event -> {
+            unit.setText("Threshold");
+            value.setText(String.format(Locale.US, "%.2f", getSkinnable().getThreshold()));
+            resizeUnitAndValue();
+        });
+        threshold.setOnTouchReleased(event -> {
+            getSkinnable().setThreshold(Double.parseDouble(value.getText()));
+            unit.setText("Interactive");
+            value.setText("");
+            resizeUnitAndValue();
+        });
     }
 
 
@@ -307,15 +318,14 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             shadowGroup.setEffect(getSkinnable().isDropShadowEnabled() ? dropShadow : null);
         } else if ("INTERACTIVE".equals(PROPERTY)) {
             if (getSkinnable().isInteractive()) {
-                interactiveText.setText(getSkinnable().getInteractiveText());
-                interactiveText.setVisible(true);
-                value.setVisible(false);
-                unit.setVisible(false);
+                unit.setText("Interactive");
+                value.setText("");
+                resizeUnitAndValue();
                 shadowGroup.setEffect(null);
             } else {
-                interactiveText.setVisible(false);
-                value.setVisible(true);
-                unit.setVisible(true);
+                unit.setText(getSkinnable().getUnit());
+                value.setText(String.format(Locale.US, "%.1f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
+                resizeUnitAndValue();
                 shadowGroup.setEffect(dropShadow);
             }
         } else if ("CANVAS_REFRESH".equals(PROPERTY)) {
@@ -371,15 +381,22 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         double radius = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
         double nx     = deltaX / radius;
         double ny     = deltaY / radius;
-        double theta  = Math.toDegrees(Math.atan2(ny, nx));
-        return theta;
-        //return (theta < 360) ? theta + 360.0 : theta;
+        double theta  = Math.atan2(ny, nx);
+        return Double.compare(theta, 0.0) >= 0 ? Math.toDegrees(theta) : Math.toDegrees((theta)) + 360.0;
     }
 
     private void touchRotate(final double X, final double Y, final Rotate ROTATE) {
         double theta     = getTheta(X, Y);
-        interactiveAngle = theta + 90;
-        ROTATE.setAngle(interactiveAngle);
+        interactiveAngle = (theta + 90) % 360;
+        double newValue     = Double.compare(interactiveAngle, 180) <= 0 ?
+                              (interactiveAngle + 180.0 + getSkinnable().getStartAngle() - 360) / angleStep :
+                              (interactiveAngle - 180.0 + getSkinnable().getStartAngle() - 360) / angleStep;
+        if (Double.compare(newValue, getSkinnable().getMinValue()) >= 0 && Double.compare(newValue, getSkinnable().getMaxValue()) <= 0) {
+            ROTATE.setAngle(interactiveAngle);
+            value.setText(String.format(Locale.US, "%.2f", newValue));
+            resizeUnitAndValue();
+        }
+
     }
 
     private void rotateNeedle() {
@@ -501,6 +518,16 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         }
     }
 
+    private void resizeUnitAndValue() {
+        unit.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.05));
+        unit.setTranslateX((size - unit.getLayoutBounds().getWidth()) * 0.5);
+        unit.setTranslateY(size * 0.41);
+
+        value.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.1));
+        value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+        value.setTranslateY(size * 0.51);
+    }
+
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
         centerX = size * 0.5;
@@ -554,16 +581,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         title.setTranslateX((size - title.getLayoutBounds().getWidth()) * 0.5);
         title.setTranslateY(size * 0.85);
 
-        unit.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.05));
-        unit.setTranslateX((size - unit.getLayoutBounds().getWidth()) * 0.5);
-        unit.setTranslateY(size * 0.41);
+        resizeUnitAndValue();
 
-        value.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.1));
-        value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
-        value.setTranslateY(size * 0.51);
-
-        interactiveText.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.04));
-        interactiveText.setTranslateX((size - interactiveText.getLayoutBounds().getWidth()) * 0.5);
-        interactiveText.setTranslateY(size * 0.51);
+        //value.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.04));
+        //value.setTranslateX((size - interactiveText.getLayoutBounds().getWidth()) * 0.5);
+        //value.setTranslateY(size * 0.51);
     }
 }

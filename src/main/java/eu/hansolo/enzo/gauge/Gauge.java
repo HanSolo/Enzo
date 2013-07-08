@@ -172,8 +172,6 @@ public class Gauge extends Control {
     private BooleanProperty                      histogramEnabled;
     private boolean                              _dropShadowEnabled;
     private BooleanProperty                      dropShadowEnabled;
-    private String                               _interactiveText;
-    private StringProperty                       interactiveText;
 
     // CSS styleable properties
     private ObjectProperty<Paint>                tickMarkFill;
@@ -225,7 +223,6 @@ public class Gauge extends Control {
         _plainValue           = true;
         _histogramEnabled     = false;
         _dropShadowEnabled    = true;
-        _interactiveText      = "INTERACTIVE";
     }
 
 
@@ -686,23 +683,6 @@ public class Gauge extends Control {
             dropShadowEnabled = new SimpleBooleanProperty(this, "dropShadowEnabled", _dropShadowEnabled);
         }
         return dropShadowEnabled;
-    }
-
-    public final String getInteractiveText() {
-        return null == interactiveText ? _interactiveText : interactiveText.get();
-    }
-    public final void setInteractiveText(final String INTERACTIVE_TEXT) {
-        if (null == interactiveText) {
-            _interactiveText = INTERACTIVE_TEXT;
-        } else {
-            interactiveText.set(INTERACTIVE_TEXT);
-        }
-    }
-    public final StringProperty interactiveTextProperty() {
-        if (null == interactiveText) {
-            interactiveText = new SimpleStringProperty(this, "interactiveText", _interactiveText);
-        }
-        return interactiveText;
     }
 
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {
