@@ -45,10 +45,10 @@ public class Marker extends Region {
 
     // ******************** Constructors **************************************
     public Marker() {
-        this(0, "");
+        this(0, "Marker");
     }
     public Marker(final double VALUE) {
-        this(VALUE, "");
+        this(VALUE, "Marker");
     }
     public Marker(final double VALUE, final String TEXT) {
         _start   = VALUE;

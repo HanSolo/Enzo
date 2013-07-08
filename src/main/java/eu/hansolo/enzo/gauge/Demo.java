@@ -98,11 +98,8 @@ public class Demo extends Application {
         //control.setTouchMode(true);
         timer.start();
 
-        control.removeMarker(marker0);
-
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes + " Nodes in SceneGraph");
-
     }
 
     @Override public void stop() {

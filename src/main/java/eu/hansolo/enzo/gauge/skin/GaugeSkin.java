@@ -26,10 +26,13 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Skin;
@@ -39,6 +42,8 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -52,6 +57,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -62,46 +69,52 @@ import java.util.Locale;
  * Time: 17:18
  */
 public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
-    private static final double PREFERRED_WIDTH  = 200;
-    private static final double PREFERRED_HEIGHT = 200;
-    private static final double MINIMUM_WIDTH    = 50;
-    private static final double MINIMUM_HEIGHT   = 50;
-    private static final double MAXIMUM_WIDTH    = 1024;
-    private static final double MAXIMUM_HEIGHT   = 1024;
-    private double              thetaStart;
-    private double              size;
-    private double              centerX;
-    private double              centerY;
-    private Pane                pane;
-    private Region              background;
-    private Canvas              ticksAndSectionsCanvas;
-    private GraphicsContext     ticksAndSections;
-    private Region              threshold;
-    private Rotate              thresholdRotate;
-    private boolean             thresholdExceeded;
-    private Region              needle;
-    private Region              needleHighlight;
-    private Rotate              needleRotate;
-    private Region              knob;
-    private Group               shadowGroup;
-    private DropShadow          dropShadow;
-    private Text                title;
-    private Text                unit;
-    private Text                value;
-    private DropShadow          valueBlendBottomShadow;
-    private InnerShadow         valueBlendTopShadow;
-    private Blend               valueBlend;
-    private Path                histogram;
-    private double              angleStep;
-    private Timeline            timeline;
-    private double              interactiveAngle;
+    private static final double      PREFERRED_WIDTH  = 200;
+    private static final double      PREFERRED_HEIGHT = 200;
+    private static final double      MINIMUM_WIDTH    = 50;
+    private static final double      MINIMUM_HEIGHT   = 50;
+    private static final double      MAXIMUM_WIDTH    = 1024;
+    private static final double      MAXIMUM_HEIGHT   = 1024;
+    private double                   size;
+    private double                   centerX;
+    private double                   centerY;
+    private Pane                     pane;
+    private Region                   background;
+    private Canvas                   ticksAndSectionsCanvas;
+    private GraphicsContext          ticksAndSections;
+    private Region                   threshold;
+    private Rotate                   thresholdRotate;
+    private boolean                  thresholdExceeded;
+    private Region                   needle;
+    private Region                   needleHighlight;
+    private Rotate                   needleRotate;
+    private Region                   knob;
+    private Group                    shadowGroup;
+    private DropShadow               dropShadow;
+    private Text                     title;
+    private Text                     unit;
+    private Text                     value;
+    private DropShadow               valueBlendBottomShadow;
+    private InnerShadow              valueBlendTopShadow;
+    private Blend                    valueBlend;
+    private Path                     histogram;
+    private double                   angleStep;
+    private Timeline                 timeline;
+    private double                   interactiveAngle;
+    private EventHandler<MouseEvent> mouseEventHandler;
+    private EventHandler<TouchEvent> touchEventHandler;
+    private List<Node>               markersToRemove;
 
 
     // ******************** Constructors **************************************
     public GaugeSkin(Gauge gauge) {
         super(gauge);
-        angleStep = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
-        timeline  = new Timeline();
+        angleStep         = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
+        timeline          = new Timeline();
+        mouseEventHandler = mouseEvent -> handleMouseEvent(mouseEvent);
+        touchEventHandler = touchEvent -> handleTouchEvent(touchEvent);
+        markersToRemove   = new ArrayList<>();
+
         init();
         initGraphics();
         registerListeners();
@@ -243,30 +256,23 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE"));
         knob.setOnMousePressed(event -> getSkinnable().setInteractive(!getSkinnable().isInteractive()));
 
-        threshold.setOnMouseDragged(event -> touchRotate(event.getSceneX(), event.getSceneY(), thresholdRotate) );
-        threshold.setOnMousePressed(event -> {
-            unit.setText("Threshold");
-            value.setText(String.format(Locale.US, "%.2f", getSkinnable().getThreshold()));
-            resizeUnitAndValue();
-        });
-        threshold.setOnMouseReleased(event -> {
-            getSkinnable().setThreshold(Double.parseDouble(value.getText()));
-            unit.setText("Interactive");
-            value.setText("");
-            resizeUnitAndValue();
-        });
-        threshold.setOnTouchMoved(event -> touchRotate(event.getTouchPoint().getSceneX(), event.getTouchPoint().getSceneY(), thresholdRotate));
-        threshold.setOnTouchPressed(event -> {
-            unit.setText("Threshold");
-            value.setText(String.format(Locale.US, "%.2f", getSkinnable().getThreshold()));
-            resizeUnitAndValue();
-        });
-        threshold.setOnTouchReleased(event -> {
-            getSkinnable().setThreshold(Double.parseDouble(value.getText()));
-            unit.setText("Interactive");
-            value.setText("");
-            resizeUnitAndValue();
-        });
+        threshold.setOnMousePressed(mouseEventHandler);
+        threshold.setOnMouseDragged(mouseEventHandler);
+        threshold.setOnMouseReleased(mouseEventHandler);
+
+        threshold.setOnTouchPressed(touchEventHandler);
+        threshold.setOnTouchMoved(touchEventHandler);
+        threshold.setOnTouchReleased(touchEventHandler);
+
+        for (Marker marker : getSkinnable().getMarkers().keySet()) {
+            marker.setOnMousePressed(mouseEventHandler);
+            marker.setOnMouseDragged(mouseEventHandler);
+            marker.setOnMouseReleased(mouseEventHandler);
+
+            marker.setOnTouchPressed(touchEventHandler);
+            marker.setOnTouchMoved(touchEventHandler);
+            marker.setOnTouchReleased(touchEventHandler);
+        }
     }
 
 
@@ -280,32 +286,33 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
             resize();
         } else if ("ANGLE".equals(PROPERTY)) {
-            if (!getSkinnable().isInteractive()) {
-                double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep;
-                value.setText(String.format(Locale.US, "%.1f", currentValue));
-                value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
-                if (thresholdExceeded) {
-                    if (currentValue < getSkinnable().getThreshold()) {
-                        getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_UNDERRUN));
-                        thresholdExceeded = false;
+            if (getSkinnable().isInteractive()) return;
+
+            double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep;
+            value.setText(String.format(Locale.US, "%.1f", currentValue));
+            value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+            if (thresholdExceeded) {
+                if (currentValue < getSkinnable().getThreshold()) {
+                    getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_UNDERRUN));
+                    thresholdExceeded = false;
+                }
+            } else {
+                if (currentValue > getSkinnable().getThreshold()) {
+                    getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_EXCEEDED));
+                    thresholdExceeded = true;
+                }
+            }
+            for (Marker marker : getSkinnable().getMarkers().keySet()) {
+                if (marker.isExceeded()) {
+                    if (currentValue < marker.getValue()) {
+                        marker.fireMarkerEvent(new Marker.MarkerEvent(this, null, Marker.MarkerEvent.MARKER_UNDERRUN));
+                        marker.setExceeded(false);
                     }
                 } else {
-                    if (currentValue > getSkinnable().getThreshold()) {
-                        getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_EXCEEDED));
-                        thresholdExceeded = true;
-                    }
-                }
-                for (Marker marker : getSkinnable().getMarkers().keySet()) {
-                    if (marker.isExceeded()) {
-                        if (currentValue < marker.getValue()) {
-                            marker.fireMarkerEvent(new Marker.MarkerEvent(this, null, Marker.MarkerEvent.MARKER_UNDERRUN));
-                            marker.setExceeded(false);
-                        }
-                    } else {
-                        if (currentValue > marker.getValue()) {
-                            marker.fireMarkerEvent(new Marker.MarkerEvent(this, null, Marker.MarkerEvent.MARKER_EXCEEDED));
-                            marker.setExceeded(true);
-                        }
+                    if (currentValue > marker.getValue()) {
+                        System.out.println("marker exceeded");
+                        marker.fireMarkerEvent(new Marker.MarkerEvent(this, null, Marker.MarkerEvent.MARKER_EXCEEDED));
+                        marker.setExceeded(true);
                     }
                 }
             }
@@ -335,11 +342,19 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         } else if ("THRESHOLD".equals(PROPERTY)) {
             thresholdRotate.setAngle(getSkinnable().getThreshold() * angleStep - 180 - getSkinnable().getStartAngle());
         } else if ("MARKER".equals(PROPERTY)) {
+            checkForRemovedMarkers();
             for (Marker marker : getSkinnable().getMarkers().keySet()) {
                 if (pane.getChildren().contains(marker)) continue;
                 pane.getChildren().add(marker);
+                // Add MouseEvent handler
+                marker.setOnMousePressed(mouseEventHandler);
+                marker.setOnMouseDragged(mouseEventHandler);
+                marker.setOnMouseReleased(mouseEventHandler);
+                // Add TouchEvent handler
+                marker.setOnTouchPressed(touchEventHandler);
+                marker.setOnTouchMoved(touchEventHandler);
+                marker.setOnTouchReleased(touchEventHandler);
             }
-
             drawMarkers();
         }
     }
@@ -375,6 +390,24 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
 
     // ******************** Private Methods ***********************************
+    private void checkForRemovedMarkers() {
+        markersToRemove.clear();
+        for (Node node : pane.getChildren()) {
+            if (node instanceof Marker) {
+                if (getSkinnable().getMarkers().keySet().contains(node)) continue;
+                node.setManaged(false);
+                node.removeEventHandler(MouseEvent.MOUSE_PRESSED, mouseEventHandler);
+                node.removeEventHandler(MouseEvent.MOUSE_DRAGGED, mouseEventHandler);
+                node.removeEventHandler(MouseEvent.MOUSE_RELEASED, mouseEventHandler);
+                node.removeEventHandler(TouchEvent.TOUCH_PRESSED, touchEventHandler);
+                node.removeEventHandler(TouchEvent.TOUCH_MOVED, touchEventHandler);
+                node.removeEventHandler(TouchEvent.TOUCH_RELEASED, touchEventHandler);
+                markersToRemove.add(node);
+            }
+        }
+        for (Node node : markersToRemove) pane.getChildren().remove(node);
+    }
+
     private double getTheta(double x, double y) {
         double deltaX = x - centerX;
         double deltaY = y - centerY;
@@ -385,6 +418,57 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         return Double.compare(theta, 0.0) >= 0 ? Math.toDegrees(theta) : Math.toDegrees((theta)) + 360.0;
     }
 
+    private void handleMouseEvent(final MouseEvent MOUSE_EVENT) {
+        final Object    SRC  = MOUSE_EVENT.getSource();
+        final EventType TYPE = MOUSE_EVENT.getEventType();
+        if (SRC.equals(threshold)) {
+            if (MouseEvent.MOUSE_PRESSED == TYPE) {
+                unit.setText("Threshold");
+                value.setText(String.format(Locale.US, "%.1f", getSkinnable().getThreshold()));
+                resizeUnitAndValue();
+            } else if (MouseEvent.MOUSE_DRAGGED == TYPE) {
+                touchRotate(MOUSE_EVENT.getSceneX(), MOUSE_EVENT.getSceneY(), thresholdRotate);
+            } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
+                getSkinnable().setThreshold(Double.parseDouble(value.getText()));
+                unit.setText("Interactive");
+                value.setText("");
+                resizeUnitAndValue();
+            }
+        } else if (SRC instanceof Marker) {
+            if (MouseEvent.MOUSE_PRESSED == TYPE) {
+                unit.setText(((Marker) SRC).getText());
+                value.setText(String.format(Locale.US, "%.1f", ((Marker) SRC).getValue()));
+                resizeUnitAndValue();
+            } else if (MouseEvent.MOUSE_DRAGGED == TYPE) {
+                touchRotate(MOUSE_EVENT.getSceneX(), MOUSE_EVENT.getSceneY(), getSkinnable().getMarkers().get(SRC));
+            } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
+                ((Marker) SRC).setValue(Double.parseDouble(value.getText()));
+                unit.setText("Interactive");
+                value.setText("");
+                resizeUnitAndValue();
+            }
+        }
+    }
+
+    private void handleTouchEvent(final TouchEvent TOUCH_EVENT) {
+        final Object    SRC  = TOUCH_EVENT.getSource();
+        final EventType TYPE = TOUCH_EVENT.getEventType();
+        if (SRC.equals(threshold)) {
+            if (TouchEvent.TOUCH_PRESSED == TYPE) {
+                unit.setText("Threshold");
+                value.setText(String.format(Locale.US, "%.1f", getSkinnable().getThreshold()));
+                resizeUnitAndValue();
+            } else if (TouchEvent.TOUCH_MOVED == TYPE) {
+                touchRotate(TOUCH_EVENT.getTouchPoint().getSceneX(), TOUCH_EVENT.getTouchPoint().getSceneY(), thresholdRotate);
+            } else if (TouchEvent.TOUCH_RELEASED == TYPE) {
+                getSkinnable().setThreshold(Double.parseDouble(value.getText()));
+                unit.setText("Interactive");
+                value.setText("");
+                resizeUnitAndValue();
+            }
+        }
+    }
+
     private void touchRotate(final double X, final double Y, final Rotate ROTATE) {
         double theta     = getTheta(X, Y);
         interactiveAngle = (theta + 90) % 360;
@@ -393,7 +477,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                               (interactiveAngle - 180.0 + getSkinnable().getStartAngle() - 360) / angleStep;
         if (Double.compare(newValue, getSkinnable().getMinValue()) >= 0 && Double.compare(newValue, getSkinnable().getMaxValue()) <= 0) {
             ROTATE.setAngle(interactiveAngle);
-            value.setText(String.format(Locale.US, "%.2f", newValue));
+            value.setText(String.format(Locale.US, "%.1f", newValue));
             resizeUnitAndValue();
         }
 

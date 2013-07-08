@@ -1020,7 +1020,6 @@ public class Gauge extends Control {
     }
 
 
-
     // ******************** CSS Pseudo Classes ********************************
     public final boolean isInteractive() {
         return null == interactive ? false : interactive.get();
