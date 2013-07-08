@@ -705,7 +705,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             mainInnerShadow0.setRadius(3.0 / 132.0 * height);
             mainInnerShadow1.setRadius(2.0 / 132.0 * height);
 
-            if (width > 0 && height > 0 && crystalOverlay.isVisible()) {
+            if (crystalOverlay.isVisible()) {
                 mainClip.setScaleX(width / (PREFERRED_WIDTH - 2.0));
                 mainClip.setScaleY(height / (PREFERRED_HEIGHT - 2.0));
                 mainClip.setTranslateX((width - PREFERRED_WIDTH - 2) * 0.5);

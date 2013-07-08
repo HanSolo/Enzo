@@ -86,42 +86,96 @@ public enum Notifier {
 
 
     // ******************** Methods *******************************************
+
+    /**
+     * Returns the Duration that the notification will stay on screen before it
+     * will fade out.
+     * @return the Duration the popup notification will stay on screen
+     */
     public Duration getPopupLifeTime() {
         return lifetime;
     }
+
+    /**
+     * Defines the Duration that the popup notification will stay on screen before it
+     * will fade out. The parameter is limited to values between 2 and 20 seconds.
+     * @param DURATION
+     */
     public void setPopupLifetime(final Duration DURATION) {
         lifetime = Duration.millis(clamp(2000, 20000, DURATION.toMillis()));
     }
 
-    // Custom notification
+    /**
+     * Show the given Notification on the screen
+     * @param NOTIFICATION
+     */
     public void notify(final Notification NOTIFICATION) {
         preOrder();
         showPopup(NOTIFICATION);
     }
+
+    /**
+     * Show a Notification with the given parameters on the screen
+     * @param TITLE
+     * @param MESSAGE
+     * @param IMAGE
+     */
     public void notify(final String TITLE, final String MESSAGE, final Image IMAGE) {
         notify(new Notification(TITLE, MESSAGE, IMAGE));
     }
 
-    // Predefined notifications
+    /**
+     * Show a Notification with the given title and message and an Info icon
+     * @param TITLE
+     * @param MESSAGE
+     */
     public void notifyInfo(final String TITLE, final String MESSAGE) {
         notify(new Notification(TITLE, MESSAGE, Notification.INFO_ICON));
     }
+
+    /**
+     * Show a Notification with the given title and message and a Warning icon
+     * @param TITLE
+     * @param MESSAGE
+     */
     public void notifyWarning(final String TITLE, final String MESSAGE) {
         notify(new Notification(TITLE, MESSAGE, Notification.WARNING_ICON));
     }
+
+    /**
+     * Show a Notification with the given title and message and a Checkmark icon
+     * @param TITLE
+     * @param MESSAGE
+     */
     public void notifySuccess(final String TITLE, final String MESSAGE) {
         notify(new Notification(TITLE, MESSAGE, Notification.SUCCESS_ICON));
     }
+
+    /**
+     * Show a Notification with the given title and message and an Error icon
+     * @param TITLE
+     * @param MESSAGE
+     */
     public void notifyError(final String TITLE, final String MESSAGE) {
         notify(new Notification(TITLE, MESSAGE, Notification.ERROR_ICON));
     }
 
+    /**
+     * Makes sure that the given VALUE is within the range of MIN to MAX
+     * @param MIN
+     * @param MAX
+     * @param VALUE
+     * @return
+     */
     private double clamp(final double MIN, final double MAX, final double VALUE) {
         if (VALUE < MIN) return MIN;
         if (VALUE > MAX) return MAX;
         return VALUE;
     }
 
+    /**
+     * Reorder the popup Notifications on screen so that the latest Notification will stay on top
+     */
     private void preOrder() {
         if (popups.isEmpty()) return;
         for (int i = 0 ; i < popups.size() ; i++) {
@@ -129,7 +183,10 @@ public enum Notifier {
         }
     }
 
-    // Create and show a popup with the given Notification
+    /**
+     * Creates and shows a popup with the data from the given Notification object
+     * @param NOTIFICATION
+     */
     private void showPopup(final Notification NOTIFICATION) {
         Region body = new Region();
         body.getStyleClass().addAll("body");
@@ -154,16 +211,16 @@ public enum Notifier {
         popupPane.getStyleClass().add("notification");
         popupPane.getChildren().addAll(body, popupLayout);
 
-        Popup popup = new Popup();
-        popup.setX(Screen.getPrimary().getBounds().getWidth() - WIDTH - 10);
-        popup.setY(OFFSET_Y);
-        popup.getContent().add(popupPane);
+        final Popup POPUP = new Popup();
+        POPUP.setX(Screen.getPrimary().getBounds().getWidth() - WIDTH - 10);
+        POPUP.setY(OFFSET_Y);
+        POPUP.getContent().add(popupPane);
 
-        popups.add(popup);
+        popups.add(POPUP);
 
         // Add a timeline for popup fade out
-        KeyValue fadeOutBegin = new KeyValue(popup.opacityProperty(), 1.0);
-        KeyValue fadeOutEnd   = new KeyValue(popup.opacityProperty(), 0.0);
+        KeyValue fadeOutBegin = new KeyValue(POPUP.opacityProperty(), 1.0);
+        KeyValue fadeOutEnd   = new KeyValue(POPUP.opacityProperty(), 0.0);
 
         KeyFrame kfBegin = new KeyFrame(Duration.ZERO, fadeOutBegin);
         KeyFrame kfEnd   = new KeyFrame(Duration.millis(500), fadeOutEnd);
@@ -173,16 +230,16 @@ public enum Notifier {
         timeline.setOnFinished(actionEvent -> {
             Platform.runLater(new Runnable() {
                 @Override public void run() {
-                    popup.hide();
-                    popups.remove(popup);
+                    POPUP.hide();
+                    popups.remove(POPUP);
                 }
             });
         });
 
         // Move popup to the right during fade out
-        //popup.opacityProperty().addListener((observableValue, oldOpacity, opacity) -> popup.setX(popup.getX() + (1.0 - opacity.doubleValue()) * popup.getWidth()) );
+        //POPUP.opacityProperty().addListener((observableValue, oldOpacity, opacity) -> popup.setX(popup.getX() + (1.0 - opacity.doubleValue()) * popup.getWidth()) );
 
-        popup.show(stage);
+        POPUP.show(stage);
         timeline.play();
     }
 }
