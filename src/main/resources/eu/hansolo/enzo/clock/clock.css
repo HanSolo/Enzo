@@ -19,13 +19,13 @@
  *****************************************************************************/
 .clock {
     -fx-skin                : "eu.hansolo.enzo.clock.skin.ClockSkin";
-    -fx-clock-background    : white;
-    -fx-hour-pointer-color  : rgb(44, 44, 44);
-    -fx-minute-pointer-color: rgb(44, 44, 44);
-    -fx-second-pointer-color: rgb(207, 43, 27);
-    -fx-major-tick-color    : rgb(44, 44, 44);
-    -fx-minor-tick-color    : rgb(44, 44, 44);
-    -fx-center-knob-color   : rgb(44, 44, 44);
+    -clock-background    : white;
+    -hour-pointer-color  : rgb(44, 44, 44);
+    -minute-pointer-color: rgb(44, 44, 44);
+    -second-pointer-color: rgb(207, 43, 27);
+    -major-tick-color    : rgb(44, 44, 44);
+    -minor-tick-color    : rgb(44, 44, 44);
+    -center-knob-color   : rgb(44, 44, 44);
 }
 
 
@@ -33,20 +33,20 @@
  * CLOCK Nightmode (dark colors)                                              *
  *****************************************************************************/
 .clock .night-mode {
-    -fx-clock-background    : rgb(50, 50, 50);
-    -fx-hour-pointer-color  : rgb(227, 227, 227);
-    -fx-minute-pointer-color: rgb(227, 227, 227);
-    -fx-major-tick-color    : rgb(227, 227, 227);
-    -fx-minor-tick-color    : rgb(227, 227, 227);
-    -fx-center-knob-color   : rgb(227, 227, 227);
+    -clock-background    : rgb(50, 50, 50);
+    -hour-pointer-color  : rgb(227, 227, 227);
+    -minute-pointer-color: rgb(227, 227, 227);
+    -major-tick-color    : rgb(227, 227, 227);
+    -minor-tick-color    : rgb(227, 227, 227);
+    -center-knob-color   : rgb(227, 227, 227);
 }
 .clock .night-mode-braun {
-    -fx-clock-background    : rgb(10, 10, 10);
-    -fx-hour-pointer-color  : rgb(240, 240, 240);
-    -fx-minute-pointer-color: rgb(240, 240, 240);
-    -fx-major-tick-color    : rgb(240, 240, 240);
-    -fx-minor-tick-color    : rgb(240, 240, 240);
-    -fx-center-knob-color   : rgb(240, 240, 240);
+    -clock-background    : rgb(10, 10, 10);
+    -hour-pointer-color  : rgb(240, 240, 240);
+    -minute-pointer-color: rgb(240, 240, 240);
+    -major-tick-color    : rgb(240, 240, 240);
+    -minor-tick-color    : rgb(240, 240, 240);
+    -center-knob-color   : rgb(240, 240, 240);
 }
 
 
@@ -54,19 +54,19 @@
  * CLOCK Daymode (bright colors)                                              *
  *****************************************************************************/
 .clock .day-mode {
--fx-clock-background    : white;
-    -fx-hour-pointer-color  : rgb(44, 44, 44);
-    -fx-minute-pointer-color: rgb(44, 44, 44);
-    -fx-major-tick-color    : rgb(44, 44, 44);
-    -fx-minor-tick-color    : rgb(44, 44, 44);
-    -fx-center-knob-color   : rgb(44, 44, 44);
+-clock-background    : white;
+    -hour-pointer-color  : rgb(44, 44, 44);
+    -minute-pointer-color: rgb(44, 44, 44);
+    -major-tick-color    : rgb(44, 44, 44);
+    -minor-tick-color    : rgb(44, 44, 44);
+    -center-knob-color   : rgb(44, 44, 44);
 }
 .clock .day-mode-braun {
-    -fx-hour-pointer-color  : rgb(10, 10, 10);
-    -fx-minute-pointer-color: rgb(10, 10, 10);
-    -fx-major-tick-color    : rgb(10, 10, 10);
-    -fx-minor-tick-color    : rgb(10, 10, 10);
-    -fx-center-knob-color   : rgb(10, 10, 10);
+    -hour-pointer-color  : rgb(10, 10, 10);
+    -minute-pointer-color: rgb(10, 10, 10);
+    -major-tick-color    : rgb(10, 10, 10);
+    -minor-tick-color    : rgb(10, 10, 10);
+    -center-knob-color   : rgb(10, 10, 10);
 }
 
 
@@ -75,8 +75,8 @@
  *****************************************************************************/
 .clock .background-ios6 {
     -fx-background-color : linear-gradient(from 16% 16% to 83% 83%,
-                                           derive(-fx-clock-background, -11%) 0%,
-                                           -fx-clock-background 100%);
+                                           derive(-clock-background, -11%) 0%,
+                                           -clock-background 100%);
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -85,19 +85,19 @@
     -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
 }
 .clock .minor-tick-ios6 {
-    -fx-background-color : -fx-minor-tick-color;
+    -fx-background-color : -minor-tick-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
 }
 .clock .major-tick-ios6 {
-    -fx-background-color : -fx-major-tick-color;
+    -fx-background-color : -major-tick-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
 }
 .clock .hour-pointer-ios6 {
-    -fx-background-color : -fx-hour-pointer-color;
+    -fx-background-color : -hour-pointer-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -105,7 +105,7 @@
     -fx-shape            : "M 0 0 L 8 0 L 8 84 L 0 84 L 0 0 Z";
 }
 .clock .minute-pointer-ios6 {
-    -fx-background-color : -fx-minute-pointer-color;
+    -fx-background-color : -minute-pointer-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -113,7 +113,7 @@
     -fx-shape            : "M 0 0 L 8 0 L 8 116 L 0 116 L 0 0 Z";
 }
 .clock .second-pointer-ios6 {
-    -fx-background-color : -fx-second-pointer-color;
+    -fx-background-color : -second-pointer-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -142,8 +142,8 @@
  *****************************************************************************/
 .clock .background-braun {
     -fx-background-color : linear-gradient(from 16% 16% to 83% 83%,
-                                           derive(-fx-clock-background, -11%) 0%,
-                                           -fx-clock-background 100%);
+                                           derive(-clock-background, -11%) 0%,
+                                           -clock-background 100%);
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -152,7 +152,7 @@
     -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
 }
 .clock .minor-tick-braun {
-    -fx-background-color : -fx-minor-tick-color;
+    -fx-background-color : -minor-tick-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -161,7 +161,7 @@
     -fx-shape            : "M 63 7.72 C 63 7.3223 63.2239 7 63.5 7 L 63.5 7 C 63.7761 7 64 7.3223 64 7.72 L 64 10.28 C 64 10.6777 63.7761 11 63.5 11 L 63.5 11 C 63.2239 11 63 10.6777 63 10.28 L 63 7.72 Z";
 }
 .clock .major-tick-braun {
-    -fx-background-color : -fx-major-tick-color;
+    -fx-background-color : -major-tick-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -169,10 +169,10 @@
     -fx-shape            : "M 62 8.4902 C 62 7.6672 62.6716 7 63.5 7 L 63.5 7 C 64.3284 7 65 7.6672 65 8.4902 L 65 13.5098 C 65 14.3328 64.3284 15 63.5 15 L 63.5 15 C 62.6716 15 62 14.3328 62 13.5098 L 62 8.4902 Z";
 }
 .clock .tick-label-braun {
-    -fx-fill: -fx-major-tick-color;
+    -fx-fill: -major-tick-color;
 }
 .clock .hour-pointer-braun {
-    -fx-background-color : -fx-hour-pointer-color;
+    -fx-background-color : -hour-pointer-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -190,7 +190,7 @@
     -fx-shape            : "M 97.4003 15.7226 L 97.375 89.8438 C 92.9806 91.0384 89.5 95.0617 89.5 100 C 89.5 105.8712 94.3466 110.5 100 110.5 C 105.6534 110.5 110.5 105.8087 110.5 99.9375 C 110.5 94.9992 106.9881 91.0384 102.5938 89.8438 L 102.5997 15.7226 C 102.5997 14.232 101.4358 13.0236 100 13.0236 C 98.5642 13.0236 97.4003 14.232 97.4003 15.7226 Z";
 }
 .clock .minute-pointer-braun {
-    -fx-background-color : -fx-minute-pointer-color;
+    -fx-background-color : -minute-pointer-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -240,8 +240,8 @@
  *****************************************************************************/
 .clock .background-db {
     -fx-background-color : linear-gradient(from 16% 16% to 83% 83%,
-                                           derive(-fx-clock-background, -11%) 0%,
-                                           -fx-clock-background 100%);
+                                           derive(-clock-background, -11%) 0%,
+                                           -clock-background 100%);
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -250,20 +250,20 @@
     -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
 }
 .clock .minor-tick-db {
-    -fx-background-color : -fx-minor-tick-color;
+    -fx-background-color : -minor-tick-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
     -fx-stroke           : transparent;
 }
 .clock .major-tick-db {
-    -fx-background-color : -fx-major-tick-color;
+    -fx-background-color : -major-tick-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
 }
 .clock .hour-pointer-db {
-    -fx-background-color : -fx-hour-pointer-color;
+    -fx-background-color : -hour-pointer-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -271,7 +271,7 @@
     -fx-shape            : "M 0 0 L 11 0 L 11 66 L 0 66 L 0 0 Z";
 }
 .clock .minute-pointer-db {
-    -fx-background-color : -fx-minute-pointer-color;
+    -fx-background-color : -minute-pointer-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -279,7 +279,7 @@
     -fx-shape            : "M 0 0 L 8 0 L 8 94 L 0 94 L 0 0 Z";
 }
 .clock .second-pointer-db {
-    -fx-background-color : -fx-second-pointer-color;
+    -fx-background-color : -second-pointer-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-padding          : 0;
@@ -287,7 +287,7 @@
     -fx-shape            : "M 58 28.5 C 58 31.5376 60.4624 34 63.5 34 C 66.5376 34 69 31.5376 69 28.5 C 69 25.4624 66.5376 23 63.5 23 C 60.4624 23 58 25.4624 58 28.5 ZM 57 28.5 C 57 25.1732 59.5017 22.4292 62.725 22.045 L 63 6 L 64 6 L 64.275 22.045 C 67.5008 22.427 70 25.1715 70 28.5 C 70 31.7503 67.6157 34.4445 64.5 34.925 L 65 64 L 62 64 L 62.5 34.925 C 59.3843 34.4445 57 31.7503 57 28.5 Z";
 }
 .clock .center-knob-db {
-    -fx-background-color : -fx-center-knob-color;
+    -fx-background-color : -center-knob-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0em;
     -fx-scale-shape      : true;
