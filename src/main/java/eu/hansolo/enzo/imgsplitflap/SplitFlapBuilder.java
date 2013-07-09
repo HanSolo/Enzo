@@ -23,6 +23,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Dimension2D;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
@@ -65,6 +66,11 @@ public class SplitFlapBuilder <B extends SplitFlapBuilder<B>> {
     public final SplitFlapBuilder selection(final String[] SELECTION) {
         properties.put("selection", new SimpleObjectProperty<>(SELECTION));
         return this;
+    }
+
+    public final B prefSize(final double WIDTH, final double HEIGHT) {
+        properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
+        return (B)this;
     }
 
     public final B prefWidth(final double PREF_WIDTH) {
@@ -144,6 +150,9 @@ public class SplitFlapBuilder <B extends SplitFlapBuilder<B>> {
                 CONTROL.setText(((StringProperty) properties.get(key)).get());
             } else if ("selection".equals(key)) {
                 CONTROL.setSelection(((ObjectProperty<String[]>) properties.get(key)).get());
+            } else if ("prefSize".equals(key)) {
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {

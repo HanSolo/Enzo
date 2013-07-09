@@ -25,6 +25,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Dimension2D;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
@@ -66,6 +67,11 @@ public class MatrixSegmentBuilder<B extends MatrixSegmentBuilder<B>> {
     public final MatrixSegmentBuilder glowEnabled(final boolean GLOW_ENABLED) {
         properties.put("glowEnabled", new SimpleBooleanProperty(GLOW_ENABLED));
         return this;
+    }
+
+    public final B prefSize(final double WIDTH, final double HEIGHT) {
+        properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
+        return (B)this;
     }
 
     public final B prefWidth(final double PREF_WIDTH) {
@@ -125,7 +131,10 @@ public class MatrixSegmentBuilder<B extends MatrixSegmentBuilder<B>> {
     public final MatrixSegment build() {
         final MatrixSegment CONTROL = new MatrixSegment();
         for (String key : properties.keySet()) {
-            if("prefWidth".equals(key)) {
+            if ("prefSize".equals(key)) {
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
+            } else if("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
                 CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());

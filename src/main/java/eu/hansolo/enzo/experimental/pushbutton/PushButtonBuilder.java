@@ -23,6 +23,7 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Dimension2D;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
@@ -54,6 +55,11 @@ public class PushButtonBuilder<B extends PushButtonBuilder<B>> {
     public PushButtonBuilder color(final Color COLOR) {
         properties.put("ledColor", new SimpleObjectProperty<>(COLOR));
         return this;
+    }
+
+    public final B prefSize(final double WIDTH, final double HEIGHT) {
+        properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
+        return (B)this;
     }
 
     public final B minWidth(final double MIN_WIDTH) {
@@ -120,6 +126,9 @@ public class PushButtonBuilder<B extends PushButtonBuilder<B>> {
                 CONTROL.setToggleEnabled(((BooleanProperty) properties.get(key)).get());
             } else if ("ledColor".equals(key)) {
                 CONTROL.setColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("prefSize".equals(key)) {
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("minWidth".equals(key)) {
                 CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
             } else if("minHeight".equals(key)) {

@@ -26,6 +26,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Orientation;
 import javafx.scene.paint.Color;
 
@@ -93,6 +94,11 @@ public class LedBargraphBuilder<B extends LedBargraphBuilder<B>> {
         return this;
     }
 
+    public final B prefSize(final double WIDTH, final double HEIGHT) {
+        properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
+        return (B)this;
+    }
+
     public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B)this;
@@ -150,7 +156,10 @@ public class LedBargraphBuilder<B extends LedBargraphBuilder<B>> {
     public final LedBargraph build() {
         final LedBargraph CONTROL = new LedBargraph();
         for (String key : properties.keySet()) {
-            if("prefWidth".equals(key)) {
+            if ("prefSize".equals(key)) {
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
+            } else if("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
                 CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());

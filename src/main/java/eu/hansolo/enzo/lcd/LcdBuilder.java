@@ -27,6 +27,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Dimension2D;
 
 import java.util.HashMap;
 
@@ -70,8 +71,8 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
         return this;
     }
 
-    public final LcdBuilder valueAnimationEnabled(final boolean VALUE_ANIMATION_ENABLED) {
-        properties.put("valueAnimationEnabled", new SimpleBooleanProperty(VALUE_ANIMATION_ENABLED));
+    public final LcdBuilder animated(final boolean ANIMATED) {
+        properties.put("animated", new SimpleBooleanProperty(ANIMATED));
         return this;
     }
 
@@ -270,6 +271,11 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
         return this;
     }
 
+    public final B prefSize(final double WIDTH, final double HEIGHT) {
+        properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
+        return (B)this;
+    }
+
     public final B prefWidth(final double PREF_WIDTH) {
         properties.put("prefWidth", new SimpleDoubleProperty(PREF_WIDTH));
         return (B)this;
@@ -327,7 +333,10 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
     public final Lcd build() {
         final Lcd CONTROL = new Lcd();
         for (String key : properties.keySet()) {
-            if("prefWidth".equals(key)) {
+            if ("prefSize".equals(key)) {
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
+            } else if("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
                 CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());
@@ -359,7 +368,7 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
                 CONTROL.setText(((StringProperty) properties.get(key)).get());
             } else if("value".equals(key)) {
                 CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
-            } else if("valueAnimationEnabled".equals(key)) {
+            } else if("animated".equals(key)) {
                 CONTROL.setAnimated(((BooleanProperty) properties.get(key)).get());
             } else if ("animationDuration".equals(key)) {
                 CONTROL.setAnimationDuration(((DoubleProperty) properties.get(key)).get());

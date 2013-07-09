@@ -25,7 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.util.Random;
 
@@ -61,7 +60,7 @@ public class DemoMulti extends Application {
             Gauge gauge = new Gauge();
             gauge.setPrefSize(50, 50);
             gauge.setDropShadowEnabled(false);
-            gauge.setAnimationTime(Duration.millis(80));
+            gauge.setAnimationDuration(80);
             gauge.setAnimated(false);
             gauges[i] = gauge;
         }

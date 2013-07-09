@@ -17,8 +17,11 @@
 package eu.hansolo.enzo.experimental.pbutton;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Dimension2D;
 
 import java.util.HashMap;
 
@@ -36,6 +39,10 @@ public class PushButtonBuilder<B extends PushButtonBuilder<B>> {
         return new PushButtonBuilder();
     }
 
+    public final B prefSize(final double WIDTH, final double HEIGHT) {
+        properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
+        return (B)this;
+    }
 
     public final B minWidth(final double MIN_WIDTH) {
         properties.put("minWidth", new SimpleDoubleProperty(MIN_WIDTH));
@@ -95,8 +102,9 @@ public class PushButtonBuilder<B extends PushButtonBuilder<B>> {
     public final PushButton build() {
         final PushButton CONTROL = new PushButton();
         for (String key : properties.keySet()) {
-            if ("".equals(key)) {
-
+            if ("prefSize".equals(key)) {
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("minWidth".equals(key)) {
                 CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
             } else if("minHeight".equals(key)) {

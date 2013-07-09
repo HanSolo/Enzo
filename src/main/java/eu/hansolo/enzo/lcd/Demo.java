@@ -103,7 +103,7 @@ public class Demo extends Application {
                             .lowerRightText("Info")
                             //.valueFont(Lcd.LcdFont.BUS)
                             .valueFont(Lcd.LcdFont.DIGITAL_BOLD)
-                            .valueAnimationEnabled(true)
+                            .animated(true)
                             .build();
         charge = 0.0;
         styleClassCounter = 0;

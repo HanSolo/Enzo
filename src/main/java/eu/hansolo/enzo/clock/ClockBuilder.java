@@ -23,6 +23,7 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Dimension2D;
 
 import java.util.HashMap;
 
@@ -70,6 +71,11 @@ public class ClockBuilder<B extends ClockBuilder<B>> {
     public final ClockBuilder highlightVisible(final boolean HIGHLIGHT_VISIBLE) {
         properties.put("highlightVisible", new SimpleBooleanProperty(HIGHLIGHT_VISIBLE));
         return this;
+    }
+
+    public final B prefSize(final double WIDTH, final double HEIGHT) {
+        properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
+        return (B)this;
     }
 
     public final B prefWidth(final double PREF_WIDTH) {
@@ -130,7 +136,10 @@ public class ClockBuilder<B extends ClockBuilder<B>> {
     public final Clock build() {
         final Clock CONTROL = new Clock();
         for (String key : properties.keySet()) {
-            if("prefWidth".equals(key)) {
+            if ("prefSize".equals(key)) {
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
+            } else if("prefWidth".equals(key)) {
                 CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
                 CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());

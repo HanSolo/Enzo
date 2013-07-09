@@ -47,25 +47,27 @@ public class Demo extends Application {
 
 
     @Override public void init() {
-        control = new Gauge();
-        control.setStartAngle(330);
-        control.setAngleRange(300);
-        //control.setStyle("-tick-label-fill: blue;");
-        control.setSections(new Section(40, 60),
-                            new Section(60, 80),
-                            new Section(80, 100));
-        control.setMajorTickSpace(20);
-        control.setTickLabelOrientation(Gauge.TickLabelOrientation.ORTHOGONAL);
+        control = GaugeBuilder.create()
+                              .prefSize(400, 400)
+                              .startAngle(330)
+                              .angleRange(300)
+                              .sections(new Section(40, 60),
+                                        new Section(60, 80),
+                                        new Section(80, 100))
+                              .majorTickSpace(20)
+                              .tickLabelOrientation(Gauge.TickLabelOrientation.ORTHOGONAL)
+                              .threshold(70)
+                              .thresholdVisible(true)
+                              .minMeasuredValueVisible(true)
+                              .maxMeasuredValueVisible(true)
+                              .build();
 
+
+        //control.setStyle("-tick-label-fill: blue;");
         //control.setMinorTickSpace(2);
         //control.setHistogramEnabled(true);
         //control.setTouchMode(true);
-        control.setPrefSize(400, 400);
 
-        control.setThreshold(70);
-        control.setThresholdVisible(true);
-        control.setMinMeasuredValueVisible(true);
-        control.setMaxMeasuredValueVisible(true);
         control.setOnThresholdExceeded(observable -> System.out.println("Threshold exceeded") );
         control.setOnThresholdUnderrun(observable -> System.out.println("Threshold underrun"));
 
