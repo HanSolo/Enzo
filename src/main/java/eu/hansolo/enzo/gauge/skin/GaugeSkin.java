@@ -20,9 +20,13 @@ import eu.hansolo.enzo.gauge.Gauge;
 import eu.hansolo.enzo.gauge.GaugeEvent;
 import eu.hansolo.enzo.gauge.Marker;
 import eu.hansolo.enzo.gauge.Section;
+import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
@@ -56,6 +60,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +90,10 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private Region                   threshold;
     private Rotate                   thresholdRotate;
     private boolean                  thresholdExceeded;
+    private Region                   minMeasuredValue;
+    private Rotate                   minMeasuredValueRotate;
+    private Region                   maxMeasuredValue;
+    private Rotate                   maxMeasuredValueRotate;
     private Region                   needle;
     private Region                   needleHighlight;
     private Rotate                   needleRotate;
@@ -171,10 +180,26 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         histogram.setFillRule(FillRule.NON_ZERO);
         histogram.getStyleClass().add("histogram-fill");
 
+        minMeasuredValue = new Region();
+        minMeasuredValue.getStyleClass().setAll("min-measured-value");
+        minMeasuredValueRotate = new Rotate(180 - getSkinnable().getStartAngle());
+        minMeasuredValue.getTransforms().setAll(minMeasuredValueRotate);
+        minMeasuredValue.setOpacity(getSkinnable().isMinMeasuredValueVisible() ? 1 : 0);
+        minMeasuredValue.setManaged(getSkinnable().isMinMeasuredValueVisible());
+
+        maxMeasuredValue = new Region();
+        maxMeasuredValue.getStyleClass().setAll("max-measured-value");
+        maxMeasuredValueRotate = new Rotate(180 - getSkinnable().getStartAngle());
+        maxMeasuredValue.getTransforms().setAll(maxMeasuredValueRotate);
+        maxMeasuredValue.setOpacity(getSkinnable().isMaxMeasuredValueVisible() ? 1 : 0);
+        maxMeasuredValue.setManaged(getSkinnable().isMaxMeasuredValueVisible());
+
         threshold = new Region();
         threshold.getStyleClass().setAll("threshold");
         thresholdRotate = new Rotate(180 - getSkinnable().getStartAngle());
         threshold.getTransforms().setAll(thresholdRotate);
+        threshold.setOpacity(getSkinnable().isThresholdVisible() ? 1 : 0);
+        threshold.setManaged(getSkinnable().isThresholdVisible());
         thresholdExceeded = false;
 
         needle = new Region();
@@ -219,6 +244,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         pane.getChildren().setAll(background,
                                   histogram,
                                   ticksAndSectionsCanvas,
+                                  minMeasuredValue,
+                                  maxMeasuredValue,
                                   threshold,
                                   title,
                                   shadowGroup,
@@ -238,12 +265,15 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         getSkinnable().minValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
         getSkinnable().maxValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
         getSkinnable().minMeasuredValueProperty().addListener(observable -> handleControlPropertyChanged("MIN_MEASURED_VALUE"));
+        getSkinnable().minMeasuredValueVisibleProperty().addListener(observable -> handleControlPropertyChanged("MIN_MEASURED_VALUE_VISIBLE"));
         getSkinnable().maxMeasuredValueProperty().addListener(observable -> handleControlPropertyChanged("MAX_MEASURED_VALUE"));
+        getSkinnable().maxMeasuredValueVisibleProperty().addListener(observable -> handleControlPropertyChanged("MAX_MEASURED_VALUE_VISIBLE"));
         getSkinnable().tickLabelOrientationProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().needleTypeProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_TYPE"));
         getSkinnable().needleColorProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_COLOR"));
         getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED"));
         getSkinnable().thresholdProperty().addListener(observable -> handleControlPropertyChanged("THRESHOLD"));
+        getSkinnable().thresholdVisibleProperty().addListener(observable -> handleControlPropertyChanged("THRESHOLD_VISIBLE"));
         getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE"));
         getSkinnable().numberFormatProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
         getSkinnable().plainValueProperty().addListener(observable -> handleControlPropertyChanged("PLAIN_VALUE"));
@@ -255,6 +285,18 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE"));
         knob.setOnMousePressed(event -> getSkinnable().setInteractive(!getSkinnable().isInteractive()));
+
+        minMeasuredValue.setOnMousePressed(mouseEventHandler);
+        minMeasuredValue.setOnMouseReleased(mouseEventHandler);
+
+        minMeasuredValue.setOnTouchPressed(touchEventHandler);
+        minMeasuredValue.setOnTouchReleased(touchEventHandler);
+
+        maxMeasuredValue.setOnMousePressed(mouseEventHandler);
+        maxMeasuredValue.setOnMouseReleased(mouseEventHandler);
+
+        maxMeasuredValue.setOnTouchPressed(touchEventHandler);
+        maxMeasuredValue.setOnTouchReleased(touchEventHandler);
 
         threshold.setOnMousePressed(mouseEventHandler);
         threshold.setOnMouseDragged(mouseEventHandler);
@@ -291,6 +333,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep;
             value.setText(String.format(Locale.US, "%.1f", currentValue));
             value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+            // Check threshold
             if (thresholdExceeded) {
                 if (currentValue < getSkinnable().getThreshold()) {
                     getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_UNDERRUN));
@@ -302,6 +345,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                     thresholdExceeded = true;
                 }
             }
+            // Check each marker
             for (Marker marker : getSkinnable().getMarkers().keySet()) {
                 if (marker.isExceeded()) {
                     if (currentValue < marker.getValue()) {
@@ -316,6 +360,15 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                     }
                 }
             }
+            // Check min- and maxMeasuredValue
+            if (currentValue < getSkinnable().getMinMeasuredValue()) {
+                getSkinnable().setMinMeasuredValue(currentValue);
+                minMeasuredValueRotate.setAngle(currentValue * angleStep - 180 - getSkinnable().getStartAngle());
+            }
+            if (currentValue > getSkinnable().getMaxMeasuredValue()) {
+                getSkinnable().setMaxMeasuredValue(currentValue);
+                maxMeasuredValueRotate.setAngle(currentValue * angleStep - 180 - getSkinnable().getStartAngle());
+            }
         } else if ("PLAIN_VALUE".equals(PROPERTY)) {
             value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
         } else if ("HISTOGRAM".equals(PROPERTY)) {
@@ -324,6 +377,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         } else if ("DROP_SHADOW".equals(PROPERTY)) {
             shadowGroup.setEffect(getSkinnable().isDropShadowEnabled() ? dropShadow : null);
         } else if ("INTERACTIVE".equals(PROPERTY)) {
+            needle.setMouseTransparent(getSkinnable().isInteractive());
+
             if (getSkinnable().isInteractive()) {
                 unit.setText("Interactive");
                 value.setText("");
@@ -341,6 +396,15 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             drawTickMarks(ticksAndSections);
         } else if ("THRESHOLD".equals(PROPERTY)) {
             thresholdRotate.setAngle(getSkinnable().getThreshold() * angleStep - 180 - getSkinnable().getStartAngle());
+        } else if ("THRESHOLD_VISIBLE".equals(PROPERTY)) {
+            threshold.setOpacity(getSkinnable().isThresholdVisible() ? 1 : 0);
+            threshold.setManaged(getSkinnable().isThresholdVisible());
+        } else if ("MIN_MEASURED_VALUE_VISIBLE".equals(PROPERTY)) {
+            minMeasuredValue.setOpacity(getSkinnable().isMinMeasuredValueVisible() ? 1 : 0);
+            minMeasuredValue.setManaged(getSkinnable().isMinMeasuredValueVisible());
+        } else if ("MAX_MEASURED_VALUE_VISIBLE".equals(PROPERTY)) {
+            maxMeasuredValue.setOpacity(getSkinnable().isMaxMeasuredValueVisible() ? 1 : 0);
+            maxMeasuredValue.setManaged(getSkinnable().isMaxMeasuredValueVisible());
         } else if ("MARKER".equals(PROPERTY)) {
             checkForRemovedMarkers();
             for (Marker marker : getSkinnable().getMarkers().keySet()) {
@@ -430,9 +494,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                 touchRotate(MOUSE_EVENT.getSceneX(), MOUSE_EVENT.getSceneY(), thresholdRotate);
             } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
                 getSkinnable().setThreshold(Double.parseDouble(value.getText()));
-                unit.setText("Interactive");
-                value.setText("");
-                resizeUnitAndValue();
+                fadeBackToInteractive();
             }
         } else if (SRC instanceof Marker) {
             if (MouseEvent.MOUSE_PRESSED == TYPE) {
@@ -443,9 +505,23 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                 touchRotate(MOUSE_EVENT.getSceneX(), MOUSE_EVENT.getSceneY(), getSkinnable().getMarkers().get(SRC));
             } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
                 ((Marker) SRC).setValue(Double.parseDouble(value.getText()));
-                unit.setText("Interactive");
-                value.setText("");
+                fadeBackToInteractive();
+            }
+        } else if (SRC.equals(minMeasuredValue)) {
+            if (MouseEvent.MOUSE_PRESSED == TYPE) {
+                unit.setText("Min");
+                value.setText(String.format(Locale.US, "%.1f", getSkinnable().getMinMeasuredValue()));
                 resizeUnitAndValue();
+            } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
+                fadeBackToInteractive();
+            }
+        } else if (SRC.equals(maxMeasuredValue)) {
+            if (MouseEvent.MOUSE_PRESSED == TYPE) {
+                unit.setText("Max");
+                value.setText(String.format(Locale.US, "%.1f", getSkinnable().getMaxMeasuredValue()));
+                resizeUnitAndValue();
+            } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
+                fadeBackToInteractive();
             }
         }
     }
@@ -462,9 +538,34 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                 touchRotate(TOUCH_EVENT.getTouchPoint().getSceneX(), TOUCH_EVENT.getTouchPoint().getSceneY(), thresholdRotate);
             } else if (TouchEvent.TOUCH_RELEASED == TYPE) {
                 getSkinnable().setThreshold(Double.parseDouble(value.getText()));
-                unit.setText("Interactive");
-                value.setText("");
+                fadeBackToInteractive();
+            }
+        } else if (SRC instanceof Marker) {
+            if (TouchEvent.TOUCH_PRESSED == TYPE) {
+                unit.setText(((Marker) SRC).getText());
+                value.setText(String.format(Locale.US, "%.1f", ((Marker) SRC).getValue()));
                 resizeUnitAndValue();
+            } else if (TouchEvent.TOUCH_MOVED == TYPE) {
+                touchRotate(TOUCH_EVENT.getTouchPoint().getSceneX(), TOUCH_EVENT.getTouchPoint().getSceneY(), getSkinnable().getMarkers().get(SRC));
+            } else if (TouchEvent.TOUCH_RELEASED == TYPE) {
+                ((Marker) SRC).setValue(Double.parseDouble(value.getText()));
+                fadeBackToInteractive();
+            }
+        } else if (SRC.equals(minMeasuredValue)) {
+            if (TouchEvent.TOUCH_PRESSED == TYPE) {
+                unit.setText("Min");
+                value.setText(String.format(Locale.US, "%.1f", getSkinnable().getMinMeasuredValue()));
+                resizeUnitAndValue();
+            } else if (TouchEvent.TOUCH_RELEASED == TYPE) {
+                fadeBackToInteractive();
+            }
+        } else if (SRC.equals(maxMeasuredValue)) {
+            if (TouchEvent.TOUCH_PRESSED == TYPE) {
+                unit.setText("Max");
+                value.setText(String.format(Locale.US, "%.1f", getSkinnable().getMaxMeasuredValue()));
+                resizeUnitAndValue();
+            } else if (TouchEvent.TOUCH_RELEASED == TYPE) {
+                fadeBackToInteractive();
             }
         }
     }
@@ -472,15 +573,44 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     private void touchRotate(final double X, final double Y, final Rotate ROTATE) {
         double theta     = getTheta(X, Y);
         interactiveAngle = (theta + 90) % 360;
-        double newValue     = Double.compare(interactiveAngle, 180) <= 0 ?
-                              (interactiveAngle + 180.0 + getSkinnable().getStartAngle() - 360) / angleStep :
-                              (interactiveAngle - 180.0 + getSkinnable().getStartAngle() - 360) / angleStep;
+        double newValue  = Double.compare(interactiveAngle, 180) <= 0 ?
+                           (interactiveAngle + 180.0 + getSkinnable().getStartAngle() - 360) / angleStep :
+                           (interactiveAngle - 180.0 + getSkinnable().getStartAngle() - 360) / angleStep;
         if (Double.compare(newValue, getSkinnable().getMinValue()) >= 0 && Double.compare(newValue, getSkinnable().getMaxValue()) <= 0) {
             ROTATE.setAngle(interactiveAngle);
             value.setText(String.format(Locale.US, "%.1f", newValue));
             resizeUnitAndValue();
         }
 
+    }
+
+    private void fadeBackToInteractive() {
+        FadeTransition fadeUnitOut = new FadeTransition(Duration.millis(425), unit);
+        fadeUnitOut.setFromValue(1.0);
+        fadeUnitOut.setToValue(0.0);
+        FadeTransition fadeValueOut = new FadeTransition(Duration.millis(425), value);
+        fadeValueOut.setFromValue(1.0);
+        fadeValueOut.setToValue(0.0);
+
+        PauseTransition pause = new PauseTransition(Duration.millis(50));
+
+        FadeTransition fadeUnitIn = new FadeTransition(Duration.millis(425), unit);
+        fadeUnitIn.setFromValue(0.0);
+        fadeUnitIn.setToValue(1.0);
+        FadeTransition fadeValueIn = new FadeTransition(Duration.millis(425), value);
+        fadeValueIn.setFromValue(0.0);
+        fadeValueIn.setToValue(1.0);
+        ParallelTransition parallelIn = new ParallelTransition(fadeUnitIn, fadeValueIn);
+
+        ParallelTransition parallelOut = new ParallelTransition(fadeUnitOut, fadeValueOut);
+        parallelOut.setOnFinished(event -> {
+            unit.setText("Interactive");
+            value.setText("");
+            resizeUnitAndValue();
+        });
+
+        SequentialTransition sequence = new SequentialTransition(parallelOut, pause, parallelIn);
+        sequence.play();
     }
 
     private void rotateNeedle() {
@@ -491,8 +621,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         if (getSkinnable().isAnimated()) {
             timeline.stop();
-            final KeyValue KEY_VALUE      = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
-            final KeyFrame KEY_FRAME      = new KeyFrame(getSkinnable().getAnimationTime(), KEY_VALUE);
+            final KeyValue KEY_VALUE = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
+            final KeyFrame KEY_FRAME = new KeyFrame(getSkinnable().getAnimationTime(), KEY_VALUE);
             timeline.getKeyFrames().setAll(KEY_FRAME);
             timeline.play();
         } else {
@@ -657,6 +787,18 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         ticksAndSectionsCanvas.setCacheHint(CacheHint.QUALITY);
 
         drawMarkers();
+
+        minMeasuredValue.setPrefSize(0.03 * size, 0.03 * size);
+        minMeasuredValue.relocate((size - minMeasuredValue.getPrefWidth()) * 0.5, size * 0.11);
+        minMeasuredValueRotate.setPivotX(minMeasuredValue.getPrefWidth() * 0.5);
+        minMeasuredValueRotate.setPivotY(size * 0.39);
+        minMeasuredValueRotate.setAngle(getSkinnable().getMinMeasuredValue() * angleStep - 180 - getSkinnable().getStartAngle());
+
+        maxMeasuredValue.setPrefSize(0.03 * size, 0.03 * size);
+        maxMeasuredValue.relocate((size - maxMeasuredValue.getPrefWidth()) * 0.5, size * 0.11);
+        maxMeasuredValueRotate.setPivotX(maxMeasuredValue.getPrefWidth() * 0.5);
+        maxMeasuredValueRotate.setPivotY(size * 0.39);
+        maxMeasuredValueRotate.setAngle(getSkinnable().getMaxMeasuredValue() * angleStep - 180 - getSkinnable().getStartAngle());
 
         threshold.setPrefSize(0.03 * size, 0.0275 * size);
         threshold.relocate((size - threshold.getPrefWidth()) * 0.5, size * 0.11);

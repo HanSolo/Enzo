@@ -133,10 +133,16 @@ public class Gauge extends Control {
     private DoubleProperty                       maxValue;
     private double                               _threshold;
     private DoubleProperty                       threshold;
+    private boolean                              _thresholdVisible;
+    private BooleanProperty                      thresholdVisible;
     private double                               _minMeasuredValue;
     private DoubleProperty                       minMeasuredValue;
+    private boolean                              _minMeasuredValueVisible;
+    private BooleanProperty                      minMeasuredValueVisible;
     private double                               _maxMeasuredValue;
     private DoubleProperty                       maxMeasuredValue;
+    private boolean                              _maxMeasuredValueVisible;
+    private BooleanProperty                      maxMeasuredValueVisible;
     private int                                  _noOfDecimals;
     private IntegerProperty                      noOfDecimals;
     private String                               _title;
@@ -197,32 +203,35 @@ public class Gauge extends Control {
     // ******************** Constructors **************************************
     public Gauge() {
         getStyleClass().add("gauge");
-        _value                = 0;
-        _oldValue             = 0;
-        _minValue             = 0;
-        _maxValue             = 100;
-        _threshold            = 50;
-        _minMeasuredValue     = 100;
-        _maxMeasuredValue     = 0;
-        _noOfDecimals         = 2;
-        _title                = "title";
-        _unit                 = "unit";
-        _animated             = true;
-        _startAngle           = 320;
-        _angleRange           = 280;
-        _clockwise            = true;
-        _needleType           = NeedleType.STANDARD;
-        _needleColor          = Color.RED;
-        _tickLabelOrientation = TickLabelOrientation.HORIZONTAL;
-        _numberFormat         = NumberFormat.STANDARD;
-        sections              = FXCollections.observableArrayList();
-        markers               = FXCollections.observableHashMap();
-        _majorTickSpace       = 10;
-        _minorTickSpace       = 1;
-        animationTime         = Duration.millis(800);
-        _plainValue           = true;
-        _histogramEnabled     = false;
-        _dropShadowEnabled    = true;
+        _value                   = 0;
+        _oldValue                = 0;
+        _minValue                = 0;
+        _maxValue                = 100;
+        _threshold               = 50;
+        _thresholdVisible        = false;
+        _minMeasuredValue        = 100;
+        _minMeasuredValueVisible = false;
+        _maxMeasuredValue        = 0;
+        _maxMeasuredValueVisible = false;
+        _noOfDecimals            = 2;
+        _title                   = "title";
+        _unit                    = "unit";
+        _animated                = true;
+        _startAngle              = 320;
+        _angleRange              = 280;
+        _clockwise               = true;
+        _needleType              = NeedleType.STANDARD;
+        _needleColor             = Color.RED;
+        _tickLabelOrientation    = TickLabelOrientation.HORIZONTAL;
+        _numberFormat            = NumberFormat.STANDARD;
+        sections                 = FXCollections.observableArrayList();
+        markers                  = FXCollections.observableHashMap();
+        _majorTickSpace          = 10;
+        _minorTickSpace          = 1;
+        animationTime            = Duration.millis(800);
+        _plainValue              = true;
+        _histogramEnabled        = false;
+        _dropShadowEnabled       = true;
     }
 
 
@@ -238,13 +247,6 @@ public class Gauge extends Control {
         } else {
             _oldValue = value.get();
             value.set(clamp(getMinValue(), getMaxValue(), VALUE));
-        }
-
-        if (getValue() < getMinMeasuredValue()) {
-            setMinMeasuredValue(_value);
-        }
-        if (getValue() > getMaxMeasuredValue()) {
-            setMaxMeasuredValue(_value);
         }
     }
     public final ReadOnlyDoubleProperty valueProperty() {
@@ -314,7 +316,7 @@ public class Gauge extends Control {
     public final double getMinMeasuredValue() {
         return null == minMeasuredValue ? _minMeasuredValue : minMeasuredValue.get();
     }
-    private final void setMinMeasuredValue(final double MIN_MEASURED_VALUE) {
+    public final void setMinMeasuredValue(final double MIN_MEASURED_VALUE) {
         if (null == minMeasuredValue) {
             _minMeasuredValue = MIN_MEASURED_VALUE;
         } else {
@@ -331,7 +333,7 @@ public class Gauge extends Control {
     public final double getMaxMeasuredValue() {
         return null == maxMeasuredValue ? _maxMeasuredValue : maxMeasuredValue.get();
     }
-    private final void setMaxMeasuredValue(final double MAX_MEASURED_VALUE) {
+    public final void setMaxMeasuredValue(final double MAX_MEASURED_VALUE) {
         if (null == maxMeasuredValue) {
             _maxMeasuredValue = MAX_MEASURED_VALUE;
         } else {
@@ -349,6 +351,10 @@ public class Gauge extends Control {
         setMinMeasuredValue(_value);
     }
     public void resetMaxMeasuredValue() {
+        setMaxMeasuredValue(_value);
+    }
+    public void resetMinAndMaxMeasuredValue() {
+        setMinMeasuredValue(_value);
         setMaxMeasuredValue(_value);
     }
 
@@ -683,6 +689,57 @@ public class Gauge extends Control {
             dropShadowEnabled = new SimpleBooleanProperty(this, "dropShadowEnabled", _dropShadowEnabled);
         }
         return dropShadowEnabled;
+    }
+
+    public final boolean isThresholdVisible() {
+        return null == thresholdVisible ? _thresholdVisible : thresholdVisible.get();
+    }
+    public final void setThresholdVisible(final boolean THRESHOLD_VISIBLE) {
+        if (null == thresholdVisible) {
+            _thresholdVisible = THRESHOLD_VISIBLE;
+        } else {
+            thresholdVisible.set(THRESHOLD_VISIBLE);
+        }
+    }
+    public final BooleanProperty thresholdVisibleProperty() {
+        if (null == thresholdVisible) {
+            thresholdVisible = new SimpleBooleanProperty(this, "thresholdVisible", _thresholdVisible);
+        }
+        return thresholdVisible;
+    }
+
+    public final boolean isMinMeasuredValueVisible() {
+        return null == minMeasuredValueVisible ? _minMeasuredValueVisible : minMeasuredValueVisible.get();
+    }
+    public final void setMinMeasuredValueVisible(final boolean MIN_MEASURED_VALUE_VISIBLE) {
+        if (null == minMeasuredValueVisible) {
+            _minMeasuredValueVisible = MIN_MEASURED_VALUE_VISIBLE;
+        } else {
+            minMeasuredValueVisible.set(MIN_MEASURED_VALUE_VISIBLE);
+        }
+    }
+    public final BooleanProperty minMeasuredValueVisibleProperty() {
+        if (null == minMeasuredValueVisible) {
+            minMeasuredValueVisible = new SimpleBooleanProperty(this, "minMeasuredValueVisible", _minMeasuredValueVisible);
+        }
+        return minMeasuredValueVisible;
+    }
+
+    public final boolean isMaxMeasuredValueVisible() {
+        return null == maxMeasuredValueVisible ? _maxMeasuredValueVisible : maxMeasuredValueVisible.get();
+    }
+    public final void setMaxMeasuredValueVisible(final boolean MAX_MEASURED_VALUE_VISIBLE) {
+        if (null == maxMeasuredValueVisible) {
+            _maxMeasuredValueVisible = MAX_MEASURED_VALUE_VISIBLE;
+        } else {
+            maxMeasuredValueVisible.set(MAX_MEASURED_VALUE_VISIBLE);
+        }
+    }
+    public final BooleanProperty maxMeasuredValueVisibleProperty() {
+        if (null == maxMeasuredValueVisible) {
+            maxMeasuredValueVisible = new SimpleBooleanProperty(this, "maxMeasuredValueVisible", _maxMeasuredValueVisible);
+        }
+        return maxMeasuredValueVisible;
     }
 
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {

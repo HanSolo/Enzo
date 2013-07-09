@@ -18,48 +18,50 @@
  * GAUGE class                                                                *
  *****************************************************************************/
 .gauge {
-    -fx-skin         : "eu.hansolo.enzo.gauge.skin.GaugeSkin";
-    -base            : black;
-    -background      : ladder(-base,
-                               linear-gradient(to bottom, rgb(90, 90, 90) 0%, rgb(70, 70, 70) 100%) 49%,
-                               linear-gradient(to bottom, rgb(245,245,245) 0%, rgb(235,235,235) 100%) 50%);
-    -background      : ladder(-base, black 49%, white 50%);
-    -outer-border    : linear-gradient(to bottom,
-                                       rgb(224,224,224) 0%,
-                                       rgb(133,133,133) 26%,
-                                       rgb(84,84,84) 100%);
-    -highlight-border: linear-gradient(to bottom,
-                                       rgb(255,255,255) 0%,
-                                       rgb(146,146,147) 50%,
-                                       rgb(135,136,138) 100%);
-    -inner-border    : linear-gradient(to bottom,
-                                       rgb(71,72,72) 0%,
-                                       rgb(110,106,107) 50%,
-                                       rgb(186,185,187) 100%);
-    -body            : linear-gradient(to bottom,
-                                       rgb(245,245,245) 0%,
-                                       rgb(235,235,235) 100%);
-    -needle          : #F8907D;
-    -threshold       : red;
-    -knob            : white;
-    -tick-mark-fill  : black;
-    -tick-label-fill : black;
-    -section0-fill   : rgba(  0,   0, 178, 0.5);
-    -section1-fill   : rgba(  0, 128, 255, 0.5);
-    -section2-fill   : rgba(  0, 255, 255, 0.5);
-    -section3-fill   : rgba(  0, 255,  64, 0.5);
-    -section4-fill   : rgba(128, 255,   0, 0.5);
-    -section5-fill   : rgba(255, 255,   0, 0.5);
-    -section6-fill   : rgba(255, 191,   0, 0.5);
-    -section7-fill   : rgba(255, 128,   0, 0.5);
-    -section8-fill   : rgba(255,  64,   0, 0.5);
-    -section9-fill   : rgba(255,   0,   0, 0.5);
-    -histogram-fill  : rgba(  0, 200,   0, 0.3);
-    -marker0-fill    : rgb(  0, 200,   0);
-    -marker1-fill    : rgb(200, 200,   0);
-    -marker2-fill    : rgb(200,   0,   0);
-    -marker3-fill    : rgb(  0,   0, 200);
-    -marker4-fill    : rgb(  0, 200, 200);
+    -fx-skin           : "eu.hansolo.enzo.gauge.skin.GaugeSkin";
+    -base              : black;
+    -background        : ladder(-base,
+                                 linear-gradient(to bottom, rgb(90, 90, 90) 0%, rgb(70, 70, 70) 100%) 49%,
+                                 linear-gradient(to bottom, rgb(245,245,245) 0%, rgb(235,235,235) 100%) 50%);
+    -background        : ladder(-base, black 49%, white 50%);
+    -outer-border      : linear-gradient(to bottom,
+                                         rgb(224,224,224) 0%,
+                                         rgb(133,133,133) 26%,
+                                         rgb(84,84,84) 100%);
+    -highlight-border  : linear-gradient(to bottom,
+                                         rgb(255,255,255) 0%,
+                                         rgb(146,146,147) 50%,
+                                         rgb(135,136,138) 100%);
+    -inner-border      : linear-gradient(to bottom,
+                                         rgb(71,72,72) 0%,
+                                         rgb(110,106,107) 50%,
+                                         rgb(186,185,187) 100%);
+    -body              : linear-gradient(to bottom,
+                                         rgb(245,245,245) 0%,
+                                         rgb(235,235,235) 100%);
+    -needle            : #F8907D;
+    -min-measured-value: cornflowerblue;
+    -max-measured-value: cornflowerblue;
+    -threshold         : red;
+    -knob              : white;
+    -tick-mark-fill    : black;
+    -tick-label-fill   : black;
+    -section0-fill     : rgba(  0,   0, 178, 0.5);
+    -section1-fill     : rgba(  0, 128, 255, 0.5);
+    -section2-fill     : rgba(  0, 255, 255, 0.5);
+    -section3-fill     : rgba(  0, 255,  64, 0.5);
+    -section4-fill     : rgba(128, 255,   0, 0.5);
+    -section5-fill     : rgba(255, 255,   0, 0.5);
+    -section6-fill     : rgba(255, 191,   0, 0.5);
+    -section7-fill     : rgba(255, 128,   0, 0.5);
+    -section8-fill     : rgba(255,  64,   0, 0.5);
+    -section9-fill     : rgba(255,   0,   0, 0.5);
+    -histogram-fill    : rgba(  0, 200,   0, 0.3);
+    -marker0-fill      : rgb(  0, 200,   0);
+    -marker1-fill      : rgb(200, 200,   0);
+    -marker2-fill      : rgb(200,   0,   0);
+    -marker3-fill      : rgb(  0,   0, 200);
+    -marker4-fill      : rgb(  0, 200, 200);
 }
 
 
@@ -71,6 +73,40 @@
     -fx-background-insets: 0, 6, 7, 13;
     -fx-background-radius: 1000;
     -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.3), 20, 0.0, 0, 20);
+}
+
+
+/******************************************************************************
+ * GAUGE min-measured-value                                                   *
+ *****************************************************************************/
+.gauge .min-measured-value {
+    -fx-background-color : derive(-min-measured-value, -20%), -min-measured-value;
+    -fx-background-insets: 0, 1;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 7.6716 5.5503 L 10.5 2.7218 L 19.2782 11.5 L 10.5 20.2782 L 7.6716 17.4497 L 13.6213 11.5 L 7.6716 5.5503 ZM 0 12 C 0 18.6275 5.3725 24 12 24 C 18.6275 24 24 18.6275 24 12 C 24 5.3725 18.6275 0 12 0 C 5.3725 0 0 5.3725 0 12 Z";
+    -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
+}
+.gauge:interactive .min-measured-value {
+    -fx-background-color : derive(-min-measured-value, -20%), -min-measured-value;
+    -fx-background-insets: -3, -2;
+    -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
+}
+
+
+/******************************************************************************
+ * GAUGE max-measured-value                                                   *
+ *****************************************************************************/
+.gauge .max-measured-value {
+    -fx-background-color : derive(-max-measured-value, -20%), -max-measured-value;
+    -fx-background-insets: 0, 1;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 16.2782 5.5503 L 10.3284 11.5 L 16.2782 17.4497 L 13.4497 20.2782 L 4.6716 11.5 L 13.4497 2.7218 L 16.2782 5.5503 ZM 0 12 C 0 18.6275 5.3725 24 12 24 C 18.6275 24 24 18.6275 24 12 C 24 5.3725 18.6275 0 12 0 C 5.3725 0 0 5.3725 0 12 Z";
+    -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
+}
+.gauge:interactive .max-measured-value {
+    -fx-background-color : derive(-max-measured-value, -20%), -max-measured-value;
+    -fx-background-insets: -3, -2;
+    -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
 
 

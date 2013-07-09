@@ -63,6 +63,9 @@ public class Demo extends Application {
         control.setPrefSize(400, 400);
 
         control.setThreshold(70);
+        control.setThresholdVisible(true);
+        control.setMinMeasuredValueVisible(true);
+        control.setMaxMeasuredValueVisible(true);
         control.setOnThresholdExceeded(observable -> System.out.println("Threshold exceeded") );
         control.setOnThresholdUnderrun(observable -> System.out.println("Threshold underrun"));
 
@@ -97,7 +100,6 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        //control.setTouchMode(true);
         timer.start();
 
         calcNoOfNodes(scene.getRoot());
