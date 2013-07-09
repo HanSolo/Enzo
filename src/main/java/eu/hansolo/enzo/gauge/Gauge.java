@@ -143,14 +143,15 @@ public class Gauge extends Control {
     private DoubleProperty                       maxMeasuredValue;
     private boolean                              _maxMeasuredValueVisible;
     private BooleanProperty                      maxMeasuredValueVisible;
-    private int                                  _noOfDecimals;
-    private IntegerProperty                      noOfDecimals;
+    private int                                  _decimals;
+    private IntegerProperty                      decimals;
     private String                               _title;
     private StringProperty                       title;
     private String                               _unit;
     private StringProperty                       unit;
     private boolean                              _animated;
     private BooleanProperty                      animated;
+    private double                               animationDuration;
     private double                               _startAngle;
     private DoubleProperty                       startAngle;
     private double                               _angleRange;
@@ -166,12 +167,15 @@ public class Gauge extends Control {
     private Gauge.NumberFormat                   _numberFormat;
     private ObjectProperty<NumberFormat>         numberFormat;
     private ObservableList<Section>              sections;
+    private boolean                              _sectionsVisible;
+    private BooleanProperty                      sectionsVisible;
     private ObservableMap<Marker, Rotate>        markers;
+    private boolean                              _markersVisible;
+    private BooleanProperty                      markersVisible;
     private double                               _majorTickSpace;
     private DoubleProperty                       majorTickSpace;
     private double                               _minorTickSpace;
     private DoubleProperty                       minorTickSpace;
-    private Duration                             animationTime;
     private boolean                              _plainValue;
     private BooleanProperty                      plainValue;
     private boolean                              _histogramEnabled;
@@ -213,7 +217,7 @@ public class Gauge extends Control {
         _minMeasuredValueVisible = false;
         _maxMeasuredValue        = 0;
         _maxMeasuredValueVisible = false;
-        _noOfDecimals            = 2;
+        _decimals                = 2;
         _title                   = "title";
         _unit                    = "unit";
         _animated                = true;
@@ -225,10 +229,12 @@ public class Gauge extends Control {
         _tickLabelOrientation    = TickLabelOrientation.HORIZONTAL;
         _numberFormat            = NumberFormat.STANDARD;
         sections                 = FXCollections.observableArrayList();
+        _sectionsVisible         = true;
         markers                  = FXCollections.observableHashMap();
+        _markersVisible          = true;
         _majorTickSpace          = 10;
         _minorTickSpace          = 1;
-        animationTime            = Duration.millis(800);
+        animationDuration        = 800;
         _plainValue              = true;
         _histogramEnabled        = false;
         _dropShadowEnabled       = true;
@@ -358,21 +364,21 @@ public class Gauge extends Control {
         setMaxMeasuredValue(_value);
     }
 
-    public final int getNoOfDecimals() {
-        return null == noOfDecimals ? _noOfDecimals : noOfDecimals.get();
+    public final int getDecimals() {
+        return null == decimals ? _decimals : decimals.get();
     }
-    public final void setNoOfDecimals(final int NO_OF_DECIMALS) {
-        if (null == noOfDecimals) {
-            _noOfDecimals = clamp(0, 10, NO_OF_DECIMALS);
+    public final void setDecimals(final int DECIMALS) {
+        if (null == decimals) {
+            _decimals = clamp(0, 3, DECIMALS);
         } else {
-            noOfDecimals.set(clamp(0, 10, NO_OF_DECIMALS));
+            decimals.set(clamp(0, 3, DECIMALS));
         }
     }
-    public final IntegerProperty noOfDecimalsProperty() {
-        if (null == noOfDecimals) {
-            noOfDecimals = new SimpleIntegerProperty(this, "noOfDecimals", _noOfDecimals);
+    public final IntegerProperty decimalsProperty() {
+        if (null == decimals) {
+            decimals = new SimpleIntegerProperty(this, "decimals", _decimals);
         }
-        return noOfDecimals;
+        return decimals;
     }
 
     public final String getTitle() {
@@ -443,11 +449,11 @@ public class Gauge extends Control {
         return startAngle;
     }
 
-    public final Duration getAnimationTime() {
-        return animationTime;
+    public final double getAnimationDuration() {
+        return animationDuration;
     }
-    public final void setAnimationTime(final Duration ANIMATION_TIME) {
-        animationTime = clamp(Duration.millis(20), Duration.millis(5000), ANIMATION_TIME);
+    public final void setAnimationDuration(final double ANIMATION_DURATION) {
+        animationDuration = clamp(20, 5000, ANIMATION_DURATION);
     }
 
     public final double getAngleRange() {
@@ -689,6 +695,40 @@ public class Gauge extends Control {
             dropShadowEnabled = new SimpleBooleanProperty(this, "dropShadowEnabled", _dropShadowEnabled);
         }
         return dropShadowEnabled;
+    }
+
+    public final boolean isSectionsVisible() {
+        return null == sectionsVisible ? _sectionsVisible : sectionsVisible.get();
+    }
+    public final void setSectionsVisible(final boolean SECTIONS_VISIBLE) {
+        if (null == sectionsVisible) {
+            _sectionsVisible = SECTIONS_VISIBLE;
+        } else {
+            sectionsVisible.set(SECTIONS_VISIBLE);
+        }
+    }
+    public final BooleanProperty sectionsVisibleProperty() {
+        if (null == sectionsVisible) {
+            sectionsVisible = new SimpleBooleanProperty(this, "sectionsVisible", _sectionsVisible);
+        }
+        return sectionsVisible;
+    }
+
+    public final boolean isMarkersVisible() {
+        return null == markersVisible ? _markersVisible : markersVisible.get();
+    }
+    public final void setMarkersVisible(final boolean MARKERS_VISIBLE) {
+        if (null == markersVisible) {
+            _markersVisible = MARKERS_VISIBLE;
+        } else {
+            markersVisible.set(MARKERS_VISIBLE);
+        }
+    }
+    public final BooleanProperty markersVisibleProperty() {
+        if (null == markersVisible) {
+            markersVisible = new SimpleBooleanProperty(this, "markersVisible", _markersVisible);
+        }
+        return markersVisible;
     }
 
     public final boolean isThresholdVisible() {
