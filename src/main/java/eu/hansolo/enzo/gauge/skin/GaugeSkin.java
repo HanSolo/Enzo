@@ -525,19 +525,20 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             }
         }
 
-        double sinValue;
-        double cosValue;
-        double offset = getSkinnable().getStartAngle();
-        Point2D center = new Point2D(size * 0.5, size * 0.5);
+        double  sinValue;
+        double  cosValue;
+        double  startAngle = getSkinnable().getStartAngle();
+        double  orthText   = Gauge.TickLabelOrientation.ORTHOGONAL == getSkinnable().getTickLabelOrientation() ? 0.33 : 0.31;
+        Point2D center     = new Point2D(size * 0.5, size * 0.5);
         for (double angle = 0, counter = getSkinnable().getMinValue() ; Double.compare(counter, getSkinnable().getMaxValue()) <= 0 ; angle -= angleStep, counter++) {
-            sinValue = Math.sin(Math.toRadians(angle + offset));
-            cosValue = Math.cos(Math.toRadians(angle + offset));
+            sinValue = Math.sin(Math.toRadians(angle + startAngle));
+            cosValue = Math.cos(Math.toRadians(angle + startAngle));
 
             Point2D innerMainPoint   = new Point2D(center.getX() + size * 0.368 * sinValue, center.getY() + size * 0.368 * cosValue);
             Point2D innerMediumPoint = new Point2D(center.getX() + size * 0.388 * sinValue, center.getY() + size * 0.388 * cosValue);
             Point2D innerMinorPoint  = new Point2D(center.getX() + size * 0.3975 * sinValue, center.getY() + size * 0.3975 * cosValue);
             Point2D outerPoint       = new Point2D(center.getX() + size * 0.432 * sinValue, center.getY() + size * 0.432 * cosValue);
-            Point2D textPoint        = new Point2D(center.getX() + size * 0.31 * sinValue, center.getY() + size * 0.31 * cosValue);
+            Point2D textPoint        = new Point2D(center.getX() + size * orthText * sinValue, center.getY() + size * orthText * cosValue);
 
             CTX.setStroke(getSkinnable().getTickMarkFill());
             if (counter % getSkinnable().getMajorTickSpace() == 0) {
@@ -547,11 +548,31 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
                 // Draw text
                 CTX.save();
+                CTX.translate(textPoint.getX(), textPoint.getY());
+                switch(getSkinnable().getTickLabelOrientation()) {
+                    case ORTHOGONAL:
+                        if ((360 - startAngle - angle) % 360 > 90 && (360 - startAngle - angle) % 360 < 270) {
+                            CTX.rotate((180 - startAngle - angle) % 360);
+                        } else {
+                            CTX.rotate((360 - startAngle - angle) % 360);
+                        }
+                        break;
+                    case TANGENT:
+                        if ((360 - startAngle - angle - 90) % 360 > 90 && (360 - startAngle - angle - 90) % 360 < 270) {
+                            CTX.rotate((90 - startAngle - angle) % 360);
+                        } else {
+                            CTX.rotate((270 - startAngle - angle) % 360);
+                        }
+                        break;
+                    case HORIZONTAL:
+                    default:
+                        break;
+                }
                 CTX.setFont(Font.font("Verdana", FontWeight.NORMAL, 0.045 * size));
                 CTX.setTextAlign(TextAlignment.CENTER);
                 CTX.setTextBaseline(VPos.CENTER);
                 CTX.setFill(getSkinnable().getTickLabelFill());
-                CTX.fillText(Integer.toString((int) counter), textPoint.getX(), textPoint.getY());
+                CTX.fillText(Integer.toString((int) counter), 0, 0);
                 CTX.restore();
             } else if (getSkinnable().getMinorTickSpace() % 2 != 0 && counter % 5 == 0) {
                 CTX.setLineWidth(size * 0.0035);
@@ -663,12 +684,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         title.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.06));
         title.setTranslateX((size - title.getLayoutBounds().getWidth()) * 0.5);
-        title.setTranslateY(size * 0.85);
+        title.setTranslateY(size * 0.74);
 
         resizeUnitAndValue();
-
-        //value.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.04));
-        //value.setTranslateX((size - interactiveText.getLayoutBounds().getWidth()) * 0.5);
-        //value.setTranslateY(size * 0.51);
     }
 }

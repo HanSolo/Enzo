@@ -48,14 +48,14 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = new Gauge();
-        //control.setStartAngle(330);
-        //control.setAngleRange(300);
-        control.setStartAngle(320);
+        control.setStartAngle(330);
+        control.setAngleRange(300);
         //control.setStyle("-tick-label-fill: blue;");
         control.setSections(new Section(40, 60),
                             new Section(60, 80),
                             new Section(80, 100));
         control.setMajorTickSpace(20);
+        control.setTickLabelOrientation(Gauge.TickLabelOrientation.ORTHOGONAL);
 
         //control.setMinorTickSpace(2);
         //control.setHistogramEnabled(true);
@@ -70,6 +70,8 @@ public class Demo extends Application {
         marker0.setOnMarkerExceeded(observable -> System.out.println("Marker exceeded"));
         marker0.setOnMarkerUnderrun(observable -> System.out.println("Marker underrun"));
         control.addMarker(marker0);
+
+        System.out.println(control.getStartAngle());
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {

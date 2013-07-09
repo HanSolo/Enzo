@@ -73,7 +73,7 @@ public class Gauge extends Control {
         }
     }
     public static enum TickLabelOrientation {
-        NORMAL,
+        ORTHOGONAL,
         HORIZONTAL,
         TANGENT
     }
@@ -208,7 +208,7 @@ public class Gauge extends Control {
         _title                = "title";
         _unit                 = "unit";
         _animated             = true;
-        _startAngle           = -40;
+        _startAngle           = 320;
         _angleRange           = 280;
         _clockwise            = true;
         _needleType           = NeedleType.STANDARD;
