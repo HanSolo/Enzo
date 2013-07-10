@@ -34,7 +34,8 @@ public class Clock extends Control {
     public enum Design {
         IOS6,
         DB,
-        BRAUN
+        BRAUN,
+        BOSCH
     }
     private boolean                _discreteSecond;
     private BooleanProperty        discreteSecond;

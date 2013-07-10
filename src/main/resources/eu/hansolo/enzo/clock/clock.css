@@ -18,7 +18,7 @@
  * CLOCK class                                                                *
  *****************************************************************************/
 .clock {
-    -fx-skin                : "eu.hansolo.enzo.clock.skin.ClockSkin";
+    -fx-skin             : "eu.hansolo.enzo.clock.skin.ClockSkin";
     -clock-background    : white;
     -hour-pointer-color  : rgb(44, 44, 44);
     -minute-pointer-color: rgb(44, 44, 44);
@@ -48,6 +48,14 @@
     -minor-tick-color    : rgb(240, 240, 240);
     -center-knob-color   : rgb(240, 240, 240);
 }
+.clock .night-mode.bosch {
+    -clock-background    : rgb(10, 10, 10);
+    -hour-pointer-color  : rgb(240, 240, 240);
+    -minute-pointer-color: rgb(240, 240, 240);
+    -major-tick-color    : rgb(240, 240, 240);
+    -minor-tick-color    : rgb(240, 240, 240);
+    -center-knob-color   : rgb(240, 240, 240);
+}
 
 
 /******************************************************************************
@@ -62,6 +70,14 @@
     -center-knob-color   : rgb(44, 44, 44);
 }
 .clock .day-mode-braun {
+    -hour-pointer-color  : rgb(10, 10, 10);
+    -minute-pointer-color: rgb(10, 10, 10);
+    -major-tick-color    : rgb(10, 10, 10);
+    -minor-tick-color    : rgb(10, 10, 10);
+    -center-knob-color   : rgb(10, 10, 10);
+}
+.clock .day-mode-bosch {
+    -clock-background    : rgb(226, 226, 221);
     -hour-pointer-color  : rgb(10, 10, 10);
     -minute-pointer-color: rgb(10, 10, 10);
     -major-tick-color    : rgb(10, 10, 10);
@@ -294,6 +310,76 @@
     -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
 }
 .clock .foreground-db {
+    -fx-background-color : rgba(255, 255, 255, 0.2);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 4.9839 72.482 C 18.0152 31.1014 53.9389 1.0572 100.1166 1.0572 C 146.5602 1.0572 182.6676 31.4482 195.4718 73.1978 C 196.9087 77.883 150.0777 100.1673 100 100 C 50.2169 99.8337 3.4843 77.2438 4.9839 72.482 Z";
+}
+
+
+/******************************************************************************
+ * CLOCK Bosch Style                                                          *
+ *****************************************************************************/
+.clock .background-bosch {
+    -fx-background-color : derive(-clock-background, -50%),
+                           linear-gradient(from 16% 16% to 83% 83%,
+                                           derive(-clock-background, -11%) 0%,
+                                           -clock-background 100%);
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+    -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.45), 3, 0.0, 0, 2);
+}
+.clock .minor-tick-bosch {
+    -fx-background-color : -minor-tick-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-stroke           : transparent;
+}
+.clock .major-tick-bosch {
+    -fx-background-color : -major-tick-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+}
+.clock .hour-pointer-bosch {
+    -fx-background-color : -hour-pointer-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 98.5 44.15 C 98.5 42.275 101.5 42.275 101.5 44.15 L 103.9 119 L 103.9 119 L 96.1 119 L 96.1 119 L 98.5 44.15 Z";
+}
+.clock .minute-pointer-bosch {
+    -fx-background-color : -minute-pointer-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 98.5 13.2884 C 98.5 10.6372 101.5 10.6372 101.5 13.2884 L 103.9 119 L 103.9 119 L 96.1 119 L 96.1 119 L 98.5 13.2884 Z";
+}
+.clock .second-pointer-bosch {
+    -fx-background-color : transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-padding          : 0;
+    -fx-scale-shape      : true;
+    -fx-shape            : "";
+}
+.clock .center-knob-bosch {
+    -fx-background-color : derive(-center-knob-color, 30%);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0em;
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
+    -fx-effect           : innershadow(two-pass-box, white, 10, 0.0, 0, 2);
+}
+.clock .foreground-bosch {
     -fx-background-color : rgba(255, 255, 255, 0.2);
     -fx-background-insets: 0;
     -fx-background-radius: 0em;

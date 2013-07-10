@@ -47,7 +47,7 @@ public class Demo extends Application {
     @Override public void init() {
         clock1 = ClockBuilder.create()
                              .prefSize(400, 400)
-                             .design(Clock.Design.IOS6)
+                             .design(Clock.Design.BOSCH)
                              .build();
         clock2 = ClockBuilder.create()
                              .prefSize(400, 400)

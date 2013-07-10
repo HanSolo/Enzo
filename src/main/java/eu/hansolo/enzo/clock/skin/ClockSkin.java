@@ -26,6 +26,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
@@ -63,6 +65,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
     private Pane                pane;
     private String              nightDayStyleClass;
     private Region              background;
+    private Canvas              logoLayer;
+    private GraphicsContext     ctx;
     private Region              hourPointer;
     private Region              hourPointerFlour;
     private Region              minutePointer;
@@ -103,8 +107,6 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
     // ******************** Constructors **************************************
     public ClockSkin(final Clock CONTROL) {
         super(CONTROL);
-        pane    = new Pane();
-
         nightDayStyleClass        = getSkinnable().isNightMode() ? "night-mode" : "day-mode";
 
         hourPointerWidthFactor    = 0.04;
@@ -183,14 +185,21 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
     }
 
     private void initGraphics() {
+        pane    = new Pane();
+
         background = new Region();
         if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             background.getStyleClass().setAll("background-ios6");
-        }else if (Clock.Design.DB == getSkinnable().getDesign()) {
+        } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             background.getStyleClass().setAll("background-db");
         } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             background.getStyleClass().setAll("background-braun");
+        } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            background.getStyleClass().setAll("background-bosch");
         }
+
+        logoLayer = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
+        ctx       = logoLayer.getGraphicsContext2D();
 
         String majorTickStyleClass;
         String minorTickStyleClass;
@@ -200,6 +209,9 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             majorTickStyleClass = "major-tick-db";
             minorTickStyleClass = "minor-tick-db";
+        } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            majorTickStyleClass = "major-tick-bosch";
+            minorTickStyleClass = "minor-tick-bosch";
         } else {
             majorTickStyleClass = "major-tick-braun";
             minorTickStyleClass = "minor-tick-braun";
@@ -242,6 +254,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             hourPointer.getStyleClass().setAll("hour-pointer-db");
         } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             hourPointer.getStyleClass().setAll("hour-pointer-braun");
+        } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            hourPointer.getStyleClass().setAll("hour-pointer-bosch");
         }
         hourPointer.getTransforms().setAll(hourAngle);
 
@@ -261,6 +275,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             minutePointer.getStyleClass().setAll("minute-pointer-db");
         } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             minutePointer.getStyleClass().setAll("minute-pointer-braun");
+        } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            minutePointer.getStyleClass().setAll("minute-pointer-bosch");
         }
         minutePointer.getTransforms().setAll(minuteAngle);
 
@@ -284,12 +300,15 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         pointerGroup.getChildren().setAll(minutePointerFlour, minutePointer, hourPointerFlour, hourPointer);
 
         secondPointer = new Region();
+        secondPointer.setOpacity(1);
         if (Clock.Design.IOS6 == getSkinnable().getDesign()) {
             secondPointer.getStyleClass().setAll("second-pointer-ios6");
         } else if (Clock.Design.DB == getSkinnable().getDesign()) {
             secondPointer.getStyleClass().setAll("second-pointer-db");
         } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             secondPointer.getStyleClass().setAll("second-pointer-braun");
+        } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            secondPointer.setOpacity(0);
         }
         secondPointer.getTransforms().setAll(secondAngle);
 
@@ -325,6 +344,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             centerKnob.getStyleClass().setAll("center-knob-db");
         } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             centerKnob.getStyleClass().setAll("center-knob-braun");
+        } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            centerKnob.getStyleClass().setAll("center-knob-bosch");
         }
 
         foreground = new Region();
@@ -334,10 +355,12 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             foreground.getStyleClass().setAll("foreground-db");
         } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
             foreground.getStyleClass().setAll("foreground-braun");
+        } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            foreground.getStyleClass().setAll("foreground-bosch");
         }
         foreground.setOpacity(getSkinnable().isHighlightVisible() ? 1 : 0);
 
-        pane.getChildren().setAll(background, tickMarkGroup, tickLabelGroup, pointerGroup, secondPointerGroup, centerKnob, foreground);
+        pane.getChildren().setAll(background, logoLayer, tickMarkGroup, tickLabelGroup, pointerGroup, secondPointerGroup, centerKnob, foreground);
 
         getChildren().setAll(pane);
 
@@ -394,6 +417,17 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
+    private void drawLogoLayer() {
+        ctx.clearRect(0, 0, size, size);
+        if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            ctx.setFill(getSkinnable().isNightMode() ? Color.rgb(240, 240, 240) : Color.rgb(10, 10, 10));
+            ctx.fillRect(size * 0.5 - 1, size * 0.18, 2, size * 0.27);
+            ctx.fillRect(size * 0.5 - 1, size * 0.55, 2, size * 0.27);
+            ctx.fillRect(size * 0.18, size * 0.5 - 1, size * 0.27, 2);
+            ctx.fillRect(size * 0.55, size * 0.5 - 1, size * 0.27, 2);
+        }
+    }
+
     private void updateDesign() {
         // Set day or night mode
         nightDayStyleClass = getSkinnable().isNightMode() ? "night-mode" : "day-mode";
@@ -436,6 +470,25 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             secondPointer.getStyleClass().setAll(nightDayStyleClass, "second-pointer-braun");
             centerKnob.getStyleClass().setAll(nightDayStyleClass, "center-knob-braun");
             foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-braun");
+        } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+            nightDayStyleClass = getSkinnable().isNightMode() ? "night-mode-bosch" : "day-mode-bosch";
+            background.getStyleClass().setAll(nightDayStyleClass, "background-bosch");
+            int index = 0;
+            for (double angle = 0 ; angle < 360 ; angle += 6) {
+                Region tick = ticks.get(index);
+                if (angle % 30 == 0) {
+                    tick.getStyleClass().setAll(nightDayStyleClass, "major-tick-bosch");
+                } else {
+                    tick.getStyleClass().setAll(nightDayStyleClass, "minor-tick-bosch");
+                }
+                ticks.add(tick);
+                index++;
+            }
+            hourPointer.getStyleClass().setAll(nightDayStyleClass, "hour-pointer-bosch");
+            minutePointer.getStyleClass().setAll(nightDayStyleClass, "minute-pointer-bosch");
+            secondPointer.getStyleClass().setAll(nightDayStyleClass, "second-pointer-bosch");
+            centerKnob.getStyleClass().setAll(nightDayStyleClass, "center-knob-bosch");
+            foreground.getStyleClass().setAll(nightDayStyleClass, "foreground-bosch");
         } else {
             background.getStyleClass().setAll(nightDayStyleClass, "background-db");
             int index = 0;
@@ -462,6 +515,9 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
 
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
+
+        logoLayer.setWidth(size);
+        logoLayer.setHeight(size);
 
         if (size > 0) {
             background.setPrefSize(size, size);
@@ -506,6 +562,25 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
                 minuteAngle.setPivotY(size * 0.87 * minutePointerHeightFactor);
                 secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
                 secondAngle.setPivotY(size * 0.8125 * secondPointerHeightFactor);
+            } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+                hourPointerWidthFactor    = 0.04;
+                hourPointerHeightFactor   = 0.54;  // ToDo: switch with minutePointerHeightFactor
+                minutePointerWidthFactor  = 0.04;
+                minutePointerHeightFactor = 0.38;  // ToDo: switch with hourPointerHeightFactor
+                secondPointerWidthFactor  = 0.09;
+                secondPointerHeightFactor = 0.53;
+                majorTickWidthFactor      = 0.02;
+                majorTickHeightFactor     = 0.145;
+                minorTickWidthFactor      = 0.006;
+                minorTickHeightFactor     = 0.07;
+                majorTickOffset           = 0.005;
+                minorTickOffset           = 0.04;
+                hourAngle.setPivotX(size * 0.5 * hourPointerWidthFactor);
+                hourAngle.setPivotY(size * 0.8240740741 * hourPointerHeightFactor);
+                minuteAngle.setPivotX(size * 0.5 * minutePointerWidthFactor);
+                minuteAngle.setPivotY(size * 0.75 * minutePointerHeightFactor);
+                secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
+                secondAngle.setPivotY(size * 0.8125 * secondPointerHeightFactor);
             } else {
                 hourPointerWidthFactor    = 0.04;
                 hourPointerHeightFactor   = 0.47;
@@ -526,6 +601,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
                 secondAngle.setPivotX(size * 0.5 * secondPointerWidthFactor);
                 secondAngle.setPivotY(size * secondPointerHeightFactor);
             }
+
+            drawLogoLayer();
 
             double radius = 0.4;
             double sinValue;
@@ -576,6 +653,9 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
                 hourPointerFlour.setPrefSize(size * hourPointerWidthFactor, size * hourPointerHeightFactor);
                 hourPointerFlour.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
                 hourPointerFlour.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.108));
+            } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+                hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
+                hourPointer.setTranslateY(size * 0.5 - (hourPointer.getPrefHeight()) + (hourPointer.getPrefHeight() * 0.1759259259));
             } else {
                 hourPointer.setTranslateX(size * 0.5 - (hourPointer.getPrefWidth() * 0.5));
                 hourPointer.setTranslateY(size * 0.5 - hourPointer.getPrefHeight());
@@ -591,6 +671,9 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
                 minutePointerFlour.setPrefSize(size * minutePointerWidthFactor, size * minutePointerHeightFactor);
                 minutePointerFlour.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
                 minutePointerFlour.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.128));
+            } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+                minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
+                minutePointer.setTranslateY(size * 0.5 - (minutePointer.getPrefHeight()) + (minutePointer.getPrefHeight() * 0.25));
             } else {
                 minutePointer.setTranslateX(size * 0.5 - (minutePointer.getPrefWidth() * 0.5));
                 minutePointer.setTranslateY(size * 0.5 - minutePointer.getPrefHeight());
@@ -612,6 +695,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
                 centerKnob.setPrefSize(size * 0.015, size * 0.015);
             } else if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 centerKnob.setPrefSize(size * 0.085, size * 0.085);
+            } else if (Clock.Design.BOSCH == getSkinnable().getDesign()) {
+                centerKnob.setPrefSize(size * 0.035, size * 0.035);
             } else {
                 centerKnob.setPrefSize(size * 0.1, size * 0.1);
             }
