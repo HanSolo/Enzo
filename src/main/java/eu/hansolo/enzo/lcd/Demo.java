@@ -78,8 +78,8 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = LcdBuilder.create()
-                            .prefWidth(528)
-                            .prefHeight(192)
+                            .prefWidth(1280)
+                            .prefHeight(400)
                             .styleClass(Lcd.STYLE_CLASS_YOCTOPUCE)
                             .foregroundShadowVisible(true)
                             .crystalOverlayVisible(true)
@@ -90,6 +90,7 @@ public class Demo extends Application {
                             .unit("°C")
                             .unitVisible(true)
                             .decimals(2)
+                            .animationDurationInMs(1500)
                             .minMeasuredValueDecimals(2)
                             .minMeasuredValueVisible(true)
                             .maxMeasuredValueDecimals(2)
@@ -102,7 +103,7 @@ public class Demo extends Application {
                             .lowerRightTextVisible(true)
                             .lowerRightText("Info")
                             //.valueFont(Lcd.LcdFont.BUS)
-                            .valueFont(Lcd.LcdFont.DIGITAL_BOLD)
+                            .valueFont(Lcd.LcdFont.LCD)
                             .animated(true)
                             .build();
         charge = 0.0;
@@ -110,7 +111,7 @@ public class Demo extends Application {
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
-                if (now > lastTimerCall + 3_000_000_000l) {
+                if (now > lastTimerCall + 5_000_000_000l) {
                     styleClassCounter ++;
                     if (styleClassCounter > 34) styleClassCounter = 0;
                     control.getStyleClass().setAll("lcd", STYLE_CLASSES[styleClassCounter]);

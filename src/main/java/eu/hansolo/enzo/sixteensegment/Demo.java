@@ -46,42 +46,35 @@ public class Demo extends Application {
     private SixteenSegment seg5;
 
 
-
     @Override public void init() {
         seg0 = SixteenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
+                                    .prefSize(200, 267)
                                     .character(0)
                                     .segmentStyle(SixteenSegment.SegmentStyle.RED)
                                     .build();
         seg1 = SixteenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
+                                    .prefSize(200, 267)
                                     .character(0)
                                     .dotOn(true)
                                     .segmentStyle(SixteenSegment.SegmentStyle.RED)
                                     .build();
         seg2 = SixteenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
+                                    .prefSize(200, 267)
                                     .character(0)
                                     .segmentStyle(SixteenSegment.SegmentStyle.RED)
                                     .build();
         seg3 = SixteenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
+                                    .prefSize(200, 267)
                                     .character(0)
                                     .segmentStyle(SixteenSegment.SegmentStyle.RED)
                                     .build();
         seg4 = SixteenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
+                                    .prefSize(200, 267)
                                     .character(Character.toString((char) 186))
                                     .segmentStyle(SixteenSegment.SegmentStyle.RED)
                                     .build();
         seg5 = SixteenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
+                                    .prefSize(200, 267)
                                     .character("C")
                                     .segmentStyle(SixteenSegment.SegmentStyle.RED)
                                     .build();

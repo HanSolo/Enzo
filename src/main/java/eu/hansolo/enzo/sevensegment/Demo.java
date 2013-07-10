@@ -46,30 +46,26 @@ public class Demo extends Application {
 
     @Override public void init() {
         seg0 = SevenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
-                                    .character(0)
-                                    .segmentStyle(SevenSegment.SegmentStyle.RED)
-                                    .build();
+                                  .prefSize(268, 318)
+                                  .character(0)
+                                  .segmentStyle(SevenSegment.SegmentStyle.RED)
+                                  .build();
         seg1 = SevenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
-                                    .character(0)
-                                    .dotOn(true)
-                                    .segmentStyle(SevenSegment.SegmentStyle.RED)
-                                    .build();
+                                  .prefSize(268, 318)
+                                  .character(0)
+                                  .dotOn(true)
+                                  .segmentStyle(SevenSegment.SegmentStyle.RED)
+                                  .build();
         seg2 = SevenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
-                                    .character(0)
-                                    .segmentStyle(SevenSegment.SegmentStyle.RED)
-                                    .build();
+                                  .prefSize(268, 318)
+                                  .character(0)
+                                  .segmentStyle(SevenSegment.SegmentStyle.RED)
+                                  .build();
         seg3 = SevenSegmentBuilder.create()
-                                    .prefWidth(134)
-                                    .prefHeight(179)
-                                    .character(0)
-                                    .segmentStyle(SevenSegment.SegmentStyle.RED)
-                                    .build();
+                                  .prefSize(268, 318)
+                                  .character(0)
+                                  .segmentStyle(SevenSegment.SegmentStyle.RED)
+                                  .build();
 
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {

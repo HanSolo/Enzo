@@ -48,14 +48,15 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = GaugeBuilder.create()
-                              .prefSize(400, 400)
+                              .prefSize(700, 700)
                               .startAngle(330)
                               .angleRange(300)
                               .sections(new Section(40, 60),
                                         new Section(60, 80),
                                         new Section(80, 100))
                               .majorTickSpace(20)
-                              .tickLabelOrientation(Gauge.TickLabelOrientation.ORTHOGONAL)
+                              .plainValue(false)
+                              .tickLabelOrientation(Gauge.TickLabelOrientation.HORIZONTAL)
                               .threshold(70)
                               .thresholdVisible(true)
                               .minMeasuredValueVisible(true)
@@ -66,22 +67,21 @@ public class Demo extends Application {
         //control.setStyle("-tick-label-fill: blue;");
         //control.setMinorTickSpace(2);
         //control.setHistogramEnabled(true);
-        //control.setTouchMode(true);
 
-        control.setOnThresholdExceeded(observable -> System.out.println("Threshold exceeded") );
-        control.setOnThresholdUnderrun(observable -> System.out.println("Threshold underrun"));
+
+        //control.setOnThresholdExceeded(observable -> System.out.println("Threshold exceeded") );
+        //control.setOnThresholdUnderrun(observable -> System.out.println("Threshold underrun"));
 
         marker0 = new Marker(25);
-        marker0.setOnMarkerExceeded(observable -> System.out.println("Marker exceeded"));
-        marker0.setOnMarkerUnderrun(observable -> System.out.println("Marker underrun"));
+        //marker0.setOnMarkerExceeded(observable -> System.out.println("Marker exceeded"));
+        //marker0.setOnMarkerUnderrun(observable -> System.out.println("Marker underrun"));
         control.addMarker(marker0);
 
-        System.out.println(control.getStartAngle());
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
-                if (now > lastTimerCall + 2_000_000_000l) {
+                if (now > lastTimerCall + 5_000_000_000l) {
                     control.setValue(RND.nextDouble() * 100);
                     lastTimerCall = now;
                 }
@@ -94,7 +94,7 @@ public class Demo extends Application {
         pane.setPadding(new Insets(5, 5, 5, 5));
         pane.getChildren().add(control);
 
-        final Scene scene = new Scene(pane, 400, 400, Color.BLACK);
+        final Scene scene = new Scene(pane, Color.BLACK);
         scene.getStylesheets().add(getClass().getResource("demo.css").toExternalForm());
         //scene.setFullScreen(true);
 

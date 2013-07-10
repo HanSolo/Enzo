@@ -34,12 +34,12 @@ public class Demo extends Application {
 
 
     @Override public void init() {
-        german  = QlockTwoBuilder.create().prefWidth(300).prefHeight(300).language(QlockTwo.Language.GERMAN).color(QlockTwo.QlockColor.BLACK_ICE_TEA).build();
-        english = QlockTwoBuilder.create().prefWidth(300).prefHeight(300).language(QlockTwo.Language.ENGLISH).color(QlockTwo.QlockColor.BLUE_CANDY).build();
-        french  = QlockTwoBuilder.create().prefWidth(300).prefHeight(300).language(QlockTwo.Language.FRENCH).color(QlockTwo.QlockColor.CHERRY_CAKE).build();
-        spanish = QlockTwoBuilder.create().prefWidth(300).prefHeight(300).language(QlockTwo.Language.SPANISH).color(QlockTwo.QlockColor.FROZEN_BLACKBERRY).build();
-        dutch   = QlockTwoBuilder.create().prefWidth(300).prefHeight(300).language(QlockTwo.Language.DUTCH).color(QlockTwo.QlockColor.LIME_JUICE).build();
-        german1 = QlockTwoBuilder.create().secondsMode(true).prefWidth(300).prefHeight(300).language(QlockTwo.Language.GERMAN).color(QlockTwo.QlockColor.STAINLESS_STEEL).build();
+        german  = QlockTwoBuilder.create().prefSize(400, 400).language(QlockTwo.Language.GERMAN).color(QlockTwo.QlockColor.BLACK_ICE_TEA).build();
+        english = QlockTwoBuilder.create().prefSize(400, 400).language(QlockTwo.Language.ENGLISH).color(QlockTwo.QlockColor.BLUE_CANDY).build();
+        french  = QlockTwoBuilder.create().prefSize(400, 400).language(QlockTwo.Language.FRENCH).color(QlockTwo.QlockColor.CHERRY_CAKE).build();
+        spanish = QlockTwoBuilder.create().prefSize(400, 400).language(QlockTwo.Language.SPANISH).color(QlockTwo.QlockColor.FROZEN_BLACKBERRY).build();
+        dutch   = QlockTwoBuilder.create().prefSize(400, 400).language(QlockTwo.Language.DUTCH).color(QlockTwo.QlockColor.LIME_JUICE).build();
+        german1 = QlockTwoBuilder.create().secondsMode(true).prefSize(400, 400).language(QlockTwo.Language.GERMAN).color(QlockTwo.QlockColor.STAINLESS_STEEL).build();
     }
 
     @Override public void start(Stage stage) {
