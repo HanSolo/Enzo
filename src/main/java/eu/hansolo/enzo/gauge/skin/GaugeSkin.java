@@ -354,7 +354,6 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                     }
                 } else {
                     if (currentValue > marker.getValue()) {
-                        System.out.println("marker exceeded");
                         marker.fireMarkerEvent(new Marker.MarkerEvent(this, null, Marker.MarkerEvent.MARKER_EXCEEDED));
                         marker.setExceeded(true);
                     }
