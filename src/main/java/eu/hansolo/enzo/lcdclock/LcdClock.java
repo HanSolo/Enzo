@@ -22,7 +22,9 @@ package eu.hansolo.enzo.lcdclock;/**
  */
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
@@ -30,6 +32,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
@@ -53,6 +56,7 @@ public class LcdClock extends Region {
     private ObjectProperty<Color> m5Color;
     private ObjectProperty<Color> sColor;
     private ObjectProperty<Color> textColor;
+    private BooleanProperty       alarm;
     private Pane                  pane;
     private Canvas                canvasBkg;
     private GraphicsContext       ctxBkg;
@@ -75,6 +79,7 @@ public class LcdClock extends Region {
         m5Color       = new SimpleObjectProperty<>(this, "5MinuteColor", Color.BLACK);
         sColor        = new SimpleObjectProperty<>(this, "secondColor", Color.BLACK);
         textColor     = new SimpleObjectProperty<>(this, "textColor", Color.BLACK);
+        alarm         = new SimpleBooleanProperty(this, "alarm", false);
         time          = new StringBuilder();
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
@@ -174,6 +179,7 @@ public class LcdClock extends Region {
         m5Color.addListener(observable -> handleControlPropertyChanged("REDRAW"));
         sColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
         textColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
+        alarm.addListener(observable -> handleControlPropertyChanged("REDRAW"));
     }
 
 
@@ -268,6 +274,16 @@ public class LcdClock extends Region {
         return textColor;
     }
 
+    public final boolean isAlarm() {
+        return alarm.get();
+    }
+    public final void setAlarm(final boolean ALARM) {
+        alarm.set(ALARM);
+    }
+    public final BooleanProperty alarmProperty() {
+        return alarm;
+    }
+
     public final void setColor(final Color COLOR) {
         setHourColor(COLOR);
         setMinuteColor(Color.color(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), 0.6));
@@ -325,6 +341,9 @@ public class LcdClock extends Region {
         ctxFg.setTextAlign(TextAlignment.CENTER);
         ctxFg.setFont(font);
         ctxFg.fillText(time.toString(), size * 0.5, size * 0.5);
+
+        // draw the alarm icon
+        if (alarm.get()) drawAlarmIcon(ctxFg, ctxFg.getFill());
     }
 
     private void drawBackground() {
@@ -364,8 +383,40 @@ public class LcdClock extends Region {
         ctxBkg.setTextAlign(TextAlignment.CENTER);
         ctxBkg.setFont(font);
         ctxBkg.fillText("88:88", size * 0.5, size * 0.5);
+
+        // draw the alarm icon
+        if (!alarm.get()) drawAlarmIcon(ctxBkg, ctxBkg.getFill());
     }
 
+    private void drawAlarmIcon(final GraphicsContext CTX, final Paint COLOR) {
+        double iconSize = 0.1 * size;
+        CTX.save();
+        CTX.translate((size - iconSize) * 0.5, size * 0.25);
+        CTX.beginPath();
+        CTX.moveTo(0.6875 * iconSize, 0.875 * iconSize);
+        CTX.bezierCurveTo(0.625 * iconSize, 0.9375 * iconSize, 0.5625 * iconSize, iconSize, 0.5 * iconSize, iconSize);
+        CTX.bezierCurveTo(0.4375 * iconSize, iconSize, 0.375 * iconSize, 0.9375 * iconSize, 0.375 * iconSize, 0.875 * iconSize);
+        CTX.bezierCurveTo(0.375 * iconSize, 0.875 * iconSize, 0.6875 * iconSize, 0.875 * iconSize, 0.6875 * iconSize, 0.875 * iconSize);
+        CTX.closePath();
+        CTX.moveTo(iconSize, 0.8125 * iconSize);
+        CTX.bezierCurveTo(0.6875 * iconSize, 0.5625 * iconSize, 0.9375 * iconSize, 0.0, 0.5 * iconSize, 0.0);
+        CTX.bezierCurveTo(0.5 * iconSize, 0.0, 0.5 * iconSize, 0.0, 0.5 * iconSize, 0.0);
+        CTX.bezierCurveTo(0.5 * iconSize, 0.0, 0.5 * iconSize, 0.0, 0.5 * iconSize, 0.0);
+        CTX.bezierCurveTo(0.125 * iconSize, 0.0, 0.375 * iconSize, 0.5625 * iconSize, 0.0, 0.8125 * iconSize);
+        CTX.bezierCurveTo(0.0, 0.8125 * iconSize, 0.0, 0.8125 * iconSize, 0.0, 0.8125 * iconSize);
+        CTX.bezierCurveTo(0.0, 0.8125 * iconSize, 0.0, 0.8125 * iconSize, 0.0, 0.8125 * iconSize);
+        CTX.bezierCurveTo(0.0, 0.8125 * iconSize, 0.0, 0.8125 * iconSize, 0.0625 * iconSize, 0.8125 * iconSize);
+        CTX.bezierCurveTo(0.0625 * iconSize, 0.8125 * iconSize, 0.5 * iconSize, 0.8125 * iconSize, 0.5 * iconSize, 0.8125 * iconSize);
+        CTX.bezierCurveTo(0.5 * iconSize, 0.8125 * iconSize, iconSize, 0.8125 * iconSize, iconSize, 0.8125 * iconSize);
+        CTX.bezierCurveTo(iconSize, 0.8125 * iconSize, iconSize, 0.8125 * iconSize, iconSize, 0.8125 * iconSize);
+        CTX.bezierCurveTo(iconSize, 0.8125 * iconSize, iconSize, 0.8125 * iconSize, iconSize, 0.8125 * iconSize);
+        CTX.bezierCurveTo(iconSize, 0.8125 * iconSize, iconSize, 0.8125 * iconSize, iconSize, 0.8125 * iconSize);
+        CTX.closePath();
+        CTX.setFill(COLOR);
+        CTX.fill();
+        CTX.restore();    
+    }
+    
     // ******************** Resizing ******************************************
     private void resize() {
         size   = getWidth() < getHeight() ? getWidth() : getHeight();

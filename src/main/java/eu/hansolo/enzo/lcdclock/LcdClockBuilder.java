@@ -16,9 +16,11 @@
 
 package eu.hansolo.enzo.lcdclock;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Dimension2D;
@@ -69,6 +71,11 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
 
     public final LcdClockBuilder textColor(final Color TEXT_COLOR) {
         properties.put("textColor", new SimpleObjectProperty<>(TEXT_COLOR));
+        return this;
+    }
+
+    public final LcdClockBuilder alarm(final boolean ALARM) {
+        properties.put("alarm", new SimpleBooleanProperty(ALARM));
         return this;
     }
 
@@ -172,6 +179,8 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
                 CONTROL.setSecondColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("textColor".equals(key)) {
                 CONTROL.setTextColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("alarm".equals(key)) {
+                CONTROL.setAlarm(((BooleanProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

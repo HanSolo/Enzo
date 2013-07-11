@@ -40,6 +40,7 @@ public class Demo extends Application {
                                //.minuteColor(Color.AQUA)
                                //.secondColor(Color.MAGENTA)
                                //.textColor(Color.DARKOLIVEGREEN)
+                               .alarm(true)
                                .build();
     }
 
