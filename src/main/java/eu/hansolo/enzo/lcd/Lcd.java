@@ -27,6 +27,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -39,6 +40,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 import javafx.util.Duration;
@@ -144,8 +146,7 @@ public class Lcd extends Control {
     private DoubleProperty               threshold;
     private boolean                      _thresholdBehaviorInverted = false;
     private BooleanProperty              thresholdBehaviorInverted;
-    private boolean                      _thresholdExceeded = false;
-    private BooleanProperty              thresholdExceeded;
+    private boolean                      thresholdExceeded = false;
     private String                       _title = "";
     private StringProperty               title;
     private String                       _unit = "";
@@ -246,7 +247,7 @@ public class Lcd extends Control {
                     setValueVisible(toggleValue);
                     lastBlinkTimerCall = NOW;
                 }
-                if (isThresholdExceeded() && NOW > lastThresholdTimerCall + interval) {
+                if (thresholdExceeded && NOW > lastThresholdTimerCall + interval) {
                     toggleThreshold ^= true;
                     thresholdVisible.set(toggleThreshold);
                     lastThresholdTimerCall = NOW;
@@ -533,23 +534,6 @@ public class Lcd extends Control {
             thresholdBehaviorInverted = new SimpleBooleanProperty(this, "thresholdBehaviorInverted", _thresholdBehaviorInverted);
         }
         return thresholdBehaviorInverted;
-    }
-
-    public final boolean isThresholdExceeded() {
-        return null == thresholdExceeded ? _thresholdExceeded : thresholdExceeded.get();
-    }
-    public final void setThresholdExceeded(final boolean THRESHOLD_EXCEEDED) {
-        if (null == thresholdExceeded) {
-            _thresholdExceeded = THRESHOLD_EXCEEDED;
-        } else {
-            thresholdExceeded.set(THRESHOLD_EXCEEDED);
-        }
-    }
-    public final BooleanProperty thresholdExceededProperty() {
-        if (null == thresholdExceeded) {
-            thresholdExceeded = new SimpleBooleanProperty(this, "thresholdExceeded", _thresholdExceeded);
-        }
-        return thresholdExceeded;
     }
 
     public final String getTitle() {
@@ -1200,10 +1184,16 @@ public class Lcd extends Control {
 
     private void validateThreshold() {
         if (initialized) {
-            if (isThresholdBehaviorInverted()) {
-                setThresholdExceeded(currentValue.get() < getThreshold());
+            if (thresholdExceeded) {
+                if (currentValue.get() < getThreshold()) {
+                    fireLcdEvent(new LcdEvent(this, null, LcdEvent.THRESHOLD_UNDERRUN));
+                    thresholdExceeded = false;
+                }
             } else {
-                setThresholdExceeded(currentValue.get() > getThreshold());
+                if (currentValue.get() > getThreshold()) {
+                    fireLcdEvent(new LcdEvent(this, null, LcdEvent.THRESHOLD_EXCEEDED));
+                    thresholdExceeded = true;
+                }
             }
         }
     }
@@ -1216,5 +1206,39 @@ public class Lcd extends Control {
 
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
+    }
+
+
+    // ******************** Event handling ************************************
+    public final ObjectProperty<EventHandler<LcdEvent>> onThresholdExceededProperty() { return onThresholdExceeded; }
+    public final void setOnThresholdExceeded(EventHandler<LcdEvent> value) { onThresholdExceededProperty().set(value); }
+    public final EventHandler<LcdEvent> getOnThresholdExceeded() { return onThresholdExceededProperty().get(); }
+    private ObjectProperty<EventHandler<LcdEvent>> onThresholdExceeded = new ObjectPropertyBase<EventHandler<LcdEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onThresholdExceeded";}
+    };
+
+    public final ObjectProperty<EventHandler<LcdEvent>> onThresholdUnderrunProperty() { return onThresholdUnderrun; }
+    public final void setOnThresholdUnderrun(EventHandler<LcdEvent> value) { onThresholdUnderrunProperty().set(value); }
+    public final EventHandler<LcdEvent> getOnThresholdUnderrun() { return onThresholdUnderrunProperty().get(); }
+    private ObjectProperty<EventHandler<LcdEvent>> onThresholdUnderrun = new ObjectPropertyBase<EventHandler<LcdEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onThresholdUnderrun";}
+    };
+
+    public void fireLcdEvent(final LcdEvent EVENT) {
+        final EventHandler<LcdEvent> HANDLER;
+        final EventType TYPE = EVENT.getEventType();
+        if (LcdEvent.THRESHOLD_EXCEEDED == TYPE) {
+            HANDLER = getOnThresholdExceeded();
+        } else if (LcdEvent.THRESHOLD_UNDERRUN == TYPE) {
+            HANDLER = getOnThresholdUnderrun();
+        } else {
+            HANDLER = null;
+        }
+
+        if (null == HANDLER) return;
+
+        HANDLER.handle(EVENT);
     }
 }

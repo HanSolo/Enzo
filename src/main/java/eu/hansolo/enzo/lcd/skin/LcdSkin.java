@@ -192,7 +192,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
 
         threshold = new Region();
         threshold.getStyleClass().setAll("threshold");
-        threshold.setOpacity((getSkinnable().isThresholdVisible() && getSkinnable().isThresholdExceeded()) ? 1 : 0);
+        threshold.setOpacity(0);
 
         trendDown = new Region();
         trendDown.getStyleClass().setAll("trend-down");
@@ -314,7 +314,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         getSkinnable().crystalOverlayVisibleProperty().addListener(observable -> handleControlPropertyChanged("CRYSTAL_OVERLAY_VISIBLE") );
         getSkinnable().foregroundShadowVisibleProperty().addListener(observable -> handleControlPropertyChanged("FOREGROUND_SHADOW_VISIBLE") );
         getSkinnable().animationDurationProperty().addListener(observable -> handleControlPropertyChanged("ANIMATION_DURATION") );
-        getSkinnable().thresholdExceededProperty().addListener(observable -> handleControlPropertyChanged("THRESHOLD_EXCEEDED") );
+        getSkinnable().setOnThresholdExceeded(observable -> handleControlPropertyChanged("THRESHOLD_EXCEEDED") );
+        getSkinnable().setOnThresholdUnderrun(observable -> handleControlPropertyChanged("THRESHOLD_UNDERRUN") );
         getSkinnable().trendProperty().addListener(observable -> handleControlPropertyChanged("TREND") );
         getSkinnable().valueVisibleProperty().addListener(observable -> handleControlPropertyChanged("VALUE_VISIBLE") );
         getSkinnable().unitVisibleProperty().addListener(observable -> handleControlPropertyChanged("UNIT_VISIBLE") );
@@ -359,7 +360,11 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             updateTrend();
         } else if ("THRESHOLD_EXCEEDED".equals(PROPERTY)) {
             if (getSkinnable().isThresholdVisible()) {
-                threshold.setOpacity(getSkinnable().isThresholdExceeded() ? 1 : 0);
+                threshold.setOpacity(getSkinnable().isThresholdBehaviorInverted() ? 0 : 1);
+            }
+        } else if ("THRESHOLD_UNDERRUN".equals(PROPERTY)) {
+            if (getSkinnable().isThresholdVisible()) {
+                threshold.setOpacity(getSkinnable().isThresholdBehaviorInverted() ? 1 : 0);
             }
         } else if ("FONT".equals(PROPERTY)) {
             updateFonts();
