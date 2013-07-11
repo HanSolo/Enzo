@@ -50,6 +50,7 @@ public class LcdClock extends Region {
     private double                height;
     private ObjectProperty<Color> hColor;
     private ObjectProperty<Color> mColor;
+    private ObjectProperty<Color> m5Color;
     private ObjectProperty<Color> sColor;
     private ObjectProperty<Color> textColor;
     private Pane                  pane;
@@ -70,7 +71,8 @@ public class LcdClock extends Region {
     // ******************** Constructors **************************************
     public LcdClock() {
         hColor        = new SimpleObjectProperty<>(this, "hourColor", Color.BLACK);
-        mColor        = new SimpleObjectProperty<>(this, "minuteColor", Color.BLACK);
+        mColor        = new SimpleObjectProperty<>(this, "minuteColor", Color.rgb(0, 0, 0, 0.5));
+        m5Color       = new SimpleObjectProperty<>(this, "5MinuteColor", Color.BLACK);
         sColor        = new SimpleObjectProperty<>(this, "secondColor", Color.BLACK);
         textColor     = new SimpleObjectProperty<>(this, "textColor", Color.BLACK);
         time          = new StringBuilder();
@@ -235,6 +237,16 @@ public class LcdClock extends Region {
         return mColor;
     }
 
+    public final Color getMinute5Color() {
+        return m5Color.get();
+    }
+    public final void setMinute5Color(final Color MINUTE_5_COLOR) {
+        m5Color.set(MINUTE_5_COLOR);
+    }
+    public final ObjectProperty<Color> minute5ColorProperty() {
+        return m5Color;
+    }
+
     public final Color getSecondColor() {
         return sColor.get();
     }
@@ -257,7 +269,8 @@ public class LcdClock extends Region {
 
     public final void setColor(final Color COLOR) {
         setHourColor(COLOR);
-        setMinuteColor(COLOR);
+        setMinuteColor(Color.color(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), 0.5));
+        setMinute5Color(COLOR);
         setSecondColor(COLOR);
         setTextColor(COLOR);
     }
@@ -275,7 +288,7 @@ public class LcdClock extends Region {
             if (i % 6 == 0) {
                 // draw minutes
                 if (minCounter <= minutes) {
-                    ctxFg.setStroke(getMinuteColor());
+                    ctxFg.setStroke(minCounter % 5 == 0 ? getMinute5Color() :  getMinuteColor());
                     ctxFg.setLineWidth(strokeWidth);
                     ctxFg.strokeArc(strokeWidth * 0.5 + strokeWidth * 1.1, strokeWidth * 0.5 + strokeWidth * 1.1, size - strokeWidth - strokeWidth * 2.2, size - strokeWidth - strokeWidth * 2.2, i + 1 - 6, 4, ArcType.OPEN);
                     minCounter++;
