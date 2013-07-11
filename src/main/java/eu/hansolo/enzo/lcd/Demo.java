@@ -16,9 +16,11 @@
 
 package eu.hansolo.enzo.lcd;
 
+import eu.hansolo.enzo.common.ValueEvent;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -106,6 +108,13 @@ public class Demo extends Application {
                             .valueFont(Lcd.LcdFont.LCD)
                             .animated(true)
                             .build();
+
+        control.addEventHandler(ValueEvent.VALUE_EXCEEDED, new EventHandler<ValueEvent>() {
+            @Override public void handle(ValueEvent valueEvent) {
+                System.out.println("exceeded");
+            }
+        });
+
         charge = 0.0;
         styleClassCounter = 0;
         lastTimerCall = System.nanoTime();

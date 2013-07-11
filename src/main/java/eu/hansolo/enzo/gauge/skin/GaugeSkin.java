@@ -17,7 +17,7 @@
 package eu.hansolo.enzo.gauge.skin;
 
 import eu.hansolo.enzo.gauge.Gauge;
-import eu.hansolo.enzo.gauge.GaugeEvent;
+import eu.hansolo.enzo.common.ValueEvent;
 import eu.hansolo.enzo.gauge.Marker;
 import eu.hansolo.enzo.gauge.Section;
 import javafx.animation.FadeTransition;
@@ -338,12 +338,12 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             // Check threshold
             if (thresholdExceeded) {
                 if (currentValue < getSkinnable().getThreshold()) {
-                    getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_UNDERRUN));
+                    getSkinnable().fireEvent(new ValueEvent(this, null, ValueEvent.VALUE_UNDERRUN));
                     thresholdExceeded = false;
                 }
             } else {
                 if (currentValue > getSkinnable().getThreshold()) {
-                    getSkinnable().fireGaugeEvent(new GaugeEvent(this, null, GaugeEvent.THRESHOLD_EXCEEDED));
+                    getSkinnable().fireEvent(new ValueEvent(this, null, ValueEvent.VALUE_EXCEEDED));
                     thresholdExceeded = true;
                 }
             }

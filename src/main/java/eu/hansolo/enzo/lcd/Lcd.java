@@ -16,18 +16,16 @@
 
 package eu.hansolo.enzo.lcd;
 
+import eu.hansolo.enzo.common.ValueEvent;
 import eu.hansolo.enzo.lcd.skin.LcdSkin;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -36,11 +34,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 import javafx.util.Duration;
@@ -254,7 +249,7 @@ public class Lcd extends Control {
                 }
             }
         };
-        toValueAnimation           = new Transition() {
+        toValueAnimation = new Transition() {
             {
                 setCycleDuration(Duration.millis(getAnimationDuration()));
             }
@@ -269,37 +264,44 @@ public class Lcd extends Control {
 
     // ******************** Initialization ************************************
     private void init() {
-        valueProperty().addListener(new ChangeListener<Number>() {
-            @Override public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
-                formerValue.set(oldValue.doubleValue());
-                if (toValueAnimation.getStatus() != Animation.Status.STOPPED) {
-                    toValueAnimation.stop();
-                }
-                if (getAnimated()) {
-                    toValueAnimation.setInterpolator(Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
-                    toValueAnimation.play();
-                    toValueAnimation.setOnFinished(new EventHandler<ActionEvent>() {
-                        @Override public void handle(final ActionEvent EVENT) {
-                            if (firstTime) {
-                                resetMinMaxMeasuredValue();
-                                firstTime = false;
-                            }
+        valueProperty().addListener((ov, oldValue, newValue) -> {
+            formerValue.set(oldValue.doubleValue());
+            if (toValueAnimation.getStatus() != Animation.Status.STOPPED) {
+                toValueAnimation.stop();
+            }
+            if (getAnimated()) {
+                toValueAnimation.setInterpolator(Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
+                toValueAnimation.play();
+                toValueAnimation.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override public void handle(final ActionEvent EVENT) {
+                        if (firstTime) {
+                            resetMinMaxMeasuredValue();
+                            firstTime = false;
                         }
-                    });
-                } else {
-                    currentValue.set(newValue.doubleValue());
-                }
+                    }
+                });
+            } else {
+                currentValue.set(newValue.doubleValue());
             }
         });
-        currentValueProperty().addListener(new InvalidationListener() {
-            @Override public void invalidated(Observable observable) {
-                if (Double.compare(currentValue.get(), getMinMeasuredValue()) < 0 && !firstTime) {
-                    setMinMeasuredValue(currentValue.get());
+        currentValueProperty().addListener(observable -> {
+            if (Double.compare(currentValue.get(), getMinMeasuredValue()) < 0 && !firstTime) {
+                setMinMeasuredValue(currentValue.get());
+            }
+            if (Double.compare(currentValue.get(), getMaxMeasuredValue()) > 0 && !firstTime) {
+                setMaxMeasuredValue(currentValue.get());
+            }
+            // Check threshold
+            if (thresholdExceeded) {
+                if (currentValue.get() < getThreshold()) {
+                    fireEvent(new ValueEvent(this, this, ValueEvent.VALUE_UNDERRUN));
+                    thresholdExceeded = false;
                 }
-                if (Double.compare(currentValue.get(), getMaxMeasuredValue()) > 0 && !firstTime) {
-                    setMaxMeasuredValue(currentValue.get());
+            } else {
+                if (currentValue.get() > getThreshold()) {
+                    fireEvent(new ValueEvent(this, this, ValueEvent.VALUE_EXCEEDED));
+                    thresholdExceeded = true;
                 }
-                validateThreshold();
             }
         });
     }
@@ -510,7 +512,7 @@ public class Lcd extends Control {
         } else {
             threshold.set(clamp(getMinValue(), getMaxValue(), THRESHOLD));
         }
-        validateThreshold();
+        //validateThreshold();
     }
     public final ReadOnlyDoubleProperty thresholdProperty() {
         if (null == threshold) {
@@ -1182,22 +1184,6 @@ public class Lcd extends Control {
         return VALUE;
     }
 
-    private void validateThreshold() {
-        if (initialized) {
-            if (thresholdExceeded) {
-                if (currentValue.get() < getThreshold()) {
-                    fireLcdEvent(new LcdEvent(this, null, LcdEvent.THRESHOLD_UNDERRUN));
-                    thresholdExceeded = false;
-                }
-            } else {
-                if (currentValue.get() > getThreshold()) {
-                    fireLcdEvent(new LcdEvent(this, null, LcdEvent.THRESHOLD_EXCEEDED));
-                    thresholdExceeded = true;
-                }
-            }
-        }
-    }
-
 
     // ******************** Style related *************************************
     @Override protected Skin createDefaultSkin() {
@@ -1206,39 +1192,5 @@ public class Lcd extends Control {
 
     @Override protected String getUserAgentStylesheet() {
         return getClass().getResource(getClass().getSimpleName().toLowerCase() + ".css").toExternalForm();
-    }
-
-
-    // ******************** Event handling ************************************
-    public final ObjectProperty<EventHandler<LcdEvent>> onThresholdExceededProperty() { return onThresholdExceeded; }
-    public final void setOnThresholdExceeded(EventHandler<LcdEvent> value) { onThresholdExceededProperty().set(value); }
-    public final EventHandler<LcdEvent> getOnThresholdExceeded() { return onThresholdExceededProperty().get(); }
-    private ObjectProperty<EventHandler<LcdEvent>> onThresholdExceeded = new ObjectPropertyBase<EventHandler<LcdEvent>>() {
-        @Override public Object getBean() { return this; }
-        @Override public String getName() { return "onThresholdExceeded";}
-    };
-
-    public final ObjectProperty<EventHandler<LcdEvent>> onThresholdUnderrunProperty() { return onThresholdUnderrun; }
-    public final void setOnThresholdUnderrun(EventHandler<LcdEvent> value) { onThresholdUnderrunProperty().set(value); }
-    public final EventHandler<LcdEvent> getOnThresholdUnderrun() { return onThresholdUnderrunProperty().get(); }
-    private ObjectProperty<EventHandler<LcdEvent>> onThresholdUnderrun = new ObjectPropertyBase<EventHandler<LcdEvent>>() {
-        @Override public Object getBean() { return this; }
-        @Override public String getName() { return "onThresholdUnderrun";}
-    };
-
-    public void fireLcdEvent(final LcdEvent EVENT) {
-        final EventHandler<LcdEvent> HANDLER;
-        final EventType TYPE = EVENT.getEventType();
-        if (LcdEvent.THRESHOLD_EXCEEDED == TYPE) {
-            HANDLER = getOnThresholdExceeded();
-        } else if (LcdEvent.THRESHOLD_UNDERRUN == TYPE) {
-            HANDLER = getOnThresholdUnderrun();
-        } else {
-            HANDLER = null;
-        }
-
-        if (null == HANDLER) return;
-
-        HANDLER.handle(EVENT);
     }
 }

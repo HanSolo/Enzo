@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.lcd.skin;
 
+import eu.hansolo.enzo.common.ValueEvent;
 import eu.hansolo.enzo.lcd.Lcd;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.VPos;
@@ -314,8 +315,6 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         getSkinnable().crystalOverlayVisibleProperty().addListener(observable -> handleControlPropertyChanged("CRYSTAL_OVERLAY_VISIBLE") );
         getSkinnable().foregroundShadowVisibleProperty().addListener(observable -> handleControlPropertyChanged("FOREGROUND_SHADOW_VISIBLE") );
         getSkinnable().animationDurationProperty().addListener(observable -> handleControlPropertyChanged("ANIMATION_DURATION") );
-        getSkinnable().setOnThresholdExceeded(observable -> handleControlPropertyChanged("THRESHOLD_EXCEEDED") );
-        getSkinnable().setOnThresholdUnderrun(observable -> handleControlPropertyChanged("THRESHOLD_UNDERRUN") );
         getSkinnable().trendProperty().addListener(observable -> handleControlPropertyChanged("TREND") );
         getSkinnable().valueVisibleProperty().addListener(observable -> handleControlPropertyChanged("VALUE_VISIBLE") );
         getSkinnable().unitVisibleProperty().addListener(observable -> handleControlPropertyChanged("UNIT_VISIBLE") );
@@ -329,6 +328,10 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         getSkinnable().formerValueVisibleProperty().addListener(observable -> handleControlPropertyChanged("FORMER_VALUE_VISIBLE") );
         getSkinnable().maxMeasuredValueVisibleProperty().addListener(observable -> handleControlPropertyChanged("MAX_MEASURED_VISIBLE") );
         getSkinnable().minMeasuredValueVisibleProperty().addListener(observable -> handleControlPropertyChanged("MIN_MEASURED_VISIBLE") );
+
+        getSkinnable().addEventFilter(ValueEvent.VALUE_EXCEEDED, valueEvent -> {handleControlPropertyChanged("THRESHOLD_EXCEEDED");});
+        getSkinnable().addEventFilter(ValueEvent.VALUE_UNDERRUN, valueEvent -> {handleControlPropertyChanged("THRESHOLD_UNDERRUN");});
+
         getSkinnable().getStyleClass().addListener(new ListChangeListener<String>() {
             @Override public void onChanged(Change<? extends String> change) {
                 resize();
