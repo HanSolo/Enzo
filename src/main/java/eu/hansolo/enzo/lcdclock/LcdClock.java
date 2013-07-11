@@ -38,38 +38,45 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 
 
 public class LcdClock extends Region {
-    private static final double   PREFERRED_WIDTH  = 200;
-    private static final double   PREFERRED_HEIGHT = 200;
-    private static final double   MINIMUM_WIDTH    = 25;
-    private static final double   MINIMUM_HEIGHT   = 25;
-    private static final double   MAXIMUM_WIDTH    = 1024;
-    private static final double   MAXIMUM_HEIGHT   = 1024;
-    private double                size;
-    private double                width;
-    private double                height;
-    private ObjectProperty<Color> hColor;
-    private ObjectProperty<Color> mColor;
-    private ObjectProperty<Color> m5Color;
-    private ObjectProperty<Color> sColor;
-    private ObjectProperty<Color> textColor;
-    private BooleanProperty       alarm;
-    private Pane                  pane;
-    private Canvas                canvasBkg;
-    private GraphicsContext       ctxBkg;
-    private Canvas                canvasFg;
-    private GraphicsContext       ctxFg;
-    private Font                  font;
-    private int                   hours;
-    private int                   minutes;
-    private int                   seconds;
-    private boolean               pm;
-    private StringBuilder         time;
-    private long                  lastTimerCall;
-    private AnimationTimer        timer;
+    private static final double       PREFERRED_WIDTH  = 200;
+    private static final double       PREFERRED_HEIGHT = 200;
+    private static final double       MINIMUM_WIDTH    = 25;
+    private static final double       MINIMUM_HEIGHT   = 25;
+    private static final double       MAXIMUM_WIDTH    = 1024;
+    private static final double       MAXIMUM_HEIGHT   = 1024;
+    private double                    size;
+    private double                    width;
+    private double                    height;
+    private ObjectProperty<Color>     hColor;
+    private ObjectProperty<Color>     mColor;
+    private ObjectProperty<Color>     m5Color;
+    private ObjectProperty<Color>     sColor;
+    private ObjectProperty<Color>     timeColor;
+    private ObjectProperty<Color>     dateColor;
+    private BooleanProperty           alarmOn;
+    private ObjectProperty<LocalTime> alarm;
+    private BooleanProperty           dateVisible;
+    private BooleanProperty           alarmVisible;
+    private Pane                      pane;
+    private Canvas                    canvasBkg;
+    private GraphicsContext           ctxBkg;
+    private Canvas                    canvasFg;
+    private GraphicsContext           ctxFg;
+    private Font                      font;
+    private int                       hours;
+    private int                       minutes;
+    private int                       seconds;
+    private boolean                   pm;
+    private StringBuilder             time;
+    private long                      lastTimerCall;
+    private AnimationTimer            timer;
 
 
     // ******************** Constructors **************************************
@@ -78,16 +85,20 @@ public class LcdClock extends Region {
         mColor        = new SimpleObjectProperty<>(this, "minuteColor", Color.rgb(0, 0, 0, 0.5));
         m5Color       = new SimpleObjectProperty<>(this, "5MinuteColor", Color.BLACK);
         sColor        = new SimpleObjectProperty<>(this, "secondColor", Color.BLACK);
-        textColor     = new SimpleObjectProperty<>(this, "textColor", Color.BLACK);
-        alarm         = new SimpleBooleanProperty(this, "alarm", false);
+        timeColor     = new SimpleObjectProperty<>(this, "timeColor", Color.BLACK);
+        dateColor     = new SimpleObjectProperty<>(this, "dateColor", Color.BLACK);
+        alarmOn       = new SimpleBooleanProperty(this, "alarmOn", false);
+        alarm         = new SimpleObjectProperty<>(LocalTime.now().minusMinutes(1));
+        dateVisible   = new SimpleBooleanProperty(this, "dateVisible", false);
+        alarmVisible  = new SimpleBooleanProperty(this, "alarmVisible", false);
         time          = new StringBuilder();
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 100_000_000l) {
                     time.setLength(0);
-                    pm    = Calendar.getInstance().get(Calendar.AM_PM) == 1;
-                    hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                    pm    = LocalTime.now().get(ChronoField.AMPM_OF_DAY) == 1;
+                    hours = LocalTime.now().getHour();
                     String hourString = Integer.toString(hours);
                     if (hours < 10) {
                         time.append("0");
@@ -99,7 +110,7 @@ public class LcdClock extends Region {
 
                     time.append(":");
 
-                    minutes = Calendar.getInstance().get(Calendar.MINUTE);
+                    minutes = LocalTime.now().getMinute();
                     String minutesString = Integer.toString(minutes);
                     if (minutes < 10) {
                         time.append("0");
@@ -109,17 +120,12 @@ public class LcdClock extends Region {
                         time.append(minutesString.substring(1));
                     }
 
-                    seconds = Calendar.getInstance().get(Calendar.SECOND);
-                    /*
-                    String secondsString = Integer.toString(seconds);
-                    if (seconds < 10) {
-                        time.append("0");
-                        time.append(secondsString.substring(0, 1));
-                    } else {
-                        time.append(secondsString.substring(0, 1));
-                        time.append(secondsString.substring(1));
+                    seconds = LocalTime.now().getSecond();
+
+                    if (isAlarmOn() && LocalTime.now().isAfter(getAlarm()) && LocalTime.now().isBefore(getAlarm().plusNanos(105_000_000))) {
+                        fireAlarmEvent();
                     }
-                    */
+
                     drawForeground();
                     lastTimerCall = now;
                 }
@@ -156,7 +162,7 @@ public class LcdClock extends Region {
     private void initGraphics() {
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digital.ttf"), (0.5833333333 * PREFERRED_HEIGHT));         // "Digital-7"
         //Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadout.ttf"), (0.5833333333 * PREFERRED_HEIGHT));  // "Digital Readout Upright"
-        //Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadoutb.ttf"), (0.5833333333 * PREFERRED_HEIGHT)); // "Digital Readout Thick Upright"
+
 
         canvasBkg = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
         ctxBkg    = canvasBkg.getGraphicsContext2D();
@@ -178,8 +184,11 @@ public class LcdClock extends Region {
         mColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
         m5Color.addListener(observable -> handleControlPropertyChanged("REDRAW"));
         sColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
-        textColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
-        alarm.addListener(observable -> handleControlPropertyChanged("REDRAW"));
+        timeColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
+        dateColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
+        alarmOn.addListener(observable -> handleControlPropertyChanged("REDRAW"));
+        dateVisible.addListener(observable -> handleControlPropertyChanged("REDRAW"));
+        alarmVisible.addListener(observable -> handleControlPropertyChanged("REDRAW"));
     }
 
 
@@ -264,24 +273,64 @@ public class LcdClock extends Region {
         return sColor;
     }
 
-    public final Color getTextColor() {
-        return textColor.get();
+    public final Color getTimeColor() {
+        return timeColor.get();
     }
-    public final void setTextColor(final Color TEXT_COLOR) {
-        textColor.set(TEXT_COLOR);
+    public final void setTimeColor(final Color TIME_COLOR) {
+        timeColor.set(TIME_COLOR);
     }
-    public final ObjectProperty<Color> textColorProperty() {
-        return textColor;
+    public final ObjectProperty<Color> timeColorProperty() {
+        return timeColor;
     }
 
-    public final boolean isAlarm() {
+    public final Color getDateColor() {
+        return dateColor.get();
+    }
+    public final void setDateColor(final Color DATE_COLOR) {
+        dateColor.set(DATE_COLOR);
+    }
+    public final ObjectProperty<Color> dateColorProperty() {
+        return dateColor;
+    }
+
+    public final boolean isAlarmOn() {
+        return alarmOn.get();
+    }
+    public final void setAlarmOn(final boolean ALARM_ON) {
+        alarmOn.set(ALARM_ON);
+    }
+    public final BooleanProperty alarmOnProperty() {
+        return alarmOn;
+    }
+
+    public final LocalTime getAlarm() {
         return alarm.get();
     }
-    public final void setAlarm(final boolean ALARM) {
+    public final void setAlarm(final LocalTime ALARM) {
         alarm.set(ALARM);
     }
-    public final BooleanProperty alarmProperty() {
+    public final ObjectProperty<LocalTime> alarmProperty() {
         return alarm;
+    }
+
+    public final boolean isDateVisible() {
+        return dateVisible.get();
+    }
+    public final void setDateVisible(final boolean DATE_VISIBLE) {
+        dateVisible.set(DATE_VISIBLE);
+    }
+    public final BooleanProperty dateVisibleProperty() {
+        return dateVisible;
+    }
+
+    public final boolean isAlarmVisible() {
+        return alarmVisible.get();
+    }
+    public final void setAlarmVisible(final boolean ALARM_VISIBLE) {
+        alarmVisible.set(ALARM_VISIBLE);
+    }
+    public final BooleanProperty alarmVisibleProperty() {
+        return alarmVisible;
     }
 
     public final void setColor(final Color COLOR) {
@@ -289,7 +338,12 @@ public class LcdClock extends Region {
         setMinuteColor(Color.color(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), 0.6));
         setMinute5Color(COLOR);
         setSecondColor(COLOR);
-        setTextColor(COLOR);
+        setTimeColor(COLOR);
+        setDateColor(COLOR);
+    }
+
+    private void fireAlarmEvent() {
+        fireEvent(new AlarmEvent(this, this, AlarmEvent.ALARM));
     }
 
     private void drawForeground() {
@@ -332,8 +386,8 @@ public class LcdClock extends Region {
             ctxFg.restore();
         }
 
-        // draw the text
-        ctxFg.setFill(getTextColor());
+        // draw the time
+        ctxFg.setFill(getTimeColor());
         font = Font.font("Digital-7", (0.2 * size));
         //font = Font.font("Digital Readout Upright", (0.2 * size));
         //font = Font.font("Digital Readout Thick Upright", (0.2 * size));
@@ -342,8 +396,16 @@ public class LcdClock extends Region {
         ctxFg.setFont(font);
         ctxFg.fillText(time.toString(), size * 0.5, size * 0.5);
 
-        // draw the alarm icon
-        if (alarm.get()) drawAlarmIcon(ctxFg, ctxFg.getFill());
+        // draw the date
+        if (isDateVisible()) {
+            ctxFg.setFill(getDateColor());
+            font = Font.font("Digital-7", (0.09 * size));
+            ctxFg.setFont(font);
+            ctxFg.fillText(LocalDate.now().format(DateTimeFormatter.ISO_DATE), size * 0.5, size * 0.65);
+        }
+
+        // draw the alarmOn icon
+        if (isAlarmVisible() &&isAlarmOn()) drawAlarmIcon(ctxFg, ctxFg.getFill());
     }
 
     private void drawBackground() {
@@ -374,8 +436,8 @@ public class LcdClock extends Region {
             ctxBkg.restore();
         }
 
-        // draw the text
-        ctxBkg.setFill(Color.color(textColor.get().getRed(), textColor.get().getGreen(), textColor.get().getBlue(), 0.1));
+        // draw the time
+        ctxBkg.setFill(Color.color(timeColor.get().getRed(), timeColor.get().getGreen(), timeColor.get().getBlue(), 0.1));
         font = Font.font("Digital-7", (0.2 * size));
         //font = Font.font("Digital Readout Upright", (0.2 * size));
         //font = Font.font("Digital Readout Thick Upright", (0.2 * size));
@@ -384,8 +446,16 @@ public class LcdClock extends Region {
         ctxBkg.setFont(font);
         ctxBkg.fillText("88:88", size * 0.5, size * 0.5);
 
-        // draw the alarm icon
-        if (!alarm.get()) drawAlarmIcon(ctxBkg, ctxBkg.getFill());
+        // draw the date
+        if (isDateVisible()) {
+            ctxBkg.setFill(Color.color(dateColor.get().getRed(), dateColor.get().getGreen(), dateColor.get().getBlue(), 0.1));
+            font = Font.font("Digital-7", (0.09 * size));
+            ctxBkg.setFont(font);
+            ctxBkg.fillText("8888-88-88", size * 0.5, size * 0.65);
+        }
+
+        // draw the alarmOn icon
+        if (isAlarmVisible() && !isAlarmOn()) drawAlarmIcon(ctxBkg, ctxBkg.getFill());
     }
 
     private void drawAlarmIcon(final GraphicsContext CTX, final Paint COLOR) {

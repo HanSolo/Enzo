@@ -26,6 +26,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Dimension2D;
 import javafx.scene.paint.Color;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 
 
@@ -69,13 +70,33 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
         return this;
     }
 
-    public final LcdClockBuilder textColor(final Color TEXT_COLOR) {
-        properties.put("textColor", new SimpleObjectProperty<>(TEXT_COLOR));
+    public final LcdClockBuilder timeColor(final Color TIME_COLOR) {
+        properties.put("timeColor", new SimpleObjectProperty<>(TIME_COLOR));
         return this;
     }
 
-    public final LcdClockBuilder alarm(final boolean ALARM) {
-        properties.put("alarm", new SimpleBooleanProperty(ALARM));
+    public final LcdClockBuilder dateColor(final Color DATE_COLOR) {
+        properties.put("dateColor", new SimpleObjectProperty<>(DATE_COLOR));
+        return this;
+    }
+
+    public final LcdClockBuilder alarmOn(final boolean ALARM_ON) {
+        properties.put("alarmOn", new SimpleBooleanProperty(ALARM_ON));
+        return this;
+    }
+
+    public final LcdClockBuilder alarm(final LocalTime ALARM) {
+        properties.put("alarm", new SimpleObjectProperty<>(ALARM));
+        return this;
+    }
+
+    public final LcdClockBuilder alarmVisible(final boolean ALARM_VISIBLE) {
+        properties.put("alarmVisible", new SimpleBooleanProperty(ALARM_VISIBLE));
+        return this;
+    }
+
+    public final LcdClockBuilder dateVisible(final boolean DATE_VISIBLE) {
+        properties.put("dateVisible", new SimpleBooleanProperty(DATE_VISIBLE));
         return this;
     }
 
@@ -177,10 +198,18 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
                 CONTROL.setMinuteColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("secondColor".equals(key)) {
                 CONTROL.setSecondColor(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if ("textColor".equals(key)) {
-                CONTROL.setTextColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("timeColor".equals(key)) {
+                CONTROL.setTimeColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("dateColor".equals(key)) {
+                CONTROL.setDateColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("alarmOn".equals(key)) {
+                CONTROL.setAlarmOn(((BooleanProperty) properties.get(key)).get());
             } else if ("alarm".equals(key)) {
-                CONTROL.setAlarm(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setAlarm(((ObjectProperty<LocalTime>) properties.get(key)).get());
+            } else if ("dateVisible".equals(key)) {
+                CONTROL.setDateVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("alarmVisible".equals(key)) {
+                CONTROL.setAlarmVisible(((BooleanProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

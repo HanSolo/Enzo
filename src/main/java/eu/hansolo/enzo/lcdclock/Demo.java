@@ -22,6 +22,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.time.LocalTime;
+
 
 /**
  * Created by
@@ -40,8 +42,14 @@ public class Demo extends Application {
                                //.minuteColor(Color.AQUA)
                                //.secondColor(Color.MAGENTA)
                                //.textColor(Color.DARKOLIVEGREEN)
-                               .alarm(true)
+                               .alarmVisible(true)
+                               .alarmOn(true)
+                               .alarm(LocalTime.now().plusSeconds(20))
+                               .dateVisible(true)
                                .build();
+        clock.addEventHandler(AlarmEvent.ALARM, event -> {
+            System.out.println("A L A R M");
+        });
     }
 
     @Override public void start(Stage stage) {
