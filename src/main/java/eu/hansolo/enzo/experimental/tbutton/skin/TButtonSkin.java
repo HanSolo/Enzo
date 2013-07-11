@@ -215,8 +215,8 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
         ledOnGlow.setBlurType(BlurType.TWO_PASS_BOX);
         ledOnGlow.setInput(ledOnInnerShadow1);
         ledOn.setEffect(ledOnGlow);
-
-        font = Font.font("Arial", FontWeight.BOLD, FontPosture.REGULAR, 28.0 / 144.0 * PREFERRED_SIZE);
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), (28.0 / 144.0 * PREFERRED_SIZE)); // "OpenSans"
+        font = Font.font("Open Sans", FontWeight.BOLD, FontPosture.REGULAR, 28.0 / 144.0 * PREFERRED_SIZE);
         text = new Text(getSkinnable().getText());
         text.setFont(font);
         text.setTextOrigin(VPos.TOP);
@@ -366,7 +366,7 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
             ledOnInnerShadow1.setRadius(2.0 / 144.0 * size);
             ledOnGlow.setRadius(9.0 / 144.0 * size);
 
-            font = Font.font("Arial", FontWeight.BOLD, FontPosture.REGULAR, 28.0 / 144.0 * size);
+            font = Font.font("Open Sans", FontWeight.BOLD, FontPosture.REGULAR, 28.0 / 144.0 * size);
             text.setFont(font);
             if (text.getLayoutBounds().getWidth() > 0.78 * width) {
                 text.setText("...");
