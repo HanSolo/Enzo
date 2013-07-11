@@ -1186,12 +1186,12 @@ public class Lcd extends Control {
         if (initialized) {
             if (thresholdExceeded) {
                 if (currentValue.get() < getThreshold()) {
-                    fireLcdEvent(new LcdEvent(this, null, LcdEvent.THRESHOLD_UNDERRUN));
+                    fireLcdEvent(new LcdEvent(this, null, isThresholdBehaviorInverted() ? LcdEvent.THRESHOLD_EXCEEDED : LcdEvent.THRESHOLD_UNDERRUN));
                     thresholdExceeded = false;
                 }
             } else {
                 if (currentValue.get() > getThreshold()) {
-                    fireLcdEvent(new LcdEvent(this, null, LcdEvent.THRESHOLD_EXCEEDED));
+                    fireLcdEvent(new LcdEvent(this, null, isThresholdBehaviorInverted() ? LcdEvent.THRESHOLD_UNDERRUN : LcdEvent.THRESHOLD_EXCEEDED));
                     thresholdExceeded = true;
                 }
             }
