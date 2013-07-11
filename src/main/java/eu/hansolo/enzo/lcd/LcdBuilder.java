@@ -71,6 +71,16 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
         return this;
     }
 
+    public final LcdBuilder minValue(final double MIN_VALUE) {
+        properties.put("minValue", new SimpleDoubleProperty(MIN_VALUE));
+        return this;
+    }
+
+    public final LcdBuilder maxValue(final double MAX_VALUE) {
+        properties.put("maxValue", new SimpleDoubleProperty(MAX_VALUE));
+        return this;
+    }
+
     public final LcdBuilder animated(final boolean ANIMATED) {
         properties.put("animated", new SimpleBooleanProperty(ANIMATED));
         return this;
@@ -368,6 +378,10 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
                 CONTROL.setText(((StringProperty) properties.get(key)).get());
             } else if("value".equals(key)) {
                 CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
+            } else if("minValue".equals(key)) {
+                CONTROL.setMinValue(((DoubleProperty) properties.get(key)).get());
+            } else if("maxValue".equals(key)) {
+                CONTROL.setMaxValue(((DoubleProperty) properties.get(key)).get());
             } else if("animated".equals(key)) {
                 CONTROL.setAnimated(((BooleanProperty) properties.get(key)).get());
             } else if ("animationDuration".equals(key)) {
