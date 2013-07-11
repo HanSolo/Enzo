@@ -17,3 +17,4 @@ build/
 /.gradle/1.5/taskArtifacts/outputFileStates.bin
 /.gradle/1.5/taskArtifacts/taskArtifacts.bin
 /.DS_Store
+/src/main/resources/eu/hansolo/enzo/fonts/.DS_Store
