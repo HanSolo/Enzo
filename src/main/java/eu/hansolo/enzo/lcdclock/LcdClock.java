@@ -171,6 +171,7 @@ public class LcdClock extends Region {
         heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         hColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
         mColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
+        m5Color.addListener(observable -> handleControlPropertyChanged("REDRAW"));
         sColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
         textColor.addListener(observable -> handleControlPropertyChanged("REDRAW"));
     }
@@ -269,7 +270,7 @@ public class LcdClock extends Region {
 
     public final void setColor(final Color COLOR) {
         setHourColor(COLOR);
-        setMinuteColor(Color.color(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), 0.5));
+        setMinuteColor(Color.color(COLOR.getRed(), COLOR.getGreen(), COLOR.getBlue(), 0.6));
         setMinute5Color(COLOR);
         setSecondColor(COLOR);
         setTextColor(COLOR);
