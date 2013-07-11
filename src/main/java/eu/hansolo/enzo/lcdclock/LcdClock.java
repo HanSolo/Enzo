@@ -39,8 +39,8 @@ import java.util.Calendar;
 
 
 public class LcdClock extends Region {
-    private static final double   PREFERRED_WIDTH  = 100;
-    private static final double   PREFERRED_HEIGHT = 100;
+    private static final double   PREFERRED_WIDTH  = 200;
+    private static final double   PREFERRED_HEIGHT = 200;
     private static final double   MINIMUM_WIDTH    = 25;
     private static final double   MINIMUM_HEIGHT   = 25;
     private static final double   MAXIMUM_WIDTH    = 1024;
@@ -61,6 +61,7 @@ public class LcdClock extends Region {
     private int                   hours;
     private int                   minutes;
     private int                   seconds;
+    private boolean               pm;
     private StringBuilder         time;
     private long                  lastTimerCall;
     private AnimationTimer        timer;
@@ -78,6 +79,7 @@ public class LcdClock extends Region {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 100_000_000l) {
                     time.setLength(0);
+                    pm    = Calendar.getInstance().get(Calendar.AM_PM) == 1;
                     hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
                     String hourString = Integer.toString(hours);
                     if (hours < 10) {
@@ -101,8 +103,8 @@ public class LcdClock extends Region {
                     }
 
                     seconds = Calendar.getInstance().get(Calendar.SECOND);
-                    String secondsString = Integer.toString(seconds);
                     /*
+                    String secondsString = Integer.toString(seconds);
                     if (seconds < 10) {
                         time.append("0");
                         time.append(secondsString.substring(0, 1));
@@ -268,7 +270,7 @@ public class LcdClock extends Region {
         double strokeWidth = size * 0.06;
         ctxFg.setLineCap(StrokeLineCap.BUTT);
         ctxFg.clearRect(0, 0, size, size);
-        for (int i = 450 ; i > 90 ; i--) {
+        for (int i = 450 ; i >= 90 ; i--) {
             ctxFg.save();
             if (i % 6 == 0) {
                 // draw minutes
@@ -286,12 +288,16 @@ public class LcdClock extends Region {
                     secCounter++;
                 }
             }
-            if (i % 30 == 0 && hourCounter <= hours) {
+            if (i % 30 == 0) {
                 //draw hours
                 ctxFg.setStroke(getHourColor());
                 ctxFg.setLineWidth(strokeWidth);
-                ctxFg.strokeArc(strokeWidth * 0.5, strokeWidth * 0.5, size - strokeWidth, size - strokeWidth, i + 1 - 30, 28, ArcType.OPEN);
-                hourCounter++;
+                if (hours == 0 || hours == 12) {
+                    ctxFg.strokeArc(strokeWidth * 0.5, strokeWidth * 0.5, size - strokeWidth, size - strokeWidth, i + 1 - 30, 28, ArcType.OPEN);
+                } else if (hourCounter <= (pm ? hours - 12 : hours)) {
+                    ctxFg.strokeArc(strokeWidth * 0.5, strokeWidth * 0.5, size - strokeWidth, size - strokeWidth, i + 1 - 30, 28, ArcType.OPEN);
+                    hourCounter++;
+                }
             }
             ctxFg.restore();
         }
