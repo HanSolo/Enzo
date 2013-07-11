@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.gauge;
+package eu.hansolo.enzo.common;
 
 import javafx.event.Event;
 import javafx.event.EventTarget;
@@ -27,13 +27,13 @@ import javafx.event.EventType;
  * Date: 03.07.13
  * Time: 08:58
  */
-public class GaugeEvent extends Event {
-    public static final EventType<GaugeEvent> THRESHOLD_EXCEEDED = new EventType(ANY, "thresholdExceeded");
-    public static final EventType<GaugeEvent> THRESHOLD_UNDERRUN = new EventType(ANY, "thresholdUnderrun");
+public class ValueEvent extends Event {
+    public static final EventType<ValueEvent> VALUE_EXCEEDED = new EventType(ANY, "VALUE_EXCEEDED");
+    public static final EventType<ValueEvent> VALUE_UNDERRUN = new EventType(ANY, "VALUE_UNDERRUN");
 
 
     // ******************** Constructors **************************************
-    public GaugeEvent(final Object SOURCE, final EventTarget TARGET, EventType<GaugeEvent> TYPE) {
+    public ValueEvent(final Object SOURCE, final EventTarget TARGET, EventType<ValueEvent> TYPE) {
         super(SOURCE, TARGET, TYPE);
     }
 }
