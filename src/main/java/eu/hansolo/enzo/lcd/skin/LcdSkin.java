@@ -152,8 +152,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadout.ttf"), (0.5833333333 * PREFERRED_HEIGHT));  // "Digital Readout Upright"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadoutb.ttf"), (0.5833333333 * PREFERRED_HEIGHT)); // "Digital Readout Thick Upright"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/pixel.ttf"), (0.5208333333 * PREFERRED_HEIGHT));           // "Electronic Highway Sign"
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/phonelcd.ttf"), (0.4583333333 * PREFERRED_HEIGHT));        // "Nokian"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/elektra.ttf"), (0.58333333 * PREFERRED_HEIGHT));           // "Elektra"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), (0.58333333 * PREFERRED_HEIGHT)); // "OpenSans"
 
         frame = new Region();
         frame.getStyleClass().setAll("frame");
@@ -347,9 +347,9 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         } else if ("PREF_SIZE".equals(PROPERTY)) {
             aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         } else if ("BACKGROUND_VISIBLE".equals(PROPERTY)) {
+            frame.setOpacity(getSkinnable().isBackgroundVisible() ? 1 : 0);
             main.setOpacity(getSkinnable().isBackgroundVisible() ? 1 : 0);
             crystalOverlay.setOpacity(getSkinnable().isBackgroundVisible() ? 1 : 0);
-            frame.setOpacity(getSkinnable().isBackgroundVisible() ? 1 : 0);
         } else if ("CRYSTAL_OVERLAY_VISIBLE".equals(PROPERTY)) {
             crystalOverlay.setOpacity(getSkinnable().isCrystalOverlayVisible() ? 1 : 0);
             resize();
@@ -475,38 +475,27 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         digitalFontSizeFactor = 1.0;
         switch(getSkinnable().getValueFont()) {
             case BUS:
-                //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/bus.otf"), (0.4583333333 * height));
                 valueFont = Font.font("Bus-Regular", (0.4583333333 * height));
                 break;
             case LCD:
-                //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digital.ttf"), (0.5833333333 * height));
-                valueFont = Font.font("Digital-7", (0.5833333333 * height));
-                //digitalFontSizeFactor = 1.9098073909;
-                digitalFontSizeFactor = 1.3;
+                valueFont = Font.font("Digital-7", (0.6 * height));
+                digitalFontSizeFactor = 1.4;
                 break;
             case DIGITAL:
-                //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadout.ttf"), (0.5833333333 * height));
                 valueFont = Font.font("Digital Readout Upright", (0.5833333333 * height));
                 break;
             case DIGITAL_BOLD:
-                //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadoutb.ttf"), (0.5833333333 * height));
                 valueFont = Font.font("Digital Readout Thick Upright", (0.5833333333 * height));
                 break;
             case PIXEL:
-                //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/pixel.ttf"), (0.5208333333 * height));
-                valueFont = Font.font("Electronic Highway Sign", (0.5208333333 * height));
-                break;
-            case PHONE_LCD:
-                //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/phonelcd.ttf"), (0.4583333333 * height));
-                valueFont = Font.font("Nokian", (0.4583333333 * height));
+                valueFont = Font.font("Electronic Highway Sign", (0.54 * height));
                 break;
             case ELEKTRA:
-                //valueFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/elektra.ttf"), (0.58333333 * height));
-                valueFont = Font.font("Elektra", (0.58333333 * height));
+                valueFont = Font.font("Elektra", (0.62 * height));
                 break;
             case STANDARD:
             default:
-                valueFont = Font.font("Arial", FontWeight.NORMAL, (0.5 * height));
+                valueFont = Font.font("Open Sans", FontWeight.NORMAL, (0.5 * height));
                 break;
         }
         backgroundText.setFont(valueFont);
@@ -767,7 +756,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
 
             signal.setPrefSize(0.0416666667 * height, 0.5 * height);
             signal.setTranslateX(0.0151515152 * width);
-            signal.setTranslateY(0.28 * height);
+            signal.setTranslateY(0.25 * height);
 
             alarm.setPrefSize(0.1666666667 * height, 0.1666666667 * height);
             alarm.setTranslateX(0.2651515152 * width);
@@ -816,7 +805,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             title.setTextAlignment(TextAlignment.CENTER);
             title.setText(getSkinnable().getTitle());
             title.setX((width - title.getLayoutBounds().getWidth()) * 0.5);
-            title.setY(main.getLayoutY() + title.getLayoutBounds().getHeight() + 0.04 * height);
+            title.setY(main.getLayoutY() + title.getLayoutBounds().getHeight() - 0.04 * height);
 
             // Info Text
             lowerRightText.setFont(smallFont);
@@ -831,13 +820,13 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             upperLeftText.setTextOrigin(VPos.BASELINE);
             upperLeftText.setTextAlignment(TextAlignment.RIGHT);
             upperLeftText.setX(main.getLayoutX() + 0.0416666667 * height);
-            upperLeftText.setY(main.getLayoutY() + upperLeftText.getLayoutBounds().getHeight() + 0.04 * height);
+            upperLeftText.setY(main.getLayoutY() + upperLeftText.getLayoutBounds().getHeight() - 0.04 * height);
 
             // Max measured value
             upperRightText.setFont(smallFont);
             upperRightText.setTextOrigin(VPos.BASELINE);
             upperRightText.setTextAlignment(TextAlignment.RIGHT);
-            upperRightText.setY(main.getLayoutY() + upperRightText.getLayoutBounds().getHeight() + 0.04 * height);
+            upperRightText.setY(main.getLayoutY() + upperRightText.getLayoutBounds().getHeight() - 0.04 * height);
 
             // Former value
             lowerCenterText.setFont(smallFont);

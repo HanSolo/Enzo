@@ -88,7 +88,6 @@ public class Lcd extends Control {
         DIGITAL_BOLD,
         BUS,
         PIXEL,
-        PHONE_LCD,
         ELEKTRA
     }
     public static enum NumberSystem {
@@ -185,13 +184,13 @@ public class Lcd extends Control {
     private BooleanProperty              formerValueVisible;
     private boolean                      _thresholdVisible = false;
     private BooleanProperty              thresholdVisible;
-    private String                       _unitFont  = "Arial"; // Verdana
+    private String                       _unitFont  = "Open Sans";
     private StringProperty               unitFont;
-    private String                       _titleFont = "Arial"; // Verdana
+    private String                       _titleFont = "Open Sans";
     private StringProperty               titleFont;
     private LcdFont                      _valueFont = LcdFont.LCD;
     private ObjectProperty<LcdFont>      valueFont;
-    private String                       _smallFont = "Arial";
+    private String                       _smallFont = "Open Sans";
     private StringProperty               smallFont;
     private int                          _decimals = 0;
     private IntegerProperty              decimals;
