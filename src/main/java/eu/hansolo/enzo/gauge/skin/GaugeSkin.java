@@ -151,6 +151,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private void initGraphics() {
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), (0.06 * PREFERRED_HEIGHT)); // "OpenSans"
+
         valueBlendBottomShadow = new DropShadow();
         valueBlendBottomShadow.setBlurType(BlurType.TWO_PASS_BOX);
         valueBlendBottomShadow.setColor(Color.rgb(255, 255, 255, 0.5));
@@ -471,42 +473,32 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         for (Node node : markersToRemove) pane.getChildren().remove(node);
     }
 
-    private double getTheta(double x, double y) {
-        double deltaX = x - centerX;
-        double deltaY = y - centerY;
-        double radius = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
-        double nx     = deltaX / radius;
-        double ny     = deltaY / radius;
-        double theta  = Math.atan2(ny, nx);
-        return Double.compare(theta, 0.0) >= 0 ? Math.toDegrees(theta) : Math.toDegrees((theta)) + 360.0;
-    }
-
     private void handleMouseEvent(final MouseEvent MOUSE_EVENT) {
         final Object    SRC  = MOUSE_EVENT.getSource();
         final EventType TYPE = MOUSE_EVENT.getEventType();
-        if (SRC.equals(threshold)) {
+        if (getSkinnable().isInteractive() && SRC.equals(threshold)) {
             if (MouseEvent.MOUSE_PRESSED == TYPE) {
                 unit.setText("Threshold");
                 value.setText(String.format(Locale.US, "%.1f", getSkinnable().getThreshold()));
                 resizeUnitAndValue();
             } else if (MouseEvent.MOUSE_DRAGGED == TYPE) {
-                touchRotate(MOUSE_EVENT.getSceneX(), MOUSE_EVENT.getSceneY(), thresholdRotate);
+                touchRotate(MOUSE_EVENT.getSceneX() - getSkinnable().getLayoutX(), MOUSE_EVENT.getSceneY() - getSkinnable().getLayoutY(), thresholdRotate);
             } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
                 getSkinnable().setThreshold(Double.parseDouble(value.getText()));
                 fadeBackToInteractive();
             }
-        } else if (SRC instanceof Marker) {
+        } else if (getSkinnable().isInteractive() && SRC instanceof Marker) {
             if (MouseEvent.MOUSE_PRESSED == TYPE) {
                 unit.setText(((Marker) SRC).getText());
                 value.setText(String.format(Locale.US, "%.1f", ((Marker) SRC).getValue()));
                 resizeUnitAndValue();
             } else if (MouseEvent.MOUSE_DRAGGED == TYPE) {
-                touchRotate(MOUSE_EVENT.getSceneX(), MOUSE_EVENT.getSceneY(), getSkinnable().getMarkers().get(SRC));
+                touchRotate(MOUSE_EVENT.getSceneX() - getSkinnable().getLayoutX(), MOUSE_EVENT.getSceneY() - getSkinnable().getLayoutY(), getSkinnable().getMarkers().get(SRC));
             } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
                 ((Marker) SRC).setValue(Double.parseDouble(value.getText()));
                 fadeBackToInteractive();
             }
-        } else if (SRC.equals(minMeasuredValue)) {
+        } else if (getSkinnable().isInteractive() && SRC.equals(minMeasuredValue)) {
             if (MouseEvent.MOUSE_PRESSED == TYPE) {
                 unit.setText("Min");
                 value.setText(String.format(Locale.US, "%.1f", getSkinnable().getMinMeasuredValue()));
@@ -514,7 +506,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             } else if (MouseEvent.MOUSE_RELEASED == TYPE) {
                 fadeBackToInteractive();
             }
-        } else if (SRC.equals(maxMeasuredValue)) {
+        } else if (getSkinnable().isInteractive() && SRC.equals(maxMeasuredValue)) {
             if (MouseEvent.MOUSE_PRESSED == TYPE) {
                 unit.setText("Max");
                 value.setText(String.format(Locale.US, "%.1f", getSkinnable().getMaxMeasuredValue()));
@@ -534,7 +526,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                 value.setText(String.format(Locale.US, "%.1f", getSkinnable().getThreshold()));
                 resizeUnitAndValue();
             } else if (TouchEvent.TOUCH_MOVED == TYPE) {
-                touchRotate(TOUCH_EVENT.getTouchPoint().getSceneX(), TOUCH_EVENT.getTouchPoint().getSceneY(), thresholdRotate);
+                touchRotate(TOUCH_EVENT.getTouchPoint().getSceneX() - getSkinnable().getLayoutX(), TOUCH_EVENT.getTouchPoint().getSceneY() - getSkinnable().getLayoutY(), thresholdRotate);
             } else if (TouchEvent.TOUCH_RELEASED == TYPE) {
                 getSkinnable().setThreshold(Double.parseDouble(value.getText()));
                 fadeBackToInteractive();
@@ -545,7 +537,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                 value.setText(String.format(Locale.US, "%.1f", ((Marker) SRC).getValue()));
                 resizeUnitAndValue();
             } else if (TouchEvent.TOUCH_MOVED == TYPE) {
-                touchRotate(TOUCH_EVENT.getTouchPoint().getSceneX(), TOUCH_EVENT.getTouchPoint().getSceneY(), getSkinnable().getMarkers().get(SRC));
+                touchRotate(TOUCH_EVENT.getTouchPoint().getSceneX() - getSkinnable().getLayoutX(), TOUCH_EVENT.getTouchPoint().getSceneY() - getSkinnable().getLayoutY(), getSkinnable().getMarkers().get(SRC));
             } else if (TouchEvent.TOUCH_RELEASED == TYPE) {
                 ((Marker) SRC).setValue(Double.parseDouble(value.getText()));
                 fadeBackToInteractive();
@@ -567,6 +559,16 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
                 fadeBackToInteractive();
             }
         }
+    }
+
+    private double getTheta(double x, double y) {
+        double deltaX = x - centerX;
+        double deltaY = y - centerY;
+        double radius = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+        double nx     = deltaX / radius;
+        double ny     = deltaY / radius;
+        double theta  = Math.atan2(ny, nx);
+        return Double.compare(theta, 0.0) >= 0 ? Math.toDegrees(theta) : Math.toDegrees((theta)) + 360.0;
     }
 
     private void touchRotate(final double X, final double Y, final Rotate ROTATE) {
@@ -753,13 +755,13 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
     }
 
     private void resizeUnitAndValue() {
-        unit.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.05));
+        unit.setFont(Font.font("Open Sans", FontWeight.NORMAL, size * 0.05));
         unit.setTranslateX((size - unit.getLayoutBounds().getWidth()) * 0.5);
-        unit.setTranslateY(size * 0.41);
+        unit.setTranslateY(size * 0.4);
 
-        value.setFont(Font.font("Arial", FontWeight.BOLD, size * 0.1));
+        value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.1));
         value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
-        value.setTranslateY(size * 0.51);
+        value.setTranslateY(size * 0.5);
     }
 
     private void resize() {
@@ -823,7 +825,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         knob.setTranslateX((size - knob.getPrefWidth()) * 0.5);
         knob.setTranslateY((size - knob.getPrefHeight()) * 0.5);
 
-        title.setFont(Font.font("Arial", FontWeight.NORMAL, size * 0.06));
+        title.setFont(Font.font("Open Sans", FontWeight.NORMAL, size * 0.06));
         title.setTranslateX((size - title.getLayoutBounds().getWidth()) * 0.5);
         title.setTranslateY(size * 0.74);
 

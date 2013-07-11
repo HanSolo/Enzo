@@ -62,6 +62,7 @@ public class DemoMulti extends Application {
             gauge.setDropShadowEnabled(false);
             gauge.setAnimationDuration(80);
             gauge.setAnimated(false);
+            gauge.setThresholdVisible(true);
             gauges[i] = gauge;
         }
 

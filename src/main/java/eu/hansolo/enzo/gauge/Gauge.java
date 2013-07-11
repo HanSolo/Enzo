@@ -129,8 +129,10 @@ public class Gauge extends Control {
     private double                               _oldValue;
     private double                               _minValue;
     private DoubleProperty                       minValue;
+    private double                               exactMinValue;
     private double                               _maxValue;
     private DoubleProperty                       maxValue;
+    private double                               exactMaxValue;
     private double                               _threshold;
     private DoubleProperty                       threshold;
     private boolean                              _thresholdVisible;
@@ -158,6 +160,8 @@ public class Gauge extends Control {
     private DoubleProperty                       angleRange;
     private boolean                              _clockwise;
     private BooleanProperty                      clockwise;
+    private boolean                              _autoScale;
+    private BooleanProperty                      autoScale;
     private Gauge.NeedleType                     _needleType;
     private ObjectProperty<NeedleType>           needleType;
     private Color                                _needleColor;
@@ -224,6 +228,7 @@ public class Gauge extends Control {
         _startAngle              = 320;
         _angleRange              = 280;
         _clockwise               = true;
+        _autoScale               = false;
         _needleType              = NeedleType.STANDARD;
         _needleColor             = Color.RED;
         _tickLabelOrientation    = TickLabelOrientation.HORIZONTAL;
@@ -488,6 +493,30 @@ public class Gauge extends Control {
             clockwise = new SimpleBooleanProperty(this, "clockwise", _clockwise);
         }
         return clockwise;
+    }
+
+    public final boolean isAutoScale() {
+        return null == autoScale ? _autoScale : autoScale.get();
+    }
+    public final void setAutoScale(final boolean AUTO_SCALE) {
+        if (AUTO_SCALE) {
+            exactMinValue = getMinValue();
+            exactMaxValue = getMaxValue();
+        } else {
+            setMinValue(exactMinValue);
+            setMaxValue(exactMaxValue);
+        }
+        if (null == autoScale) {
+            _autoScale = AUTO_SCALE;
+        } else {
+            autoScale.set(AUTO_SCALE);
+        }
+    }
+    public final BooleanProperty autoScaleProperty() {
+        if (null == autoScale) {
+            autoScale = new SimpleBooleanProperty(this, "autoScale", _autoScale);
+        }
+        return autoScale;
     }
 
 
@@ -798,11 +827,90 @@ public class Gauge extends Control {
         return VALUE;
     }
 
+    public void calcAutoScale() {
+        if (isAutoScale()) {
+            double maxNoOfMajorTicks = 10;
+            double maxNoOfMinorTicks = 10;
+            double niceMinValue;
+            double niceMaxValue;
+            double niceRange;
+            niceRange = (calcNiceNumber((getMaxValue() - getMinValue()), false));
+            majorTickSpace.set(calcNiceNumber(niceRange / (maxNoOfMajorTicks - 1), true));
+            niceMinValue = (Math.floor(getMinValue() / majorTickSpace.doubleValue()) * majorTickSpace.doubleValue());
+            niceMaxValue = (Math.ceil(getMaxValue() / majorTickSpace.doubleValue()) * majorTickSpace.doubleValue());
+            minorTickSpace.set(calcNiceNumber(majorTickSpace.doubleValue() / (maxNoOfMinorTicks - 1), true));
+            setMinValue(niceMinValue);
+            setMaxValue(niceMaxValue);
+        }
+    }
+
+    /**
+     * Returns a "niceScaling" number approximately equal to the range.
+     * Rounds the number if ROUND == true.
+     * Takes the ceiling if ROUND = false.
+     *
+     * @param RANGE the value range (maxValue - minValue)
+     * @param ROUND whether to round the result or ceil
+     * @return a "niceScaling" number to be used for the value range
+     */
+    private double calcNiceNumber(final double RANGE, final boolean ROUND) {
+        final double EXPONENT = Math.floor(Math.log10(RANGE));   // exponent of range
+        final double FRACTION = RANGE / Math.pow(10, EXPONENT);  // fractional part of range
+        //final double MOD      = FRACTION % 0.5;                  // needed for large number scale
+        double niceFraction;
+
+        // niceScaling
+        /*
+        if (isLargeNumberScale()) {
+            if (MOD != 0) {
+                niceFraction = FRACTION - MOD;
+                niceFraction += 0.5;
+            } else {
+                niceFraction = FRACTION;
+            }
+        } else {
+        */
+
+            if (ROUND) {
+                if (FRACTION < 1.5) {
+                    niceFraction = 1;
+                } else if (FRACTION < 3) {
+                    niceFraction = 2;
+                } else if (FRACTION < 7) {
+                    niceFraction = 5;
+                } else {
+                    niceFraction = 10;
+                }
+            } else {
+                if (Double.compare(FRACTION, 1) <= 0) {
+                    niceFraction = 1;
+                } else if (Double.compare(FRACTION, 2) <= 0) {
+                    niceFraction = 2;
+                } else if (Double.compare(FRACTION, 5) <= 0) {
+                    niceFraction = 5;
+                } else {
+                    niceFraction = 10;
+                }
+            }
+        //}
+        return niceFraction * Math.pow(10, EXPONENT);
+    }
+
     private void validate() {
         if (getThreshold() < getMinValue()) setThreshold(getMinValue());
         if (getThreshold() > getMaxValue()) setThreshold(getMaxValue());
         if (getValue() < getMinValue()) setValue(getMinValue());
         if (getValue() > getMaxValue()) setValue(getMaxValue());
+        for (Marker marker : markers.keySet()) {
+            if (marker.getValue() < getMinValue()) marker.setValue(getMinValue());
+            if (marker.getValue() > getMaxValue()) marker.setValue(getMaxValue());
+        }
+        for (Section section : sections) {
+            if (section.getStart() < getMinValue()) section.setStart(getMinValue());
+            if (section.getStart() > getMaxValue()) section.setStart(getMaxValue());
+            if (section.getStop() < getMinValue()) section.setStop(getMinValue());
+            if (section.getStop() > getMaxValue()) section.setStop(getMaxValue());
+        }
     }
 
 

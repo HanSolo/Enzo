@@ -143,6 +143,11 @@ public class GaugeBuilder<B extends GaugeBuilder<B>> {
         return this;
     }
 
+    public final GaugeBuilder autoScale(final boolean AUTO_SCALE) {
+        properties.put("autoScale", new SimpleBooleanProperty(AUTO_SCALE));
+        return this;
+    }
+
     public final GaugeBuilder needleColor(final Color NEEDLE_COLOR) {
         properties.put("needleColor", new SimpleObjectProperty<>(NEEDLE_COLOR));
         return this;
@@ -400,6 +405,8 @@ public class GaugeBuilder<B extends GaugeBuilder<B>> {
                 CONTROL.setStartAngle(((DoubleProperty) properties.get(key)).get());
             } else if("angleRange".equals(key)) {
                 CONTROL.setAngleRange(((DoubleProperty) properties.get(key)).get());
+            } else if ("autoScale".equals(key)) {
+                CONTROL.setAutoScale(((BooleanProperty) properties.get(key)).get());
             } else if("needleColor".equals(key)) {
                 CONTROL.setNeedleColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("tickLabelOrientation".equals(key)) {
