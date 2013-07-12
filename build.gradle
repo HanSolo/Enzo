@@ -25,3 +25,135 @@ buildscript {
 task wrapper(type: Wrapper) {    
     gradleVersion = '1.6'
 }
+
+/* Preparation for building separate jars for different packages
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+    clocks {
+        java {
+            srcDir 'src/main/java/eu/hansolo/enzo/clock'
+            srcDir 'src/main/java/eu/hansolo/enzo/qlocktwo'
+            srcDir 'src/main/java/eu/hansolo/enzo/imgsplitflap'
+            srcDir 'src/main/java/eu/hansolo/enzo/common'
+        }
+        resources {
+            srcDir 'src/main/resources/eu/hansolo/enzo/clock'
+            srcDir 'src/main/resources/eu/hansolo/enzo/qlocktwo'
+            srcDir 'src/main/resources/eu/hansolo/enzo/imgsplitflap'
+            srcDir 'src/main/resources/eu/hansolo/enzo/fonts'
+        }
+    }
+    gauge {
+        java {
+            srcDir 'src/main/java/eu/hansolo/enzo/gauge'
+            srcDir 'src/main/java/eu/hansolo/enzo/common'
+        }
+        resources {
+            srcDir 'src/main/resources/eu/hansolo/enzo/gauge'
+        }
+    }
+    lcd {
+        java {
+            srcDir 'src/main/java/eu/hansolo/enzo/lcd/'
+            srcDir 'src/main/java/eu/hansolo/enzo/common'
+        }
+        resources {
+            srcDir 'src/main/resources/eu/hansolo/enzo/lcd'
+            srcDir 'src/main/resources/eu/hansolo/enzo/fonts'
+        }
+    }
+    notification {
+        java {
+            srcDir 'src/main/java/eu/hansolo/enzo/notification'
+            srcDir 'src/main/java/eu/hansolo/enzo/common'
+        }
+        resources {
+            srcDir 'src/main/resources/eu/hansolo/enzo/notification'
+        }
+    }
+    segments {
+        java {
+            srcDir 'src/main/java/eu/hansolo/enzo/matrixsegment'
+            srcDir 'src/main/java/eu/hansolo/enzo/sevensegment'
+            srcDir 'src/main/java/eu/hansolo/enzo/sixteensegment'
+            srcDir 'src/main/java/eu/hansolo/enzo/common'
+        }
+        resources {
+            srcDir 'src/main/resources/eu/hansolo/enzo/matrixsegment'
+            srcDir 'src/main/resources/eu/hansolo/enzo/sevensegment'
+            srcDir 'src/main/resources/eu/hansolo/enzo/sixteensegment'
+        }
+    }
+    indicators {
+        java {
+            srcDir 'src/main/java/eu/hansolo/enzo/led'
+            srcDir 'src/main/java/eu/hansolo/enzo/simpleindicator'
+            srcDir 'src/main/java/eu/hansolo/enzo/common'
+        }
+        resources {
+            srcDir 'src/main/resources/eu/hansolo/enzo/led'
+            srcDir 'src/main/resources/eu/hansolo/enzo/simpleindicator'
+        }
+    }
+}
+
+
+task clocksJar(type: Jar) {
+    from sourceSets.clocks.output
+    from sourceSets.clocks.output.resourcesDir
+    classifier = 'clocks'
+}
+task gaugeJar(type: Jar) {
+    from sourceSets.gauge.output
+    from sourceSets.gauge.output.resourcesDir
+
+    classifier = 'gauge'
+}
+task lcdJar(type: Jar) {
+    from sourceSets.lcd.output
+    from sourceSets.lcd.output.resourcesDir
+    classifier = 'lcd'
+}
+task notificationJar(type: Jar) {
+    from sourceSets.notification.output
+    from sourceSets.notification.output.resourcesDir
+    classifier = 'notification'
+}
+task segmentsJar(type: Jar) {
+    from sourceSets.segments.output
+    from sourceSets.segments.output.resourcesDir
+    classifier = 'segments'
+}
+task indicatorsJar(type: Jar) {
+    from sourceSets.indicators.output
+    from sourceSets.indicators.output.resourcesDir
+    classifier = 'indicators'
+}
+
+
+dependencies {
+    compile sourceSets.clocks.output
+    compile clocksJar.outputs.files
+
+    //compile sourceSets.gauge.output
+    compile gaugeJar.outputs.files
+
+    // compile sourceSets.lcd.output
+    compile lcdJar.outputs.files
+
+    //compile sourceSets.notification.output
+    compile notificationJar.outputs.files
+
+    //compile sourceSets.segments.output
+    compile segmentsJar.outputs.files
+
+    //compile sourceSets.indicators.output
+    compile indicatorsJar.outputs.files
+}
+
+*/
