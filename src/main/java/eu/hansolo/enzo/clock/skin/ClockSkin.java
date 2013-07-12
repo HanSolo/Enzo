@@ -124,8 +124,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         majorTickOffset = 0.018;
         minorTickOffset = 0.05;
 
-        tickLabelFont      = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/helvetica.ttf"), 12);
-
+        //tickLabelFont      = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/helvetica.ttf"), 12);
+        tickLabelFont      = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/bebasneue.ttf"), 12);
         minute             = new SimpleDoubleProperty(0);
         currentMinuteAngle = new SimpleDoubleProperty(0);
 
@@ -630,10 +630,10 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             if (Clock.Design.BRAUN == getSkinnable().getDesign()) {
                 int tickLabelCounter = 0;
                 //tickLabelFont = Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/helvetica.ttf"), (0.075 * size));
-                tickLabelFont = Font.font("Helvetica", FontWeight.NORMAL, FontPosture.REGULAR, 0.075 * size);
+                tickLabelFont = Font.font("Bebas Neue", FontWeight.THIN, FontPosture.REGULAR, 0.09 * size);
                 for (double angle = 0 ; angle < 360 ; angle += 30.0) {
-                    double x = 0.31 * size * Math.sin(Math.toRadians(150 - angle));
-                    double y = 0.31 * size * Math.cos(Math.toRadians(150 - angle));
+                    double x = 0.34 * size * Math.sin(Math.toRadians(150 - angle));
+                    double y = 0.34 * size * Math.cos(Math.toRadians(150 - angle));
                     tickLabels.get(tickLabelCounter).setFont(tickLabelFont);
                     tickLabels.get(tickLabelCounter).setX(size * 0.5 + x - tickLabels.get(tickLabelCounter).getLayoutBounds().getWidth() * 0.5);
                     tickLabels.get(tickLabelCounter).setY(size * 0.5 + y);

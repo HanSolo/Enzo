@@ -148,11 +148,9 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
 
     private void initGraphics() {
         // load the fonts
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/bus.otf"), (0.4583333333 * PREFERRED_HEIGHT));             // "Bus-Regular"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digital.ttf"), (0.5833333333 * PREFERRED_HEIGHT));         // "Digital-7"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadout.ttf"), (0.5833333333 * PREFERRED_HEIGHT));  // "Digital Readout Upright"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadoutb.ttf"), (0.5833333333 * PREFERRED_HEIGHT)); // "Digital Readout Thick Upright"
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/pixel.ttf"), (0.5208333333 * PREFERRED_HEIGHT));           // "Electronic Highway Sign"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/elektra.ttf"), (0.58333333 * PREFERRED_HEIGHT));           // "Elektra"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), (0.58333333 * PREFERRED_HEIGHT)); // "OpenSans"
 
@@ -482,9 +480,6 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     private void updateFonts() {
         digitalFontSizeFactor = 1.0;
         switch(getSkinnable().getValueFont()) {
-            case BUS:
-                valueFont = Font.font("Bus-Regular", (0.4583333333 * height));
-                break;
             case LCD:
                 valueFont = Font.font("Digital-7", (0.6 * height));
                 digitalFontSizeFactor = 1.4;
@@ -494,9 +489,6 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
                 break;
             case DIGITAL_BOLD:
                 valueFont = Font.font("Digital Readout Thick Upright", (0.5833333333 * height));
-                break;
-            case PIXEL:
-                valueFont = Font.font("Electronic Highway Sign", (0.54 * height));
                 break;
             case ELEKTRA:
                 valueFont = Font.font("Elektra", (0.62 * height));

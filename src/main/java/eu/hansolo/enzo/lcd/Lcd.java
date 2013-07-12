@@ -83,8 +83,6 @@ public class Lcd extends Control {
         LCD,
         DIGITAL,
         DIGITAL_BOLD,
-        BUS,
-        PIXEL,
         ELEKTRA
     }
     public static enum NumberSystem {
