@@ -278,6 +278,11 @@ public class GaugeBuilder<B extends GaugeBuilder<B>> {
         return this;
     }
 
+    public final GaugeBuilder styleClass(final String... STYLES) {
+        properties.put("styleClass", new SimpleObjectProperty<>(STYLES));
+        return this;
+    }
+
     public final B prefSize(final double WIDTH, final double HEIGHT) {
         properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
         return (B)this;
@@ -368,7 +373,8 @@ public class GaugeBuilder<B extends GaugeBuilder<B>> {
             } else if ("translateY".equals(key)) {
                 CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             } else if("styleClass".equals(key)) {
-                CONTROL.getStyleClass().setAll("gauge", ((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("gauge");
+                CONTROL.getStyleClass().addAll(((ObjectProperty<String[]>) properties.get(key)).get());
             } else if("value".equals(key)) {
                 CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
             } else if("minValue".equals(key)) {

@@ -108,7 +108,7 @@ public class Section {
     }
 
     public boolean contains(final double VALUE) {
-        return ((Double.compare(VALUE, start.get()) >= 0 && Double.compare(VALUE, stop.get()) <= 0));
+        return ((Double.compare(VALUE, getStart()) >= 0 && Double.compare(VALUE, getStop()) <= 0));
     }
 
 
