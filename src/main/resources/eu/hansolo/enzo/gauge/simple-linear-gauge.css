@@ -17,8 +17,8 @@
 /******************************************************************************
  * SIMPLE_GAUGE class                                                         *
  *****************************************************************************/
-.simple-gauge {
-    -fx-skin            : "eu.hansolo.enzo.gauge.skin.SimpleRadialGaugeSkin";
+.simple-linear-gauge {
+    -fx-skin            : "eu.hansolo.enzo.gauge.skin.SimpleLinearGaugeSkin";
     -bar-background-fill: rgb(234, 234, 234);
     -bar-fill           : #f1c428;
     -bar-width          : 20;
@@ -40,16 +40,16 @@
 /******************************************************************************
  * SIMPLE_GAUGE bar-background                                                *
  *****************************************************************************/
-.simple-gauge .bar-background {
+.simple-linear-gauge .bar-background {
     -fx-fill           : null;
     -fx-stroke         : -bar-background-fill;
     -fx-stroke-width   : -bar-width;
     -fx-stroke-line-cap: butt;
 }
-.simple-gauge:round .bar-background {
+.simple-linear-gauge:round .bar-background {
     -fx-stroke-line-cap: round;
 }
-.simple-gauge:segmented .bar-background {
+.simple-linear-gauge:segmented .bar-background {
     -fx-stroke-line-cap   : butt;
     -fx-stroke-dash-array : 4 2;
     -fx-stroke-dash-offset: 0;
@@ -59,16 +59,16 @@
 /******************************************************************************
  * SIMPLE_GAUGE bar                                                           *
  *****************************************************************************/
-.simple-gauge .bar {
+.simple-linear-gauge .bar {
     -fx-fill           : null;
     -fx-stroke         : -bar-fill;
     -fx-stroke-width   : -bar-width;
     -fx-stroke-line-cap: butt;
 }
-.simple-gauge:round .bar {
+.simple-linear-gauge:round .bar {
     -fx-stroke-line-cap: round;
 }
-.simple-gauge:segmented .bar {
+.simple-linear-gauge:segmented .bar {
     -fx-stroke-line-cap   : butt;
     -fx-stroke-dash-array : 4 2;
     -fx-stroke-dash-offset: 0;
@@ -78,11 +78,11 @@
 /******************************************************************************
  * SIMPLE_GAUGE title, unit, value, label                                     *
  *****************************************************************************/
-.simple-gauge .value {
+.simple-linear-gauge .value {
     -fx-text-fill: -value-color;
 }
 
-.simple-gauge .label {
+.simple-linear-gauge .label {
     -fx-fill: -label-color;
 }
 
@@ -90,64 +90,64 @@
 /******************************************************************************
  * SIMPLE_GAUGE flat ui colors                                                *
  *****************************************************************************/
-.simple-gauge .turqoise {
+.simple-linear-gauge .turqoise {
     -bar-fill: #1fbc9c;
 }
-.simple-gauge .green-sea {
+.simple-linear-gauge .green-sea {
     -bar-fill: #1aa085;
 }
-.simple-gauge .emerland {
+.simple-linear-gauge .emerland {
     -bar-fill: #57d68d;
 }
-.simple-gauge .nephritis {
+.simple-linear-gauge .nephritis {
     -bar-fill: #27ae60;
 }
-.simple-gauge .peter-river {
+.simple-linear-gauge .peter-river {
     -bar-fill: #5cace2;
 }
-.simple-gauge .belize-hole {
+.simple-linear-gauge .belize-hole {
     -bar-fill: #5399c6;
 }
-.simple-gauge .amnethyst {
+.simple-linear-gauge .amnethyst {
     -bar-fill: #af7ac4;
 }
-.simple-gauge .wisteria {
+.simple-linear-gauge .wisteria {
     -bar-fill: #8e44ad;
 }
-.simple-gauge .sunflower {
+.simple-linear-gauge .sunflower {
     -bar-fill: #f1c428;
 }
-.simple-gauge .orange {
+.simple-linear-gauge .orange {
     -bar-fill: #f5af41;
 }
-.simple-gauge .carrot {
+.simple-linear-gauge .carrot {
     -bar-fill: #eb974e;
 }
-.simple-gauge .pumpkin {
+.simple-linear-gauge .pumpkin {
     -bar-fill: #d35519;
 }
-.simple-gauge .alizarin {
+.simple-linear-gauge .alizarin {
     -bar-fill: #ea6f63;
 }
-.simple-gauge .pomegranate {
+.simple-linear-gauge .pomegranate {
     -bar-fill: #cc6055;
 }
-.simple-gauge .clouds {
+.simple-linear-gauge .clouds {
     -bar-fill: #eff3f3;
 }
-.simple-gauge .silver {
+.simple-linear-gauge .silver {
     -bar-fill: #bdc3c7;
 }
-.simple-gauge .concrete {
+.simple-linear-gauge .concrete {
     -bar-fill: #95a5a6;
 }
-.simple-gauge .asbestos {
+.simple-linear-gauge .asbestos {
     -bar-fill: #7f8c8d;
 }
-.simple-gauge .wet-asphalt {
+.simple-linear-gauge .wet-asphalt {
     -bar-fill: #34495e;
 }
-.simple-gauge .midnight-blue {
+.simple-linear-gauge .midnight-blue {
     -bar-fill: #2c3e50;
 }
 
@@ -155,63 +155,63 @@
 /******************************************************************************
  * SIMPLE_GAUGE sections                                                      *
  *****************************************************************************/
-.simple-gauge .section0 {
+.simple-linear-gauge .section0 {
     -fx-stroke: -section0-fill;
 }
-.simple-gauge:highlighted .section0 {
+.simple-linear-gauge:highlighted .section0 {
     -fx-stroke: derive(-section0-fill, 30%);
 }
-.simple-gauge .section1 {
+.simple-linear-gauge .section1 {
     -fx-stroke: -section1-fill;
 }
-.simple-gauge:highlighted .section1 {
+.simple-linear-gauge:highlighted .section1 {
     -fx-stroke: derive(-section1-fill, 30%);
 }
-.simple-gauge .section2 {
+.simple-linear-gauge .section2 {
     -fx-stroke: -section2-fill;
 }
-.simple-gauge:highlighted .section2 {
+.simple-linear-gauge:highlighted .section2 {
     -fx-stroke: derive(-section2-fill, 30%);
 }
-.simple-gauge .section3 {
+.simple-linear-gauge .section3 {
     -fx-stroke: -section3-fill;
 }
-.simple-gauge:highlighted .section3 {
+.simple-linear-gauge:highlighted .section3 {
     -fx-stroke: derive(-section3-fill, 30%);
 }
-.simple-gauge .section4 {
+.simple-linear-gauge .section4 {
     -fx-stroke: -section4-fill;
 }
-.simple-gauge:highlighted .section4 {
+.simple-linear-gauge:highlighted .section4 {
     -fx-stroke: derive(-section4-fill, 30%);
 }
-.simple-gauge .section5 {
+.simple-linear-gauge .section5 {
     -fx-stroke: -section5-fill;
 }
-.simple-gauge:highlighted .section5 {
+.simple-linear-gauge:highlighted .section5 {
     -fx-stroke: derive(-section5-fill, 30%);
 }
-.simple-gauge .section6 {
+.simple-linear-gauge .section6 {
     -fx-stroke: -section6-fill;
 }
-.simple-gauge:highlighted .section6 {
+.simple-linear-gauge:highlighted .section6 {
     -fx-stroke: derive(-section6-fill, 30%);
 }
-.simple-gauge .section7 {
+.simple-linear-gauge .section7 {
     -fx-stroke: -section7-fill;
 }
-.simple-gauge:highlighted .section7 {
+.simple-linear-gauge:highlighted .section7 {
     -fx-stroke: derive(-section7-fill, 30%);
 }
-.simple-gauge .section8 {
+.simple-linear-gauge .section8 {
     -fx-stroke: -section8-fill;
 }
-.simple-gauge:highlighted .section8 {
+.simple-linear-gauge:highlighted .section8 {
     -fx-stroke: derive(-section8-fill, 30%);
 }
-.simple-gauge .section9 {
+.simple-linear-gauge .section9 {
     -fx-stroke: -section9-fill;
 }
-.simple-gauge:highlighted .section9 {
+.simple-linear-gauge:highlighted .section9 {
     -fx-stroke: derive(-section9-fill, 30%);
 }

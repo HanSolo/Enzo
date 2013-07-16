@@ -1,22 +1,6 @@
-/*
- * Copyright (c) 2013 by Gerrit Grunwald
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package eu.hansolo.enzo.gauge.skin;
 
-import eu.hansolo.enzo.gauge.SimpleRadialGauge;
+import eu.hansolo.enzo.gauge.SimpleLinearGauge;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -24,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
@@ -35,7 +20,7 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -48,10 +33,10 @@ import java.util.Locale;
 /**
  * Created by
  * User: hansolo
- * Date: 15.07.13
- * Time: 16:45
+ * Date: 16.07.13
+ * Time: 13:04
  */
-public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implements Skin<SimpleRadialGauge> {
+public class SimpleLinearGaugeSkin extends SkinBase<SimpleLinearGauge> implements Skin<SimpleLinearGauge> {
     private static final double PREFERRED_WIDTH  = 200;
     private static final double PREFERRED_HEIGHT = 200;
     private static final double MINIMUM_WIDTH    = 50;
@@ -59,29 +44,34 @@ public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implement
     private static final double MAXIMUM_WIDTH    = 1024;
     private static final double MAXIMUM_HEIGHT   = 1024;
     private double              size;
+    private double              width;
+    private double              height;
     private double              centerX;
     private double              centerY;
+    private Orientation         orientation;
     private Pane                pane;
-    private DoubleProperty      angle;
-    private Arc                 barBackground;
-    private Arc                 bar;
+    private DoubleProperty      value;
+    private Line                barBackground;
+    private Line                bar;
     private Canvas              titleAndUnit;
     private GraphicsContext     ctx;
     private Label               valueLabel;
-    private double              angleStep;
+    private double              valueStep;
     private InnerShadow         innerShadow;
     private Timeline            timeline;
 
 
     // ******************** Constructors **************************************
-    public SimpleRadialGaugeSkin(SimpleRadialGauge gauge) {
+    public SimpleLinearGaugeSkin(SimpleLinearGauge gauge) {
         super(gauge);
-        angleStep = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
-        angle     = new SimpleDoubleProperty(this, "angle", getSkinnable().getValue() * angleStep);
-        timeline  = new Timeline();
+        orientation = Orientation.VERTICAL;
+        valueStep   = gauge.getRange() / (gauge.getMaxValue() - gauge.getMinValue());
+        value       = new SimpleDoubleProperty(this, "value", getSkinnable().getValue() * valueStep);
+        timeline    = new Timeline();
         init();
         initGraphics();
         registerListeners();
+        resize();
     }
 
 
@@ -106,31 +96,19 @@ public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implement
     }
 
     private void initGraphics() {
-        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), (0.06 * PREFERRED_HEIGHT)); // "OpenSans"
+        Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), 12); // "OpenSans"
 
         innerShadow = new InnerShadow();
-        innerShadow.setRadius(0.01 * size);
+        innerShadow.setRadius(0.01 * PREFERRED_WIDTH);
         innerShadow.setBlurType(BlurType.TWO_PASS_BOX);
         innerShadow.setColor(Color.rgb(0, 0, 0, 0.65));
 
-        barBackground = new Arc();
-        barBackground.setCenterX(PREFERRED_WIDTH * 0.5);
-        barBackground.setCenterY(PREFERRED_HEIGHT * 0.5);
-        barBackground.setRadiusX(PREFERRED_WIDTH * 0.5 - 4);
-        barBackground.setRadiusY(PREFERRED_HEIGHT * 0.5 - 4);
-        barBackground.setStartAngle(getSkinnable().getStartAngle() - 90);
-        barBackground.setLength(-getSkinnable().getAngleRange());
+        barBackground = new Line();
         barBackground.setStrokeType(StrokeType.CENTERED);
         barBackground.getStyleClass().addAll("bar-background");
         barBackground.setEffect(innerShadow);
 
-        bar = new Arc();
-        bar.setCenterX(PREFERRED_WIDTH * 0.5);
-        bar.setCenterY(PREFERRED_HEIGHT * 0.5);
-        bar.setRadiusX(PREFERRED_WIDTH * 0.5 - 4);
-        bar.setRadiusY(PREFERRED_HEIGHT * 0.5 - 4);
-        bar.setStartAngle(getSkinnable().getStartAngle() - 90);
-        bar.setLength(0);
+        bar = new Line();
         bar.setStrokeType(StrokeType.CENTERED);
         bar.getStyleClass().addAll("bar");
         bar.setEffect(innerShadow);
@@ -138,17 +116,17 @@ public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implement
         titleAndUnit = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
         ctx          = titleAndUnit.getGraphicsContext2D();
 
-        valueLabel = new Label(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", (angle.get() + getSkinnable().getStartAngle() - 180) / angleStep));
+        valueLabel = new Label(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", value.get()));
         valueLabel.setMouseTransparent(true);
-        valueLabel.setAlignment(Pos.CENTER);
-        valueLabel.getStyleClass().addAll("value");
+        valueLabel.setAlignment(Pos.TOP_CENTER);
+        valueLabel.getStyleClass().addAll("valueLabel");
 
         // Add all nodes
         pane = new Pane();
         pane.getChildren().setAll(titleAndUnit,
                                   barBackground,
                                   bar,
-            valueLabel);
+                                  valueLabel);
 
         getChildren().setAll(pane);
     }
@@ -161,7 +139,6 @@ public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implement
         getSkinnable().maxValueProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
 
         getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED"));
-        getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE"));
         getSkinnable().decimalsProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
 
         getSkinnable().valueColorProperty().addListener(observable -> handleControlPropertyChanged("REDRAW_CANVAS"));
@@ -169,7 +146,7 @@ public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implement
 
         getSkinnable().getStyleClass().addListener((ListChangeListener<String>) change -> handleControlPropertyChanged("STYLE"));
 
-        angle.addListener(observable -> handleControlPropertyChanged("ANGLE"));
+        value.addListener(observable -> handleControlPropertyChanged("CURRENT_VALUE"));
     }
 
 
@@ -178,15 +155,29 @@ public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implement
         if ("RESIZE".equals(PROPERTY)) {
             resize();
         } else if ("VALUE".equals(PROPERTY)) {
-            setBar();
-        } else if ("RECALC".equals(PROPERTY)) {
-            angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
             resize();
-        } else if ("ANGLE".equals(PROPERTY)) {
-            double currentValue = angle.get() / angleStep;
+            setBar();
+        } else if ("CURRENT_VALUE".equals(PROPERTY)) {
+            double currentValue = value.get();
 
             valueLabel.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue));
-            valueLabel.setTranslateX((size - valueLabel.getLayoutBounds().getWidth()) * 0.5);
+            valueLabel.setTranslateX((width - valueLabel.getLayoutBounds().getWidth()) * 0.5);
+
+            switch (orientation) {
+                case VERTICAL:
+                    bar.setStartX(barBackground.getStartX());
+                    bar.setStartY(barBackground.getStartY());
+                    bar.setEndX(barBackground.getEndX());
+                    bar.setEndY(barBackground.getStartY() - (currentValue - getSkinnable().getMinValue()) * valueStep);
+                    break;
+                case HORIZONTAL:
+                    bar.setStartX(barBackground.getStartX());
+                    bar.setStartY(barBackground.getStartY());
+                    bar.setEndX(getSkinnable().getBarWidth() + (currentValue) * valueStep);
+                    bar.setEndY(barBackground.getEndY());
+                    break;
+            }
+
             for (int i = 0 ; i < getSkinnable().getSections().size() ; i++) {
                 if (getSkinnable().getSections().get(i).contains(currentValue)) {
                     if (bar.getStyleClass().contains("section" + i)) continue;
@@ -195,7 +186,6 @@ public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implement
                     bar.getStyleClass().remove("section" + i);
                 }
             }
-            bar.setLength(-currentValue * angleStep);
         } else if ("STYLE".equals(PROPERTY)) {
             for (String style : getSkinnable().getStyleClass()) {
                 if (bar.getStyleClass().contains(style)) continue;
@@ -238,66 +228,105 @@ public class SimpleRadialGaugeSkin extends SkinBase<SimpleRadialGauge> implement
 
     // ******************** Private Methods ***********************************
     private void drawTitleAndUnit() {
-        ctx.clearRect(0, 0, size, size);
+        ctx.clearRect(0, 0, width, height);
         ctx.setFill(getSkinnable().getLabelColor());
         ctx.setTextBaseline(VPos.CENTER);
         ctx.setTextAlign(TextAlignment.CENTER);
-        ctx.setFont(Font.font("Open Sans", FontWeight.NORMAL, 20 / PREFERRED_HEIGHT * size));
 
         // title
-        ctx.fillText(getSkinnable().getTitle(), size * 0.5, size * 0.3);
+        if (Orientation.VERTICAL == orientation) {
+            ctx.setFont(Font.font("Open Sans", FontWeight.NORMAL, 9 / PREFERRED_WIDTH * width));
+            ctx.save();
+            ctx.translate(width * 0.5 + getSkinnable().getBarWidth(), height * 0.5);
+            ctx.rotate(90);
+            ctx.fillText(getSkinnable().getTitle(), 0, 0);
+            ctx.restore();
+        } else {
+            ctx.setFont(Font.font("Open Sans", FontWeight.NORMAL, 9 / PREFERRED_HEIGHT * height));
+            ctx.fillText(getSkinnable().getTitle(), width * 0.5, height * 0.5 + 1.5 * getSkinnable().getBarWidth());
+        }
+
         // unit
-        ctx.fillText(getSkinnable().getUnit(), size * 0.5, size * 0.7);
+        if (Orientation.VERTICAL == orientation) {
+            ctx.fillText(getSkinnable().getUnit(), width * 0.5, valueLabel.getLayoutBounds().getMaxY() + 10);
+        } else {
+            ctx.fillText(getSkinnable().getUnit(), width * 0.5, valueLabel.getLayoutBounds().getMaxY() + 10);
+        }
     }
 
     private void setBar() {
-        double range       = (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
-        double angleRange  = getSkinnable().getAngleRange();
-        angleStep          = angleRange / range;
-        double targetAngle = getSkinnable().getValue() * angleStep;
-
         if (getSkinnable().isAnimated()) {
             timeline.stop();
-            final KeyValue KEY_VALUE = new KeyValue(angle, targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
+            final KeyValue KEY_VALUE = new KeyValue(value, getSkinnable().getValue(), Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
             final KeyFrame KEY_FRAME = new KeyFrame(Duration.millis(getSkinnable().getAnimationDuration()), KEY_VALUE);
             timeline.getKeyFrames().setAll(KEY_FRAME);
             timeline.play();
         } else {
-            angle.set(targetAngle);
+            value.set(getSkinnable().getValue());
         }
     }
 
     private void resize() {
-        size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
-        centerX = size * 0.5;
-        centerY = size * 0.5;
+        size        = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
+        width       = getSkinnable().getWidth();
+        height      = getSkinnable().getHeight();
+        orientation = getSkinnable().getWidth() < getSkinnable().getHeight() ? Orientation.VERTICAL : Orientation.HORIZONTAL;
+        centerX     = width * 0.5;
+        centerY     = height * 0.5;
 
-        final double RADIUS     = size * 0.5 - 4;
-        final double ARC_RADIUS = RADIUS - getSkinnable().getBarWidth() / 2;
+        if (width > 0 && height > 0) {
 
-        innerShadow.setRadius(0.01 * size);
+            innerShadow.setRadius(0.01 * size);
 
-        if (size > 100) {
-            titleAndUnit.setWidth(size);
-            titleAndUnit.setHeight(size);
+            valueLabel.setFont(Font.font("Open Sans", FontWeight.BOLD, (size - (getSkinnable().getBarWidth() * 2)) * 0.3));
+            valueLabel.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getValue()));
+            valueLabel.setPrefWidth(width * 0.8);
+            valueLabel.setTranslateX((width - valueLabel.getLayoutBounds().getWidth()) * 0.5);
+            valueLabel.setTranslateY(5);
+
+            switch (orientation) {
+                case VERTICAL:
+                    valueStep = Math.abs((height - (2 * getSkinnable().getBarWidth()) - valueLabel.getLayoutBounds().getHeight() - getSkinnable().getBarWidth() * 0.5) / getSkinnable().getRange());
+                    break;
+                case HORIZONTAL:
+                    valueStep = Math.abs((width - (2 * getSkinnable().getBarWidth())) / getSkinnable().getRange());
+                    break;
+            }
+
+            switch(orientation) {
+                case VERTICAL:
+                    barBackground.setStartX(centerX);
+                    barBackground.setStartY(height - getSkinnable().getBarWidth());
+                    barBackground.setEndX(centerX);
+                    barBackground.setEndY(getSkinnable().getBarWidth() + valueLabel.getLayoutBounds().getHeight() + getSkinnable().getBarWidth() * 0.5);
+                    break;
+                case HORIZONTAL:
+                    barBackground.setStartX(getSkinnable().getBarWidth());
+                    barBackground.setStartY(centerY);
+                    barBackground.setEndX(width - getSkinnable().getBarWidth());
+                    barBackground.setEndY(centerY);
+                    break;
+            }
+
+            switch (orientation) {
+                case VERTICAL:
+                    bar.setStartX(barBackground.getStartX());
+                    bar.setStartY(barBackground.getStartY());
+                    bar.setEndX(barBackground.getEndX());
+                    bar.setEndY(barBackground.getStartY() - ((getSkinnable().getValue() - getSkinnable().getMinValue()) * valueStep));
+                    break;
+                case HORIZONTAL:
+                    bar.setStartX(barBackground.getStartX());
+                    bar.setStartY(barBackground.getStartY());
+                    bar.setEndX(getSkinnable().getBarWidth() + ((getSkinnable().getValue() - getSkinnable().getMinValue()) * valueStep));
+                    bar.setEndY(barBackground.getEndY());
+                    break;
+            }
+
+            titleAndUnit.setWidth(width);
+            titleAndUnit.setHeight(height);
             drawTitleAndUnit();
+            titleAndUnit.setVisible(Double.compare(size, 100) >= 0);
         }
-        titleAndUnit.setVisible(size > 100);
-
-        barBackground.setCenterX(centerX);
-        barBackground.setCenterY(centerY);
-        barBackground.setRadiusX(ARC_RADIUS);
-        barBackground.setRadiusY(ARC_RADIUS);
-
-        bar.setCenterX(centerX);
-        bar.setCenterY(centerY);
-        bar.setRadiusX(barBackground.getRadiusX());
-        bar.setRadiusY(barBackground.getRadiusY());
-
-        valueLabel.setFont(Font.font("Open Sans", FontWeight.BOLD, (size - (getSkinnable().getBarWidth() * 2)) * 0.3));
-        valueLabel.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getValue()));
-        valueLabel.setPrefSize((size - 8 - (2 * getSkinnable().getBarWidth())) * 0.8, (size - 8 - (2 * getSkinnable().getBarWidth())) * 0.8);
-        valueLabel.setTranslateX((size - valueLabel.getPrefWidth()) * 0.5);
-        valueLabel.setTranslateY((size - valueLabel.getPrefHeight()) * 0.5);
     }
 }

@@ -23,8 +23,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 import java.util.Random;
@@ -40,24 +40,34 @@ import java.util.Random;
 public class DemoSimpleGauge extends Application {
     private static final Random RND       = new Random();
     private static int          noOfNodes = 0;
-    private SimpleRadialGauge   control;
+    private SimpleRadialGauge   simpleRadial;
+    private SimpleLinearGauge   simpleLinear;
     private long                lastTimerCall;
     private AnimationTimer      timer;
 
     @Override public void init() {
-        control = SimpleRadialGaugeBuilder.create()
-                                          .sections(new Section(20, 40), new Section(60, 80))
-                                          //.segmented(true)
-                                          .round(true)
-                                          .title("title")
-                                          .unit("unit")
-                                          .build();
+        simpleRadial = SimpleRadialGaugeBuilder.create()
+                                               .round(true)
+                                               //.segmented(true)
+                                               .sections(new Section(20, 40))
+                                               .title("title")
+                                               .unit("unit")
+                                               .build();
+
+        simpleLinear = SimpleLinearGaugeBuilder.create()
+                                               .round(true)
+                                               //.segmented(true)
+                                               .sections(new Section(20, 40))
+                                               .title("title")
+                                               .unit("unit")
+                                               .build();
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 5_000_000_000l) {
-                    control.setValue(RND.nextDouble() * 100);
+                    simpleRadial.setValue(RND.nextDouble() * 100);
+                    simpleLinear.setValue(RND.nextDouble() * 100);
                     lastTimerCall = now;
                 }
             }
@@ -65,18 +75,17 @@ public class DemoSimpleGauge extends Application {
     }
 
     @Override public void start(Stage stage) throws Exception {
-        StackPane pane = new StackPane();
+        HBox pane = new HBox();
+        HBox.setHgrow(simpleLinear, Priority.ALWAYS);
         pane.setPadding(new Insets(5, 5, 5, 5));
-        pane.getChildren().add(control);
+        pane.getChildren().addAll(simpleRadial, simpleLinear);
 
-        final Scene scene = new Scene(pane, Color.BLACK);
+        final Scene scene = new Scene(pane);
         //scene.setFullScreen(true);
 
         stage.setTitle("test");
         stage.setScene(scene);
         stage.show();
-
-        control.getStyleClass().add(SimpleRadialGauge.STYLE_CLASS_BELIZE_HOLE);
 
         timer.start();
 

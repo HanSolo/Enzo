@@ -1,23 +1,7 @@
-/*
- * Copyright (c) 2013 by Gerrit Grunwald
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package eu.hansolo.enzo.gauge;
 
 import com.sun.javafx.css.converters.PaintConverter;
-import eu.hansolo.enzo.gauge.skin.SimpleRadialGaugeSkin;
+import eu.hansolo.enzo.gauge.skin.SimpleLinearGaugeSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
@@ -53,10 +37,10 @@ import java.util.List;
 /**
  * Created by
  * User: hansolo
- * Date: 15.07.13
- * Time: 16:19
+ * Date: 16.07.13
+ * Time: 13:04
  */
-public class SimpleRadialGauge extends Control {
+public class SimpleLinearGauge extends Control {
     public static enum FlatUiColor {
         TURQOISE("turqoise"),
         GREEN_SEA("green-sea"),
@@ -144,12 +128,6 @@ public class SimpleRadialGauge extends Control {
     private boolean                  _animated;
     private BooleanProperty          animated;
     private double                   animationDuration;
-    private double                   _startAngle;
-    private DoubleProperty           startAngle;
-    private double                   _angleRange;
-    private DoubleProperty           angleRange;
-    private boolean                  _clockwise;
-    private BooleanProperty          clockwise;
     private ObservableList<Section>  sections;
 
     // CSS styleable properties
@@ -171,8 +149,8 @@ public class SimpleRadialGauge extends Control {
 
 
     // ******************** Constructors **************************************
-    public SimpleRadialGauge() {
-        getStyleClass().add("simple-radial-gauge");
+    public SimpleLinearGauge() {
+        getStyleClass().add("simple-linear-gauge");
         _value                   = 0;
         _oldValue                = 0;
         _minValue                = 0;
@@ -182,9 +160,6 @@ public class SimpleRadialGauge extends Control {
         _title                   = "";
         _unit                    = "";
         _animated                = true;
-        _startAngle              = 0;
-        _angleRange              = 270;
-        _clockwise               = true;
         sections                 = FXCollections.observableArrayList();
         animationDuration        = 800;
     }
@@ -335,23 +310,6 @@ public class SimpleRadialGauge extends Control {
         return animated;
     }
 
-    public double getStartAngle() {
-        return null == startAngle ? _startAngle : startAngle.get();
-    }
-    public final void setStartAngle(final double START_ANGLE) {
-        if (null == startAngle) {
-            _startAngle = clamp(0, 360, START_ANGLE);
-        } else {
-            startAngle.set(clamp(0, 360, START_ANGLE));
-        }
-    }
-    public final DoubleProperty startAngleProperty() {
-        if (null == startAngle) {
-            startAngle = new SimpleDoubleProperty(this, "startAngle", _startAngle);
-        }
-        return startAngle;
-    }
-
     public final double getAnimationDuration() {
         return animationDuration;
     }
@@ -359,40 +317,9 @@ public class SimpleRadialGauge extends Control {
         animationDuration = clamp(20, 5000, ANIMATION_DURATION);
     }
 
-    public final double getAngleRange() {
-        return null == angleRange ? _angleRange : angleRange.get();
+    public final double getRange() {
+        return getMaxValue() - getMinValue();
     }
-    public final void setAngleRange(final double ANGLE_RANGE) {
-        if (null == angleRange) {
-            _angleRange = clamp(0.0, 360.0, ANGLE_RANGE);
-        } else {
-            angleRange.set(clamp(0.0, 360.0, ANGLE_RANGE));
-        }
-    }
-    public final DoubleProperty angleRangeProperty() {
-        if (null == angleRange) {
-            angleRange = new SimpleDoubleProperty(this, "angleRange", _angleRange);
-        }
-        return angleRange;
-    }
-
-    public final boolean isClockwise() {
-        return null == clockwise ? _clockwise : clockwise.get();
-    }
-    public final void setClockwise(final boolean CLOCKWISE) {
-        if (null == clockwise) {
-            _clockwise = CLOCKWISE;
-        } else {
-            clockwise.set(CLOCKWISE);
-        }
-    }
-    public final BooleanProperty clockwiseProperty() {
-        if (null == clockwise) {
-            clockwise = new SimpleBooleanProperty(this, "clockwise", _clockwise);
-        }
-        return clockwise;
-    }
-
 
     // Properties related to visualization
     public final ObservableList<Section> getSections() {
@@ -455,7 +382,7 @@ public class SimpleRadialGauge extends Control {
 
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.BAR_WIDTH; }
 
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
 
                 @Override public String getName() { return "barWidth"; }
             };
@@ -475,7 +402,7 @@ public class SimpleRadialGauge extends Control {
 
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.BAR_BACKGROUND_FILL; }
 
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
 
                 @Override public String getName() { return "barBackgroundFill"; }
             };
@@ -495,7 +422,7 @@ public class SimpleRadialGauge extends Control {
 
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.BAR_FILL; }
 
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
 
                 @Override public String getName() { return "barFill"; }
             };
@@ -515,7 +442,7 @@ public class SimpleRadialGauge extends Control {
 
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.VALUE_COLOR; }
 
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
 
                 @Override public String getName() { return "valueColor"; }
             };
@@ -535,7 +462,7 @@ public class SimpleRadialGauge extends Control {
 
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.LABEL_COLOR; }
 
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
 
                 @Override public String getName() { return "labelColor"; }
             };
@@ -553,7 +480,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section0Fill) {
             section0Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_0_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_0_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section0Fill"; }
             };
         }
@@ -570,7 +497,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section1Fill) {
             section1Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_1_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_1_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section1Fill"; }
             };
         }
@@ -587,7 +514,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section2Fill) {
             section2Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_2_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_2_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section2Fill"; }
             };
         }
@@ -604,7 +531,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section3Fill) {
             section3Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_3_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_3_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section3Fill"; }
             };
         }
@@ -621,7 +548,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section4Fill) {
             section4Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_4_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_4_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section4Fill"; }
             };
         }
@@ -638,7 +565,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section5Fill) {
             section5Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_5_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_5_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section5Fill"; }
             };
         }
@@ -655,7 +582,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section6Fill) {
             section6Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_6_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_6_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section6Fill"; }
             };
         }
@@ -672,7 +599,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section7Fill) {
             section7Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_7_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_7_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section7Fill"; }
             };
         }
@@ -689,7 +616,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section8Fill) {
             section8Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_8_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_8_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section8Fill"; }
             };
         }
@@ -706,7 +633,7 @@ public class SimpleRadialGauge extends Control {
         if (null == section9Fill) {
             section9Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_9_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_9_FILL; }
-                @Override public Object getBean() { return SimpleRadialGauge.this; }
+                @Override public Object getBean() { return SimpleLinearGauge.this; }
                 @Override public String getName() { return "section9Fill"; }
             };
         }
@@ -752,253 +679,253 @@ public class SimpleRadialGauge extends Control {
 
     // ******************** Style related *************************************
     @Override protected Skin createDefaultSkin() {
-        return new SimpleRadialGaugeSkin(this);
+        return new SimpleLinearGaugeSkin(this);
     }
 
     @Override protected String getUserAgentStylesheet() {
-        return getClass().getResource("simple-radial-gauge.css").toExternalForm();
+        return getClass().getResource("simple-linear-gauge.css").toExternalForm();
     }
 
     private static class StyleableProperties {
-        private static final CssMetaData<SimpleRadialGauge, Number> BAR_WIDTH =
-            new CssMetaData<SimpleRadialGauge, Number>("-bar-width", StyleConverter.getSizeConverter(), 20d) {
+        private static final CssMetaData<SimpleLinearGauge, Number> BAR_WIDTH =
+            new CssMetaData<SimpleLinearGauge, Number>("-bar-width", StyleConverter.getSizeConverter(), 20d) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.barWidth || !gauge.barWidth.isBound();
                 }
 
-                @Override public StyleableProperty<Number> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Number> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.barWidthProperty();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> BAR_BACKGROUND_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-bar-background-fill", PaintConverter.getInstance(), Color.rgb(234, 234, 234)) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> BAR_BACKGROUND_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-bar-background-fill", PaintConverter.getInstance(), Color.rgb(234, 234, 234)) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.barBackgroundFill || !gauge.barBackgroundFill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.barBackgroundFillProperty();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> BAR_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-bar-fill", PaintConverter.getInstance(), Color.web("#f1c428")) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> BAR_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-bar-fill", PaintConverter.getInstance(), Color.web("#f1c428")) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.barFill || !gauge.barFill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.barFillProperty();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> VALUE_COLOR =
-            new CssMetaData<SimpleRadialGauge, Paint>("-value-color", PaintConverter.getInstance(), Color.web("#888888")) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> VALUE_COLOR =
+            new CssMetaData<SimpleLinearGauge, Paint>("-value-color", PaintConverter.getInstance(), Color.web("#888888")) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.valueColor || !gauge.valueColor.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.valueColorProperty();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> LABEL_COLOR =
-            new CssMetaData<SimpleRadialGauge, Paint>("-label-color", PaintConverter.getInstance(), Color.web("#888888")) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> LABEL_COLOR =
+            new CssMetaData<SimpleLinearGauge, Paint>("-label-color", PaintConverter.getInstance(), Color.web("#888888")) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.labelColor || !gauge.labelColor.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.labelColorProperty();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_0_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section0-fill", PaintConverter.getInstance(), DEFAULT_SECTION_0_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_0_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section0-fill", PaintConverter.getInstance(), DEFAULT_SECTION_0_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section0Fill || !gauge.section0Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section0FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection0Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_1_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section1-fill", PaintConverter.getInstance(), DEFAULT_SECTION_1_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_1_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section1-fill", PaintConverter.getInstance(), DEFAULT_SECTION_1_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section1Fill || !gauge.section1Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section1FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection1Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_2_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section2-fill", PaintConverter.getInstance(), DEFAULT_SECTION_2_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_2_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section2-fill", PaintConverter.getInstance(), DEFAULT_SECTION_2_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section2Fill || !gauge.section2Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section2FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection2Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_3_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section3-fill", PaintConverter.getInstance(), DEFAULT_SECTION_3_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_3_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section3-fill", PaintConverter.getInstance(), DEFAULT_SECTION_3_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section3Fill || !gauge.section3Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section3FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection3Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_4_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section4-fill", PaintConverter.getInstance(), DEFAULT_SECTION_4_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_4_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section4-fill", PaintConverter.getInstance(), DEFAULT_SECTION_4_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section4Fill || !gauge.section4Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section4FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection4Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_5_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section5-fill", PaintConverter.getInstance(), DEFAULT_SECTION_5_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_5_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section5-fill", PaintConverter.getInstance(), DEFAULT_SECTION_5_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section5Fill || !gauge.section5Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section5FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection5Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_6_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section6-fill", PaintConverter.getInstance(), DEFAULT_SECTION_6_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_6_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section6-fill", PaintConverter.getInstance(), DEFAULT_SECTION_6_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section6Fill || !gauge.section6Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section6FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection6Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_7_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section7-fill", PaintConverter.getInstance(), DEFAULT_SECTION_7_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_7_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section7-fill", PaintConverter.getInstance(), DEFAULT_SECTION_7_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section7Fill || !gauge.section7Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section7FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection7Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_8_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section8-fill", PaintConverter.getInstance(), DEFAULT_SECTION_8_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_8_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section8-fill", PaintConverter.getInstance(), DEFAULT_SECTION_8_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section8Fill || !gauge.section8Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section8FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection8Fill();
                 }
             };
 
-        private static final CssMetaData<SimpleRadialGauge, Paint> SECTION_9_FILL =
-            new CssMetaData<SimpleRadialGauge, Paint>("-section9-fill", PaintConverter.getInstance(), DEFAULT_SECTION_9_FILL) {
+        private static final CssMetaData<SimpleLinearGauge, Paint> SECTION_9_FILL =
+            new CssMetaData<SimpleLinearGauge, Paint>("-section9-fill", PaintConverter.getInstance(), DEFAULT_SECTION_9_FILL) {
 
-                @Override public boolean isSettable(SimpleRadialGauge gauge) {
+                @Override public boolean isSettable(SimpleLinearGauge gauge) {
                     return null == gauge.section9Fill || !gauge.section9Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleRadialGauge gauge) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleLinearGauge gauge) {
                     return (StyleableProperty) gauge.section9FillProperty();
                 }
 
-                @Override public Paint getInitialValue(SimpleRadialGauge gauge) {
+                @Override public Paint getInitialValue(SimpleLinearGauge gauge) {
                     return gauge.getSection9Fill();
                 }
             };
-                
+
         private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
-                               BAR_WIDTH,
-                               BAR_BACKGROUND_FILL,
-                               BAR_FILL,
-                               VALUE_COLOR,
-                               LABEL_COLOR,
-                               SECTION_0_FILL,
-                               SECTION_1_FILL,
-                               SECTION_2_FILL,
-                               SECTION_3_FILL,
-                               SECTION_4_FILL,
-                               SECTION_5_FILL,
-                               SECTION_6_FILL,
-                               SECTION_7_FILL,
-                               SECTION_8_FILL,
-                               SECTION_9_FILL);
+                BAR_WIDTH,
+                BAR_BACKGROUND_FILL,
+                BAR_FILL,
+                VALUE_COLOR,
+                LABEL_COLOR,
+                SECTION_0_FILL,
+                SECTION_1_FILL,
+                SECTION_2_FILL,
+                SECTION_3_FILL,
+                SECTION_4_FILL,
+                SECTION_5_FILL,
+                SECTION_6_FILL,
+                SECTION_7_FILL,
+                SECTION_8_FILL,
+                SECTION_9_FILL);
             STYLEABLES = Collections.unmodifiableList(styleables);
         }
     }

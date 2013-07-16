@@ -1,0 +1,217 @@
+/*
+ * Copyright (c) 2013 by Gerrit Grunwald
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/******************************************************************************
+ * SIMPLE_GAUGE class                                                         *
+ *****************************************************************************/
+.simple-radial-gauge {
+    -fx-skin            : "eu.hansolo.enzo.gauge.skin.SimpleRadialGaugeSkin";
+    -bar-background-fill: rgb(234, 234, 234);
+    -bar-fill           : #f1c428;
+    -bar-width          : 20;
+    -value-color        : #888888;
+    -label-color        : #888888;
+    -section0-fill      : rgb(  0,   0, 178);
+    -section1-fill      : rgb(  0, 128, 255);
+    -section2-fill      : rgb(  0, 255, 255);
+    -section3-fill      : rgb(  0, 255,  64);
+    -section4-fill      : rgb(128, 255,   0);
+    -section5-fill      : rgb(255, 255,   0);
+    -section6-fill      : rgb(255, 191,   0);
+    -section7-fill      : rgb(255, 128,   0);
+    -section8-fill      : rgb(255,  64,   0);
+    -section9-fill      : rgb(255,   0,   0);
+}
+
+
+/******************************************************************************
+ * SIMPLE_GAUGE bar-background                                                *
+ *****************************************************************************/
+.simple-radial-gauge .bar-background {
+    -fx-fill           : null;
+    -fx-stroke         : -bar-background-fill;
+    -fx-stroke-width   : -bar-width;
+    -fx-stroke-line-cap: butt;
+}
+.simple-radial-gauge:round .bar-background {
+    -fx-stroke-line-cap: round;
+}
+.simple-radial-gauge:segmented .bar-background {
+    -fx-stroke-line-cap   : butt;
+    -fx-stroke-dash-array : 4 2;
+    -fx-stroke-dash-offset: 0;
+}
+
+
+/******************************************************************************
+ * SIMPLE_GAUGE bar                                                           *
+ *****************************************************************************/
+.simple-radial-gauge .bar {
+    -fx-fill           : null;
+    -fx-stroke         : -bar-fill;
+    -fx-stroke-width   : -bar-width;
+    -fx-stroke-line-cap: butt;
+}
+.simple-radial-gauge:round .bar {
+    -fx-stroke-line-cap: round;
+}
+.simple-radial-gauge:segmented .bar {
+    -fx-stroke-line-cap   : butt;
+    -fx-stroke-dash-array : 4 2;
+    -fx-stroke-dash-offset: 0;
+}
+
+
+/******************************************************************************
+ * SIMPLE_GAUGE title, unit, value, label                                     *
+ *****************************************************************************/
+.simple-radial-gauge .value {
+    -fx-text-fill: -value-color;
+}
+
+.simple-radial-gauge .label {
+    -fx-fill: -label-color;
+}
+
+
+/******************************************************************************
+ * SIMPLE_GAUGE flat ui colors                                                *
+ *****************************************************************************/
+.simple-radial-gauge .turqoise {
+    -bar-fill: #1fbc9c;
+}
+.simple-radial-gauge .green-sea {
+    -bar-fill: #1aa085;
+}
+.simple-radial-gauge .emerland {
+    -bar-fill: #57d68d;
+}
+.simple-radial-gauge .nephritis {
+    -bar-fill: #27ae60;
+}
+.simple-radial-gauge .peter-river {
+    -bar-fill: #5cace2;
+}
+.simple-radial-gauge .belize-hole {
+    -bar-fill: #5399c6;
+}
+.simple-radial-gauge .amnethyst {
+    -bar-fill: #af7ac4;
+}
+.simple-radial-gauge .wisteria {
+    -bar-fill: #8e44ad;
+}
+.simple-radial-gauge .sunflower {
+    -bar-fill: #f1c428;
+}
+.simple-radial-gauge .orange {
+    -bar-fill: #f5af41;
+}
+.simple-radial-gauge .carrot {
+    -bar-fill: #eb974e;
+}
+.simple-radial-gauge .pumpkin {
+    -bar-fill: #d35519;
+}
+.simple-radial-gauge .alizarin {
+    -bar-fill: #ea6f63;
+}
+.simple-radial-gauge .pomegranate {
+    -bar-fill: #cc6055;
+}
+.simple-radial-gauge .clouds {
+    -bar-fill: #eff3f3;
+}
+.simple-radial-gauge .silver {
+    -bar-fill: #bdc3c7;
+}
+.simple-radial-gauge .concrete {
+    -bar-fill: #95a5a6;
+}
+.simple-radial-gauge .asbestos {
+    -bar-fill: #7f8c8d;
+}
+.simple-radial-gauge .wet-asphalt {
+    -bar-fill: #34495e;
+}
+.simple-radial-gauge .midnight-blue {
+    -bar-fill: #2c3e50;
+}
+
+
+/******************************************************************************
+ * SIMPLE_GAUGE sections                                                      *
+ *****************************************************************************/
+.simple-radial-gauge .section0 {
+    -fx-stroke: -section0-fill;
+}
+.simple-radial-gauge:highlighted .section0 {
+    -fx-stroke: derive(-section0-fill, 30%);
+}
+.simple-radial-gauge .section1 {
+    -fx-stroke: -section1-fill;
+}
+.simple-radial-gauge:highlighted .section1 {
+    -fx-stroke: derive(-section1-fill, 30%);
+}
+.simple-radial-gauge .section2 {
+    -fx-stroke: -section2-fill;
+}
+.simple-radial-gauge:highlighted .section2 {
+    -fx-stroke: derive(-section2-fill, 30%);
+}
+.simple-radial-gauge .section3 {
+    -fx-stroke: -section3-fill;
+}
+.simple-radial-gauge:highlighted .section3 {
+    -fx-stroke: derive(-section3-fill, 30%);
+}
+.simple-radial-gauge .section4 {
+    -fx-stroke: -section4-fill;
+}
+.simple-radial-gauge:highlighted .section4 {
+    -fx-stroke: derive(-section4-fill, 30%);
+}
+.simple-radial-gauge .section5 {
+    -fx-stroke: -section5-fill;
+}
+.simple-radial-gauge:highlighted .section5 {
+    -fx-stroke: derive(-section5-fill, 30%);
+}
+.simple-radial-gauge .section6 {
+    -fx-stroke: -section6-fill;
+}
+.simple-radial-gauge:highlighted .section6 {
+    -fx-stroke: derive(-section6-fill, 30%);
+}
+.simple-radial-gauge .section7 {
+    -fx-stroke: -section7-fill;
+}
+.simple-radial-gauge:highlighted .section7 {
+    -fx-stroke: derive(-section7-fill, 30%);
+}
+.simple-radial-gauge .section8 {
+    -fx-stroke: -section8-fill;
+}
+.simple-radial-gauge:highlighted .section8 {
+    -fx-stroke: derive(-section8-fill, 30%);
+}
+.simple-radial-gauge .section9 {
+    -fx-stroke: -section9-fill;
+}
+.simple-radial-gauge:highlighted .section9 {
+    -fx-stroke: derive(-section9-fill, 30%);
+}
