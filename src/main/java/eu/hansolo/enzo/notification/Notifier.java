@@ -86,6 +86,10 @@ public enum Notifier {
 
 
     // ******************** Methods *******************************************
+    public void stop() {
+        popups.clear();
+        stage.close();
+    }
 
     /**
      * Returns the Duration that the notification will stay on screen before it

@@ -63,12 +63,12 @@ public class Demo extends Application {
         pane.getChildren().addAll(button);
 
         Scene scene = new Scene(pane);
+        stage.setOnCloseRequest(observable -> notifier.stop());
         stage.setScene(scene);
         stage.show();
     }
 
     @Override public void stop() {
-
     }
 
     public static void main(String[] args) {
