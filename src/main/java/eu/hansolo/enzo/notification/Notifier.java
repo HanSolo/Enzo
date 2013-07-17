@@ -22,7 +22,10 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -42,22 +45,86 @@ import javafx.util.Duration;
  * User: hansolo
  * Date: 01.07.13
  * Time: 07:10
+ * 
+ * Modified by
+ * User: jugen
+ * Date: 17.07.13
+ * Added the ability to set the location of the Notification 
+ * relative to either the Screen or a Stage. See setLocation( Stage, Pos )
+ * Also added setters for various attributes.
  */
 public enum Notifier {
     INSTANCE;
 
-    private static final double   WIDTH       = 300;
-    private static final double   HEIGHT      = 80;
-    private static final double   OFFSET_Y    = 25;
-    private static final double   SPACING_Y   = 5;
+	private static double WIDTH = 300;
+	private static double HEIGHT = 80;
+	private static double OFFSET_X = 0;
+	private static double OFFSET_Y = 25;
+	private static double SPACING_Y = 5;
     private static final double   ICON_WIDTH  = 24;
     private static final double   ICON_HEIGHT = 24;
+	private static Pos LOCATION = Pos.TOP_RIGHT;
+	private static Stage STAGE_REF = null;
     private Duration              lifetime;
     private Stage                 stage;
     private StackPane             pane;
     private Scene                 scene;
     private ObservableList<Popup> popups;
 
+	/**
+	 * @param newWidth  The default is 300 px.
+	 */
+	public static void setWidth( double newWidth )
+	{
+		WIDTH = newWidth;
+	}
+
+	/**
+	 * @param newOffset  The horizontal shift required.
+	 * <br> The default is 0 px.
+	 */
+	public static void setOffset_X( double newOffset )
+	{
+		OFFSET_X = newOffset;
+	}
+
+	/**
+	 * @param newHeight  The default is 80 px.
+	 */
+	public static void setHeight( double newHeight )
+	{
+		HEIGHT = newHeight;
+	}
+
+	/**
+	 * @param newOffset  The vertical shift required.
+	 * <br> The default is 25 px.
+	 */
+	public static void setOffset_Y( double newOffset )
+	{
+		OFFSET_Y = newOffset;
+	}
+
+	/**
+	 * @param newSpacing  The spacing between multiple Notifications.
+	 * <br> The default is 5 px.
+	 */
+	public static void setSpacing_Y( double newSpacing )
+	{
+		SPACING_Y = newSpacing;
+	}
+
+	/**
+	 * @param stageRef  The Notification will be positioned relative to the given Stage.<br>
+	 * 					If null then the Notification will be positioned relative to the primary Screen.
+	 * @param position  The default is TOP_RIGHT.
+	 */
+	public static void setLocation( Stage stageRef, Pos position )
+	{
+		INSTANCE.stage.initOwner( stageRef );
+		STAGE_REF = stageRef;
+		LOCATION = position;
+	}
 
     // ******************** Constructor ***************************************
     private Notifier() {
@@ -81,7 +148,6 @@ public enum Notifier {
         stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
-        stage.show();
     }
 
 
@@ -183,7 +249,18 @@ public enum Notifier {
     private void preOrder() {
         if (popups.isEmpty()) return;
         for (int i = 0 ; i < popups.size() ; i++) {
-            popups.get(i).setY(popups.get(i).getY() + HEIGHT+ SPACING_Y);
+			switch ( LOCATION )
+			{
+				case TOP_LEFT : case TOP_CENTER : case TOP_RIGHT :
+				{
+					popups.get( i ).setY( popups.get( i ).getY() + HEIGHT + SPACING_Y );
+					break;
+				}
+				default :
+				{
+					popups.get( i ).setY( popups.get( i ).getY() - HEIGHT - SPACING_Y );
+				}
+			}
         }
     }
 
@@ -216,8 +293,8 @@ public enum Notifier {
         popupPane.getChildren().addAll(body, popupLayout);
 
         final Popup POPUP = new Popup();
-        POPUP.setX(Screen.getPrimary().getBounds().getWidth() - WIDTH - 10);
-        POPUP.setY(OFFSET_Y);
+		POPUP.setX( getX() );
+		POPUP.setY( getY() );
         POPUP.getContent().add(popupPane);
 
         popups.add(POPUP);
@@ -231,19 +308,84 @@ public enum Notifier {
 
         Timeline timeline = new Timeline(kfBegin, kfEnd);
         timeline.setDelay(lifetime);
-        timeline.setOnFinished(actionEvent -> {
-            Platform.runLater(new Runnable() {
-                @Override public void run() {
-                    POPUP.hide();
-                    popups.remove(POPUP);
-                }
-            });
-        });
+        timeline.setOnFinished( new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle( ActionEvent arg0 )
+			{
+	            Platform.runLater(new Runnable() {
+	                @Override public void run() {
+	                    POPUP.hide();
+	                    popups.remove(POPUP);
+	                }
+	            });
+			}
+		} );
 
         // Move popup to the right during fade out
         //POPUP.opacityProperty().addListener((observableValue, oldOpacity, opacity) -> popup.setX(popup.getX() + (1.0 - opacity.doubleValue()) * popup.getWidth()) );
 
+		if ( ! stage.isShowing() )  stage.show();
+		else  stage.toFront();
+
         POPUP.show(stage);
         timeline.play();
     }
+
+
+	private double getX()
+	{
+		if ( STAGE_REF != null ) return calcX( STAGE_REF.getX(), STAGE_REF.getWidth() );
+
+		return calcX( 0.0, Screen.getPrimary().getBounds().getWidth() );
+	}
+
+	private double calcX( double left, double totalWidth )
+	{
+		switch ( LOCATION )
+		{
+			case TOP_LEFT : case CENTER_LEFT : case BOTTOM_LEFT :
+			{
+				return left + OFFSET_X;
+			}
+			case TOP_CENTER : case CENTER : case BOTTOM_CENTER :
+			{
+				return left + (totalWidth-WIDTH)/2 - OFFSET_X;
+			}
+			case TOP_RIGHT : case CENTER_RIGHT : case BOTTOM_RIGHT :
+			{
+				return left + totalWidth - WIDTH - OFFSET_X;
+			}
+			default : return 0.0;
+		}
+	}
+
+
+	private double getY()
+	{
+		if ( STAGE_REF != null ) return calcY( STAGE_REF.getY(), STAGE_REF.getHeight() );
+
+		return calcY( 0.0, Screen.getPrimary().getBounds().getHeight() );
+	}
+
+	private double calcY( double top, double totalHeight )
+	{
+		switch ( LOCATION )
+		{
+			case TOP_LEFT : case TOP_CENTER : case TOP_RIGHT :
+			{
+				return top + OFFSET_Y;
+			}
+			case CENTER_LEFT : case CENTER : case CENTER_RIGHT :
+			{
+				return top + (totalHeight-HEIGHT)/2 - OFFSET_Y;
+			}
+			case BOTTOM_LEFT : case BOTTOM_CENTER : case BOTTOM_RIGHT :
+			{
+				return top + totalHeight - HEIGHT - OFFSET_Y;
+			}
+			default : return 0.0;
+		}
+	}
+
 }
