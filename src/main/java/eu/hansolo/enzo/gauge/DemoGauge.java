@@ -37,7 +37,7 @@ import java.util.Random;
  * Time: 00:54
  */
 
-public class Demo extends Application {
+public class DemoGauge extends Application {
     private static final Random RND       = new Random();
     private static int          noOfNodes = 0;
     private Gauge               control;
@@ -61,6 +61,8 @@ public class Demo extends Application {
                               .thresholdVisible(true)
                               .minMeasuredValueVisible(true)
                               .maxMeasuredValueVisible(true)
+                              .title("Title")
+                              .unit("Unit")
                               .build();
 
 
