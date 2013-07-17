@@ -137,7 +137,7 @@ public class Demo extends Application {
 
         Scene scene = new Scene(pane, Color.BLACK);
 
-        stage.setTitle("Sixteen Segment Demo");
+        stage.setTitle("Sixteen Segment DemoGauge");
         stage.setScene(scene);
         stage.show();
 

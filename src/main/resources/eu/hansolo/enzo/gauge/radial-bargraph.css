@@ -15,37 +15,35 @@
  */
 
 /******************************************************************************
- * GAUGE class                                                                *
+ * BARGRAPH class                                                             *
  *****************************************************************************/
-.gauge {
-    -fx-skin           : "eu.hansolo.enzo.gauge.skin.GaugeSkin";
+.radial-bargraph {
+    -fx-skin           : "eu.hansolo.enzo.gauge.skin.RadialBargraphSkin";
     -base              : black;
     -background        : ladder(-base,
-                                 linear-gradient(to bottom, rgb(90, 90, 90) 0%, rgb(70, 70, 70) 100%) 49%,
-                                 linear-gradient(to bottom, rgb(245,245,245) 0%, rgb(235,235,235) 100%) 50%);
+                                linear-gradient(to bottom, rgb(90, 90, 90) 0%, rgb(70, 70, 70) 100%) 49%,
+                                linear-gradient(to bottom, rgb(245,245,245) 0%, rgb(235,235,235) 100%) 50%);
     -background        : ladder(-base, black 49%, white 50%);
     -outer-border      : linear-gradient(to bottom,
-                                         rgb(224,224,224) 0%,
-                                         rgb(133,133,133) 26%,
-                                         rgb(84,84,84) 100%);
+                                         rgb(210,210,210) 0%,
+                                         rgb(255,255,255) 100%);
     -highlight-border  : linear-gradient(to bottom,
-                                         rgb(255,255,255) 0%,
-                                         rgb(146,146,147) 50%,
-                                         rgb(135,136,138) 100%);
-    -inner-border      : linear-gradient(to bottom,
-                                         rgb(71,72,72) 0%,
-                                         rgb(110,106,107) 50%,
-                                         rgb(186,185,187) 100%);
+                                         rgb(234,234,234) 0%,
+                                         rgb(243,243,243) 50%,
+                                         rgb(251,251,251) 100%);
+    -inner-border      : radial-gradient(center 50% 50%, radius 50%,
+                                         transparent 0%,
+                                         transparent 99%,
+                                         rgba(0,0,0, 0.3) 100%);
     -body              : linear-gradient(to bottom,
-                                         rgb(245,245,245) 0%,
-                                         rgb(235,235,235) 100%);
-    -needle            : #F8907D;
+                                         rgb(236,236,236) 0%,
+                                         rgb(222,222,222) 100%);
+    -bar-color         : rgba(248, 202, 0, 0.65);
     -min-measured-value: cornflowerblue;
     -max-measured-value: cornflowerblue;
     -threshold         : red;
     -knob              : white;
-    -tick-mark-fill    : black;
-    -tick-label-fill   : black;
+    -tick-mark-fill    : rgb(240, 240, 240);
     -section0-fill     : rgba(  0,   0, 178, 0.5);
     -section1-fill     : rgba(  0, 128, 255, 0.5);
     -section2-fill     : rgba(  0, 255, 255, 0.5);
@@ -66,27 +64,26 @@
 
 
 /******************************************************************************
- * GAUGE components                                                           *
+ * BARGRAPH components                                                        *
  *****************************************************************************/
-.gauge .background {
+.radial-bargraph .background {
     -fx-background-color : -outer-border, -highlight-border, -inner-border, -body;
-    -fx-background-insets: 0, 6, 7, 13;
+    -fx-background-insets: 0, 1;
     -fx-background-radius: 1000;
-    -fx-effect           : innershadow(two-pass-box, rgba(0, 0, 0, 0.3), 20, 0.0, 0, 20);
 }
 
 
 /******************************************************************************
- * GAUGE min-measured-value                                                   *
+ * BARGRAPH min-measured-value                                                *
  *****************************************************************************/
-.gauge .min-measured-value {
+.radial-bargraph .min-measured-value {
     -fx-background-color : derive(-min-measured-value, -20%), -min-measured-value;
     -fx-background-insets: 0, 1;
     -fx-scale-shape      : true;
     -fx-shape            : "M 7.6716 5.5503 L 10.5 2.7218 L 19.2782 11.5 L 10.5 20.2782 L 7.6716 17.4497 L 13.6213 11.5 L 7.6716 5.5503 ZM 0 12 C 0 18.6275 5.3725 24 12 24 C 18.6275 24 24 18.6275 24 12 C 24 5.3725 18.6275 0 12 0 C 5.3725 0 0 5.3725 0 12 Z";
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
-.gauge:interactive .min-measured-value {
+.radial-bargraph:interactive .min-measured-value {
     -fx-background-color : derive(-min-measured-value, -20%), -min-measured-value;
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
@@ -94,16 +91,16 @@
 
 
 /******************************************************************************
- * GAUGE max-measured-value                                                   *
+ * BARGRAPH max-measured-value                                                *
  *****************************************************************************/
-.gauge .max-measured-value {
+.radial-bargraph .max-measured-value {
     -fx-background-color : derive(-max-measured-value, -20%), -max-measured-value;
     -fx-background-insets: 0, 1;
     -fx-scale-shape      : true;
     -fx-shape            : "M 16.2782 5.5503 L 10.3284 11.5 L 16.2782 17.4497 L 13.4497 20.2782 L 4.6716 11.5 L 13.4497 2.7218 L 16.2782 5.5503 ZM 0 12 C 0 18.6275 5.3725 24 12 24 C 18.6275 24 24 18.6275 24 12 C 24 5.3725 18.6275 0 12 0 C 5.3725 0 0 5.3725 0 12 Z";
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
-.gauge:interactive .max-measured-value {
+.radial-bargraph:interactive .max-measured-value {
     -fx-background-color : derive(-max-measured-value, -20%), -max-measured-value;
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
@@ -111,241 +108,228 @@
 
 
 /******************************************************************************
- * GAUGE threshold                                                            *
+ * BARGRAPH threshold                                                         *
  *****************************************************************************/
-.gauge .threshold {
+.radial-bargraph .threshold {
     -fx-background-color : derive(-threshold, -20%), -threshold;
     -fx-background-insets: 0, 2;
     -fx-scale-shape      : true;
     -fx-shape            : "M 22.4905 22 C 23.838 22 24.3851 21.3092 23.7121 20.068 L 13.2214 0.8937 C 12.5484 -0.3492 11.453 -0.2703 10.7799 0.9724 L 0.2879 20.0269 C -0.3851 21.2681 0.1619 22 1.5093 22 L 22.4905 22 Z";
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
-.gauge:interactive .threshold {
+.radial-bargraph:interactive .threshold {
     -fx-background-color : derive(-threshold, -20%),
-                           linear-gradient(to right,
-                                           derive(-threshold, -10%) 0%,
-                                           derive(-threshold, -10%) 50%,
-                                           derive(-threshold, 10%) 50%,
-                                           derive(-threshold, 10%) 100%);
+    linear-gradient(to right,
+        derive(-threshold, -10%) 0%,
+        derive(-threshold, -10%) 50%,
+        derive(-threshold, 10%) 50%,
+        derive(-threshold, 10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
 
 
 /******************************************************************************
- * GAUGE needle                                                               *
+ * BARGRAPH bar                                                               *
  *****************************************************************************/
-.gauge .needle-standard {
-    -fx-background-color : derive(-needle, -10%),
-                           linear-gradient(to bottom,
-                                           derive(-needle, 15%) 0%,
-                                           derive(-needle, -15%) 100%);
-    -fx-background-insets: 0, 1;
-    -fx-background-radius: 0em;
-    -fx-padding          : 0;
-    -fx-stroke           : transparent;
-    -fx-scale-shape      : true;
-    -fx-shape            : "M 3.0313 0 L 0 74 L 7.9688 74 L 4.9375 0 L 3.0313 0 Z";
+.radial-bargraph .bar {
+    -fx-fill  : radial-gradient(center 50% 50%, radius 50%,
+                                derive(-bar-color, -20%) 0%,
+                                derive(-bar-color, -20%) 80%,
+                                -bar 90%,
+                                derive(-bar-colr, -20%) 100%);
+    -fx-stroke: null;
 }
-.gauge .needle-highlight {
-    -fx-background-color : linear-gradient(from 0% 0% to 100% 0%,
-                                           transparent 0%,
-                                           transparent 50%,
-                                           rgba(255, 255, 255, 0.2) 50%,
-                                           rgba(255, 255, 255, 0.2) 100%);
-    -fx-scale-shape      : true;
-    -fx-shape            : "M 3.0313 0 L 0 74 L 7.9688 74 L 4.9375 0 L 3.0313 0 Z";
-}
-.gauge:interactive .needle-standard {
-    -needle: rgba(180, 180, 180, 0.6);
+.radial-bargraph:interactive .bar {
+    -bar: rgba(180, 180, 180, 0.6);
 }
 
 
 /******************************************************************************
- * GAUGE knob                                                                 *
+ * BARGRAPH knob                                                              *
  *****************************************************************************/
-.gauge .knob {
+.radial-bargraph .knob {
     -fx-background-color : linear-gradient(to bottom,
                                            white 0%,
                                            rgb(230,230,230) 52%,
                                            rgb(240,240,240) 100%),
-                           linear-gradient(to bottom,
-                                           rgb(250,250,250) 0%,
-                                           rgb(230,230,230) 100%);
+                                           linear-gradient(to bottom,
+                                               rgb(250,250,250) 0%,
+                                               rgb(230,230,230) 100%);
     -fx-background-insets: 0, 2;
     -fx-background-radius: 0em;
     -fx-scale-shape      : true;
     -fx-shape            : "M 0 100 C 0 44.7708 44.7708 0 100 0 C 155.2292 0 200 44.7708 200 100 C 200 155.2292 155.2292 200 100 200 C 44.7708 200 0 155.2292 0 100 Z";
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 7, 0.0, 0, 7);
 }
-.gauge:interactive .knob {
+.radial-bargraph:interactive .knob {
     -fx-background-color : linear-gradient(to bottom,
-                                           white 0%,
-                                           rgb(230,230,230) 52%,
-                                           rgb(240,240,240) 100%),
-                           linear-gradient(to bottom,
-                                           rgb(230,230,230) 0%,
-                                           rgb(250,250,250) 100%);
+    white 0%,
+    rgb(230,230,230) 52%,
+    rgb(240,240,240) 100%),
+    linear-gradient(to bottom,
+        rgb(230,230,230) 0%,
+        rgb(250,250,250) 100%);
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
 
 
 /******************************************************************************
- * GAUGE title, unit, value, interactive-text                                 *
+ * BARGRAPH title, unit, value, interactive-text                              *
  *****************************************************************************/
-.gauge .title {
+.radial-bargraph .title {
     -fx-fill: ladder(-base, #888888 49%, white 50%);
 }
 
-.gauge .unit {
+.radial-bargraph .unit {
     -fx-fill: ladder(-base, #888888 49%, white 50%);
 }
 
-.gauge .value {
+.radial-bargraph .value {
     -fx-fill: ladder(-base, derive(white, -20%) 49%, white 50%);
 }
 
 
 /******************************************************************************
- * GAUGE sections                                                             *
+ * BARGRAPH sections                                                          *
  *****************************************************************************/
-.gauge .section0 {
+.radial-bargraph .section0 {
     -fx-fill: -section0-fill;
 }
-.gauge:highlighted .section0 {
+.radial-bargraph:highlighted .section0 {
     -fx-fill: derive(-section0-fill, 30%);
 }
-.gauge .section1 {
+.radial-bargraph .section1 {
     -fx-fill: -section1-fill;
 }
-.gauge:highlighted .section1 {
+.radial-bargraph:highlighted .section1 {
     -fx-fill: derive(-section1-fill, 30%);
 }
-.gauge .section2 {
+.radial-bargraph .section2 {
     -fx-fill: -section2-fill;
 }
-.gauge:highlighted .section2 {
+.radial-bargraph:highlighted .section2 {
     -fx-fill: derive(-section2-fill, 30%);
 }
-.gauge .section3 {
+.radial-bargraph .section3 {
     -fx-fill: -section3-fill;
 }
-.gauge:highlighted .section3 {
+.radial-bargraph:highlighted .section3 {
     -fx-fill: derive(-section3-fill, 30%);
 }
-.gauge .section4 {
+.radial-bargraph .section4 {
     -fx-fill: -section4-fill;
 }
-.gauge:highlighted .section4 {
+.radial-bargraph:highlighted .section4 {
     -fx-fill: derive(-section4-fill, 30%);
 }
-.gauge .section5 {
+.radial-bargraph .section5 {
     -fx-fill: -section5-fill;
 }
-.gauge:highlighted .section5 {
+.radial-bargraph:highlighted .section5 {
     -fx-fill: derive(-section5-fill, 30%);
 }
-.gauge .section6 {
+.radial-bargraph .section6 {
     -fx-fill: -section6-fill;
 }
-.gauge:highlighted .section6 {
+.radial-bargraph:highlighted .section6 {
     -fx-fill: derive(-section6-fill, 30%);
 }
-.gauge .section7 {
+.radial-bargraph .section7 {
     -fx-fill: -section7-fill;
 }
-.gauge:highlighted .section7 {
+.radial-bargraph:highlighted .section7 {
     -fx-fill: derive(-section7-fill, 30%);
 }
-.gauge .section8 {
+.radial-bargraph .section8 {
     -fx-fill: -section8-fill;
 }
-.gauge:highlighted .section8 {
+.radial-bargraph:highlighted .section8 {
     -fx-fill: derive(-section8-fill, 30%);
 }
-.gauge .section9 {
+.radial-bargraph .section9 {
     -fx-fill: -section9-fill;
 }
-.gauge:highlighted .section9 {
+.radial-bargraph:highlighted .section9 {
     -fx-fill: derive(-section9-fill, 30%);
 }
 
 
 /******************************************************************************
- * GAUGE markers                                                              *
+ * BARGRAPH markers                                                           *
  *****************************************************************************/
-.gauge .marker0 {
+.radial-bargraph .marker0 {
     -fx-background-color : derive(-marker0-fill, -20%), -marker0-fill;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
-.gauge:interactive .marker0 {
+.radial-bargraph:interactive .marker0 {
     -fx-background-color : derive(-marker0-fill, -20%),
-                           linear-gradient(to bottom,
-                                           derive(-marker0-fill, 5%) 0%,
-                                           derive(-marker0-fill, -10%) 100%);
+    linear-gradient(to bottom,
+        derive(-marker0-fill, 5%) 0%,
+        derive(-marker0-fill, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
-.gauge .marker1 {
+.radial-bargraph .marker1 {
     -fx-background-color : derive(-marker1-fill, -20%), -marker1-fill;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
-.gauge:interactive .marker1 {
+.radial-bargraph:interactive .marker1 {
     -fx-background-color : derive(-marker1-fill, -20%),
-                           linear-gradient(to bottom,
-                                           derive(-marker1-fill, 5%) 0%,
-                                           derive(-marker1-fill, -10%) 100%);
+    linear-gradient(to bottom,
+        derive(-marker1-fill, 5%) 0%,
+        derive(-marker1-fill, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
-.gauge .marker2 {
+.radial-bargraph .marker2 {
     -fx-background-color : derive(-marker2-fill, -20%), -marker2-fill;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
-.gauge:interactive .marker2 {
+.radial-bargraph:interactive .marker2 {
     -fx-background-color : derive(-marker2-fill, -20%),
-                           linear-gradient(to bottom,
-                                           derive(-marker2-fill, 5%) 0%,
-                                           derive(-marker2-fill, -10%) 100%);
+    linear-gradient(to bottom,
+        derive(-marker2-fill, 5%) 0%,
+        derive(-marker2-fill, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
-.gauge .marker3 {
+.radial-bargraph .marker3 {
     -fx-background-color : derive(-marker3-fill, -20%), -marker3-fill;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
-.gauge:interactive .marker3 {
+.radial-bargraph:interactive .marker3 {
     -fx-background-color : derive(-marker3-fill, -20%),
-                           linear-gradient(to bottom,
-                                           derive(-marker3-fill, 5%) 0%,
-                                           derive(-marker3-fill, -10%) 100%);
+    linear-gradient(to bottom,
+        derive(-marker3-fill, 5%) 0%,
+        derive(-marker3-fill, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
-.gauge .marker4 {
+.radial-bargraph .marker4 {
     -fx-background-color : derive(-marker4-fill, -20%), -marker4-fill;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
-.gauge:interactive .marker4 {
+.radial-bargraph:interactive .marker4 {
     -fx-background-color : derive(-marker4-fill, -20%),
-                           linear-gradient(to bottom,
-                                           derive(-marker4-fill, 5%) 0%,
-                                           derive(-marker4-fill, -10%) 100%);
+    linear-gradient(to bottom,
+        derive(-marker4-fill, 5%) 0%,
+        derive(-marker4-fill, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }

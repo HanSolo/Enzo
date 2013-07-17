@@ -1,23 +1,7 @@
-/*
- * Copyright (c) 2013 by Gerrit Grunwald
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package eu.hansolo.enzo.gauge;
 
 import com.sun.javafx.css.converters.PaintConverter;
-import eu.hansolo.enzo.gauge.skin.GaugeSkin;
+import eu.hansolo.enzo.gauge.skin.RadialBargraphSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
@@ -56,24 +40,10 @@ import java.util.Locale;
 /**
  * Created by
  * User: hansolo
- * Date: 01.04.13
- * Time: 17:10
+ * Date: 17.07.13
+ * Time: 08:01
  */
-public class Gauge extends Control {
-    public static enum NeedleType {
-        STANDARD("needle-standard");
-
-        public final String STYLE_CLASS;
-
-        private NeedleType(final String STYLE_CLASS) {
-            this.STYLE_CLASS = STYLE_CLASS;
-        }
-    }
-    public static enum TickLabelOrientation {
-        ORTHOGONAL,
-        HORIZONTAL,
-        TANGENT
-    }
+public class RadialBargraph extends Control {
     public static enum NumberFormat {
         AUTO("0"),
         STANDARD("0"),
@@ -93,8 +63,6 @@ public class Gauge extends Control {
             return DF.format(NUMBER);
         }
     }
-
-    public static final String       STYLE_CLASS_NEEDLE_STANDARD = NeedleType.STANDARD.STYLE_CLASS;
 
     // Default section colors
     private static final Color       DEFAULT_SECTION_0_FILL      = Color.rgb(0, 0, 178, 0.5);
@@ -119,74 +87,65 @@ public class Gauge extends Control {
     // CSS Pseudo classes
     private static final PseudoClass INTERACTIVE_PSEUDO_CLASS    = PseudoClass.getPseudoClass("interactive");
 
-    private BooleanProperty                      interactive;
+    private BooleanProperty               interactive;
 
-    private double                               _value;
-    private DoubleProperty                       value;
-    private double                               _oldValue;
-    private double                               _minValue;
-    private DoubleProperty                       minValue;
-    private double                               exactMinValue;
-    private double                               _maxValue;
-    private DoubleProperty                       maxValue;
-    private double                               exactMaxValue;
-    private double                               _threshold;
-    private DoubleProperty                       threshold;
-    private boolean                              _thresholdVisible;
-    private BooleanProperty                      thresholdVisible;
-    private double                               _minMeasuredValue;
-    private DoubleProperty                       minMeasuredValue;
-    private boolean                              _minMeasuredValueVisible;
-    private BooleanProperty                      minMeasuredValueVisible;
-    private double                               _maxMeasuredValue;
-    private DoubleProperty                       maxMeasuredValue;
-    private boolean                              _maxMeasuredValueVisible;
-    private BooleanProperty                      maxMeasuredValueVisible;
-    private int                                  _decimals;
-    private IntegerProperty                      decimals;
-    private String                               _title;
-    private StringProperty                       title;
-    private String                               _unit;
-    private StringProperty                       unit;
-    private boolean                              _animated;
-    private BooleanProperty                      animated;
-    private double                               animationDuration;
-    private double                               _startAngle;
-    private DoubleProperty                       startAngle;
-    private double                               _angleRange;
-    private DoubleProperty                       angleRange;
-    private boolean                              _clockwise;
-    private BooleanProperty                      clockwise;
-    private boolean                              _autoScale;
-    private BooleanProperty                      autoScale;
-    private Gauge.NeedleType                     _needleType;
-    private ObjectProperty<NeedleType>           needleType;
-    private Color                                _needleColor;
-    private ObjectProperty<Color>                needleColor;
-    private Gauge.TickLabelOrientation           _tickLabelOrientation;
-    private ObjectProperty<TickLabelOrientation> tickLabelOrientation;
-    private Gauge.NumberFormat                   _numberFormat;
-    private ObjectProperty<NumberFormat>         numberFormat;
-    private ObservableList<Section>              sections;
-    private boolean                              _sectionsVisible;
-    private BooleanProperty                      sectionsVisible;
-    private ObservableMap<Marker, Rotate>        markers;
-    private boolean                              _markersVisible;
-    private BooleanProperty                      markersVisible;
-    private double                               _majorTickSpace;
-    private DoubleProperty                       majorTickSpace;
-    private double                               _minorTickSpace;
-    private DoubleProperty                       minorTickSpace;
-    private boolean                              _plainValue;
-    private BooleanProperty                      plainValue;
-    private boolean                              _histogramEnabled;
-    private BooleanProperty                      histogramEnabled;
-    private boolean                              _dropShadowEnabled;
-    private BooleanProperty                      dropShadowEnabled;
+    private double                        _value;
+    private DoubleProperty                value;
+    private double                        _oldValue;
+    private double                        _minValue;
+    private DoubleProperty                minValue;
+    private double                        exactMinValue;
+    private double                        _maxValue;
+    private DoubleProperty                maxValue;
+    private double                        exactMaxValue;
+    private double                        _threshold;
+    private DoubleProperty                threshold;
+    private boolean                       _thresholdVisible;
+    private BooleanProperty               thresholdVisible;
+    private double                        _minMeasuredValue;
+    private DoubleProperty                minMeasuredValue;
+    private boolean                       _minMeasuredValueVisible;
+    private BooleanProperty               minMeasuredValueVisible;
+    private double                        _maxMeasuredValue;
+    private DoubleProperty                maxMeasuredValue;
+    private boolean                       _maxMeasuredValueVisible;
+    private BooleanProperty               maxMeasuredValueVisible;
+    private int                           _decimals;
+    private IntegerProperty               decimals;
+    private String                        _title;
+    private StringProperty                title;
+    private String                        _unit;
+    private StringProperty                unit;
+    private boolean                       _animated;
+    private BooleanProperty               animated;
+    private double                        animationDuration;
+    private double                        _startAngle;
+    private DoubleProperty                startAngle;
+    private double                        _angleRange;
+    private DoubleProperty                angleRange;
+    private boolean                       _clockwise;
+    private BooleanProperty               clockwise;
+    private boolean                       _autoScale;
+    private BooleanProperty               autoScale;
+    private Color                         _barColor;
+    private ObjectProperty<Color>         barColor;
+    private NumberFormat                  _numberFormat;
+    private ObjectProperty<NumberFormat>  numberFormat;
+    private ObservableList<Section>       sections;
+    private boolean                       _sectionsVisible;
+    private BooleanProperty               sectionsVisible;
+    private ObservableMap<Marker, Rotate> markers;
+    private boolean                       _markersVisible;
+    private BooleanProperty               markersVisible;
+    private double                        _majorTickSpace;
+    private DoubleProperty                majorTickSpace;
+    private double                        _minorTickSpace;
+    private DoubleProperty                minorTickSpace;
+    private boolean                       _plainValue;
+    private BooleanProperty               plainValue;
 
     // CSS styleable properties
     private ObjectProperty<Paint>                tickMarkFill;
-    private ObjectProperty<Paint>                tickLabelFill;
     private ObjectProperty<Paint>                section0Fill;
     private ObjectProperty<Paint>                section1Fill;
     private ObjectProperty<Paint>                section2Fill;
@@ -197,7 +156,6 @@ public class Gauge extends Control {
     private ObjectProperty<Paint>                section7Fill;
     private ObjectProperty<Paint>                section8Fill;
     private ObjectProperty<Paint>                section9Fill;
-    private ObjectProperty<Paint>                histogramFill;
     private ObjectProperty<Paint>                marker0Fill;
     private ObjectProperty<Paint>                marker1Fill;
     private ObjectProperty<Paint>                marker2Fill;
@@ -206,8 +164,8 @@ public class Gauge extends Control {
 
 
     // ******************** Constructors **************************************
-    public Gauge() {
-        getStyleClass().add("gauge");
+    public RadialBargraph() {
+        getStyleClass().add("radial-bargraph");
         _value                   = 0;
         _oldValue                = 0;
         _minValue                = 0;
@@ -226,9 +184,7 @@ public class Gauge extends Control {
         _angleRange              = 280;
         _clockwise               = true;
         _autoScale               = false;
-        _needleType              = NeedleType.STANDARD;
-        _needleColor             = Color.RED;
-        _tickLabelOrientation    = TickLabelOrientation.HORIZONTAL;
+        _barColor                = Color.rgb(248, 202, 0);
         _numberFormat            = NumberFormat.STANDARD;
         sections                 = FXCollections.observableArrayList();
         _sectionsVisible         = true;
@@ -237,9 +193,7 @@ public class Gauge extends Control {
         _majorTickSpace          = 10;
         _minorTickSpace          = 1;
         animationDuration        = 800;
-        _plainValue              = true;
-        _histogramEnabled        = false;
-        _dropShadowEnabled       = true;
+        _plainValue              = false;
     }
 
 
@@ -518,61 +472,27 @@ public class Gauge extends Control {
 
 
     // Properties related to visualization
-    public final Gauge.NeedleType getNeedleType() {
-        return null == needleType ? _needleType : needleType.get();
+    public final Color getBarColor() {
+        return null == barColor ? _barColor : barColor.get();
     }
-    public final void setNeedleType(final Gauge.NeedleType NEEDLE_TYPE) {
-        if (null == needleType) {
-            _needleType = NEEDLE_TYPE;
+    public final void setBarColor(final Color NEEDLE_COLOR) {
+        if (null == barColor) {
+            _barColor = NEEDLE_COLOR;
         } else {
-            needleType.set(NEEDLE_TYPE);
+            barColor.set(NEEDLE_COLOR);
         }
     }
-    public final ObjectProperty<NeedleType> needleTypeProperty() {
-        if (null == needleType) {
-            needleType = new SimpleObjectProperty<>(this, "needleType", _needleType);
+    public final ObjectProperty<Color> barColorProperty() {
+        if (null == barColor) {
+            barColor = new SimpleObjectProperty<>(this, "barColor", _barColor);
         }
-        return needleType;
+        return barColor;
     }
 
-    public final Color getNeedleColor() {
-        return null == needleColor ? _needleColor : needleColor.get();
-    }
-    public final void setNeedleColor(final Color NEEDLE_COLOR) {
-        if (null == needleColor) {
-            _needleColor = NEEDLE_COLOR;
-        } else {
-            needleColor.set(NEEDLE_COLOR);
-        }
-    }
-    public final ObjectProperty<Color> needleColorProperty() {
-        if (null == needleColor) {
-            needleColor = new SimpleObjectProperty<>(this, "needleColor", _needleColor);
-        }
-        return needleColor;
-    }
-
-    public final Gauge.TickLabelOrientation getTickLabelOrientation() {
-        return null == tickLabelOrientation ? _tickLabelOrientation : tickLabelOrientation.get();
-    }
-    public final void setTickLabelOrientation(final Gauge.TickLabelOrientation TICK_LABEL_ORIENTATION) {
-        if (null == tickLabelOrientation) {
-            _tickLabelOrientation = TICK_LABEL_ORIENTATION;
-        } else {
-            tickLabelOrientation.set(TICK_LABEL_ORIENTATION);
-        }
-    }
-    public final ObjectProperty<TickLabelOrientation> tickLabelOrientationProperty() {
-        if (null == tickLabelOrientation) {
-            tickLabelOrientation = new SimpleObjectProperty<>(this, "tickLabelOrientation", _tickLabelOrientation);
-        }
-        return tickLabelOrientation;
-    }
-
-    public final Gauge.NumberFormat getNumberFormat() {
+    public final NumberFormat getNumberFormat() {
         return null == numberFormat ? _numberFormat : numberFormat.get();
     }
-    public final void setNumberFormat(final Gauge.NumberFormat NUMBER_FORMAT) {
+    public final void setNumberFormat(final NumberFormat NUMBER_FORMAT) {
         if (null == numberFormat) {
             _numberFormat = NUMBER_FORMAT;
         } else {
@@ -665,7 +585,7 @@ public class Gauge extends Control {
     }
 
     /**
-     * @return true if the value of the gauge will be drawn without a blend effect
+     * @return true if the value of the radialBargraph will be drawn without a blend effect
      */
     public final boolean isPlainValue() {
         return null == plainValue ? _plainValue : plainValue.get();
@@ -687,40 +607,6 @@ public class Gauge extends Control {
             plainValue = new SimpleBooleanProperty(this, "plainValue", _plainValue);
         }
         return plainValue;
-    }
-
-    public final boolean isHistogramEnabled() {
-        return null == histogramEnabled ? _histogramEnabled : histogramEnabled.get();
-    }
-    public final void setHistogramEnabled(final boolean HISTOGRAM_ENABLED) {
-        if (null == histogramEnabled) {
-            _histogramEnabled = HISTOGRAM_ENABLED;
-        } else {
-            histogramEnabled.set(HISTOGRAM_ENABLED);
-        }
-    }
-    public final BooleanProperty histogramEnabledProperty() {
-        if (null == histogramEnabled) {
-            histogramEnabled = new SimpleBooleanProperty(this, "histogramEnabled", _histogramEnabled);
-        }
-        return histogramEnabled;
-    }
-
-    public final boolean isDropShadowEnabled() {
-        return null == dropShadowEnabled ? _dropShadowEnabled : dropShadowEnabled.get();
-    }
-    public final void setDropShadowEnabled(final boolean DROP_SHADOW_ENABLED) {
-        if (null == dropShadowEnabled) {
-            _dropShadowEnabled = DROP_SHADOW_ENABLED;
-        } else {
-            dropShadowEnabled.set(DROP_SHADOW_ENABLED);
-        }
-    }
-    public final BooleanProperty dropShadowEnabledProperty() {
-        if (null == dropShadowEnabled) {
-            dropShadowEnabled = new SimpleBooleanProperty(this, "dropShadowEnabled", _dropShadowEnabled);
-        }
-        return dropShadowEnabled;
     }
 
     public final boolean isSectionsVisible() {
@@ -868,27 +754,27 @@ public class Gauge extends Control {
         } else {
         */
 
-            if (ROUND) {
-                if (FRACTION < 1.5) {
-                    niceFraction = 1;
-                } else if (FRACTION < 3) {
-                    niceFraction = 2;
-                } else if (FRACTION < 7) {
-                    niceFraction = 5;
-                } else {
-                    niceFraction = 10;
-                }
+        if (ROUND) {
+            if (FRACTION < 1.5) {
+                niceFraction = 1;
+            } else if (FRACTION < 3) {
+                niceFraction = 2;
+            } else if (FRACTION < 7) {
+                niceFraction = 5;
             } else {
-                if (Double.compare(FRACTION, 1) <= 0) {
-                    niceFraction = 1;
-                } else if (Double.compare(FRACTION, 2) <= 0) {
-                    niceFraction = 2;
-                } else if (Double.compare(FRACTION, 5) <= 0) {
-                    niceFraction = 5;
-                } else {
-                    niceFraction = 10;
-                }
+                niceFraction = 10;
             }
+        } else {
+            if (Double.compare(FRACTION, 1) <= 0) {
+                niceFraction = 1;
+            } else if (Double.compare(FRACTION, 2) <= 0) {
+                niceFraction = 2;
+            } else if (Double.compare(FRACTION, 5) <= 0) {
+                niceFraction = 5;
+            } else {
+                niceFraction = 10;
+            }
+        }
         //}
         return niceFraction * Math.pow(10, EXPONENT);
     }
@@ -924,29 +810,12 @@ public class Gauge extends Control {
 
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.TICK_MARK_FILL; }
 
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
 
                 @Override public String getName() { return "tickMarkFill"; }
             };
         }
         return tickMarkFill;
-    }
-
-    public final Paint getTickLabelFill() {
-        return null == tickLabelFill ? Color.BLACK : tickLabelFill.get();
-    }
-    public final void setTickLabelFill(Paint value) {
-        tickLabelFillProperty().set(value);
-    }
-    public final ObjectProperty<Paint> tickLabelFillProperty() {
-        if (null == tickLabelFill) {
-            tickLabelFill = new StyleableObjectProperty<Paint>(Color.BLACK) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.TICK_LABEL_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
-                @Override public String getName() { return "tickLabelFill"; }
-            };
-        }
-        return tickLabelFill;
     }
 
     public final Paint getSection0Fill() {
@@ -959,7 +828,7 @@ public class Gauge extends Control {
         if (null == section0Fill) {
             section0Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_0_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_0_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section0Fill"; }
             };
         }
@@ -976,7 +845,7 @@ public class Gauge extends Control {
         if (null == section1Fill) {
             section1Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_1_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_1_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section1Fill"; }
             };
         }
@@ -993,7 +862,7 @@ public class Gauge extends Control {
         if (null == section2Fill) {
             section2Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_2_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_2_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section2Fill"; }
             };
         }
@@ -1010,7 +879,7 @@ public class Gauge extends Control {
         if (null == section3Fill) {
             section3Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_3_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_3_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section3Fill"; }
             };
         }
@@ -1027,7 +896,7 @@ public class Gauge extends Control {
         if (null == section4Fill) {
             section4Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_4_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_4_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section4Fill"; }
             };
         }
@@ -1044,7 +913,7 @@ public class Gauge extends Control {
         if (null == section5Fill) {
             section5Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_5_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_5_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section5Fill"; }
             };
         }
@@ -1061,7 +930,7 @@ public class Gauge extends Control {
         if (null == section6Fill) {
             section6Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_6_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_6_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section6Fill"; }
             };
         }
@@ -1078,7 +947,7 @@ public class Gauge extends Control {
         if (null == section7Fill) {
             section7Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_7_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_7_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section7Fill"; }
             };
         }
@@ -1095,7 +964,7 @@ public class Gauge extends Control {
         if (null == section8Fill) {
             section8Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_8_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_8_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section8Fill"; }
             };
         }
@@ -1112,25 +981,8 @@ public class Gauge extends Control {
         if (null == section9Fill) {
             section9Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_9_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_9_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "section9Fill"; }
-            };
-        }
-        return section9Fill;
-    }
-
-    public final Paint getHistogramFill() {
-        return null == histogramFill ? DEFAULT_HISTOGRAM_FILL : histogramFill.get();
-    }
-    public final void setHistogramFill(Paint value) {
-        histogramFillProperty().set(value);
-    }
-    public final ObjectProperty<Paint> histogramFillProperty() {
-        if (null == histogramFill) {
-            histogramFill = new StyleableObjectProperty<Paint>(DEFAULT_HISTOGRAM_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.HISTOGRAM_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
-                @Override public String getName() { return "histogramFill"; }
             };
         }
         return section9Fill;
@@ -1146,7 +998,7 @@ public class Gauge extends Control {
         if (null == marker0Fill) {
             marker0Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_0_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_0_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "marker0Fill"; }
             };
         }
@@ -1163,7 +1015,7 @@ public class Gauge extends Control {
         if (null == marker1Fill) {
             marker1Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_1_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_1_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "marker1Fill"; }
             };
         }
@@ -1180,7 +1032,7 @@ public class Gauge extends Control {
         if (null == marker2Fill) {
             marker2Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_2_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_2_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "marker2Fill"; }
             };
         }
@@ -1197,7 +1049,7 @@ public class Gauge extends Control {
         if (null == marker3Fill) {
             marker3Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_3_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_3_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "marker3Fill"; }
             };
         }
@@ -1214,7 +1066,7 @@ public class Gauge extends Control {
         if (null == marker4Fill) {
             marker4Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_4_FILL) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_4_FILL; }
-                @Override public Object getBean() { return Gauge.this; }
+                @Override public Object getBean() { return RadialBargraph.this; }
                 @Override public String getName() { return "marker4Fill"; }
             };
         }
@@ -1243,291 +1095,263 @@ public class Gauge extends Control {
 
     // ******************** Style related *************************************
     @Override protected Skin createDefaultSkin() {
-        return new GaugeSkin(this);
+        return new RadialBargraphSkin(this);
     }
 
     @Override protected String getUserAgentStylesheet() {
-        return getClass().getResource("gauge.css").toExternalForm();
+        return getClass().getResource("radial-bargraph.css").toExternalForm();
     }
-    
+
     private static class StyleableProperties {
-        private static final CssMetaData<Gauge, Paint> TICK_MARK_FILL =
-            new CssMetaData<Gauge, Paint>("-tick-mark-fill", PaintConverter.getInstance(), Color.BLACK) {
+        private static final CssMetaData<RadialBargraph, Paint> TICK_MARK_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-tick-mark-fill", PaintConverter.getInstance(), Color.BLACK) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.tickMarkFill || !gauge.tickMarkFill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.tickMarkFill || !radialBargraph.tickMarkFill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.tickMarkFillProperty();
-                }
-            };
-
-        private static final CssMetaData<Gauge, Paint> TICK_LABEL_FILL =
-            new CssMetaData<Gauge, Paint>("-tick-label-fill", PaintConverter.getInstance(), Color.BLACK) {
-
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.tickLabelFill || !gauge.tickLabelFill.isBound();
-                }
-
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.tickLabelFillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.tickMarkFillProperty();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> SECTION_0_FILL =
-            new CssMetaData<Gauge, Paint>("-section0-fill", PaintConverter.getInstance(), DEFAULT_SECTION_0_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_0_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section0-fill", PaintConverter.getInstance(), DEFAULT_SECTION_0_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section0Fill || !gauge.section0Fill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section0Fill || !radialBargraph.section0Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section0FillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section0FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection0Fill();
-                }
-            };
-
-        private static final CssMetaData<Gauge, Paint> SECTION_1_FILL =
-            new CssMetaData<Gauge, Paint>("-section1-fill", PaintConverter.getInstance(), DEFAULT_SECTION_1_FILL) {
-
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section1Fill || !gauge.section1Fill.isBound();
-                }
-
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section1FillProperty();
-                }
-
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection1Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection0Fill();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> SECTION_2_FILL =
-            new CssMetaData<Gauge, Paint>("-section2-fill", PaintConverter.getInstance(), DEFAULT_SECTION_2_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_1_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section1-fill", PaintConverter.getInstance(), DEFAULT_SECTION_1_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section2Fill || !gauge.section2Fill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section1Fill || !radialBargraph.section1Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section2FillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section1FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection2Fill();
-                }
-            };
-
-        private static final CssMetaData<Gauge, Paint> SECTION_3_FILL =
-            new CssMetaData<Gauge, Paint>("-section3-fill", PaintConverter.getInstance(), DEFAULT_SECTION_3_FILL) {
-
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section3Fill || !gauge.section3Fill.isBound();
-                }
-
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section3FillProperty();
-                }
-
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection3Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection1Fill();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> SECTION_4_FILL =
-            new CssMetaData<Gauge, Paint>("-section4-fill", PaintConverter.getInstance(), DEFAULT_SECTION_4_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_2_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section2-fill", PaintConverter.getInstance(), DEFAULT_SECTION_2_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section4Fill || !gauge.section4Fill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section2Fill || !radialBargraph.section2Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section4FillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section2FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection4Fill();
-                }
-            };
-
-        private static final CssMetaData<Gauge, Paint> SECTION_5_FILL =
-            new CssMetaData<Gauge, Paint>("-section5-fill", PaintConverter.getInstance(), DEFAULT_SECTION_5_FILL) {
-
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section5Fill || !gauge.section5Fill.isBound();
-                }
-
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section5FillProperty();
-                }
-
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection5Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection2Fill();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> SECTION_6_FILL =
-            new CssMetaData<Gauge, Paint>("-section6-fill", PaintConverter.getInstance(), DEFAULT_SECTION_6_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_3_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section3-fill", PaintConverter.getInstance(), DEFAULT_SECTION_3_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section6Fill || !gauge.section6Fill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section3Fill || !radialBargraph.section3Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section6FillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section3FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection6Fill();
-                }
-            };
-
-        private static final CssMetaData<Gauge, Paint> SECTION_7_FILL =
-            new CssMetaData<Gauge, Paint>("-section7-fill", PaintConverter.getInstance(), DEFAULT_SECTION_7_FILL) {
-
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section7Fill || !gauge.section7Fill.isBound();
-                }
-
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section7FillProperty();
-                }
-
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection7Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection3Fill();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> SECTION_8_FILL =
-            new CssMetaData<Gauge, Paint>("-section8-fill", PaintConverter.getInstance(), DEFAULT_SECTION_8_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_4_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section4-fill", PaintConverter.getInstance(), DEFAULT_SECTION_4_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section8Fill || !gauge.section8Fill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section4Fill || !radialBargraph.section4Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section8FillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section4FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection8Fill();
-                }
-            };
-
-        private static final CssMetaData<Gauge, Paint> SECTION_9_FILL =
-            new CssMetaData<Gauge, Paint>("-section9-fill", PaintConverter.getInstance(), DEFAULT_SECTION_9_FILL) {
-
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.section9Fill || !gauge.section9Fill.isBound();
-                }
-
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.section9FillProperty();
-                }
-
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getSection9Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection4Fill();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> HISTOGRAM_FILL =
-            new CssMetaData<Gauge, Paint>("-histogram-fill", PaintConverter.getInstance(), DEFAULT_HISTOGRAM_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_5_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section5-fill", PaintConverter.getInstance(), DEFAULT_SECTION_5_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.histogramFill || !gauge.histogramFill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section5Fill || !radialBargraph.section5Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.histogramFillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section5FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getHistogramFill();
-                }
-            };
-
-        private static final CssMetaData<Gauge, Paint> MARKER_0_FILL =
-            new CssMetaData<Gauge, Paint>("-marker0-fill", PaintConverter.getInstance(), DEFAULT_MARKER_0_FILL) {
-
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.marker0Fill || !gauge.marker0Fill.isBound();
-                }
-
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.marker0FillProperty();
-                }
-
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getMarker0Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection5Fill();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> MARKER_1_FILL =
-            new CssMetaData<Gauge, Paint>("-marker1-fill", PaintConverter.getInstance(), DEFAULT_MARKER_1_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_6_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section6-fill", PaintConverter.getInstance(), DEFAULT_SECTION_6_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.marker1Fill || !gauge.marker1Fill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section6Fill || !radialBargraph.section6Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.marker1FillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section6FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getMarker1Fill();
-                }
-            };
-
-        private static final CssMetaData<Gauge, Paint> MARKER_2_FILL =
-            new CssMetaData<Gauge, Paint>("-marker2-fill", PaintConverter.getInstance(), DEFAULT_MARKER_2_FILL) {
-
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.marker2Fill || !gauge.marker2Fill.isBound();
-                }
-
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.marker2FillProperty();
-                }
-
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getMarker2Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection6Fill();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> MARKER_3_FILL =
-            new CssMetaData<Gauge, Paint>("-marker3-fill", PaintConverter.getInstance(), DEFAULT_MARKER_3_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_7_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section7-fill", PaintConverter.getInstance(), DEFAULT_SECTION_7_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.marker3Fill || !gauge.marker3Fill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section7Fill || !radialBargraph.section7Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.marker3FillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section7FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getMarker3Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection7Fill();
                 }
             };
 
-        private static final CssMetaData<Gauge, Paint> MARKER_4_FILL =
-            new CssMetaData<Gauge, Paint>("-marker4-fill", PaintConverter.getInstance(), DEFAULT_MARKER_4_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_8_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section8-fill", PaintConverter.getInstance(), DEFAULT_SECTION_8_FILL) {
 
-                @Override public boolean isSettable(Gauge gauge) {
-                    return null == gauge.marker4Fill || !gauge.marker4Fill.isBound();
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section8Fill || !radialBargraph.section8Fill.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(Gauge gauge) {
-                    return (StyleableProperty) gauge.marker4FillProperty();
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section8FillProperty();
                 }
 
-                @Override public Paint getInitialValue(Gauge gauge) {
-                    return gauge.getMarker4Fill();
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection8Fill();
+                }
+            };
+
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_9_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-section9-fill", PaintConverter.getInstance(), DEFAULT_SECTION_9_FILL) {
+
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.section9Fill || !radialBargraph.section9Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.section9FillProperty();
+                }
+
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getSection9Fill();
+                }
+            };
+
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_0_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-marker0-fill", PaintConverter.getInstance(), DEFAULT_MARKER_0_FILL) {
+
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.marker0Fill || !radialBargraph.marker0Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.marker0FillProperty();
+                }
+
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getMarker0Fill();
+                }
+            };
+
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_1_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-marker1-fill", PaintConverter.getInstance(), DEFAULT_MARKER_1_FILL) {
+
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.marker1Fill || !radialBargraph.marker1Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.marker1FillProperty();
+                }
+
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getMarker1Fill();
+                }
+            };
+
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_2_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-marker2-fill", PaintConverter.getInstance(), DEFAULT_MARKER_2_FILL) {
+
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.marker2Fill || !radialBargraph.marker2Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.marker2FillProperty();
+                }
+
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getMarker2Fill();
+                }
+            };
+
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_3_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-marker3-fill", PaintConverter.getInstance(), DEFAULT_MARKER_3_FILL) {
+
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.marker3Fill || !radialBargraph.marker3Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.marker3FillProperty();
+                }
+
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getMarker3Fill();
+                }
+            };
+
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_4_FILL =
+            new CssMetaData<RadialBargraph, Paint>("-marker4-fill", PaintConverter.getInstance(), DEFAULT_MARKER_4_FILL) {
+
+                @Override public boolean isSettable(RadialBargraph radialBargraph) {
+                    return null == radialBargraph.marker4Fill || !radialBargraph.marker4Fill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
+                    return (StyleableProperty) radialBargraph.marker4FillProperty();
+                }
+
+                @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
+                    return radialBargraph.getMarker4Fill();
                 }
             };
 
@@ -1535,24 +1359,22 @@ public class Gauge extends Control {
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
-                               TICK_MARK_FILL,
-                               TICK_LABEL_FILL,
-                               SECTION_0_FILL,
-                               SECTION_1_FILL,
-                               SECTION_2_FILL,
-                               SECTION_3_FILL,
-                               SECTION_4_FILL,
-                               SECTION_5_FILL,
-                               SECTION_6_FILL,
-                               SECTION_7_FILL,
-                               SECTION_8_FILL,
-                               SECTION_9_FILL,
-                               HISTOGRAM_FILL,
-                               MARKER_0_FILL,
-                               MARKER_1_FILL,
-                               MARKER_2_FILL,
-                               MARKER_3_FILL,
-                               MARKER_4_FILL
+                TICK_MARK_FILL,
+                SECTION_0_FILL,
+                SECTION_1_FILL,
+                SECTION_2_FILL,
+                SECTION_3_FILL,
+                SECTION_4_FILL,
+                SECTION_5_FILL,
+                SECTION_6_FILL,
+                SECTION_7_FILL,
+                SECTION_8_FILL,
+                SECTION_9_FILL,
+                MARKER_0_FILL,
+                MARKER_1_FILL,
+                MARKER_2_FILL,
+                MARKER_3_FILL,
+                MARKER_4_FILL
             );
             STYLEABLES = Collections.unmodifiableList(styleables);
         }
