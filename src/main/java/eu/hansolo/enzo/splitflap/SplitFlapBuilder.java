@@ -167,56 +167,56 @@ public class SplitFlapBuilder<B extends SplitFlapBuilder<B>> {
         } else {
             CONTROL = new SplitFlap();
         }
-        for (String key : properties.keySet()) {
+        properties.forEach((key, property) -> {
             if ("keepAspect".equals(key)) {
-                CONTROL.setKeepAspect(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setKeepAspect(((BooleanProperty) property).get());
             } else if ("flipTime".equals(key)) {
-                CONTROL.setFlipTime(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setFlipTime(((DoubleProperty) property).get());
             } else if ("wordMode".equals(key)) {
-                CONTROL.setWordMode(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setWordMode(((BooleanProperty) property).get());
             } else if ("withFixture".equals(key)) {
-                CONTROL.setWithFixture(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setWithFixture(((BooleanProperty) property).get());
             } else if ("darkFixture".equals(key)) {
-                CONTROL.setDarkFixture(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setDarkFixture(((BooleanProperty) property).get());
             } else if ("squareFlaps".equals(key)) {
-                CONTROL.setSquareFlaps(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setSquareFlaps(((BooleanProperty) property).get());
             } else if ("flapColor".equals(key)) {
-                CONTROL.setFlapColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setFlapColor(((ObjectProperty<Color>) property).get());
             } else if ("textColor".equals(key)) {
-                CONTROL.setTextColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setTextColor(((ObjectProperty<Color>) property).get());
             } else if ("text".equals(key)) {
-                CONTROL.setText(((StringProperty) properties.get(key)).get());
+                CONTROL.setText(((StringProperty) property).get());
             } else if ("selection".equals(key)) {
-                CONTROL.setSelection(((ObjectProperty<String[]>) properties.get(key)).get());
+                CONTROL.setSelection(((ObjectProperty<String[]>) property).get());
             } else if ("prefSize".equals(key)) {
-                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) property).get();
                 CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("prefWidth".equals(key)) {
-                CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setPrefWidth(((DoubleProperty) property).get());
             } else if("prefHeight".equals(key)) {
-                CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setPrefHeight(((DoubleProperty) property).get());
             } else if("minWidth".equals(key)) {
-                CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMinWidth(((DoubleProperty) property).get());
             } else if("minHeight".equals(key)) {
-                CONTROL.setMinHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMinHeight(((DoubleProperty) property).get());
             } else if("maxWidth".equals(key)) {
-                CONTROL.setMaxWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMaxWidth(((DoubleProperty) property).get());
             } else if("maxHeight".equals(key)) {
-                CONTROL.setMaxHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMaxHeight(((DoubleProperty) property).get());
             } else if("scaleX".equals(key)) {
-                CONTROL.setScaleX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setScaleX(((DoubleProperty) property).get());
             } else if("scaleY".equals(key)) {
-                CONTROL.setScaleY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setScaleY(((DoubleProperty) property).get());
             } else if ("layoutX".equals(key)) {
-                CONTROL.setLayoutX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setLayoutX(((DoubleProperty) property).get());
             } else if ("layoutY".equals(key)) {
-                CONTROL.setLayoutY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setLayoutY(((DoubleProperty) property).get());
             } else if ("translateX".equals(key)) {
-                CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setTranslateX(((DoubleProperty) property).get());
             } else if ("translateY".equals(key)) {
-                CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setTranslateY(((DoubleProperty) property).get());
             }
-        }
+        });
 
         return CONTROL;
     }

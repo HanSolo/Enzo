@@ -87,23 +87,23 @@ public class MenuItemBuilder implements Builder<MenuItem> {
     @Override public final MenuItem build() {
         final MenuItem CONTROL = new MenuItem();
 
-        for (String key : properties.keySet()) {
+        properties.forEach((key, property) -> {
             if ("TOOLTIP".equals(key)) {
-                CONTROL.setTooltip(((StringProperty) properties.get(key)).get());
+                CONTROL.setTooltip(((StringProperty) property).get());
             } else if("SIZE".equals(key)) {
-                CONTROL.setSize(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setSize(((DoubleProperty) property).get());
             } else if ("INNER_COLOR".equals(key)) {
-                CONTROL.setInnerColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setInnerColor(((ObjectProperty<Color>) property).get());
             } else if ("FRAME_COLOR".equals(key)) {
-                CONTROL.setFrameColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setFrameColor(((ObjectProperty<Color>) property).get());
             } else if ("FOREGROUND_COLOR".equals(key)) {
-                CONTROL.setForegroundColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setForegroundColor(((ObjectProperty<Color>) property).get());
             } else if ("SYMBOL".equals(key)) {
-                CONTROL.setSymbol(((ObjectProperty<Symbol.Type>) properties.get(key)).get());
+                CONTROL.setSymbol(((ObjectProperty<Symbol.Type>) property).get());
             } else if ("THUMBNAIL_IMAGE_NAME".equals(key)) {
-                CONTROL.setThumbnailImageName(((StringProperty) properties.get(key)).get());
+                CONTROL.setThumbnailImageName(((StringProperty) property).get());
             }
-        }
+        });
 
         return CONTROL;
     }

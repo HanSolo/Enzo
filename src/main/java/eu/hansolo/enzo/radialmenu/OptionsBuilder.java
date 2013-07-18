@@ -107,31 +107,31 @@ public class OptionsBuilder implements Builder<Options> {
     @Override public final Options build() {
         final Options CONTROL = new Options();
 
-        for (String key : properties.keySet()) {
+        properties.forEach((key, property) -> {
             if ("DEGREES".equals(key)) {
-                CONTROL.setDegrees(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setDegrees(((DoubleProperty) property).get());
             } else if("OFFSET".equals(key)) {
-                CONTROL.setOffset(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setOffset(((DoubleProperty) property).get());
             } else if ("RADIUS".equals(key)) {
-                CONTROL.setRadius(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setRadius(((DoubleProperty) property).get());
             } else if ("BUTTON_SIZE".equals(key)) {
-                CONTROL.setButtonSize(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setButtonSize(((DoubleProperty) property).get());
             } else if ("BUTTON_INNER_COLOR".equals(key)) {
-                CONTROL.setButtonInnerColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setButtonInnerColor(((ObjectProperty<Color>) property).get());
             } else if ("BUTTON_FRAME_COLOR".equals(key)) {
-                CONTROL.setButtonFrameColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setButtonFrameColor(((ObjectProperty<Color>) property).get());
             } else if ("BUTTON_FOREGROUND_COLOR".equals(key)) {
-                CONTROL.setButtonForegroundColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setButtonForegroundColor(((ObjectProperty<Color>) property).get());
             } else if ("BUTTON_ALPHA".equals(key)) {
-                CONTROL.setButtonAlpha(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setButtonAlpha(((DoubleProperty) property).get());
             } else if ("BUTTON_HIDE_ON_SELECT".equals(key)) {
-                CONTROL.setButtonHideOnSelect(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setButtonHideOnSelect(((BooleanProperty) property).get());
             } else if ("TOOLTIPS_ENABLED".equals(key)) {
-                CONTROL.setTooltipsEnabled(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setTooltipsEnabled(((BooleanProperty) property).get());
             } else if ("BUTTON_VISIBLE".equals(key)) {
-                CONTROL.setButtonVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setButtonVisible(((BooleanProperty) property).get());
             }
-        }
+        });
 
         return CONTROL;
     }

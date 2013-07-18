@@ -342,128 +342,128 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
 
     public final Lcd build() {
         final Lcd CONTROL = new Lcd();
-        for (String key : properties.keySet()) {
+        properties.forEach((key, property) -> {
             if ("prefSize".equals(key)) {
-                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) property).get();
                 CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("prefWidth".equals(key)) {
-                CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setPrefWidth(((DoubleProperty) property).get());
             } else if("prefHeight".equals(key)) {
-                CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setPrefHeight(((DoubleProperty) property).get());
             } else if("minWidth".equals(key)) {
-                CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMinWidth(((DoubleProperty) property).get());
             } else if("minHeight".equals(key)) {
-                CONTROL.setMinHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMinHeight(((DoubleProperty) property).get());
             } else if("maxWidth".equals(key)) {
-                CONTROL.setMaxWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMaxWidth(((DoubleProperty) property).get());
             } else if("maxHeight".equals(key)) {
-                CONTROL.setMaxHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMaxHeight(((DoubleProperty) property).get());
             } else if("scaleX".equals(key)) {
-                CONTROL.setScaleX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setScaleX(((DoubleProperty) property).get());
             } else if("scaleY".equals(key)) {
-                CONTROL.setScaleY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setScaleY(((DoubleProperty) property).get());
             } else if ("layoutX".equals(key)) {
-                CONTROL.setLayoutX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setLayoutX(((DoubleProperty) property).get());
             } else if ("layoutY".equals(key)) {
-                CONTROL.setLayoutY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setLayoutY(((DoubleProperty) property).get());
             } else if ("translateX".equals(key)) {
-                CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setTranslateX(((DoubleProperty) property).get());
             } else if ("translateY".equals(key)) {
-                CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setTranslateY(((DoubleProperty) property).get());
             } else if("styleClass".equals(key)) {
-                CONTROL.getStyleClass().setAll("lcd", ((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("lcd", ((StringProperty) property).get());
             } else if("textMode".equals(key)) {
-                CONTROL.setTextMode(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setTextMode(((BooleanProperty) property).get());
             } else if("text".equals(key)) {
-                CONTROL.setText(((StringProperty) properties.get(key)).get());
+                CONTROL.setText(((StringProperty) property).get());
             } else if("value".equals(key)) {
-                CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setValue(((DoubleProperty) property).get());
             } else if("minValue".equals(key)) {
-                CONTROL.setMinValue(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMinValue(((DoubleProperty) property).get());
             } else if("maxValue".equals(key)) {
-                CONTROL.setMaxValue(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMaxValue(((DoubleProperty) property).get());
             } else if("animated".equals(key)) {
-                CONTROL.setAnimated(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setAnimated(((BooleanProperty) property).get());
             } else if ("animationDuration".equals(key)) {
-                CONTROL.setAnimationDuration(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setAnimationDuration(((DoubleProperty) property).get());
             } else if("threshold".equals(key)) {
-                CONTROL.setThreshold(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setThreshold(((DoubleProperty) property).get());
             } else if("decimals".equals(key)) {
-                CONTROL.setDecimals(((IntegerProperty) properties.get(key)).get());
+                CONTROL.setDecimals(((IntegerProperty) property).get());
             } else if ("keepAspect".equals(key)) {
-                CONTROL.setKeepAspect(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setKeepAspect(((BooleanProperty) property).get());
             } else if ("backgroundVisible".equals(key)) {
-                CONTROL.setBackgroundVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setBackgroundVisible(((BooleanProperty) property).get());
             } else if ("crystalOverlayVisible".equals(key)) {
-                CONTROL.setCrystalOverlayVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setCrystalOverlayVisible(((BooleanProperty) property).get());
             } else if ("foregroundShadowVisible".equals(key)) {
-                CONTROL.setForegroundShadowVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setForegroundShadowVisible(((BooleanProperty) property).get());
             } else if("minMeasuredValueVisible".equals(key)) {
-                CONTROL.setMinMeasuredValueVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setMinMeasuredValueVisible(((BooleanProperty) property).get());
             } else if("minMeasuredValueDecimals".equals(key)) {
-                CONTROL.setMinMeasuredValueDecimals(((IntegerProperty) properties.get(key)).get());
+                CONTROL.setMinMeasuredValueDecimals(((IntegerProperty) property).get());
             } else if ("maxMeasuredValueVisible".equals(key)) {
-                CONTROL.setMaxMeasuredValueVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setMaxMeasuredValueVisible(((BooleanProperty) property).get());
             } else if ("maxMeasuredValueDecimals".equals(key)) {
-                CONTROL.setMaxMeasuredValueDecimals(((IntegerProperty) properties.get(key)).get());
+                CONTROL.setMaxMeasuredValueDecimals(((IntegerProperty) property).get());
             } else if ("formerValueVisible".equals(key)) {
-                CONTROL.setFormerValueVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setFormerValueVisible(((BooleanProperty) property).get());
             } else if ("title".equals(key)) {
-                CONTROL.setTitle(((StringProperty) properties.get(key)).get());
+                CONTROL.setTitle(((StringProperty) property).get());
             } else if ("titleVisible".equals(key)) {
-                CONTROL.setTitleVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setTitleVisible(((BooleanProperty) property).get());
             } else if ("unit".equals(key)) {
-                CONTROL.setUnit(((StringProperty) properties.get(key)).get());
+                CONTROL.setUnit(((StringProperty) property).get());
             } else if ("unitVisible".equals(key)) {
-                CONTROL.setUnitVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setUnitVisible(((BooleanProperty) property).get());
             } else if("lowerCenterText".equals(key)) {
-                CONTROL.setLowerCenterText(((StringProperty) properties.get(key)).get());
+                CONTROL.setLowerCenterText(((StringProperty) property).get());
             } else if("lowerCenterTextVisible".equals(key)) {
-                CONTROL.setLowerCenterTextVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setLowerCenterTextVisible(((BooleanProperty) property).get());
             } else if ("lowerRightText".equals(key)) {
-                CONTROL.setLowerRightText(((StringProperty) properties.get(key)).get());
+                CONTROL.setLowerRightText(((StringProperty) property).get());
             } else if ("lowerRightTextVisible".equals(key)) {
-                CONTROL.setLowerRightTextVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setLowerRightTextVisible(((BooleanProperty) property).get());
             } else if ("upperLeftText".equals(key)) {
-                CONTROL.setUpperLeftText(((StringProperty) properties.get(key)).get());
+                CONTROL.setUpperLeftText(((StringProperty) property).get());
             } else if ("upperLeftTextVisible".equals(key)) {
-                CONTROL.setUpperLeftTextVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setUpperLeftTextVisible(((BooleanProperty) property).get());
             } else if ("upperRightText".equals(key)) {
-                CONTROL.setUpperRightText(((StringProperty) properties.get(key)).get());
+                CONTROL.setUpperRightText(((StringProperty) property).get());
             } else if ("upperRightTextVisible".equals(key)) {
-                CONTROL.setUpperRightTextVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setUpperRightTextVisible(((BooleanProperty) property).get());
             } else if ("trendVisible".equals(key)) {
-                CONTROL.setTrendVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setTrendVisible(((BooleanProperty) property).get());
             } else if ("trend".equals(key)) {
-                CONTROL.setTrend(((ObjectProperty<Lcd.Trend>) properties.get(key)).get());
+                CONTROL.setTrend(((ObjectProperty<Lcd.Trend>) property).get());
             } else if ("batteryCharge".equals(key)) {
-                CONTROL.setBatteryCharge(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setBatteryCharge(((DoubleProperty) property).get());
             } else if ("batteryVisible".equals(key)) {
-                CONTROL.setBatteryVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setBatteryVisible(((BooleanProperty) property).get());
             } else if ("signalStrength".equals(key)) {
-                CONTROL.setSignalStrength(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setSignalStrength(((DoubleProperty) property).get());
             } else if ("signalVisible".equals(key)) {
-                CONTROL.setSignalVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setSignalVisible(((BooleanProperty) property).get());
             } else if ("alarmVisible".equals(key)) {
-                CONTROL.setAlarmVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setAlarmVisible(((BooleanProperty) property).get());
             } else if ("thresholdVisible".equals(key)) {
-                CONTROL.setThresholdVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setThresholdVisible(((BooleanProperty) property).get());
             } else if ("thresholdBehaviorInverted".equals(key)) {
-                CONTROL.setThresholdBehaviorInverted(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setThresholdBehaviorInverted(((BooleanProperty) property).get());
             } else if("numberSystem".equals(key)) {
-                CONTROL.setNumberSystem(((ObjectProperty<Lcd.NumberSystem>) properties.get(key)).get());
+                CONTROL.setNumberSystem(((ObjectProperty<Lcd.NumberSystem>) property).get());
             } else if ("numberSystemVisible".equals(key)) {
-                CONTROL.setNumberSystemVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setNumberSystemVisible(((BooleanProperty) property).get());
             } else if ("unitFont".equals(key)) {
-                CONTROL.setUnitFont(((StringProperty) properties.get(key)).get());
+                CONTROL.setUnitFont(((StringProperty) property).get());
             } else if ("titleFont".equals(key)) {
-                CONTROL.setTitleFont(((StringProperty) properties.get(key)).get());
+                CONTROL.setTitleFont(((StringProperty) property).get());
             } else if ("valueFont".equals(key)) {
-                CONTROL.setValueFont(((ObjectProperty<Lcd.LcdFont>) properties.get(key)).get());
+                CONTROL.setValueFont(((ObjectProperty<Lcd.LcdFont>) property).get());
             } else if ("smallFont".equals(key)) {
-                CONTROL.setSmallFont(((StringProperty) properties.get(key)).get());
+                CONTROL.setSmallFont(((StringProperty) property).get());
             }
-        }
+        });
         return CONTROL;
     }
 }

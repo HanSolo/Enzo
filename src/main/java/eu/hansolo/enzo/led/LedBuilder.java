@@ -147,52 +147,52 @@ public class LedBuilder<B extends LedBuilder<B>> {
         return (B)this;
     }
 
-    public final eu.hansolo.enzo.led.Led build() {
+    public final Led build() {
         final Led CONTROL = new Led();
-        for (String key : properties.keySet()) {
+        properties.forEach((key, property) -> {
             if ("prefSize".equals(key)) {
-                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) property).get();
                 CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("prefWidth".equals(key)) {
-                CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setPrefWidth(((DoubleProperty) property).get());
             } else if("prefHeight".equals(key)) {
-                CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setPrefHeight(((DoubleProperty) property).get());
             } else if("minWidth".equals(key)) {
-                CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMinWidth(((DoubleProperty) property).get());
             } else if("minHeight".equals(key)) {
-                CONTROL.setMinHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMinHeight(((DoubleProperty) property).get());
             } else if("maxWidth".equals(key)) {
-                CONTROL.setMaxWidth(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMaxWidth(((DoubleProperty) property).get());
             } else if("maxHeight".equals(key)) {
-                CONTROL.setMaxHeight(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setMaxHeight(((DoubleProperty) property).get());
             } else if("scaleX".equals(key)) {
-                CONTROL.setScaleX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setScaleX(((DoubleProperty) property).get());
             } else if("scaleY".equals(key)) {
-                CONTROL.setScaleY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setScaleY(((DoubleProperty) property).get());
             } else if ("layoutX".equals(key)) {
-                CONTROL.setLayoutX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setLayoutX(((DoubleProperty) property).get());
             } else if ("layoutY".equals(key)) {
-                CONTROL.setLayoutY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setLayoutY(((DoubleProperty) property).get());
             } else if ("translateX".equals(key)) {
-                CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setTranslateX(((DoubleProperty) property).get());
             } else if ("translateY".equals(key)) {
-                CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
+                CONTROL.setTranslateY(((DoubleProperty) property).get());
             } else if("styleClass".equals(key)) {
-                CONTROL.getStyleClass().setAll("led", ((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("led", ((StringProperty) property).get());
             } else if ("ledColor".equals(key)) {
-                CONTROL.setLedColor(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setLedColor(((ObjectProperty<Color>) property).get());
             } else if ("ledType".equals(key)) {
-                CONTROL.setLedType(((ObjectProperty<Led.LedType>) properties.get(key)).get());
+                CONTROL.setLedType(((ObjectProperty<Led.LedType>) property).get());
             } else if ("on".equals(key)) {
-                CONTROL.setOn(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setOn(((BooleanProperty) property).get());
             } else if ("blink".equals(key)) {
-                CONTROL.setBlink(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setBlink(((BooleanProperty) property).get());
             } else if ("interval".equals(key)) {
-                CONTROL.setInterval(((LongProperty) properties.get(key)).get());
+                CONTROL.setInterval(((LongProperty) property).get());
             } else if ("frameVisible".equals(key)) {
-                CONTROL.setFrameVisible(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setFrameVisible(((BooleanProperty) property).get());
             }
-        }
+        });
         return CONTROL;
     }
 }
