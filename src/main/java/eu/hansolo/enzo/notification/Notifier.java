@@ -117,13 +117,28 @@ public enum Notifier {
 	/**
 	 * @param stageRef  The Notification will be positioned relative to the given Stage.<br>
 	 * 					If null then the Notification will be positioned relative to the primary Screen.
-	 * @param position  The default is TOP_RIGHT.
+	 * @param position  The default is TOP_RIGHT of primary Screen.
 	 */
 	public static void setLocation( Stage stageRef, Pos position )
 	{
-		INSTANCE.stage.initOwner( stageRef );
-		STAGE_REF = stageRef;
+		if ( stageRef != null )
+		{	
+			INSTANCE.stage.initOwner( stageRef );
+			STAGE_REF = stageRef;
+		}	
 		LOCATION = position;
+	}
+
+	/**
+	 * Sets the Notification's owner stage so that when the owner
+	 * stage is closed Notifications will be shut down as well.<br>
+	 * This is only needed if <code>setLocation</code> is called
+	 * <u>without</u> a stage reference.  
+	 * @param owner
+	 */
+	public static void setNotificationOwner( Stage owner )
+	{
+		INSTANCE.stage.initOwner( owner );
 	}
 
     // ******************** Constructor ***************************************
@@ -308,19 +323,14 @@ public enum Notifier {
 
         Timeline timeline = new Timeline(kfBegin, kfEnd);
         timeline.setDelay(lifetime);
-        timeline.setOnFinished( new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle( ActionEvent arg0 )
-			{
-	            Platform.runLater(new Runnable() {
-	                @Override public void run() {
-	                    POPUP.hide();
-	                    popups.remove(POPUP);
-	                }
-	            });
-			}
-		} );
+        timeline.setOnFinished(actionEvent -> {
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    POPUP.hide();
+                    popups.remove(POPUP);
+                }
+            });
+        });
 
         // Move popup to the right during fade out
         //POPUP.opacityProperty().addListener((observableValue, oldOpacity, opacity) -> popup.setX(popup.getX() + (1.0 - opacity.doubleValue()) * popup.getWidth()) );
