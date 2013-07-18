@@ -79,13 +79,7 @@ public class Util {
     }
 
     public static String colorToCss(final Color COLOR) {
-        StringBuilder cssColor = new StringBuilder();
-        cssColor.append("rgba(")
-                .append((int) (COLOR.getRed() * 255)).append(", ")
-                .append((int) (COLOR.getGreen() * 255)).append(", ")
-                .append((int) (COLOR.getBlue() * 255)).append(", ")
-                .append(COLOR.getOpacity()).append(");");
-        return cssColor.toString();
+        return COLOR.toString().replace("0x", "#");
     }
 
     private static int clamp(final int MIN, final int MAX, final int VALUE) {

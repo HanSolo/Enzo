@@ -22,7 +22,6 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -196,18 +195,6 @@ public class SevenSegmentSkin extends SkinBase<SevenSegment> implements Skin<Sev
             prefWidth = Math.max(0, WIDTH - LEFT_INSET - RIGHT_INSET);
         }
         return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
-    }
-
-
-    // ******************** Utility methods ***********************************
-    private String colorToCss(final Color COLOR) {
-        StringBuilder cssColor = new StringBuilder();
-        cssColor.append("rgba(")
-                .append((int) (COLOR.getRed() * 255)).append(", ")
-                .append((int) (COLOR.getGreen() * 255)).append(", ")
-                .append((int) (COLOR.getBlue() * 255)).append(", ")
-                .append(COLOR.getOpacity()).append(")");
-        return cssColor.toString();
     }
 
 

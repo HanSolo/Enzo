@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.experimental.pushbutton.skin;
 
+import eu.hansolo.enzo.common.Util;
 import eu.hansolo.enzo.experimental.pushbutton.PushButton;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Skin;
@@ -164,7 +165,7 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
 
         icon = new Region();
         icon.getStyleClass().setAll("icon");
-        icon.setStyle("-icon-on: " + colorToCss(getSkinnable().getColor()));
+        icon.setStyle("-icon-on: " + Util.colorToCss(getSkinnable().getColor()));
         pane.getChildren().setAll(frame,
                                   deselected,
                                   selected,
@@ -199,7 +200,7 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
         } else if ("STATUS".equals(PROPERTY)) {
             updateStatus();
         } else if ("COLOR".equals(PROPERTY)) {
-            icon.setStyle("-icon-on-color: " + colorToCss(getSkinnable().getColor()));
+            icon.setStyle("-icon-on-color: " + Util.colorToCss(getSkinnable().getColor()));
             resize();
         }
     }
@@ -231,16 +232,6 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
             prefWidth = Math.max(0, WIDTH - LEFT_INSET - RIGHT_INSET);
         }
         return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
-    }
-
-    private String colorToCss(final Color COLOR) {
-        StringBuilder cssColor = new StringBuilder();
-        cssColor.append("rgba(")
-                .append((int) (COLOR.getRed() * 255)).append(", ")
-                .append((int) (COLOR.getGreen() * 255)).append(", ")
-                .append((int) (COLOR.getBlue() * 255)).append(", ")
-                .append(COLOR.getOpacity()).append(")");
-        return cssColor.toString();
     }
 
     private void updateStatus() {

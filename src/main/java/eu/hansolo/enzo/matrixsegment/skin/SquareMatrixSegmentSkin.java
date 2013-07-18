@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.matrixsegment.skin;
 
+import eu.hansolo.enzo.common.Util;
 import eu.hansolo.enzo.matrixsegment.SquareMatrixSegment;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Skin;
@@ -762,21 +763,9 @@ public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> imple
     }
 
 
-    // ******************** Utility methods ***********************************
-    private String colorToCss(final Color COLOR) {
-        StringBuilder cssColor = new StringBuilder();
-        cssColor.append("rgba(")
-                .append((int) (COLOR.getRed() * 255)).append(", ")
-                .append((int) (COLOR.getGreen() * 255)).append(", ")
-                .append((int) (COLOR.getBlue() * 255)).append(", ")
-                .append(COLOR.getOpacity()).append(")");
-        return cssColor.toString();
-    }
-
-
     // ******************** Update ********************************************
     public void updateMatrixColor() {
-        getSkinnable().setStyle("-dot-on-color: " + colorToCss(getSkinnable().getColor()) + ";");
+        getSkinnable().setStyle("-dot-on-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
         glow.setColor(getSkinnable().getColor());
     }
 

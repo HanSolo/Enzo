@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.experimental.tbutton.skin;
 
+import eu.hansolo.enzo.common.Util;
 import eu.hansolo.enzo.experimental.tbutton.TButton;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -279,7 +280,7 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
         } else if ("TEXT".equals(PROPERTY)) {
             text.setText(getSkinnable().getText());
         } else if ("LED_COLOR".equals(PROPERTY)) {
-            getSkinnable().setStyle("-led-color: " + colorToCss(getSkinnable().getLedColor()) + ";");
+            getSkinnable().setStyle("-led-color: " + Util.colorToCss(getSkinnable().getLedColor()) + ";");
             ledOnGlow.setColor(getSkinnable().getLedColor());
             ledOnInnerShadow.setColor(getSkinnable().getLedColor().darker().darker().darker());
             ledOnInnerShadow1.setColor(getSkinnable().getLedColor().darker());
@@ -313,16 +314,6 @@ public class TButtonSkin extends SkinBase<TButton> implements Skin<TButton> {
             prefWidth = Math.max(0, WIDTH - LEFT_INSET - RIGHT_INSET);
         }
         return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
-    }
-
-    public static String colorToCss(final Color COLOR) {
-        StringBuilder cssColor = new StringBuilder();
-        cssColor.append("rgba(")
-                .append((int) (COLOR.getRed() * 255)).append(", ")
-                .append((int) (COLOR.getGreen() * 255)).append(", ")
-                .append((int) (COLOR.getBlue() * 255)).append(", ")
-                .append(COLOR.getOpacity()).append(");");
-        return cssColor.toString();
     }
 
 

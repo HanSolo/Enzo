@@ -17,6 +17,7 @@
 package eu.hansolo.enzo.splitflap.skin;
 
 import eu.hansolo.enzo.common.ShapeConverter;
+import eu.hansolo.enzo.common.Util;
 import eu.hansolo.enzo.splitflap.FlipEvent;
 import eu.hansolo.enzo.splitflap.SplitFlap;
 import javafx.animation.Interpolator;
@@ -178,7 +179,7 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         reversedInnerHighlight.setBlurType(BlurType.TWO_PASS_BOX);
         reversedInnerHighlight.setInput(innerShadow);
 
-        getSkinnable().setStyle("-flap-base: " + colorToCss(getSkinnable().getFlapColor()) + ";");
+        getSkinnable().setStyle("-flap-base: " + Util.colorToCss(getSkinnable().getFlapColor()) + ";");
 
         upperBackground = new Region();
         upperBackground.setEffect(innerHighlight);
@@ -316,7 +317,7 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         } else if ("TEXT".equals(PROPERTY)) {
             flipForward();
         } else if ("FLAP_COLOR".equals(PROPERTY)) {
-            getSkinnable().setStyle("-flap-base: " + colorToCss(getSkinnable().getFlapColor()) + ";");
+            getSkinnable().setStyle("-flap-base: " + Util.colorToCss(getSkinnable().getFlapColor()) + ";");
         } else if ("TEXT_COLOR".equals(PROPERTY)) {
             refreshTextCtx();
         } else if ("CHARACTER_SET".equals(PROPERTY)) {
@@ -457,15 +458,6 @@ public class SplitFlapSkin extends SkinBase<SplitFlap> implements Skin<SplitFlap
         ctxTextBack.restore();
     }
 
-    private String colorToCss(final Color COLOR) {
-        StringBuilder cssColor = new StringBuilder();
-        cssColor.append("rgba(")
-                .append((int) (COLOR.getRed() * 255)).append(", ")
-                .append((int) (COLOR.getGreen() * 255)).append(", ")
-                .append((int) (COLOR.getBlue() * 255)).append(", ")
-                .append(COLOR.getOpacity()).append(");");
-        return cssColor.toString();
-    }
 
     // ******************** Resizing ******************************************
     private void resize() {
