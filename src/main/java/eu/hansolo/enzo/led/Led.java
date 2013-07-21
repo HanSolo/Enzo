@@ -34,6 +34,7 @@ import javafx.css.StyleableProperty;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,7 +78,7 @@ public class Led extends Control {
     private BooleanProperty         on;
 
     // CSS styleable properties
-    private ObjectProperty<Color>   ledColor;
+    private ObjectProperty<Paint>   ledColor;
     private ObjectProperty<LedType> ledType;
 
     // Properties
@@ -187,15 +188,15 @@ public class Led extends Control {
 
 
     // ******************** CSS Stylable Properties ***************************
-    public final Color getLedColor() {
+    public final Paint getLedColor() {
         return null == ledColor ? DEFAULT_LED_COLOR : ledColor.get();
     }
-    public final void setLedColor(Color value) {
+    public final void setLedColor(Paint value) {
         ledColorProperty().set(value);
     }
-    public final ObjectProperty<Color> ledColorProperty() {
+    public final ObjectProperty<Paint> ledColorProperty() {
         if (null == ledColor) {
-            ledColor = new StyleableObjectProperty<Color>(DEFAULT_LED_COLOR) {
+            ledColor = new StyleableObjectProperty<Paint>(DEFAULT_LED_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.LED_COLOR; }
                 @Override public Object getBean() { return Led.this; }
                 @Override public String getName() { return "ledColor"; }
@@ -240,14 +241,14 @@ public class Led extends Control {
     }
 
     private static class StyleableProperties {
-        private static final CssMetaData<Led, Color> LED_COLOR =
-            new CssMetaData<Led, Color>("-led-color", PaintConverter.getColorConverter(), DEFAULT_LED_COLOR) {
+        private static final CssMetaData<Led, Paint> LED_COLOR =
+            new CssMetaData<Led, Paint>("-led-color", PaintConverter.getInstance(), DEFAULT_LED_COLOR) {
 
                 @Override public boolean isSettable(Led led) {
                     return null == led.ledColor || !led.ledColor.isBound();
                 }
 
-                @Override public StyleableProperty<Color> getStyleableProperty(Led led) {
+                @Override public StyleableProperty<Paint> getStyleableProperty(Led led) {
                     return (StyleableProperty) led.ledColorProperty();
                 }
 
@@ -264,7 +265,7 @@ public class Led extends Control {
                 }
 
                 @Override public StyleableProperty<LedType> getStyleableProperty(Led led) {
-                    return (StyleableProperty<LedType>) led.ledTypeProperty();
+                    return (StyleableProperty) led.ledTypeProperty();
                 }
 
                 @Override public LedType getInitialValue(Led led) {
@@ -277,8 +278,9 @@ public class Led extends Control {
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
-                               LED_COLOR,
-                               LED_TYPE);
+                LED_COLOR,
+                LED_TYPE
+            );
             STYLEABLES = Collections.unmodifiableList(styleables);
         }
     }
