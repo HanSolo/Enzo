@@ -670,7 +670,6 @@ public class Gauge extends Control {
     public final boolean isPlainValue() {
         return null == plainValue ? _plainValue : plainValue.get();
     }
-
     /**
      * If set to true the value will be visualized without a blend effect
      * @param PLAIN_VALUE

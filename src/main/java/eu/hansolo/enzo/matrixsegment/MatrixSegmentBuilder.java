@@ -130,46 +130,46 @@ public class MatrixSegmentBuilder<B extends MatrixSegmentBuilder<B>> {
 
     public final MatrixSegment build() {
         final MatrixSegment CONTROL = new MatrixSegment();
-        properties.forEach((key, property) -> {
+        for (String key: properties.keySet()) {
             if ("prefSize".equals(key)) {
-                Dimension2D dim = ((ObjectProperty<Dimension2D>) property).get();
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
                 CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("prefWidth".equals(key)) {
-                CONTROL.setPrefWidth(((DoubleProperty) property).get());
+                CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
-                CONTROL.setPrefHeight(((DoubleProperty) property).get());
+                CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());
             } else if("minWidth".equals(key)) {
-                CONTROL.setMinWidth(((DoubleProperty) property).get());
+                CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
             } else if("minHeight".equals(key)) {
-                CONTROL.setMinHeight(((DoubleProperty) property).get());
+                CONTROL.setMinHeight(((DoubleProperty) properties.get(key)).get());
             } else if("maxWidth".equals(key)) {
-                CONTROL.setMaxWidth(((DoubleProperty) property).get());
+                CONTROL.setMaxWidth(((DoubleProperty) properties.get(key)).get());
             } else if("maxHeight".equals(key)) {
-                CONTROL.setMaxHeight(((DoubleProperty) property).get());
+                CONTROL.setMaxHeight(((DoubleProperty) properties.get(key)).get());
             } else if("scaleX".equals(key)) {
-                CONTROL.setScaleX(((DoubleProperty) property).get());
+                CONTROL.setScaleX(((DoubleProperty) properties.get(key)).get());
             } else if("scaleY".equals(key)) {
-                CONTROL.setScaleY(((DoubleProperty) property).get());
+                CONTROL.setScaleY(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutX".equals(key)) {
-                CONTROL.setLayoutX(((DoubleProperty) property).get());
+                CONTROL.setLayoutX(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutY".equals(key)) {
-                CONTROL.setLayoutY(((DoubleProperty) property).get());
+                CONTROL.setLayoutY(((DoubleProperty) properties.get(key)).get());
             } else if ("translateX".equals(key)) {
-                CONTROL.setTranslateX(((DoubleProperty) property).get());
+                CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
             } else if ("translateY".equals(key)) {
-                CONTROL.setTranslateY(((DoubleProperty) property).get());
+                CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             } else if ("ledColor".equals(key)) {
-                CONTROL.setColor(((ObjectProperty<Color>) property).get());
+                CONTROL.setColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("character".equals(key)) {
-                CONTROL.setCharacter(((StringProperty) property).get());
+                CONTROL.setCharacter(((StringProperty) properties.get(key)).get());
             } else if ("backgroundVisible".equals(key)) {
-                CONTROL.setBackgroundVisible(((BooleanProperty) property).get());
+                CONTROL.setBackgroundVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("highlightsVisible".equals(key)) {
-                CONTROL.setHighlightsVisible(((BooleanProperty) property).get());
+                CONTROL.setHighlightsVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("glowEnabled".equals(key)) {
-                CONTROL.setGlowEnabled(((BooleanProperty) property).get());
+                CONTROL.setGlowEnabled(((BooleanProperty) properties.get(key)).get());
             }
-        });
+        }
 
         return CONTROL;
     }

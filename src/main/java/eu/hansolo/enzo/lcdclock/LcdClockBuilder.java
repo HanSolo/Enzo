@@ -162,56 +162,56 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
 
     public final LcdClock build() {
         final LcdClock CONTROL = new LcdClock();
-        properties.forEach((key, property) -> {
+        for (String key : properties.keySet()) {
             if ("prefSize".equals(key)) {
-                Dimension2D dim = ((ObjectProperty<Dimension2D>) property).get();
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
                 CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("prefWidth".equals(key)) {
-                CONTROL.setPrefWidth(((DoubleProperty) property).get());
+                CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
-                CONTROL.setPrefHeight(((DoubleProperty) property).get());
+                CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());
             } else if("minWidth".equals(key)) {
-                CONTROL.setMinWidth(((DoubleProperty) property).get());
+                CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
             } else if("minHeight".equals(key)) {
-                CONTROL.setMinHeight(((DoubleProperty) property).get());
+                CONTROL.setMinHeight(((DoubleProperty) properties.get(key)).get());
             } else if("maxWidth".equals(key)) {
-                CONTROL.setMaxWidth(((DoubleProperty) property).get());
+                CONTROL.setMaxWidth(((DoubleProperty) properties.get(key)).get());
             } else if("maxHeight".equals(key)) {
-                CONTROL.setMaxHeight(((DoubleProperty) property).get());
+                CONTROL.setMaxHeight(((DoubleProperty) properties.get(key)).get());
             } else if("scaleX".equals(key)) {
-                CONTROL.setScaleX(((DoubleProperty) property).get());
+                CONTROL.setScaleX(((DoubleProperty) properties.get(key)).get());
             } else if("scaleY".equals(key)) {
-                CONTROL.setScaleY(((DoubleProperty) property).get());
+                CONTROL.setScaleY(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutX".equals(key)) {
-                CONTROL.setLayoutX(((DoubleProperty) property).get());
+                CONTROL.setLayoutX(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutY".equals(key)) {
-                CONTROL.setLayoutY(((DoubleProperty) property).get());
+                CONTROL.setLayoutY(((DoubleProperty) properties.get(key)).get());
             } else if ("translateX".equals(key)) {
-                CONTROL.setTranslateX(((DoubleProperty) property).get());
+                CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
             } else if ("translateY".equals(key)) {
-                CONTROL.setTranslateY(((DoubleProperty) property).get());
+                CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             } else if ("color".equals(key)) {
-                CONTROL.setColor(((ObjectProperty<Color>) property).get());
+                CONTROL.setColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("hourColor".equals(key)) {
-                CONTROL.setHourColor(((ObjectProperty<Color>) property).get());
+                CONTROL.setHourColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("minuteColor".equals(key)) {
-                CONTROL.setMinuteColor(((ObjectProperty<Color>) property).get());
+                CONTROL.setMinuteColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("secondColor".equals(key)) {
-                CONTROL.setSecondColor(((ObjectProperty<Color>) property).get());
+                CONTROL.setSecondColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("timeColor".equals(key)) {
-                CONTROL.setTimeColor(((ObjectProperty<Color>) property).get());
+                CONTROL.setTimeColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("dateColor".equals(key)) {
-                CONTROL.setDateColor(((ObjectProperty<Color>) property).get());
+                CONTROL.setDateColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("alarmOn".equals(key)) {
-                CONTROL.setAlarmOn(((BooleanProperty) property).get());
+                CONTROL.setAlarmOn(((BooleanProperty) properties.get(key)).get());
             } else if ("alarm".equals(key)) {
-                CONTROL.setAlarm(((ObjectProperty<LocalTime>) property).get());
+                CONTROL.setAlarm(((ObjectProperty<LocalTime>) properties.get(key)).get());
             } else if ("dateVisible".equals(key)) {
-                CONTROL.setDateVisible(((BooleanProperty) property).get());
+                CONTROL.setDateVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("alarmVisible".equals(key)) {
-                CONTROL.setAlarmVisible(((BooleanProperty) property).get());
+                CONTROL.setAlarmVisible(((BooleanProperty) properties.get(key)).get());
             }
-        });
+        }
         return CONTROL;
     }
 }

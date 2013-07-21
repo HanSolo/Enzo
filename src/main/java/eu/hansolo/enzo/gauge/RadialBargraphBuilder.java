@@ -324,119 +324,119 @@ public class RadialBargraphBuilder<B extends RadialBargraphBuilder<B>> {
 
     public final RadialBargraph build() {
         final RadialBargraph CONTROL = new RadialBargraph();
-        properties.forEach((key, property) -> {
+        for (String key : properties.keySet()) {
             if ("prefSize".equals(key)) {
-                Dimension2D dim = ((ObjectProperty<Dimension2D>) property).get();
+                Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
                 CONTROL.setPrefSize(dim.getWidth(), dim.getHeight());
             } else if("prefWidth".equals(key)) {
-                CONTROL.setPrefWidth(((DoubleProperty) property).get());
+                CONTROL.setPrefWidth(((DoubleProperty) properties.get(key)).get());
             } else if("prefHeight".equals(key)) {
-                CONTROL.setPrefHeight(((DoubleProperty) property).get());
+                CONTROL.setPrefHeight(((DoubleProperty) properties.get(key)).get());
             } else if("minWidth".equals(key)) {
-                CONTROL.setMinWidth(((DoubleProperty) property).get());
+                CONTROL.setMinWidth(((DoubleProperty) properties.get(key)).get());
             } else if("minHeight".equals(key)) {
-                CONTROL.setMinHeight(((DoubleProperty) property).get());
+                CONTROL.setMinHeight(((DoubleProperty) properties.get(key)).get());
             } else if("maxWidth".equals(key)) {
-                CONTROL.setMaxWidth(((DoubleProperty) property).get());
+                CONTROL.setMaxWidth(((DoubleProperty) properties.get(key)).get());
             } else if("maxHeight".equals(key)) {
-                CONTROL.setMaxHeight(((DoubleProperty) property).get());
+                CONTROL.setMaxHeight(((DoubleProperty) properties.get(key)).get());
             } else if("scaleX".equals(key)) {
-                CONTROL.setScaleX(((DoubleProperty) property).get());
+                CONTROL.setScaleX(((DoubleProperty) properties.get(key)).get());
             } else if("scaleY".equals(key)) {
-                CONTROL.setScaleY(((DoubleProperty) property).get());
+                CONTROL.setScaleY(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutX".equals(key)) {
-                CONTROL.setLayoutX(((DoubleProperty) property).get());
+                CONTROL.setLayoutX(((DoubleProperty) properties.get(key)).get());
             } else if ("layoutY".equals(key)) {
-                CONTROL.setLayoutY(((DoubleProperty) property).get());
+                CONTROL.setLayoutY(((DoubleProperty) properties.get(key)).get());
             } else if ("translateX".equals(key)) {
-                CONTROL.setTranslateX(((DoubleProperty) property).get());
+                CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
             } else if ("translateY".equals(key)) {
-                CONTROL.setTranslateY(((DoubleProperty) property).get());
+                CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             } else if("styleClass".equals(key)) {
                 CONTROL.getStyleClass().setAll("gauge");
-                CONTROL.getStyleClass().addAll(((ObjectProperty<String[]>) property).get());
+                CONTROL.getStyleClass().addAll(((ObjectProperty<String[]>) properties.get(key)).get());
             } else if("value".equals(key)) {
-                CONTROL.setValue(((DoubleProperty) property).get());
+                CONTROL.setValue(((DoubleProperty) properties.get(key)).get());
             } else if("minValue".equals(key)) {
-                CONTROL.setMinValue(((DoubleProperty) property).get());
+                CONTROL.setMinValue(((DoubleProperty) properties.get(key)).get());
             } else if("maxValue".equals(key)) {
-                CONTROL.setMaxValue(((DoubleProperty) property).get());
+                CONTROL.setMaxValue(((DoubleProperty) properties.get(key)).get());
             } else if("threshold".equals(key)) {
-                CONTROL.setThreshold(((DoubleProperty) property).get());
+                CONTROL.setThreshold(((DoubleProperty) properties.get(key)).get());
             } else if("sectionsArray".equals(key)) {
-                CONTROL.setSections(((ObjectProperty<Section[]>) property).get());
+                CONTROL.setSections(((ObjectProperty<Section[]>) properties.get(key)).get());
             } else if("sectionsList".equals(key)) {
-                CONTROL.setSections(((ObjectProperty<List<Section>>) property).get());
+                CONTROL.setSections(((ObjectProperty<List<Section>>) properties.get(key)).get());
             } else if("markersArray".equals(key)) {
-                CONTROL.setMarkers(((ObjectProperty<Marker[]>) property).get());
+                CONTROL.setMarkers(((ObjectProperty<Marker[]>) properties.get(key)).get());
             } else if("markersList".equals(key)) {
-                CONTROL.setMarkers(((ObjectProperty<List<Marker>>) property).get());
+                CONTROL.setMarkers(((ObjectProperty<List<Marker>>) properties.get(key)).get());
             } else if("decimals".equals(key)) {
-                CONTROL.setDecimals(((IntegerProperty) property).get());
+                CONTROL.setDecimals(((IntegerProperty) properties.get(key)).get());
             } else if("title".equals(key)) {
-                CONTROL.setTitle(((StringProperty) property).get());
+                CONTROL.setTitle(((StringProperty) properties.get(key)).get());
             } else if("unit".equals(key)) {
-                CONTROL.setUnit(((StringProperty) property).get());
+                CONTROL.setUnit(((StringProperty) properties.get(key)).get());
             } else if("animated".equals(key)) {
-                CONTROL.setAnimated(((BooleanProperty) property).get());
+                CONTROL.setAnimated(((BooleanProperty) properties.get(key)).get());
             } else if("animationDuration".equals(key)) {
-                CONTROL.setAnimationDuration(((DoubleProperty) property).get());
+                CONTROL.setAnimationDuration(((DoubleProperty) properties.get(key)).get());
             } else if("minMeasuredValueVisible".equals(key)) {
-                CONTROL.setMinMeasuredValueVisible(((BooleanProperty) property).get());
+                CONTROL.setMinMeasuredValueVisible(((BooleanProperty) properties.get(key)).get());
             } else if("maxMeasuredValueVisible".equals(key)) {
-                CONTROL.setMaxMeasuredValueVisible(((BooleanProperty) property).get());
+                CONTROL.setMaxMeasuredValueVisible(((BooleanProperty) properties.get(key)).get());
             } else if("thresholdVisible".equals(key)) {
-                CONTROL.setThresholdVisible(((BooleanProperty) property).get());
+                CONTROL.setThresholdVisible(((BooleanProperty) properties.get(key)).get());
             } else if("startAngle".equals(key)) {
-                CONTROL.setStartAngle(((DoubleProperty) property).get());
+                CONTROL.setStartAngle(((DoubleProperty) properties.get(key)).get());
             } else if("angleRange".equals(key)) {
-                CONTROL.setAngleRange(((DoubleProperty) property).get());
+                CONTROL.setAngleRange(((DoubleProperty) properties.get(key)).get());
             } else if ("autoScale".equals(key)) {
-                CONTROL.setAutoScale(((BooleanProperty) property).get());
+                CONTROL.setAutoScale(((BooleanProperty) properties.get(key)).get());
             } else if("barColor".equals(key)) {
-                CONTROL.setBarColor(((ObjectProperty<Color>) property).get());
+                CONTROL.setBarColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("numberFormat".equals(key)) {
-                CONTROL.setNumberFormat(((ObjectProperty<RadialBargraph.NumberFormat>) property).get());
+                CONTROL.setNumberFormat(((ObjectProperty<RadialBargraph.NumberFormat>) properties.get(key)).get());
             } else if("minorTickSpace".equals(key)) {
-                CONTROL.setMinorTickSpace(((DoubleProperty) property).get());
+                CONTROL.setMinorTickSpace(((DoubleProperty) properties.get(key)).get());
             } else if("plainValue".equals(key)) {
-                CONTROL.setPlainValue(((BooleanProperty) property).get());
+                CONTROL.setPlainValue(((BooleanProperty) properties.get(key)).get());
             } else if("section0Fill".equals(key)) {
-                CONTROL.setSection0Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection0Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section1Fill".equals(key)) {
-                CONTROL.setSection1Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection1Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section2Fill".equals(key)) {
-                CONTROL.setSection2Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection2Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section3Fill".equals(key)) {
-                CONTROL.setSection3Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection3Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section4Fill".equals(key)) {
-                CONTROL.setSection4Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection4Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section5Fill".equals(key)) {
-                CONTROL.setSection5Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection5Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section6Fill".equals(key)) {
-                CONTROL.setSection6Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection6Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section7Fill".equals(key)) {
-                CONTROL.setSection7Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection7Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section8Fill".equals(key)) {
-                CONTROL.setSection8Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection8Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section9Fill".equals(key)) {
-                CONTROL.setSection9Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setSection9Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("marker0Fill".equals(key)) {
-                CONTROL.setMarker0Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setMarker0Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("marker1Fill".equals(key)) {
-                CONTROL.setMarker1Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setMarker1Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("marker2Fill".equals(key)) {
-                CONTROL.setMarker2Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setMarker2Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("marker3Fill".equals(key)) {
-                CONTROL.setMarker3Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setMarker3Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("marker4Fill".equals(key)) {
-                CONTROL.setMarker4Fill(((ObjectProperty<Color>) property).get());
+                CONTROL.setMarker4Fill(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("sectionsVisible".equals(key)) {
-                CONTROL.setSectionsVisible(((BooleanProperty) property).get());
+                CONTROL.setSectionsVisible(((BooleanProperty) properties.get(key)).get());
             } else if("markersVisible".equals(key)) {
-                CONTROL.setMarkersVisible(((BooleanProperty) property).get());
+                CONTROL.setMarkersVisible(((BooleanProperty) properties.get(key)).get());
             }
-        });
+        }
         return CONTROL;
     }
 }
