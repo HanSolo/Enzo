@@ -114,7 +114,6 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
     private EventHandler<TouchEvent> touchEventHandler;
     private List<Node>               markersToRemove;
     private Color                    barColor;
-    private Color                    barBorderColor;
 
 
     // ******************** Constructors **************************************
@@ -157,7 +156,6 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), (0.06 * PREFERRED_HEIGHT)); // "OpenSans"
 
         barColor       = getSkinnable().getBarColor();
-        barBorderColor = Color.hsb((barColor.getHue() - 5) % 360, barColor.getSaturation(), barColor.getBrightness());
 
         valueBlendBottomShadow = new DropShadow();
         valueBlendBottomShadow.setBlurType(BlurType.TWO_PASS_BOX);
@@ -219,10 +217,11 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
         bar.setFill(new RadialGradient(0, 0,
                                        PREFERRED_WIDTH * 0.5, PREFERRED_HEIGHT * 0.5,
                                        PREFERRED_WIDTH * 0.45, false, CycleMethod.NO_CYCLE,
-                                       new Stop(0.0, Color.RED),
-                                       new Stop(0.8, Color.RED),
-                                       new Stop(0.9, Color.YELLOW),
-                                       new Stop(1.0, Color.RED)));
+                                       new Stop(0.0, barColor),
+                                       new Stop(0.76, barColor.deriveColor(-5, 1, 1, 1)), // -5 for on the barColorHue)
+                                       new Stop(0.79, barColor),
+                                       new Stop(0.97, barColor),
+                                       new Stop(1.0, barColor.deriveColor(-5, 1, 1, 1)))); // -5 for on the barColorHue)
 
         knob = new Region();
         knob.setPickOnBounds(false);
@@ -426,7 +425,6 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
             drawMarkers();
         } else if ("BAR_COLOR".equals(PROPERTY)) {
             barColor       = getSkinnable().getBarColor();
-            barBorderColor = Color.hsb((barColor.getHue() - 5) % 360, barColor.getSaturation(), barColor.getBrightness());
             resize();
         }
     }
@@ -766,10 +764,10 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
                                        centerX, centerY,
                                        RADIUS, false, CycleMethod.NO_CYCLE,
                                        new Stop(0.0, barColor),
-                                       new Stop(0.76, barBorderColor),
+                                       new Stop(0.76, barColor.deriveColor(-5, 1, 1, 1)), // -5 for on the barColorHue)
                                        new Stop(0.79, barColor),
                                        new Stop(0.97, barColor),
-                                       new Stop(1.0, barBorderColor)));
+                                       new Stop(1.0, barColor.deriveColor(-5, 1, 1, 1)))); // -5 for on the barColorHue)
 
         knob.setPrefSize(size * 0.75, size * 0.75);
         knob.setTranslateX((size - knob.getPrefWidth()) * 0.5);
