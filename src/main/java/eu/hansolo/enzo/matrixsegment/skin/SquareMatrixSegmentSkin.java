@@ -766,6 +766,7 @@ public class SquareMatrixSegmentSkin extends SkinBase<SquareMatrixSegment> imple
     // ******************** Update ********************************************
     public void updateMatrixColor() {
         getSkinnable().setStyle("-dot-on-color: " + Util.colorToCss(getSkinnable().getColor()) + ";");
+        //getSkinnable().setBackground(new Background(new BackgroundFill(getSkinnable().getColor(), null, null)));
         glow.setColor(getSkinnable().getColor());
     }
 

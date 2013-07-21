@@ -16,7 +16,6 @@
 
 package eu.hansolo.enzo.experimental.pushbutton.skin;
 
-import eu.hansolo.enzo.common.Util;
 import eu.hansolo.enzo.experimental.pushbutton.PushButton;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Skin;
@@ -24,6 +23,8 @@ import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -165,7 +166,7 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
 
         icon = new Region();
         icon.getStyleClass().setAll("icon");
-        icon.setStyle("-icon-on: " + Util.colorToCss(getSkinnable().getColor()));
+        icon.setBackground(new Background(new BackgroundFill(getSkinnable().getColor(), null, null)));
         pane.getChildren().setAll(frame,
                                   deselected,
                                   selected,
@@ -200,7 +201,7 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
         } else if ("STATUS".equals(PROPERTY)) {
             updateStatus();
         } else if ("COLOR".equals(PROPERTY)) {
-            icon.setStyle("-icon-on-color: " + Util.colorToCss(getSkinnable().getColor()));
+            icon.setBackground(new Background(new BackgroundFill(getSkinnable().getColor(), null, null)));
             resize();
         }
     }
