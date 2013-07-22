@@ -23,7 +23,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -40,28 +40,41 @@ import java.util.Random;
 public class DemoSimpleGauge extends Application {
     private static final Random RND       = new Random();
     private static int     noOfNodes = 0;
-    private SimpleGauge    control;
+    private SimpleGauge    thermoMeter;
+    private SimpleGauge    wattMeter;
     private long           lastTimerCall;
     private AnimationTimer timer;
 
     @Override public void init() {
-        control = SimpleGaugeBuilder.create()
-                              .prefSize(400, 400)
-                              .sections(new Section(0, 16.66666, "0"),
-                                        new Section(16.66666, 33.33333, "1"),
-                                        new Section(33.33333, 50.0, "2"),
-                                        new Section(50.0, 66.66666, "3"),
-                                        new Section(66.66666, 83.33333, "4"),
-                                        new Section(83.33333, 100.0, "5"))
-                              .unit("C")
-                              .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_DARKGREEN)
-                              .build();
+        thermoMeter = SimpleGaugeBuilder.create()
+                                        .prefSize(400, 400)
+                                        .sections(new Section(0, 16.66666, "0"),
+                                            new Section(16.66666, 33.33333, "1"),
+                                            new Section(33.33333, 50.0, "2"),
+                                            new Section(50.0, 66.66666, "3"),
+                                            new Section(66.66666, 83.33333, "4"),
+                                            new Section(83.33333, 100.0, "5"))
+                                        .unit("C")
+                                        .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_RED)
+                                        .build();
+        wattMeter = SimpleGaugeBuilder.create()
+                                      .prefSize(400, 400)
+                                      .sections(new Section(0, 16.66666, "0"),
+                                          new Section(16.66666, 33.33333, "1"),
+                                          new Section(33.33333, 50.0, "2"),
+                                          new Section(50.0, 66.66666, "3"),
+                                          new Section(66.66666, 83.33333, "4"),
+                                          new Section(83.33333, 100.0, "5"))
+                                      .unit("W")
+                                      .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_DARKGREEN)
+                                      .build();
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 5_000_000_000l) {
-                    control.setValue(RND.nextDouble() * 100);
+                    thermoMeter.setValue(RND.nextDouble() * 100);
+                    wattMeter.setValue(RND.nextDouble() * 100);
                     lastTimerCall = now;
                 }
             }
@@ -69,9 +82,10 @@ public class DemoSimpleGauge extends Application {
     }
 
     @Override public void start(Stage stage) throws Exception {
-        StackPane pane = new StackPane();
+        HBox pane = new HBox();
         pane.setPadding(new Insets(5, 5, 5, 5));
-        pane.getChildren().add(control);
+        pane.setSpacing(5);
+        pane.getChildren().addAll(thermoMeter, wattMeter);
 
         final Scene scene = new Scene(pane, Color.BLACK);
         //scene.setFullScreen(true);
@@ -80,7 +94,7 @@ public class DemoSimpleGauge extends Application {
         stage.setScene(scene);
         stage.show();
 
-        control.setValue(50);
+        wattMeter.setValue(50);
 
         timer.start();
 
