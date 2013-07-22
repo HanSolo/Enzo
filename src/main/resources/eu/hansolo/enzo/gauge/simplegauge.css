@@ -1,0 +1,116 @@
+/*
+ * Copyright (c) 2013 by Gerrit Grunwald
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/******************************************************************************
+ * SIMPLEGAUGE class                                                          *
+ *****************************************************************************/
+.simple-gauge {
+    -fx-skin           : "eu.hansolo.enzo.gauge.skin.SimpleGaugeSkin";
+    -needle            : #5a615f;
+    -value             : white;
+    -section0-fill     : #11632f;
+    -section1-fill     : #36843d;
+    -section2-fill     : #80b940;
+    -section3-fill     : #f5982b;
+    -section4-fill     : #f06129;
+    -section5-fill     : #b61f25;
+    -section7-fill     : rgba(255, 128,   0, 0.5);
+    -section8-fill     : rgba(255,  64,   0, 0.5);
+    -section9-fill     : rgba(255,   0,   0, 0.5);
+}
+
+
+/******************************************************************************
+ * SIMPLEGAUGE needle                                                         *
+ *****************************************************************************/
+.simple-gauge .needle {
+    -fx-fill            :-needle;
+    -fx-stroke          : white;
+    -fx-stroke-line-cap : round;
+    -fx-stroke-line-join: bevel;
+}
+
+
+/******************************************************************************
+ * SIMPLEGAUGE value                                                          *
+ *****************************************************************************/
+.simple-gauge .value {
+    -fx-fill: -value;
+}
+
+
+/******************************************************************************
+ * SIMPLEGAUGE sections                                                       *
+ *****************************************************************************/
+.simple-gauge .section0 {
+    -fx-fill: -section0-fill;
+}
+.simple-gauge .section1 {
+    -fx-fill: -section1-fill;
+}
+.simple-gauge .section2 {
+    -fx-fill: -section2-fill;
+}
+.simple-gauge .section3 {
+    -fx-fill: -section3-fill;
+}
+.simple-gauge .section4 {
+    -fx-fill: -section4-fill;
+}
+.simple-gauge .section5 {
+    -fx-fill: -section5-fill;
+}
+.simple-gauge .section6 {
+    -fx-fill: -section6-fill;
+}
+.simple-gauge .section7 {
+    -fx-fill: -section7-fill;
+}
+.simple-gauge .section8 {
+    -fx-fill: -section8-fill;
+}
+.simple-gauge .section9 {
+    -fx-fill: -section9-fill;
+}
+
+
+/******************************************************************************
+ * SIMPLEGAUGE color schemes                                                  *
+ *****************************************************************************/
+.simple-gauge .green-to-darkgreen {
+    -section0-fill: #badf8d;
+    -section1-fill: #95c262;
+    -section2-fill: #80b940;
+    -section3-fill: #67a328;
+    -section4-fill: #36843d;
+    -section5-fill: #11632f;
+}
+.simple-gauge .green-to-red {
+    -section0-fill: #11632f;
+    -section1-fill: #36843d;
+    -section2-fill: #80b940;
+    -section3-fill: #f5982b;
+    -section4-fill: #f06129;
+    -section5-fill: #b61f25;
+}
+.simple-gauge .purple-to-red {
+    -section0-fill: #64266b;
+    -section1-fill: #74255e;
+    -section2-fill: #842551;
+    -section3-fill: #922545;
+    -section4-fill: #a12538;
+    -section5-fill: #b61f25;
+}
