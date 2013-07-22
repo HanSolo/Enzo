@@ -54,7 +54,7 @@ public class DemoSimpleGauge extends Application {
                                         new Section(66.66666, 83.33333, "4"),
                                         new Section(83.33333, 100.0, "5"))
                               .unit("C")
-                              //.value(50)
+                              .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_DARKGREEN)
                               .build();
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
@@ -76,7 +76,7 @@ public class DemoSimpleGauge extends Application {
         final Scene scene = new Scene(pane, Color.BLACK);
         //scene.setFullScreen(true);
 
-        stage.setTitle("test");
+        stage.setTitle("SimpleGauge");
         stage.setScene(scene);
         stage.show();
 

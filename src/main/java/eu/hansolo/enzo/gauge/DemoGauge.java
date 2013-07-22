@@ -100,7 +100,7 @@ public class DemoGauge extends Application {
         scene.getStylesheets().add(getClass().getResource("demo.css").toExternalForm());
         //scene.setFullScreen(true);
 
-        stage.setTitle("test");
+        stage.setTitle("Gauge");
         stage.setScene(scene);
         stage.show();
 

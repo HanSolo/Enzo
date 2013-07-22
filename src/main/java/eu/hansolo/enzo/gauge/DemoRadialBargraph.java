@@ -75,7 +75,7 @@ public class DemoRadialBargraph extends Application {
 
         //scene.setFullScreen(true);
 
-        stage.setTitle("Title");
+        stage.setTitle("RadialBargraph");
         stage.setScene(scene);
         stage.show();
 

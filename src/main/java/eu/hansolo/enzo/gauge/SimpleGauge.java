@@ -54,6 +54,10 @@ import java.util.List;
  * Time: 17:10
  */
 public class SimpleGauge extends Control {
+    public static final String      STYLE_CLASS_GREEN_TO_DARKGREEN = "green-to-darkgreen";
+    public static final String      STYLE_CLASS_GREEN_TO_RED       = "green-to-red";
+    public static final String      STYLE_CLASS_PURPLE_TO_RED      = "purple-to-red";
+
     // Default section colors
     private static final Color      DEFAULT_SECTION_0_FILL = Color.web("#11632f");
     private static final Color      DEFAULT_SECTION_1_FILL = Color.web("#36843d");

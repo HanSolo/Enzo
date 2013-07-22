@@ -258,7 +258,7 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
             } else if ("translateY".equals(key)) {
                 CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             } else if("styleClass".equals(key)) {
-                CONTROL.getStyleClass().setAll("gauge");
+                CONTROL.getStyleClass().setAll("simple-gauge");
                 CONTROL.getStyleClass().addAll(((ObjectProperty<String[]>) properties.get(key)).get());
             } else if("value".equals(key)) {
                 CONTROL.setValue(((DoubleProperty) properties.get(key)).get());

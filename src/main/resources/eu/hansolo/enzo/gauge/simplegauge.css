@@ -90,7 +90,7 @@
 /******************************************************************************
  * SIMPLEGAUGE color schemes                                                  *
  *****************************************************************************/
-.simple-gauge .green-to-darkgreen {
+.green-to-darkgreen {
     -section0-fill: #badf8d;
     -section1-fill: #95c262;
     -section2-fill: #80b940;
@@ -98,7 +98,7 @@
     -section4-fill: #36843d;
     -section5-fill: #11632f;
 }
-.simple-gauge .green-to-red {
+.green-to-red {
     -section0-fill: #11632f;
     -section1-fill: #36843d;
     -section2-fill: #80b940;
@@ -106,7 +106,7 @@
     -section4-fill: #f06129;
     -section5-fill: #b61f25;
 }
-.simple-gauge .purple-to-red {
+.purple-to-red {
     -section0-fill: #64266b;
     -section1-fill: #74255e;
     -section2-fill: #842551;
