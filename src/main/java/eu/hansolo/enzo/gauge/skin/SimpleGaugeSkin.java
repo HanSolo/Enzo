@@ -23,6 +23,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
 import javafx.scene.canvas.Canvas;
@@ -39,6 +40,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
@@ -139,6 +141,8 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         getSkinnable().needleColorProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_COLOR"));
         getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED"));
         getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE"));
+        getSkinnable().sectionTextVisibleProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
+        getSkinnable().sectionTextColorProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("RESIZE"));
 
         needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE"));
@@ -210,12 +214,14 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
     private final void drawSections() {
         sectionsCtx.clearRect(0, 0, size, size);
         final double MIN_VALUE   = getSkinnable().getMinValue();
-        final double OFFSET      = getSkinnable().getStartAngle();
+        final double OFFSET      = getSkinnable().getStartAngle() - 90;
         final int NO_OF_SECTIONS = getSkinnable().getSections().size();
+        double sinValue;
+        double cosValue;
         for (int i = 0 ; i < NO_OF_SECTIONS ; i++) {
-            final Section SECTION      = getSkinnable().getSections().get(NO_OF_SECTIONS - i - 1);
-            final double  ANGLE_START  = (SECTION.getStart() - MIN_VALUE) * angleStep;
-            final double  ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
+            final Section SECTION              = getSkinnable().getSections().get(i);
+            final double  SECTION_START_ANGLE  = (SECTION.getStart() - MIN_VALUE) * angleStep;
+            final double  SECTION_ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
             sectionsCtx.save();
             switch(i) {
                 case 0: sectionsCtx.setFill(getSkinnable().getSection0Fill()); break;
@@ -229,7 +235,20 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
                 case 8: sectionsCtx.setFill(getSkinnable().getSection8Fill()); break;
                 case 9: sectionsCtx.setFill(getSkinnable().getSection9Fill()); break;
             }
-            sectionsCtx.fillArc(0, 0, size, size, (OFFSET + ANGLE_START), ANGLE_EXTEND, ArcType.ROUND);
+            sectionsCtx.fillArc(0, 0, size, size, (OFFSET - SECTION_START_ANGLE), -SECTION_ANGLE_EXTEND, ArcType.ROUND);
+
+            // Draw Section text
+            if (getSkinnable().isSectionTextVisible()) {
+                sinValue = -Math.sin(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
+                cosValue = -Math.cos(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
+                Point2D textPoint = new Point2D(size * 0.5 + size * 0.4 * sinValue, size * 0.5 + size * 0.4 * cosValue);
+                sectionsCtx.setFont(Font.font("Open Sans", FontWeight.NORMAL, 0.1 * size));
+                sectionsCtx.setTextAlign(TextAlignment.CENTER);
+                sectionsCtx.setTextBaseline(VPos.CENTER);
+                sectionsCtx.setFill(getSkinnable().getSectionTextColor());
+                sectionsCtx.fillText(SECTION.getText(), textPoint.getX(), textPoint.getY());
+            }
+
             sectionsCtx.restore();
         }
     }

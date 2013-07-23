@@ -54,21 +54,30 @@ import java.util.List;
  * Time: 17:10
  */
 public class SimpleGauge extends Control {
-    public static final String      STYLE_CLASS_GREEN_TO_DARKGREEN = "green-to-darkgreen";
-    public static final String      STYLE_CLASS_GREEN_TO_RED       = "green-to-red";
-    public static final String      STYLE_CLASS_PURPLE_TO_RED      = "purple-to-red";
+    public static final String      STYLE_CLASS_GREEN_TO_DARKGREEN_6 = "green-to-darkgreen-6";
+    public static final String      STYLE_CLASS_GREEN_TO_RED_6       = "green-to-red-6";
+    public static final String      STYLE_CLASS_RED_TO_GREEN_6       = "red-to-green-6";
+    public static final String      STYLE_CLASS_BLUE_TO_RED_6        = "blue-to-red-6";
+    public static final String      STYLE_CLASS_PURPLE_TO_RED_6      = "purple-to-red-6";
+    public static final String      STYLE_CLASS_GREEN_TO_RED_7       = "green-to-red-7";
+    public static final String      STYLE_CLASS_RED_TO_GREEN_7       = "red-to-green-7";
+    public static final String      STYLE_CLASS_GREEN_TO_RED_10      = "green-to-red-10";
+    public static final String      STYLE_CLASS_RED_TO_GREEN_10      = "red-to-green-10";
+    public static final String      STYLE_CLASS_PURPLE_TO_CYAN_10    = "purple-to-cyan-10";
+
 
     // Default section colors
-    private static final Color      DEFAULT_SECTION_0_FILL = Color.web("#11632f");
-    private static final Color      DEFAULT_SECTION_1_FILL = Color.web("#36843d");
-    private static final Color      DEFAULT_SECTION_2_FILL = Color.web("#80b940");
-    private static final Color      DEFAULT_SECTION_3_FILL = Color.web("#f5982b");
-    private static final Color      DEFAULT_SECTION_4_FILL = Color.web("#f06129");
-    private static final Color      DEFAULT_SECTION_5_FILL = Color.web("#b61f25");
-    private static final Color      DEFAULT_SECTION_6_FILL = Color.rgb(255, 191,   0, 0.5);
-    private static final Color      DEFAULT_SECTION_7_FILL = Color.rgb(255, 128,   0, 0.5);
-    private static final Color      DEFAULT_SECTION_8_FILL = Color.rgb(255,  64,   0, 0.5);
-    private static final Color      DEFAULT_SECTION_9_FILL = Color.rgb(255,   0,   0, 0.5);
+    private static final Color      DEFAULT_SECTION_TEXT_COLOR = Color.web("#ffffff");
+    private static final Color      DEFAULT_SECTION_0_FILL     = Color.web("#11632f");
+    private static final Color      DEFAULT_SECTION_1_FILL     = Color.web("#36843d");
+    private static final Color      DEFAULT_SECTION_2_FILL     = Color.web("#80b940");
+    private static final Color      DEFAULT_SECTION_3_FILL     = Color.web("#f5982b");
+    private static final Color      DEFAULT_SECTION_4_FILL     = Color.web("#f06129");
+    private static final Color      DEFAULT_SECTION_5_FILL     = Color.web("#b61f25");
+    private static final Color      DEFAULT_SECTION_6_FILL     = Color.rgb(255, 191,   0, 0.5);
+    private static final Color      DEFAULT_SECTION_7_FILL     = Color.rgb(255, 128,   0, 0.5);
+    private static final Color      DEFAULT_SECTION_8_FILL     = Color.rgb(255,  64,   0, 0.5);
+    private static final Color      DEFAULT_SECTION_9_FILL     = Color.rgb(255,   0,   0, 0.5);
 
     private double                  _value;
     private DoubleProperty          value;
@@ -94,6 +103,8 @@ public class SimpleGauge extends Control {
     private BooleanProperty         clockwise;
     private boolean                 _autoScale;
     private BooleanProperty         autoScale;
+    private boolean                 _sectionTextVisible;
+    private BooleanProperty         sectionTextVisible;
 
     private Color                   _needleColor;
     private ObjectProperty<Color>   needleColor;
@@ -104,6 +115,7 @@ public class SimpleGauge extends Control {
     private DoubleProperty          minorTickSpace;
 
     // CSS styleable properties
+    private ObjectProperty<Paint>   sectionTextColor;
     private ObjectProperty<Paint>   section0Fill;
     private ObjectProperty<Paint>   section1Fill;
     private ObjectProperty<Paint>   section2Fill;
@@ -119,19 +131,20 @@ public class SimpleGauge extends Control {
     // ******************** Constructors **************************************
     public SimpleGauge() {
         getStyleClass().add("simple-gauge");
-        _value            = 0;
-        _oldValue         = 0;
-        _minValue         = 0;
-        _maxValue         = 100;
-        _decimals         = 0;
-        _unit             = "";
-        _animated         = true;
-        _startAngle       = 315;
-        _angleRange       = 270;
-        _clockwise        = true;
-        _autoScale        = false;
-        _needleColor      = Color.web("#5a615f");
-        sections          = FXCollections.observableArrayList(new Section(0, 16.66666),
+        _value              = 0;
+        _oldValue           = 0;
+        _minValue           = 0;
+        _maxValue           = 100;
+        _decimals           = 0;
+        _unit               = "";
+        _animated           = true;
+        _startAngle         = 315;
+        _angleRange         = 270;
+        _clockwise          = true;
+        _autoScale          = false;
+        _needleColor        = Color.web("#5a615f");
+        _sectionTextVisible = false;
+        sections            = FXCollections.observableArrayList(new Section(0, 16.66666),
                                                               new Section(16.66666, 33.33333),
                                                               new Section(33.33333, 50.0),
                                                               new Section(50.0, 66.66666),
@@ -404,6 +417,23 @@ public class SimpleGauge extends Control {
         return minorTickSpace;
     }
 
+    public final boolean isSectionTextVisible() {
+        return null == sectionTextVisible ? _sectionTextVisible : sectionTextVisible.get();
+    }
+    public final void setSectionTextVisible(final boolean SECTION_TEXT_VISIBLE) {
+        if (null == sectionTextVisible) {
+            _sectionTextVisible = SECTION_TEXT_VISIBLE;
+        } else {
+            sectionTextVisible.set(SECTION_TEXT_VISIBLE);
+        }
+    }
+    public final BooleanProperty sectionTextVisibleProperty() {
+        if (null == sectionTextVisible) {
+            sectionTextVisible = new SimpleBooleanProperty(this, "sectionTextVisible", _sectionTextVisible);
+        }
+        return sectionTextVisible;
+    }
+
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {
         if (VALUE < MIN_VALUE) return MIN_VALUE;
         if (VALUE > MAX_VALUE) return MAX_VALUE;
@@ -502,6 +532,23 @@ public class SimpleGauge extends Control {
 
 
     // ******************** CSS Stylable Properties ***************************
+    public final Paint getSectionTextColor() {
+        return null == sectionTextColor ? DEFAULT_SECTION_TEXT_COLOR : sectionTextColor.get();
+    }
+    public final void setSectionTextColor(Paint value) {
+        sectionTextColorProperty().set(value);
+    }
+    public final ObjectProperty<Paint> sectionTextColorProperty() {
+        if (null == sectionTextColor) {
+            sectionTextColor = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_TEXT_COLOR) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_TEXT_COLOR; }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "sectionTextColor"; }
+            };
+        }
+        return sectionTextColor;
+    }
+
     public final Paint getSection0Fill() {
         return null == section0Fill ? DEFAULT_SECTION_0_FILL : section0Fill.get();
     }
@@ -683,6 +730,22 @@ public class SimpleGauge extends Control {
     }
 
     private static class StyleableProperties {
+        private static final CssMetaData<SimpleGauge, Paint> SECTION_TEXT_COLOR =
+            new CssMetaData<SimpleGauge, Paint>("-section-text", PaintConverter.getInstance(), DEFAULT_SECTION_TEXT_COLOR) {
+
+                @Override public boolean isSettable(SimpleGauge gauge) {
+                    return null == gauge.sectionTextColor || !gauge.sectionTextColor.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleGauge gauge) {
+                    return (StyleableProperty) gauge.sectionTextColorProperty();
+                }
+
+                @Override public Paint getInitialValue(SimpleGauge gauge) {
+                    return gauge.getSectionTextColor();
+                }
+            };
+
         private static final CssMetaData<SimpleGauge, Paint> SECTION_0_FILL =
             new CssMetaData<SimpleGauge, Paint>("-section0-fill", PaintConverter.getInstance(), DEFAULT_SECTION_0_FILL) {
 
@@ -847,6 +910,7 @@ public class SimpleGauge extends Control {
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
+                               SECTION_TEXT_COLOR,
                                SECTION_0_FILL,
                                SECTION_1_FILL,
                                SECTION_2_FILL,

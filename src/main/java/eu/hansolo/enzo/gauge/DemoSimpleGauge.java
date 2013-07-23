@@ -42,6 +42,7 @@ public class DemoSimpleGauge extends Application {
     private static int     noOfNodes = 0;
     private SimpleGauge    thermoMeter;
     private SimpleGauge    wattMeter;
+    private SimpleGauge energyMeter;
     private long           lastTimerCall;
     private AnimationTimer timer;
 
@@ -49,25 +50,43 @@ public class DemoSimpleGauge extends Application {
         thermoMeter = SimpleGaugeBuilder.create()
                                         .prefSize(400, 400)
                                         .sections(new Section(0, 16.66666, "0"),
-                                            new Section(16.66666, 33.33333, "1"),
-                                            new Section(33.33333, 50.0, "2"),
-                                            new Section(50.0, 66.66666, "3"),
-                                            new Section(66.66666, 83.33333, "4"),
-                                            new Section(83.33333, 100.0, "5"))
+                                                  new Section(16.66666, 33.33333, "1"),
+                                                  new Section(33.33333, 50.0, "2"),
+                                                  new Section(50.0, 66.66666, "3"),
+                                                  new Section(66.66666, 83.33333, "4"),
+                                                  new Section(83.33333, 100.0, "5"))
                                         .unit("C")
-                                        .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_RED)
+                                        .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_RED_6)
                                         .build();
+
         wattMeter = SimpleGaugeBuilder.create()
                                       .prefSize(400, 400)
                                       .sections(new Section(0, 16.66666, "0"),
-                                          new Section(16.66666, 33.33333, "1"),
-                                          new Section(33.33333, 50.0, "2"),
-                                          new Section(50.0, 66.66666, "3"),
-                                          new Section(66.66666, 83.33333, "4"),
-                                          new Section(83.33333, 100.0, "5"))
+                                                new Section(16.66666, 33.33333, "1"),
+                                                new Section(33.33333, 50.0, "2"),
+                                                new Section(50.0, 66.66666, "3"),
+                                                new Section(66.66666, 83.33333, "4"),
+                                                new Section(83.33333, 100.0, "5"))
                                       .unit("W")
-                                      .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_DARKGREEN)
+                                      .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_DARKGREEN_6)
                                       .build();
+        energyMeter = SimpleGaugeBuilder.create()
+                                        .prefSize(400, 400)
+                                        .sections(new Section(0, 10, "G"),
+                                                  new Section(10, 20, "H"),
+                                                  new Section(20, 30, "G"),
+                                                  new Section(30, 40, "F"),
+                                                  new Section(40, 50, "E"),
+                                                  new Section(50, 60, "D"),
+                                                  new Section(60, 70, "C"),
+                                                  new Section(70, 80, "B"),
+                                                  new Section(80, 90, "A"),
+                                                  new Section(90, 100, "A+"))
+                                        .sectionTextVisible(true)
+                                        .unit("W")
+                                        .styleClass(SimpleGauge.STYLE_CLASS_RED_TO_GREEN_10)
+                                        .build();
+
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {
@@ -75,6 +94,7 @@ public class DemoSimpleGauge extends Application {
                 if (now > lastTimerCall + 5_000_000_000l) {
                     thermoMeter.setValue(RND.nextDouble() * 100);
                     wattMeter.setValue(RND.nextDouble() * 100);
+                    energyMeter.setValue(RND.nextDouble() * 100);
                     lastTimerCall = now;
                 }
             }
@@ -85,7 +105,7 @@ public class DemoSimpleGauge extends Application {
         HBox pane = new HBox();
         pane.setPadding(new Insets(5, 5, 5, 5));
         pane.setSpacing(5);
-        pane.getChildren().addAll(thermoMeter, wattMeter);
+        pane.getChildren().addAll(thermoMeter, wattMeter, energyMeter);
 
         final Scene scene = new Scene(pane, Color.BLACK);
         //scene.setFullScreen(true);
