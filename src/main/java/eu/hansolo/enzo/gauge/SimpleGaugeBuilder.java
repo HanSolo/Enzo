@@ -298,25 +298,25 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
             } else if("minorTickSpace".equals(key)) {
                 CONTROL.setMinorTickSpace(((DoubleProperty) properties.get(key)).get());
             } else if("section0Fill".equals(key)) {
-                CONTROL.setSection0Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill0(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section1Fill".equals(key)) {
-                CONTROL.setSection1Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill1(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section2Fill".equals(key)) {
-                CONTROL.setSection2Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill2(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section3Fill".equals(key)) {
-                CONTROL.setSection3Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill3(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section4Fill".equals(key)) {
-                CONTROL.setSection4Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill4(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section5Fill".equals(key)) {
-                CONTROL.setSection5Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill5(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section6Fill".equals(key)) {
-                CONTROL.setSection6Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill6(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section7Fill".equals(key)) {
-                CONTROL.setSection7Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill7(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section8Fill".equals(key)) {
-                CONTROL.setSection8Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill8(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("section9Fill".equals(key)) {
-                CONTROL.setSection9Fill(((ObjectProperty<Color>) properties.get(key)).get());
+                CONTROL.setSectionFill9(((ObjectProperty<Color>) properties.get(key)).get());
             }
         }
         return CONTROL;

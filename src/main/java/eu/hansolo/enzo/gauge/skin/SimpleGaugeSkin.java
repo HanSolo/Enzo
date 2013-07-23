@@ -224,16 +224,16 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             final double  SECTION_ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
             sectionsCtx.save();
             switch(i) {
-                case 0: sectionsCtx.setFill(getSkinnable().getSection0Fill()); break;
-                case 1: sectionsCtx.setFill(getSkinnable().getSection1Fill()); break;
-                case 2: sectionsCtx.setFill(getSkinnable().getSection2Fill()); break;
-                case 3: sectionsCtx.setFill(getSkinnable().getSection3Fill()); break;
-                case 4: sectionsCtx.setFill(getSkinnable().getSection4Fill()); break;
-                case 5: sectionsCtx.setFill(getSkinnable().getSection5Fill()); break;
-                case 6: sectionsCtx.setFill(getSkinnable().getSection6Fill()); break;
-                case 7: sectionsCtx.setFill(getSkinnable().getSection7Fill()); break;
-                case 8: sectionsCtx.setFill(getSkinnable().getSection8Fill()); break;
-                case 9: sectionsCtx.setFill(getSkinnable().getSection9Fill()); break;
+                case 0: sectionsCtx.setFill(getSkinnable().getSectionFill0()); break;
+                case 1: sectionsCtx.setFill(getSkinnable().getSectionFill1()); break;
+                case 2: sectionsCtx.setFill(getSkinnable().getSectionFill2()); break;
+                case 3: sectionsCtx.setFill(getSkinnable().getSectionFill3()); break;
+                case 4: sectionsCtx.setFill(getSkinnable().getSectionFill4()); break;
+                case 5: sectionsCtx.setFill(getSkinnable().getSectionFill5()); break;
+                case 6: sectionsCtx.setFill(getSkinnable().getSectionFill6()); break;
+                case 7: sectionsCtx.setFill(getSkinnable().getSectionFill7()); break;
+                case 8: sectionsCtx.setFill(getSkinnable().getSectionFill8()); break;
+                case 9: sectionsCtx.setFill(getSkinnable().getSectionFill9()); break;
             }
             sectionsCtx.fillArc(0, 0, size, size, (OFFSET - SECTION_START_ANGLE), -SECTION_ANGLE_EXTEND, ArcType.ROUND);
 

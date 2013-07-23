@@ -39,7 +39,7 @@ public class DemoMulti extends Application {
     private Random         rnd;
     private long           lastTimerCall;
     private AnimationTimer timer;
-    private Gauge[]        gauges;
+    private SimpleGauge[]  gauges;
     private static int     noOfNodes;
 
     @Override public void init() {
@@ -48,21 +48,22 @@ public class DemoMulti extends Application {
         timer         = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now  > lastTimerCall + 100_000_000l) {
-                    for (Gauge gauge : gauges) {
+                    for (SimpleGauge gauge : gauges) {
                         gauge.setValue(rnd.nextDouble() * 100.0);
                     }
                     lastTimerCall = now;
                 }
             }
         };
-        gauges = new Gauge[100];
+        gauges = new SimpleGauge[100];
         for (int i = 0 ; i < 100 ; i++) {
-            Gauge gauge = new Gauge();
-            gauge.setPrefSize(50, 50);
-            gauge.setDropShadowEnabled(false);
-            gauge.setAnimationDuration(80);
-            gauge.setAnimated(false);
-            gauge.setThresholdVisible(true);
+            SimpleGauge gauge = SimpleGaugeBuilder.create()
+                                                  .prefSize(50, 50)
+                                                  .animationDuration(80)
+                                                  .animated(false)
+                                                  .sections(new Section(0, 100))
+                                                  .styleClass(SimpleGauge.STYLE_CLASS_BLUE_TO_RED_6)
+                                                  .build();
             gauges[i] = gauge;
         }
 
