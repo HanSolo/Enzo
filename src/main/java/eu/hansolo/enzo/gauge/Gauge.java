@@ -1149,7 +1149,7 @@ public class Gauge extends Control {
                 @Override public String getName() { return "markerFill0"; }
             };
         }
-        return sectionFill0;
+        return markerFill0;
     }
 
     public final Paint getMarkerFill1() {
