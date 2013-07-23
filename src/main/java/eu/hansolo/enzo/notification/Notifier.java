@@ -23,6 +23,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -46,13 +47,16 @@ import javafx.util.Duration;
 public enum Notifier {
     INSTANCE;
 
-    private static final double   WIDTH       = 300;
-    private static final double   HEIGHT      = 80;
-    private static final double   OFFSET_Y    = 25;
-    private static final double   SPACING_Y   = 5;
-    private static final double   ICON_WIDTH  = 24;
-    private static final double   ICON_HEIGHT = 24;
-    private Duration              lifetime;
+    private static final double   ICON_WIDTH    = 24;
+    private static final double   ICON_HEIGHT   = 24;
+	private static double         width         = 300;
+	private static double         height        = 80;
+	private static double         offsetX       = 0;
+	private static double         offsetY       = 25;
+	private static double         spacingY      = 5;
+	private static Pos            popupLocation = Pos.TOP_RIGHT;
+	private static Stage          stageRef      = null;
+    private Duration              popupLifetime;
     private Stage                 stage;
     private StackPane             pane;
     private Scene                 scene;
@@ -68,8 +72,8 @@ public enum Notifier {
 
     // ******************** Initialization ************************************
     private void init() {
-        lifetime = Duration.millis(5000);
-        popups   = FXCollections.observableArrayList();
+        popupLifetime = Duration.millis(5000);
+        popups        = FXCollections.observableArrayList();
     }
 
     private void initGraphics() {
@@ -81,11 +85,72 @@ public enum Notifier {
         stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
-        stage.show();
     }
 
 
     // ******************** Methods *******************************************
+    /**
+     * @param STAGE_REF  The Notification will be positioned relative to the given Stage.<br>
+     * 					If null then the Notification will be positioned relative to the primary Screen.
+     * @param POPUP_LOCATION  The default is TOP_RIGHT of primary Screen.
+     */
+    public static void setPopupLocation(final Stage STAGE_REF, final Pos POPUP_LOCATION) {
+        if (null != STAGE_REF) {
+            INSTANCE.stage.initOwner(STAGE_REF);
+            Notifier.stageRef = STAGE_REF;
+        }
+        Notifier.popupLocation = POPUP_LOCATION;
+    }
+
+    /**
+     * Sets the Notification's owner stage so that when the owner
+     * stage is closed Notifications will be shut down as well.<br>
+     * This is only needed if <code>setPopupLocation</code> is called
+     * <u>without</u> a stage reference.
+     * @param OWNER
+     */
+    public static void setNotificationOwner(final Stage OWNER) {
+        INSTANCE.stage.initOwner(OWNER);
+    }
+
+    /**
+     * @param OFFSET_X  The horizontal shift required.
+     * <br> The default is 0 px.
+     */
+    public static void setOffsetX(final double OFFSET_X) {
+        Notifier.offsetX = OFFSET_X;
+    }
+
+    /**
+     * @param OFFSET_Y  The vertical shift required.
+     * <br> The default is 25 px.
+     */
+    public static void setOffsetY(final double OFFSET_Y) {
+        Notifier.offsetY = OFFSET_Y;
+    }
+
+    /**
+     * @param WIDTH  The default is 300 px.
+     */
+    public static void setWidth(final double WIDTH) {
+        Notifier.width = WIDTH;
+    }
+
+    /**
+     * @param HEIGHT  The default is 80 px.
+     */
+    public static void setHeight(final double HEIGHT) {
+        Notifier.height = HEIGHT;
+    }
+
+    /**
+     * @param SPACING_Y  The spacing between multiple Notifications.
+     * <br> The default is 5 px.
+     */
+    public static void setSpacingY(final double SPACING_Y) {
+        Notifier.spacingY = SPACING_Y;
+    }
+
     public void stop() {
         popups.clear();
         stage.close();
@@ -96,17 +161,17 @@ public enum Notifier {
      * will fade out.
      * @return the Duration the popup notification will stay on screen
      */
-    public Duration getPopupLifeTime() {
-        return lifetime;
+    public Duration getPopupLifetime() {
+        return popupLifetime;
     }
 
     /**
      * Defines the Duration that the popup notification will stay on screen before it
      * will fade out. The parameter is limited to values between 2 and 20 seconds.
-     * @param DURATION
+     * @param POPUP_LIFETIME
      */
-    public void setPopupLifetime(final Duration DURATION) {
-        lifetime = Duration.millis(clamp(2000, 20000, DURATION.toMillis()));
+    public void setPopupLifetime(final Duration POPUP_LIFETIME) {
+        popupLifetime = Duration.millis(clamp(2000, 20000, POPUP_LIFETIME.toMillis()));
     }
 
     /**
@@ -183,7 +248,10 @@ public enum Notifier {
     private void preOrder() {
         if (popups.isEmpty()) return;
         for (int i = 0 ; i < popups.size() ; i++) {
-            popups.get(i).setY(popups.get(i).getY() + HEIGHT+ SPACING_Y);
+			switch (popupLocation) {
+				case TOP_LEFT: case TOP_CENTER: case TOP_RIGHT: popups.get(i).setY(popups.get(i).getY() + height + spacingY); break;
+				default: popups.get( i ).setY( popups.get( i ).getY() - height - spacingY);
+			}
         }
     }
 
@@ -194,7 +262,7 @@ public enum Notifier {
     private void showPopup(final Notification NOTIFICATION) {
         Region body = new Region();
         body.getStyleClass().addAll("body");
-        body.setPrefSize(WIDTH, HEIGHT);
+        body.setPrefSize(width, height);
 
         Label title = new Label(NOTIFICATION.TITLE);
         title.getStyleClass().add("title");
@@ -216,8 +284,8 @@ public enum Notifier {
         popupPane.getChildren().addAll(body, popupLayout);
 
         final Popup POPUP = new Popup();
-        POPUP.setX(Screen.getPrimary().getBounds().getWidth() - WIDTH - 10);
-        POPUP.setY(OFFSET_Y);
+		POPUP.setX( getX() );
+		POPUP.setY( getY() );
         POPUP.getContent().add(popupPane);
 
         popups.add(POPUP);
@@ -230,20 +298,51 @@ public enum Notifier {
         KeyFrame kfEnd   = new KeyFrame(Duration.millis(500), fadeOutEnd);
 
         Timeline timeline = new Timeline(kfBegin, kfEnd);
-        timeline.setDelay(lifetime);
-        timeline.setOnFinished(actionEvent -> {
-            Platform.runLater(new Runnable() {
-                @Override public void run() {
-                    POPUP.hide();
-                    popups.remove(POPUP);
-                }
-            });
-        });
+        timeline.setDelay(popupLifetime);
+        timeline.setOnFinished(actionEvent -> Platform.runLater(() -> {
+            POPUP.hide();
+            popups.remove(POPUP);
+        }));
 
         // Move popup to the right during fade out
         //POPUP.opacityProperty().addListener((observableValue, oldOpacity, opacity) -> popup.setX(popup.getX() + (1.0 - opacity.doubleValue()) * popup.getWidth()) );
 
+        if (stage.isShowing()) {
+            stage.toFront();
+        } else {
+            stage.show();
+        }
+
         POPUP.show(stage);
         timeline.play();
     }
+
+	private double getX() {
+		if (null == stageRef) return calcX( 0.0, Screen.getPrimary().getBounds().getWidth() );
+
+        return calcX(stageRef.getX(), stageRef.getWidth());
+	}
+	private double getY() {
+		if (null == stageRef) return calcY( 0.0, Screen.getPrimary().getBounds().getHeight() );
+
+        return calcY(stageRef.getY(), stageRef.getHeight());
+	}
+
+    private double calcX(final double LEFT, final double TOTAL_WIDTH) {
+        switch (popupLocation) {
+            case TOP_LEFT  : case CENTER_LEFT : case BOTTOM_LEFT  : return LEFT + offsetX;
+            case TOP_CENTER: case CENTER      : case BOTTOM_CENTER: return LEFT + (TOTAL_WIDTH - width) * 0.5 - offsetX;
+            case TOP_RIGHT : case CENTER_RIGHT: case BOTTOM_RIGHT : return LEFT + TOTAL_WIDTH - width - offsetX;
+            default: return 0.0;
+        }
+    }
+	private double calcY(final double TOP, final double TOTAL_HEIGHT ) {
+		switch (popupLocation) {
+			case TOP_LEFT   : case TOP_CENTER   : case TOP_RIGHT   : return TOP + offsetY;
+			case CENTER_LEFT: case CENTER       : case CENTER_RIGHT: return TOP + (TOTAL_HEIGHT- height)/2 - offsetY;
+			case BOTTOM_LEFT: case BOTTOM_CENTER: case BOTTOM_RIGHT: return TOP + TOTAL_HEIGHT - height - offsetY;
+			default: return 0.0;
+		}
+	}
+
 }
