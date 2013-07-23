@@ -118,53 +118,53 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
         return this;
     }
 
-    public final SimpleGaugeBuilder section0Fill(final Color SECTION_0_FILL) {
-        properties.put("section0Fill", new SimpleObjectProperty<>(SECTION_0_FILL));
+    public final SimpleGaugeBuilder sectionFill0(final Color SECTION_0_FILL) {
+        properties.put("sectionFill0", new SimpleObjectProperty<>(SECTION_0_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section1Fill(final Color SECTION_1_FILL) {
-        properties.put("section1Fill", new SimpleObjectProperty<>(SECTION_1_FILL));
+    public final SimpleGaugeBuilder sectionFill1(final Color SECTION_1_FILL) {
+        properties.put("sectionFill1", new SimpleObjectProperty<>(SECTION_1_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section2Fill(final Color SECTION_2_FILL) {
-        properties.put("section2Fill", new SimpleObjectProperty<>(SECTION_2_FILL));
+    public final SimpleGaugeBuilder sectionFill2(final Color SECTION_2_FILL) {
+        properties.put("sectionFill2", new SimpleObjectProperty<>(SECTION_2_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section3Fill(final Color SECTION_3_FILL) {
-        properties.put("section3Fill", new SimpleObjectProperty<>(SECTION_3_FILL));
+    public final SimpleGaugeBuilder sectionFill3(final Color SECTION_3_FILL) {
+        properties.put("sectionFill3", new SimpleObjectProperty<>(SECTION_3_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section4Fill(final Color SECTION_4_FILL) {
-        properties.put("section4Fill", new SimpleObjectProperty<>(SECTION_4_FILL));
+    public final SimpleGaugeBuilder sectionFill4(final Color SECTION_4_FILL) {
+        properties.put("sectionFill4", new SimpleObjectProperty<>(SECTION_4_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section5Fill(final Color SECTION_5_FILL) {
-        properties.put("section5Fill", new SimpleObjectProperty<>(SECTION_5_FILL));
+    public final SimpleGaugeBuilder sectionFill5(final Color SECTION_5_FILL) {
+        properties.put("sectionFill5", new SimpleObjectProperty<>(SECTION_5_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section6Fill(final Color SECTION_6_FILL) {
-        properties.put("section6Fill", new SimpleObjectProperty<>(SECTION_6_FILL));
+    public final SimpleGaugeBuilder sectionFill6(final Color SECTION_6_FILL) {
+        properties.put("sectionFill6", new SimpleObjectProperty<>(SECTION_6_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section7Fill(final Color SECTION_7_FILL) {
-        properties.put("section7Fill", new SimpleObjectProperty<>(SECTION_7_FILL));
+    public final SimpleGaugeBuilder sectionFill7(final Color SECTION_7_FILL) {
+        properties.put("sectionFill7", new SimpleObjectProperty<>(SECTION_7_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section8Fill(final Color SECTION_8_FILL) {
-        properties.put("section8Fill", new SimpleObjectProperty<>(SECTION_8_FILL));
+    public final SimpleGaugeBuilder sectionFill8(final Color SECTION_8_FILL) {
+        properties.put("sectionFill8", new SimpleObjectProperty<>(SECTION_8_FILL));
         return this;
     }
 
-    public final SimpleGaugeBuilder section9Fill(final Color SECTION_9_FILL) {
-        properties.put("section9Fill", new SimpleObjectProperty<>(SECTION_9_FILL));
+    public final SimpleGaugeBuilder sectionFill9(final Color SECTION_9_FILL) {
+        properties.put("sectionFill9", new SimpleObjectProperty<>(SECTION_9_FILL));
         return this;
     }
 
@@ -297,25 +297,25 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
                 CONTROL.setMajorTickSpace(((DoubleProperty) properties.get(key)).get());
             } else if("minorTickSpace".equals(key)) {
                 CONTROL.setMinorTickSpace(((DoubleProperty) properties.get(key)).get());
-            } else if("section0Fill".equals(key)) {
+            } else if("sectionFill0".equals(key)) {
                 CONTROL.setSectionFill0(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section1Fill".equals(key)) {
+            } else if("sectionFill1".equals(key)) {
                 CONTROL.setSectionFill1(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section2Fill".equals(key)) {
+            } else if("sectionFill2".equals(key)) {
                 CONTROL.setSectionFill2(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section3Fill".equals(key)) {
+            } else if("sectionFill3".equals(key)) {
                 CONTROL.setSectionFill3(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section4Fill".equals(key)) {
+            } else if("sectionFill4".equals(key)) {
                 CONTROL.setSectionFill4(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section5Fill".equals(key)) {
+            } else if("sectionFill5".equals(key)) {
                 CONTROL.setSectionFill5(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section6Fill".equals(key)) {
+            } else if("sectionFill6".equals(key)) {
                 CONTROL.setSectionFill6(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section7Fill".equals(key)) {
+            } else if("sectionFill7".equals(key)) {
                 CONTROL.setSectionFill7(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section8Fill".equals(key)) {
+            } else if("sectionFill8".equals(key)) {
                 CONTROL.setSectionFill8(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section9Fill".equals(key)) {
+            } else if("sectionFill9".equals(key)) {
                 CONTROL.setSectionFill9(((ObjectProperty<Color>) properties.get(key)).get());
             }
         }

@@ -173,78 +173,78 @@ public class RadialBargraphBuilder<B extends RadialBargraphBuilder<B>> {
         return this;
     }
 
-    public final RadialBargraphBuilder section0Fill(final Color SECTION_0_FILL) {
-        properties.put("section0Fill", new SimpleObjectProperty<>(SECTION_0_FILL));
+    public final RadialBargraphBuilder sectionFill0(final Color SECTION_0_FILL) {
+        properties.put("sectionFill0", new SimpleObjectProperty<>(SECTION_0_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section1Fill(final Color SECTION_1_FILL) {
-        properties.put("section1Fill", new SimpleObjectProperty<>(SECTION_1_FILL));
+    public final RadialBargraphBuilder sectionFill1(final Color SECTION_1_FILL) {
+        properties.put("sectionFill1", new SimpleObjectProperty<>(SECTION_1_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section2Fill(final Color SECTION_2_FILL) {
-        properties.put("section2Fill", new SimpleObjectProperty<>(SECTION_2_FILL));
+    public final RadialBargraphBuilder sectionFill2(final Color SECTION_2_FILL) {
+        properties.put("sectionFill2", new SimpleObjectProperty<>(SECTION_2_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section3Fill(final Color SECTION_3_FILL) {
-        properties.put("section3Fill", new SimpleObjectProperty<>(SECTION_3_FILL));
+    public final RadialBargraphBuilder sectionFill3(final Color SECTION_3_FILL) {
+        properties.put("sectionFill3", new SimpleObjectProperty<>(SECTION_3_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section4Fill(final Color SECTION_4_FILL) {
-        properties.put("section4Fill", new SimpleObjectProperty<>(SECTION_4_FILL));
+    public final RadialBargraphBuilder sectionFill4(final Color SECTION_4_FILL) {
+        properties.put("sectionFill4", new SimpleObjectProperty<>(SECTION_4_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section5Fill(final Color SECTION_5_FILL) {
-        properties.put("section5Fill", new SimpleObjectProperty<>(SECTION_5_FILL));
+    public final RadialBargraphBuilder sectionFill5(final Color SECTION_5_FILL) {
+        properties.put("sectionFill5", new SimpleObjectProperty<>(SECTION_5_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section6Fill(final Color SECTION_6_FILL) {
-        properties.put("section6Fill", new SimpleObjectProperty<>(SECTION_6_FILL));
+    public final RadialBargraphBuilder sectionFill6(final Color SECTION_6_FILL) {
+        properties.put("sectionFill6", new SimpleObjectProperty<>(SECTION_6_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section7Fill(final Color SECTION_7_FILL) {
-        properties.put("section7Fill", new SimpleObjectProperty<>(SECTION_7_FILL));
+    public final RadialBargraphBuilder sectionFill7(final Color SECTION_7_FILL) {
+        properties.put("sectionFill7", new SimpleObjectProperty<>(SECTION_7_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section8Fill(final Color SECTION_8_FILL) {
-        properties.put("section8Fill", new SimpleObjectProperty<>(SECTION_8_FILL));
+    public final RadialBargraphBuilder sectionFill8(final Color SECTION_8_FILL) {
+        properties.put("sectionFill8", new SimpleObjectProperty<>(SECTION_8_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder section9Fill(final Color SECTION_9_FILL) {
-        properties.put("section9Fill", new SimpleObjectProperty<>(SECTION_9_FILL));
+    public final RadialBargraphBuilder sectionFill9(final Color SECTION_9_FILL) {
+        properties.put("sectionFill9", new SimpleObjectProperty<>(SECTION_9_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder marker0Fill(final Color MARKER_0_FILL) {
-        properties.put("marker0Fill", new SimpleObjectProperty<>(MARKER_0_FILL));
+    public final RadialBargraphBuilder markerFill0(final Color MARKER_0_FILL) {
+        properties.put("markerFill0", new SimpleObjectProperty<>(MARKER_0_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder marker1Fill(final Color MARKER_1_FILL) {
-        properties.put("marker1Fill", new SimpleObjectProperty<>(MARKER_1_FILL));
+    public final RadialBargraphBuilder markerFill1(final Color MARKER_1_FILL) {
+        properties.put("markerFill1", new SimpleObjectProperty<>(MARKER_1_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder marker2Fill(final Color MARKER_2_FILL) {
-        properties.put("marker2Fill", new SimpleObjectProperty<>(MARKER_2_FILL));
+    public final RadialBargraphBuilder markerFill2(final Color MARKER_2_FILL) {
+        properties.put("markerFill2", new SimpleObjectProperty<>(MARKER_2_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder marker3Fill(final Color MARKER_3_FILL) {
-        properties.put("marker3Fill", new SimpleObjectProperty<>(MARKER_3_FILL));
+    public final RadialBargraphBuilder markerFill3(final Color MARKER_3_FILL) {
+        properties.put("markerFill3", new SimpleObjectProperty<>(MARKER_3_FILL));
         return this;
     }
 
-    public final RadialBargraphBuilder marker4Fill(final Color MARKER_4_FILL) {
-        properties.put("marker4Fill", new SimpleObjectProperty<>(MARKER_4_FILL));
+    public final RadialBargraphBuilder markerFill4(final Color MARKER_4_FILL) {
+        properties.put("markerFill4", new SimpleObjectProperty<>(MARKER_4_FILL));
         return this;
     }
 
@@ -401,36 +401,36 @@ public class RadialBargraphBuilder<B extends RadialBargraphBuilder<B>> {
                 CONTROL.setMinorTickSpace(((DoubleProperty) properties.get(key)).get());
             } else if("plainValue".equals(key)) {
                 CONTROL.setPlainValue(((BooleanProperty) properties.get(key)).get());
-            } else if("section0Fill".equals(key)) {
-                CONTROL.setSection0Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section1Fill".equals(key)) {
-                CONTROL.setSection1Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section2Fill".equals(key)) {
-                CONTROL.setSection2Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section3Fill".equals(key)) {
-                CONTROL.setSection3Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section4Fill".equals(key)) {
-                CONTROL.setSection4Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section5Fill".equals(key)) {
-                CONTROL.setSection5Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section6Fill".equals(key)) {
-                CONTROL.setSection6Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section7Fill".equals(key)) {
-                CONTROL.setSection7Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section8Fill".equals(key)) {
-                CONTROL.setSection8Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("section9Fill".equals(key)) {
-                CONTROL.setSection9Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("marker0Fill".equals(key)) {
-                CONTROL.setMarker0Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("marker1Fill".equals(key)) {
-                CONTROL.setMarker1Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("marker2Fill".equals(key)) {
-                CONTROL.setMarker2Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("marker3Fill".equals(key)) {
-                CONTROL.setMarker3Fill(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if("marker4Fill".equals(key)) {
-                CONTROL.setMarker4Fill(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill0".equals(key)) {
+                CONTROL.setSectionFill0(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill1".equals(key)) {
+                CONTROL.setSectionFill1(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill2".equals(key)) {
+                CONTROL.setSectionFill2(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill3".equals(key)) {
+                CONTROL.setSectionFill3(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill4".equals(key)) {
+                CONTROL.setSectionFill4(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill5".equals(key)) {
+                CONTROL.setSectionFill5(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill6".equals(key)) {
+                CONTROL.setSectionFill6(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill7".equals(key)) {
+                CONTROL.setSectionFill7(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill8".equals(key)) {
+                CONTROL.setSectionFill8(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("sectionFill9".equals(key)) {
+                CONTROL.setSectionFill9(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("markerFill0".equals(key)) {
+                CONTROL.setMarkerFill0(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("markerFill1".equals(key)) {
+                CONTROL.setMarkerFill1(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("markerFill2".equals(key)) {
+                CONTROL.setMarkerFill2(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("markerFill3".equals(key)) {
+                CONTROL.setMarkerFill3(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if("markerFill4".equals(key)) {
+                CONTROL.setMarkerFill4(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("sectionsVisible".equals(key)) {
                 CONTROL.setSectionsVisible(((BooleanProperty) properties.get(key)).get());
             } else if("markersVisible".equals(key)) {

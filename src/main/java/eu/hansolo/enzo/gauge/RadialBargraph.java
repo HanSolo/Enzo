@@ -81,24 +81,23 @@ public class RadialBargraph extends Control {
     }
 
     // Default section colors
-    private static final Color       DEFAULT_SECTION_0_FILL      = Color.rgb(0, 0, 178, 0.5);
-    private static final Color       DEFAULT_SECTION_1_FILL      = Color.rgb(0, 128, 255, 0.5);
-    private static final Color       DEFAULT_SECTION_2_FILL      = Color.rgb(  0, 255, 255, 0.5);
-    private static final Color       DEFAULT_SECTION_3_FILL      = Color.rgb(  0, 255,  64, 0.5);
-    private static final Color       DEFAULT_SECTION_4_FILL      = Color.rgb(128, 255,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_5_FILL      = Color.rgb(255, 255,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_6_FILL      = Color.rgb(255, 191,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_7_FILL      = Color.rgb(255, 128,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_8_FILL      = Color.rgb(255,  64,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_9_FILL      = Color.rgb(255,   0,   0, 0.5);
-    private static final Color       DEFAULT_HISTOGRAM_FILL      = Color.rgb(  0, 200,   0, 0.3);
+    private static final Color       DEFAULT_SECTION_FILL_0      = Color.rgb(0, 0, 178, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_1      = Color.rgb(0, 128, 255, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_2      = Color.rgb(  0, 255, 255, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_3      = Color.rgb(  0, 255,  64, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_4      = Color.rgb(128, 255,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_5      = Color.rgb(255, 255,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_6      = Color.rgb(255, 191,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_7      = Color.rgb(255, 128,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_8      = Color.rgb(255,  64,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_9      = Color.rgb(255,   0,   0, 0.5);
 
     // Default marker colors
-    private static final Color       DEFAULT_MARKER_0_FILL       = Color.rgb(  0, 200,   0, 0.5);
-    private static final Color       DEFAULT_MARKER_1_FILL       = Color.rgb(200, 200,   0, 0.5);
-    private static final Color       DEFAULT_MARKER_2_FILL       = Color.rgb(200,   0,   0, 0.5);
-    private static final Color       DEFAULT_MARKER_3_FILL       = Color.rgb(  0,   0, 200, 0.5);
-    private static final Color       DEFAULT_MARKER_4_FILL       = Color.rgb(  0, 200, 200, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_0       = Color.rgb(  0, 200,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_1       = Color.rgb(200, 200,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_2       = Color.rgb(200,   0,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_3       = Color.rgb(  0,   0, 200, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_4       = Color.rgb(  0, 200, 200, 0.5);
 
     // CSS Pseudo classes
     private static final PseudoClass INTERACTIVE_PSEUDO_CLASS    = PseudoClass.getPseudoClass("interactive");
@@ -161,22 +160,22 @@ public class RadialBargraph extends Control {
     private BooleanProperty               plainValue;
 
     // CSS styleable properties
-    private ObjectProperty<Paint>                tickMarkFill;
-    private ObjectProperty<Paint>                section0Fill;
-    private ObjectProperty<Paint>                section1Fill;
-    private ObjectProperty<Paint>                section2Fill;
-    private ObjectProperty<Paint>                section3Fill;
-    private ObjectProperty<Paint>                section4Fill;
-    private ObjectProperty<Paint>                section5Fill;
-    private ObjectProperty<Paint>                section6Fill;
-    private ObjectProperty<Paint>                section7Fill;
-    private ObjectProperty<Paint>                section8Fill;
-    private ObjectProperty<Paint>                section9Fill;
-    private ObjectProperty<Paint>                marker0Fill;
-    private ObjectProperty<Paint>                marker1Fill;
-    private ObjectProperty<Paint>                marker2Fill;
-    private ObjectProperty<Paint>                marker3Fill;
-    private ObjectProperty<Paint>                marker4Fill;
+    private ObjectProperty<Paint>         tickMarkFill;
+    private ObjectProperty<Paint>         sectionFill0;
+    private ObjectProperty<Paint>         sectionFill1;
+    private ObjectProperty<Paint>         sectionFill2;
+    private ObjectProperty<Paint>         sectionFill3;
+    private ObjectProperty<Paint>         sectionFill4;
+    private ObjectProperty<Paint>         sectionFill5;
+    private ObjectProperty<Paint>         sectionFill6;
+    private ObjectProperty<Paint>         sectionFill7;
+    private ObjectProperty<Paint>         sectionFill8;
+    private ObjectProperty<Paint>         sectionFill9;
+    private ObjectProperty<Paint>         markerFill0;
+    private ObjectProperty<Paint>         markerFill1;
+    private ObjectProperty<Paint>         markerFill2;
+    private ObjectProperty<Paint>         markerFill3;
+    private ObjectProperty<Paint>         markerFill4;
 
 
     // ******************** Constructors **************************************
@@ -834,259 +833,259 @@ public class RadialBargraph extends Control {
         return tickMarkFill;
     }
 
-    public final Paint getSection0Fill() {
-        return null == section0Fill ? DEFAULT_SECTION_0_FILL : section0Fill.get();
+    public final Paint getSectionFill0() {
+        return null == sectionFill0 ? DEFAULT_SECTION_FILL_0 : sectionFill0.get();
     }
-    public final void setSection0Fill(Paint value) {
-        section0FillProperty().set(value);
+    public final void setSectionFill0(Paint value) {
+        sectionFill0Property().set(value);
     }
-    public final ObjectProperty<Paint> section0FillProperty() {
-        if (null == section0Fill) {
-            section0Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_0_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_0_FILL; }
+    public final ObjectProperty<Paint> sectionFill0Property() {
+        if (null == sectionFill0) {
+            sectionFill0 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_0) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_0; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section0Fill"; }
+                @Override public String getName() { return "sectionFill0"; }
             };
         }
-        return section0Fill;
+        return sectionFill0;
     }
 
-    public final Paint getSection1Fill() {
-        return null == section1Fill ? DEFAULT_SECTION_1_FILL : section1Fill.get();
+    public final Paint getSectionFill1() {
+        return null == sectionFill1 ? DEFAULT_SECTION_FILL_1 : sectionFill1.get();
     }
-    public final void setSection1Fill(Paint value) {
-        section1FillProperty().set(value);
+    public final void setSectionFill1(Paint value) {
+        sectionFill1Property().set(value);
     }
-    public final ObjectProperty<Paint> section1FillProperty() {
-        if (null == section1Fill) {
-            section1Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_1_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_1_FILL; }
+    public final ObjectProperty<Paint> sectionFill1Property() {
+        if (null == sectionFill1) {
+            sectionFill1 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_1) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_1; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section1Fill"; }
+                @Override public String getName() { return "sectionFill1"; }
             };
         }
-        return section1Fill;
+        return sectionFill1;
     }
 
-    public final Paint getSection2Fill() {
-        return null == section2Fill ? DEFAULT_SECTION_2_FILL : section2Fill.get();
+    public final Paint getSectionFill2() {
+        return null == sectionFill2 ? DEFAULT_SECTION_FILL_2 : sectionFill2.get();
     }
-    public final void setSection2Fill(Paint value) {
-        section2FillProperty().set(value);
+    public final void setSectionFill2(Paint value) {
+        sectionFill2Property().set(value);
     }
-    public final ObjectProperty<Paint> section2FillProperty() {
-        if (null == section2Fill) {
-            section2Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_2_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_2_FILL; }
+    public final ObjectProperty<Paint> sectionFill2Property() {
+        if (null == sectionFill2) {
+            sectionFill2 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_2) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_2; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section2Fill"; }
+                @Override public String getName() { return "sectionFill2"; }
             };
         }
-        return section2Fill;
+        return sectionFill2;
     }
 
-    public final Paint getSection3Fill() {
-        return null == section3Fill ? DEFAULT_SECTION_3_FILL : section3Fill.get();
+    public final Paint getSectionFill3() {
+        return null == sectionFill3 ? DEFAULT_SECTION_FILL_3 : sectionFill3.get();
     }
-    public final void setSection3Fill(Paint value) {
-        section3FillProperty().set(value);
+    public final void setSectionFill3(Paint value) {
+        sectionFill3Property().set(value);
     }
-    public final ObjectProperty<Paint> section3FillProperty() {
-        if (null == section3Fill) {
-            section3Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_3_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_3_FILL; }
+    public final ObjectProperty<Paint> sectionFill3Property() {
+        if (null == sectionFill3) {
+            sectionFill3 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_3) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_3; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section3Fill"; }
+                @Override public String getName() { return "sectionFill3"; }
             };
         }
-        return section3Fill;
+        return sectionFill3;
     }
 
-    public final Paint getSection4Fill() {
-        return null == section4Fill ? DEFAULT_SECTION_4_FILL : section4Fill.get();
+    public final Paint getSectionFill4() {
+        return null == sectionFill4 ? DEFAULT_SECTION_FILL_4 : sectionFill4.get();
     }
-    public final void setSection4Fill(Paint value) {
-        section4FillProperty().set(value);
+    public final void setSectionFill4(Paint value) {
+        sectionFill4Property().set(value);
     }
-    public final ObjectProperty<Paint> section4FillProperty() {
-        if (null == section4Fill) {
-            section4Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_4_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_4_FILL; }
+    public final ObjectProperty<Paint> sectionFill4Property() {
+        if (null == sectionFill4) {
+            sectionFill4 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_4) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_4; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section4Fill"; }
+                @Override public String getName() { return "sectionFill4"; }
             };
         }
-        return section4Fill;
+        return sectionFill4;
     }
 
-    public final Paint getSection5Fill() {
-        return null == section5Fill ? DEFAULT_SECTION_5_FILL : section5Fill.get();
+    public final Paint getSectionFill5() {
+        return null == sectionFill5 ? DEFAULT_SECTION_FILL_5 : sectionFill5.get();
     }
-    public final void setSection5Fill(Paint value) {
-        section5FillProperty().set(value);
+    public final void setSectionFill5(Paint value) {
+        sectionFill5Property().set(value);
     }
-    public final ObjectProperty<Paint> section5FillProperty() {
-        if (null == section5Fill) {
-            section5Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_5_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_5_FILL; }
+    public final ObjectProperty<Paint> sectionFill5Property() {
+        if (null == sectionFill5) {
+            sectionFill5 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_5) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_5; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section5Fill"; }
+                @Override public String getName() { return "sectionFill5"; }
             };
         }
-        return section5Fill;
+        return sectionFill5;
     }
 
-    public final Paint getSection6Fill() {
-        return null == section6Fill ? DEFAULT_SECTION_6_FILL : section6Fill.get();
+    public final Paint getSectionFill6() {
+        return null == sectionFill6 ? DEFAULT_SECTION_FILL_6 : sectionFill6.get();
     }
-    public final void setSection6Fill(Paint value) {
-        section6FillProperty().set(value);
+    public final void setSectionFill6(Paint value) {
+        sectionFill6Property().set(value);
     }
-    public final ObjectProperty<Paint> section6FillProperty() {
-        if (null == section6Fill) {
-            section6Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_6_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_6_FILL; }
+    public final ObjectProperty<Paint> sectionFill6Property() {
+        if (null == sectionFill6) {
+            sectionFill6 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_6) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_6; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section6Fill"; }
+                @Override public String getName() { return "sectionFill6"; }
             };
         }
-        return section6Fill;
+        return sectionFill6;
     }
 
-    public final Paint getSection7Fill() {
-        return null == section7Fill ? DEFAULT_SECTION_7_FILL : section7Fill.get();
+    public final Paint getSectionFill7() {
+        return null == sectionFill7 ? DEFAULT_SECTION_FILL_7 : sectionFill7.get();
     }
-    public final void setSection7Fill(Paint value) {
-        section7FillProperty().set(value);
+    public final void setSectionFill7(Paint value) {
+        sectionFill7Property().set(value);
     }
-    public final ObjectProperty<Paint> section7FillProperty() {
-        if (null == section7Fill) {
-            section7Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_7_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_7_FILL; }
+    public final ObjectProperty<Paint> sectionFill7Property() {
+        if (null == sectionFill7) {
+            sectionFill7 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_7) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_7; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section7Fill"; }
+                @Override public String getName() { return "sectionFill7"; }
             };
         }
-        return section7Fill;
+        return sectionFill7;
     }
 
-    public final Paint getSection8Fill() {
-        return null == section8Fill ? DEFAULT_SECTION_8_FILL : section8Fill.get();
+    public final Paint getSectionFill8() {
+        return null == sectionFill8 ? DEFAULT_SECTION_FILL_8 : sectionFill8.get();
     }
-    public final void setSection8Fill(Paint value) {
-        section8FillProperty().set(value);
+    public final void setSectionFill8(Paint value) {
+        sectionFill8Property().set(value);
     }
-    public final ObjectProperty<Paint> section8FillProperty() {
-        if (null == section8Fill) {
-            section8Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_8_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_8_FILL; }
+    public final ObjectProperty<Paint> sectionFill8Property() {
+        if (null == sectionFill8) {
+            sectionFill8 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_8) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_8; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section8Fill"; }
+                @Override public String getName() { return "sectionFill8"; }
             };
         }
-        return section8Fill;
+        return sectionFill8;
     }
 
-    public final Paint getSection9Fill() {
-        return null == section9Fill ? DEFAULT_SECTION_9_FILL : section9Fill.get();
+    public final Paint getSectionFill9() {
+        return null == sectionFill9 ? DEFAULT_SECTION_FILL_9 : sectionFill9.get();
     }
-    public final void setSection9Fill(Paint value) {
-        section9FillProperty().set(value);
+    public final void setSectionFill9(Paint value) {
+        sectionFill9Property().set(value);
     }
-    public final ObjectProperty<Paint> section9FillProperty() {
-        if (null == section9Fill) {
-            section9Fill = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_9_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_9_FILL; }
+    public final ObjectProperty<Paint> sectionFill9Property() {
+        if (null == sectionFill9) {
+            sectionFill9 = new StyleableObjectProperty<Paint>(DEFAULT_SECTION_FILL_9) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SECTION_FILL_9; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "section9Fill"; }
+                @Override public String getName() { return "sectionFill9"; }
             };
         }
-        return section9Fill;
+        return sectionFill9;
     }
 
-    public final Paint getMarker0Fill() {
-        return null == marker0Fill ? DEFAULT_MARKER_0_FILL : marker0Fill.get();
+    public final Paint getMarkerFill0() {
+        return null == markerFill0 ? DEFAULT_MARKER_FILL_0 : markerFill0.get();
     }
-    public final void setMarker0Fill(Paint value) {
-        marker0FillProperty().set(value);
+    public final void setMarkerFill0(Paint value) {
+        markerFill0Property().set(value);
     }
-    public final ObjectProperty<Paint> marker0FillProperty() {
-        if (null == marker0Fill) {
-            marker0Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_0_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_0_FILL; }
+    public final ObjectProperty<Paint> markerFill0Property() {
+        if (null == markerFill0) {
+            markerFill0 = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_FILL_0) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_FILL_0; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "marker0Fill"; }
+                @Override public String getName() { return "markerFill0"; }
             };
         }
-        return section0Fill;
+        return sectionFill0;
     }
 
-    public final Paint getMarker1Fill() {
-        return null == marker1Fill ? DEFAULT_MARKER_1_FILL : marker1Fill.get();
+    public final Paint getMarkerFill1() {
+        return null == markerFill1 ? DEFAULT_MARKER_FILL_1 : markerFill1.get();
     }
-    public final void setMarker1Fill(Paint value) {
-        marker1FillProperty().set(value);
+    public final void setMarkerFill1(Paint value) {
+        markerFill1Property().set(value);
     }
-    public final ObjectProperty<Paint> marker1FillProperty() {
-        if (null == marker1Fill) {
-            marker1Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_1_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_1_FILL; }
+    public final ObjectProperty<Paint> markerFill1Property() {
+        if (null == markerFill1) {
+            markerFill1 = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_FILL_1) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_FILL_1; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "marker1Fill"; }
+                @Override public String getName() { return "markerFill1"; }
             };
         }
-        return marker1Fill;
+        return markerFill1;
     }
 
-    public final Paint getMarker2Fill() {
-        return null == marker2Fill ? DEFAULT_MARKER_2_FILL : marker2Fill.get();
+    public final Paint getMarkerFill2() {
+        return null == markerFill2 ? DEFAULT_MARKER_FILL_2 : markerFill2.get();
     }
-    public final void setMarker2Fill(Paint value) {
-        marker2FillProperty().set(value);
+    public final void setMarkerFill2(Paint value) {
+        markerFill2Property().set(value);
     }
-    public final ObjectProperty<Paint> marker2FillProperty() {
-        if (null == marker2Fill) {
-            marker2Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_2_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_2_FILL; }
+    public final ObjectProperty<Paint> markerFill2Property() {
+        if (null == markerFill2) {
+            markerFill2 = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_FILL_2) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_FILL_2; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "marker2Fill"; }
+                @Override public String getName() { return "markerFill2"; }
             };
         }
-        return marker2Fill;
+        return markerFill2;
     }
 
-    public final Paint getMarker3Fill() {
-        return null == marker3Fill ? DEFAULT_MARKER_3_FILL : marker3Fill.get();
+    public final Paint getMarkerFill3() {
+        return null == markerFill3 ? DEFAULT_MARKER_FILL_3 : markerFill3.get();
     }
-    public final void setMarker3Fill(Paint value) {
-        marker3FillProperty().set(value);
+    public final void setMarkerFill3(Paint value) {
+        markerFill3Property().set(value);
     }
-    public final ObjectProperty<Paint> marker3FillProperty() {
-        if (null == marker3Fill) {
-            marker3Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_3_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_3_FILL; }
+    public final ObjectProperty<Paint> markerFill3Property() {
+        if (null == markerFill3) {
+            markerFill3 = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_FILL_3) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_FILL_3; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "marker3Fill"; }
+                @Override public String getName() { return "markerFill3"; }
             };
         }
-        return marker3Fill;
+        return markerFill3;
     }
 
-    public final Paint getMarker4Fill() {
-        return null == marker4Fill ? DEFAULT_MARKER_4_FILL : marker4Fill.get();
+    public final Paint getMarkerFill4() {
+        return null == markerFill4 ? DEFAULT_MARKER_FILL_4 : markerFill4.get();
     }
-    public final void setMarker4Fill(Paint value) {
-        marker4FillProperty().set(value);
+    public final void setMarkerFill4(Paint value) {
+        markerFill4Property().set(value);
     }
-    public final ObjectProperty<Paint> marker4FillProperty() {
-        if (null == marker4Fill) {
-            marker4Fill = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_4_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_4_FILL; }
+    public final ObjectProperty<Paint> markerFill4Property() {
+        if (null == markerFill4) {
+            markerFill4 = new StyleableObjectProperty<Paint>(DEFAULT_MARKER_FILL_4) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.MARKER_FILL_4; }
                 @Override public Object getBean() { return RadialBargraph.this; }
-                @Override public String getName() { return "marker4Fill"; }
+                @Override public String getName() { return "markerFill4"; }
             };
         }
-        return marker4Fill;
+        return markerFill4;
     }
 
 
@@ -1131,243 +1130,243 @@ public class RadialBargraph extends Control {
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_0_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section0-fill", PaintConverter.getInstance(), DEFAULT_SECTION_0_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_0 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-0", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_0) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section0Fill || !radialBargraph.section0Fill.isBound();
+                    return null == radialBargraph.sectionFill0 || !radialBargraph.sectionFill0.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section0FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill0Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection0Fill();
+                    return radialBargraph.getSectionFill0();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_1_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section1-fill", PaintConverter.getInstance(), DEFAULT_SECTION_1_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_1 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-1", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_1) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section1Fill || !radialBargraph.section1Fill.isBound();
+                    return null == radialBargraph.sectionFill1 || !radialBargraph.sectionFill1.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section1FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill1Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection1Fill();
+                    return radialBargraph.getSectionFill1();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_2_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section2-fill", PaintConverter.getInstance(), DEFAULT_SECTION_2_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_2 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-2", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_2) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section2Fill || !radialBargraph.section2Fill.isBound();
+                    return null == radialBargraph.sectionFill2 || !radialBargraph.sectionFill2.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section2FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill2Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection2Fill();
+                    return radialBargraph.getSectionFill2();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_3_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section3-fill", PaintConverter.getInstance(), DEFAULT_SECTION_3_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_3 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-3", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_3) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section3Fill || !radialBargraph.section3Fill.isBound();
+                    return null == radialBargraph.sectionFill3 || !radialBargraph.sectionFill3.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section3FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill3Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection3Fill();
+                    return radialBargraph.getSectionFill3();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_4_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section4-fill", PaintConverter.getInstance(), DEFAULT_SECTION_4_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_4 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-4", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_4) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section4Fill || !radialBargraph.section4Fill.isBound();
+                    return null == radialBargraph.sectionFill4 || !radialBargraph.sectionFill4.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section4FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill4Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection4Fill();
+                    return radialBargraph.getSectionFill4();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_5_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section5-fill", PaintConverter.getInstance(), DEFAULT_SECTION_5_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_5 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-5", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_5) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section5Fill || !radialBargraph.section5Fill.isBound();
+                    return null == radialBargraph.sectionFill5 || !radialBargraph.sectionFill5.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section5FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill5Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection5Fill();
+                    return radialBargraph.getSectionFill5();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_6_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section6-fill", PaintConverter.getInstance(), DEFAULT_SECTION_6_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_6 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-6", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_6) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section6Fill || !radialBargraph.section6Fill.isBound();
+                    return null == radialBargraph.sectionFill6 || !radialBargraph.sectionFill6.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section6FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill6Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection6Fill();
+                    return radialBargraph.getSectionFill6();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_7_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section7-fill", PaintConverter.getInstance(), DEFAULT_SECTION_7_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_7 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-7", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_7) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section7Fill || !radialBargraph.section7Fill.isBound();
+                    return null == radialBargraph.sectionFill7 || !radialBargraph.sectionFill7.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section7FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill7Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection7Fill();
+                    return radialBargraph.getSectionFill7();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_8_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section8-fill", PaintConverter.getInstance(), DEFAULT_SECTION_8_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_8 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-8", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_8) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section8Fill || !radialBargraph.section8Fill.isBound();
+                    return null == radialBargraph.sectionFill8 || !radialBargraph.sectionFill8.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section8FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill8Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection8Fill();
+                    return radialBargraph.getSectionFill8();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> SECTION_9_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-section9-fill", PaintConverter.getInstance(), DEFAULT_SECTION_9_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> SECTION_FILL_9 =
+            new CssMetaData<RadialBargraph, Paint>("-section-fill-9", PaintConverter.getInstance(), DEFAULT_SECTION_FILL_9) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.section9Fill || !radialBargraph.section9Fill.isBound();
+                    return null == radialBargraph.sectionFill9 || !radialBargraph.sectionFill9.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.section9FillProperty();
+                    return (StyleableProperty) radialBargraph.sectionFill9Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getSection9Fill();
+                    return radialBargraph.getSectionFill9();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> MARKER_0_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-marker0-fill", PaintConverter.getInstance(), DEFAULT_MARKER_0_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_FILL_0 =
+            new CssMetaData<RadialBargraph, Paint>("-marker-fill-0", PaintConverter.getInstance(), DEFAULT_MARKER_FILL_0) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.marker0Fill || !radialBargraph.marker0Fill.isBound();
+                    return null == radialBargraph.markerFill0 || !radialBargraph.markerFill0.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.marker0FillProperty();
+                    return (StyleableProperty) radialBargraph.markerFill0Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getMarker0Fill();
+                    return radialBargraph.getMarkerFill0();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> MARKER_1_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-marker1-fill", PaintConverter.getInstance(), DEFAULT_MARKER_1_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_FILL_1 =
+            new CssMetaData<RadialBargraph, Paint>("-marker-fill-1", PaintConverter.getInstance(), DEFAULT_MARKER_FILL_1) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.marker1Fill || !radialBargraph.marker1Fill.isBound();
+                    return null == radialBargraph.markerFill1 || !radialBargraph.markerFill1.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.marker1FillProperty();
+                    return (StyleableProperty) radialBargraph.markerFill1Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getMarker1Fill();
+                    return radialBargraph.getMarkerFill1();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> MARKER_2_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-marker2-fill", PaintConverter.getInstance(), DEFAULT_MARKER_2_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_FILL_2 =
+            new CssMetaData<RadialBargraph, Paint>("-marker-fill-2", PaintConverter.getInstance(), DEFAULT_MARKER_FILL_2) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.marker2Fill || !radialBargraph.marker2Fill.isBound();
+                    return null == radialBargraph.markerFill2 || !radialBargraph.markerFill2.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.marker2FillProperty();
+                    return (StyleableProperty) radialBargraph.markerFill2Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getMarker2Fill();
+                    return radialBargraph.getMarkerFill2();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> MARKER_3_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-marker3-fill", PaintConverter.getInstance(), DEFAULT_MARKER_3_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_FILL_3 =
+            new CssMetaData<RadialBargraph, Paint>("-marker-fill-3", PaintConverter.getInstance(), DEFAULT_MARKER_FILL_3) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.marker3Fill || !radialBargraph.marker3Fill.isBound();
+                    return null == radialBargraph.markerFill3 || !radialBargraph.markerFill3.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.marker3FillProperty();
+                    return (StyleableProperty) radialBargraph.markerFill3Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getMarker3Fill();
+                    return radialBargraph.getMarkerFill3();
                 }
             };
 
-        private static final CssMetaData<RadialBargraph, Paint> MARKER_4_FILL =
-            new CssMetaData<RadialBargraph, Paint>("-marker4-fill", PaintConverter.getInstance(), DEFAULT_MARKER_4_FILL) {
+        private static final CssMetaData<RadialBargraph, Paint> MARKER_FILL_4 =
+            new CssMetaData<RadialBargraph, Paint>("-marker-fill-4", PaintConverter.getInstance(), DEFAULT_MARKER_FILL_4) {
 
                 @Override public boolean isSettable(RadialBargraph radialBargraph) {
-                    return null == radialBargraph.marker4Fill || !radialBargraph.marker4Fill.isBound();
+                    return null == radialBargraph.markerFill4 || !radialBargraph.markerFill4.isBound();
                 }
 
                 @Override public StyleableProperty<Paint> getStyleableProperty(RadialBargraph radialBargraph) {
-                    return (StyleableProperty) radialBargraph.marker4FillProperty();
+                    return (StyleableProperty) radialBargraph.markerFill4Property();
                 }
 
                 @Override public Paint getInitialValue(RadialBargraph radialBargraph) {
-                    return radialBargraph.getMarker4Fill();
+                    return radialBargraph.getMarkerFill4();
                 }
             };
 
@@ -1375,22 +1374,22 @@ public class RadialBargraph extends Control {
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
-                TICK_MARK_FILL,
-                SECTION_0_FILL,
-                SECTION_1_FILL,
-                SECTION_2_FILL,
-                SECTION_3_FILL,
-                SECTION_4_FILL,
-                SECTION_5_FILL,
-                SECTION_6_FILL,
-                SECTION_7_FILL,
-                SECTION_8_FILL,
-                SECTION_9_FILL,
-                MARKER_0_FILL,
-                MARKER_1_FILL,
-                MARKER_2_FILL,
-                MARKER_3_FILL,
-                MARKER_4_FILL
+                               TICK_MARK_FILL,
+                               SECTION_FILL_0,
+                               SECTION_FILL_1,
+                               SECTION_FILL_2,
+                               SECTION_FILL_3,
+                               SECTION_FILL_4,
+                               SECTION_FILL_5,
+                               SECTION_FILL_6,
+                               SECTION_FILL_7,
+                               SECTION_FILL_8,
+                               SECTION_FILL_9,
+                               MARKER_FILL_0,
+                               MARKER_FILL_1,
+                               MARKER_FILL_2,
+                               MARKER_FILL_3,
+                               MARKER_FILL_4
             );
             STYLEABLES = Collections.unmodifiableList(styleables);
         }

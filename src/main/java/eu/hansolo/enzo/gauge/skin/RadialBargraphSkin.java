@@ -667,16 +667,16 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
             final double  ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
             CTX.save();
             switch(i) {
-                case 0: CTX.setStroke(getSkinnable().getSection0Fill()); break;
-                case 1: CTX.setStroke(getSkinnable().getSection1Fill()); break;
-                case 2: CTX.setStroke(getSkinnable().getSection2Fill()); break;
-                case 3: CTX.setStroke(getSkinnable().getSection3Fill()); break;
-                case 4: CTX.setStroke(getSkinnable().getSection4Fill()); break;
-                case 5: CTX.setStroke(getSkinnable().getSection5Fill()); break;
-                case 6: CTX.setStroke(getSkinnable().getSection6Fill()); break;
-                case 7: CTX.setStroke(getSkinnable().getSection7Fill()); break;
-                case 8: CTX.setStroke(getSkinnable().getSection8Fill()); break;
-                case 9: CTX.setStroke(getSkinnable().getSection9Fill()); break;
+                case 0: CTX.setStroke(getSkinnable().getSectionFill0()); break;
+                case 1: CTX.setStroke(getSkinnable().getSectionFill1()); break;
+                case 2: CTX.setStroke(getSkinnable().getSectionFill2()); break;
+                case 3: CTX.setStroke(getSkinnable().getSectionFill3()); break;
+                case 4: CTX.setStroke(getSkinnable().getSectionFill4()); break;
+                case 5: CTX.setStroke(getSkinnable().getSectionFill5()); break;
+                case 6: CTX.setStroke(getSkinnable().getSectionFill6()); break;
+                case 7: CTX.setStroke(getSkinnable().getSectionFill7()); break;
+                case 8: CTX.setStroke(getSkinnable().getSectionFill8()); break;
+                case 9: CTX.setStroke(getSkinnable().getSectionFill9()); break;
             }
             CTX.setLineWidth(size * 0.1);
             CTX.setLineCap(StrokeLineCap.BUTT);

@@ -46,22 +46,22 @@
     -knob              : white;
     -tick-mark-fill    : black;
     -tick-label-fill   : black;
-    -section0-fill     : rgba(  0,   0, 178, 0.5);
-    -section1-fill     : rgba(  0, 128, 255, 0.5);
-    -section2-fill     : rgba(  0, 255, 255, 0.5);
-    -section3-fill     : rgba(  0, 255,  64, 0.5);
-    -section4-fill     : rgba(128, 255,   0, 0.5);
-    -section5-fill     : rgba(255, 255,   0, 0.5);
-    -section6-fill     : rgba(255, 191,   0, 0.5);
-    -section7-fill     : rgba(255, 128,   0, 0.5);
-    -section8-fill     : rgba(255,  64,   0, 0.5);
-    -section9-fill     : rgba(255,   0,   0, 0.5);
+    -section-fill-0    : rgba(  0,   0, 178, 0.5);
+    -section-fill-1    : rgba(  0, 128, 255, 0.5);
+    -section-fill-2    : rgba(  0, 255, 255, 0.5);
+    -section-fill-3    : rgba(  0, 255,  64, 0.5);
+    -section-fill-4    : rgba(128, 255,   0, 0.5);
+    -section-fill-5    : rgba(255, 255,   0, 0.5);
+    -section-fill-6    : rgba(255, 191,   0, 0.5);
+    -section-fill-7    : rgba(255, 128,   0, 0.5);
+    -section-fill-8    : rgba(255,  64,   0, 0.5);
+    -section-fill-9    : rgba(255,   0,   0, 0.5);
     -histogram-fill    : rgba(  0, 200,   0, 0.3);
-    -marker0-fill      : rgb(  0, 200,   0);
-    -marker1-fill      : rgb(200, 200,   0);
-    -marker2-fill      : rgb(200,   0,   0);
-    -marker3-fill      : rgb(  0,   0, 200);
-    -marker4-fill      : rgb(  0, 200, 200);
+    -marker-fill-0     : rgb(  0, 200,   0);
+    -marker-fill-1     : rgb(200, 200,   0);
+    -marker-fill-2     : rgb(200,   0,   0);
+    -marker-fill-3     : rgb(  0,   0, 200);
+    -marker-fill-4     : rgb(  0, 200, 200);
 }
 
 
@@ -210,64 +210,64 @@
  * GAUGE sections                                                             *
  *****************************************************************************/
 .gauge .section0 {
-    -fx-fill: -section0-fill;
+    -fx-fill: -section-fill-0;
 }
 .gauge:highlighted .section0 {
-    -fx-fill: derive(-section0-fill, 30%);
+    -fx-fill: derive(-section-fill-0, 30%);
 }
 .gauge .section1 {
-    -fx-fill: -section1-fill;
+    -fx-fill: -section-fill-1;
 }
 .gauge:highlighted .section1 {
-    -fx-fill: derive(-section1-fill, 30%);
+    -fx-fill: derive(-section-fill-1, 30%);
 }
 .gauge .section2 {
-    -fx-fill: -section2-fill;
+    -fx-fill: -section-fill-2;
 }
 .gauge:highlighted .section2 {
-    -fx-fill: derive(-section2-fill, 30%);
+    -fx-fill: derive(-section-fill-2, 30%);
 }
 .gauge .section3 {
-    -fx-fill: -section3-fill;
+    -fx-fill: -section-fill-3;
 }
 .gauge:highlighted .section3 {
-    -fx-fill: derive(-section3-fill, 30%);
+    -fx-fill: derive(-section-fill-3, 30%);
 }
 .gauge .section4 {
-    -fx-fill: -section4-fill;
+    -fx-fill: -section-fill-4;
 }
 .gauge:highlighted .section4 {
-    -fx-fill: derive(-section4-fill, 30%);
+    -fx-fill: derive(-section-fill-4, 30%);
 }
 .gauge .section5 {
-    -fx-fill: -section5-fill;
+    -fx-fill: -section-fill-5;
 }
 .gauge:highlighted .section5 {
-    -fx-fill: derive(-section5-fill, 30%);
+    -fx-fill: derive(-section-fill-5, 30%);
 }
 .gauge .section6 {
-    -fx-fill: -section6-fill;
+    -fx-fill: -section-fill-6;
 }
 .gauge:highlighted .section6 {
-    -fx-fill: derive(-section6-fill, 30%);
+    -fx-fill: derive(-section-fill-6, 30%);
 }
 .gauge .section7 {
-    -fx-fill: -section7-fill;
+    -fx-fill: -section-fill-7;
 }
 .gauge:highlighted .section7 {
-    -fx-fill: derive(-section7-fill, 30%);
+    -fx-fill: derive(-section-fill-7, 30%);
 }
 .gauge .section8 {
-    -fx-fill: -section8-fill;
+    -fx-fill: -section-fill-8;
 }
 .gauge:highlighted .section8 {
-    -fx-fill: derive(-section8-fill, 30%);
+    -fx-fill: derive(-section-fill-8, 30%);
 }
 .gauge .section9 {
-    -fx-fill: -section9-fill;
+    -fx-fill: -section-fill-9;
 }
 .gauge:highlighted .section9 {
-    -fx-fill: derive(-section9-fill, 30%);
+    -fx-fill: derive(-section-fill-9, 30%);
 }
 
 
@@ -275,77 +275,77 @@
  * GAUGE markers                                                              *
  *****************************************************************************/
 .gauge .marker0 {
-    -fx-background-color : derive(-marker0-fill, -20%), -marker0-fill;
+    -fx-background-color : derive(-marker-fill-0, -20%), -marker-fill-0;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
 .gauge:interactive .marker0 {
-    -fx-background-color : derive(-marker0-fill, -20%),
+    -fx-background-color : derive(-marker-fill-0, -20%),
                            linear-gradient(to bottom,
-                                           derive(-marker0-fill, 5%) 0%,
-                                           derive(-marker0-fill, -10%) 100%);
+                                           derive(-marker-fill-0, 5%) 0%,
+                                           derive(-marker-fill-0, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
 .gauge .marker1 {
-    -fx-background-color : derive(-marker1-fill, -20%), -marker1-fill;
+    -fx-background-color : derive(-marker-fill-1, -20%), -marker-fill-1;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
 .gauge:interactive .marker1 {
-    -fx-background-color : derive(-marker1-fill, -20%),
+    -fx-background-color : derive(-marker-fill-1, -20%),
                            linear-gradient(to bottom,
-                                           derive(-marker1-fill, 5%) 0%,
-                                           derive(-marker1-fill, -10%) 100%);
+                                           derive(-marker-fill-1, 5%) 0%,
+                                           derive(-marker-fill-1, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
 .gauge .marker2 {
-    -fx-background-color : derive(-marker2-fill, -20%), -marker2-fill;
+    -fx-background-color : derive(-marker-fill-2, -20%), -marker-fill-2;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
 .gauge:interactive .marker2 {
-    -fx-background-color : derive(-marker2-fill, -20%),
+    -fx-background-color : derive(-marker-fill-2, -20%),
                            linear-gradient(to bottom,
-                                           derive(-marker2-fill, 5%) 0%,
-                                           derive(-marker2-fill, -10%) 100%);
+                                           derive(-marker-fill-2, 5%) 0%,
+                                           derive(-marker-fill-2, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
 .gauge .marker3 {
-    -fx-background-color : derive(-marker3-fill, -20%), -marker3-fill;
+    -fx-background-color : derive(-marker-fill-3, -20%), -marker-fill-3;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
 .gauge:interactive .marker3 {
-    -fx-background-color : derive(-marker3-fill, -20%),
+    -fx-background-color : derive(-marker-fill-3, -20%),
                            linear-gradient(to bottom,
-                                           derive(-marker3-fill, 5%) 0%,
-                                           derive(-marker3-fill, -10%) 100%);
+                                           derive(-marker-fill-3, 5%) 0%,
+                                           derive(-marker-fill-3, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }
 .gauge .marker4 {
-    -fx-background-color : derive(-marker4-fill, -20%), -marker4-fill;
+    -fx-background-color : derive(-marker-fill-4, -20%), -marker-fill-4;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 100;
     -fx-scale-shape      : true;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 1, 0.0, 0, 1);
 }
 .gauge:interactive .marker4 {
-    -fx-background-color : derive(-marker4-fill, -20%),
+    -fx-background-color : derive(-marker-fill-4, -20%),
                            linear-gradient(to bottom,
-                                           derive(-marker4-fill, 5%) 0%,
-                                           derive(-marker4-fill, -10%) 100%);
+                                           derive(-marker-fill-4, 5%) 0%,
+                                           derive(-marker-fill-4, -10%) 100%);
     -fx-background-insets: -3, -2;
     -fx-effect           : dropshadow(two-pass-box, rgba(0, 0, 0, 0.25), 4, 0.0, 0, 4);
 }

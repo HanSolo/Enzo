@@ -66,17 +66,17 @@ public class SimpleGauge extends Control {
     public static final String      STYLE_CLASS_PURPLE_TO_CYAN_10    = "purple-to-cyan-10";
 
     // Default section colors
-    private static final Color      DEFAULT_SECTION_TEXT_COLOR = Color.web("#ffffff");
-    private static final Color      DEFAULT_SECTION_FILL_0     = Color.web("#f3622d");
-    private static final Color      DEFAULT_SECTION_FILL_1     = Color.web("#fba71b");
-    private static final Color      DEFAULT_SECTION_FILL_2     = Color.web("#57b757");
-    private static final Color      DEFAULT_SECTION_FILL_3     = Color.web("#f5982b");
-    private static final Color      DEFAULT_SECTION_FILL_4     = Color.web("#41a9c9");
-    private static final Color      DEFAULT_SECTION_FILL_5     = Color.web("#4258c9");
-    private static final Color      DEFAULT_SECTION_FILL_6     = Color.web("#9a42c8");
-    private static final Color      DEFAULT_SECTION_FILL_7     = Color.web("#c84164");
-    private static final Color      DEFAULT_SECTION_FILL_8     = Color.web("#888888");
-    private static final Color      DEFAULT_SECTION_FILL_9     = Color.web("#aaaaaa");
+    private static final Color      DEFAULT_SECTION_TEXT_COLOR       = Color.web("#ffffff");
+    private static final Color      DEFAULT_SECTION_FILL_0           = Color.web("#f3622d");
+    private static final Color      DEFAULT_SECTION_FILL_1           = Color.web("#fba71b");
+    private static final Color      DEFAULT_SECTION_FILL_2           = Color.web("#57b757");
+    private static final Color      DEFAULT_SECTION_FILL_3           = Color.web("#f5982b");
+    private static final Color      DEFAULT_SECTION_FILL_4           = Color.web("#41a9c9");
+    private static final Color      DEFAULT_SECTION_FILL_5           = Color.web("#4258c9");
+    private static final Color      DEFAULT_SECTION_FILL_6           = Color.web("#9a42c8");
+    private static final Color      DEFAULT_SECTION_FILL_7           = Color.web("#c84164");
+    private static final Color      DEFAULT_SECTION_FILL_8           = Color.web("#888888");
+    private static final Color      DEFAULT_SECTION_FILL_9           = Color.web("#aaaaaa");
 
     private double                  _value;
     private DoubleProperty          value;
