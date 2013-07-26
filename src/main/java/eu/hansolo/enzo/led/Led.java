@@ -129,11 +129,12 @@ public class Led extends Control {
     }
 
     public final boolean isBlinking() {
-        return _blink;
+        return null == blink ? _blink : blink.get();
     }
     public final void setBlink(final boolean BLINK) {
-        _blink = BLINK;
-        if (null != blink) {
+        if (null == blink) {
+            _blink = BLINK;
+        } else {
             blink.set(BLINK);
         }
         if (BLINK) {
@@ -151,12 +152,13 @@ public class Led extends Control {
     }
 
     public final long getInterval() {
-        return _interval;
+        return null == interval ? _interval : interval.get();
     }
     public final void setInterval(final long INTERVAL) {
+        if (null == interval) {
             _interval = clamp(50_000_000l, 5_000_000_000l, INTERVAL);
-        if(null != interval) {
-            interval.set(_interval);
+        } else {
+            interval.set(clamp(50_000_000l, 5_000_000_000l, INTERVAL));
         }
     }
     public final LongProperty intervalProperty() {
@@ -167,11 +169,12 @@ public class Led extends Control {
     }
 
     public final boolean isFrameVisible() {
-        return _frameVisible;
+        return null == frameVisible ? _frameVisible : frameVisible.get();
     }
     public final void setFrameVisible(final boolean FRAME_VISIBLE) {
+        if (null == frameVisible) {
             _frameVisible = FRAME_VISIBLE;
-        if(null != frameVisible) {
+        } else {
             frameVisible.set(FRAME_VISIBLE);
         }
     }
