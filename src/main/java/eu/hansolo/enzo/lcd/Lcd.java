@@ -42,42 +42,63 @@ import javafx.util.Duration;
 
 
 public class Lcd extends Control {
-    public static final String STYLE_CLASS_BEIGE            = "lcd-beige";
-    public static final String STYLE_CLASS_BLUE             = "lcd-blue";
-    public static final String STYLE_CLASS_ORANGE           = "lcd-orange";
-    public static final String STYLE_CLASS_RED              = "lcd-red";
-    public static final String STYLE_CLASS_YELLOW           = "lcd-yellow";
-    public static final String STYLE_CLASS_WHITE            = "lcd-white";
-    public static final String STYLE_CLASS_GRAY             = "lcd-gray";
-    public static final String STYLE_CLASS_BLACK            = "lcd-black";
-    public static final String STYLE_CLASS_GREEN            = "lcd-green";
-    public static final String STYLE_CLASS_GREEN_DARKGREEN  = "lcd-green-darkgreen";
-    public static final String STYLE_CLASS_BLUE2            = "lcd-blue2";
-    public static final String STYLE_CLASS_BLUE_BLACK       = "lcd-blue-black";
-    public static final String STYLE_CLASS_BLUE_DARKBLUE    = "lcd-blue-darkblue";
-    public static final String STYLE_CLASS_BLUE_LIGHTBLUE   = "lcd-blue-lightblue";
-    public static final String STYLE_CLASS_BLUE_GRAY        = "lcd-blue-gray";
-    public static final String STYLE_CLASS_STANDARD         = "lcd-standard";
-    public static final String STYLE_CLASS_LIGHTGREEN       = "lcd-lightgreen";
-    public static final String STYLE_CLASS_STANDARD_GREEN   = "lcd-standard-green";
-    public static final String STYLE_CLASS_BLUE_BLUE        = "lcd-blue-blue";
-    public static final String STYLE_CLASS_RED_DARKRED      = "lcd-red-darkred";
-    public static final String STYLE_CLASS_DARKBLUE         = "lcd-darkblue";
-    public static final String STYLE_CLASS_PURPLE           = "lcd-purple";
-    public static final String STYLE_CLASS_BLACK_RED        = "lcd-black-red";
-    public static final String STYLE_CLASS_DARKGREEN        = "lcd-darkgreen";
-    public static final String STYLE_CLASS_AMBER            = "lcd-amber";
-    public static final String STYLE_CLASS_LIGHTBLUE        = "lcd-lightblue";
-    public static final String STYLE_CLASS_GREEN_BLACK      = "lcd-green-black";
-    public static final String STYLE_CLASS_YELLOW_BLACK     = "lcd-yellow-black";
-    public static final String STYLE_CLASS_BLACK_YELLOW     = "lcd-black-yellow";
-    public static final String STYLE_CLASS_LIGHTGREEN_BLACK = "lcd-lightgreen-black";
-    public static final String STYLE_CLASS_DARKPURPLE       = "lcd-darkpurple";
-    public static final String STYLE_CLASS_DARKAMBER        = "lcd-darkamber";
-    public static final String STYLE_CLASS_BLUE_LIGHTBLUE2  = "lcd-blue-lightblue2";
-    public static final String STYLE_CLASS_GRAY_PURPLE      = "lcd-gray-purple";
-    public static final String STYLE_CLASS_SECTIONS         = "lcd-sections";
-    public static final String STYLE_CLASS_YOCTOPUCE        = "lcd-yoctopuce";
+    public static final String STYLE_CLASS_BEIGE              = "lcd-beige";
+    public static final String STYLE_CLASS_BLUE               = "lcd-blue";
+    public static final String STYLE_CLASS_ORANGE             = "lcd-orange";
+    public static final String STYLE_CLASS_RED                = "lcd-red";
+    public static final String STYLE_CLASS_YELLOW             = "lcd-yellow";
+    public static final String STYLE_CLASS_WHITE              = "lcd-white";
+    public static final String STYLE_CLASS_GRAY               = "lcd-gray";
+    public static final String STYLE_CLASS_BLACK              = "lcd-black";
+    public static final String STYLE_CLASS_GREEN              = "lcd-green";
+    public static final String STYLE_CLASS_GREEN_DARKGREEN    = "lcd-green-darkgreen";
+    public static final String STYLE_CLASS_BLUE2              = "lcd-blue2";
+    public static final String STYLE_CLASS_BLUE_BLACK         = "lcd-blue-black";
+    public static final String STYLE_CLASS_BLUE_DARKBLUE      = "lcd-blue-darkblue";
+    public static final String STYLE_CLASS_BLUE_LIGHTBLUE     = "lcd-blue-lightblue";
+    public static final String STYLE_CLASS_BLUE_GRAY          = "lcd-blue-gray";
+    public static final String STYLE_CLASS_STANDARD           = "lcd-standard";
+    public static final String STYLE_CLASS_LIGHTGREEN         = "lcd-lightgreen";
+    public static final String STYLE_CLASS_STANDARD_GREEN     = "lcd-standard-green";
+    public static final String STYLE_CLASS_BLUE_BLUE          = "lcd-blue-blue";
+    public static final String STYLE_CLASS_RED_DARKRED        = "lcd-red-darkred";
+    public static final String STYLE_CLASS_DARKBLUE           = "lcd-darkblue";
+    public static final String STYLE_CLASS_PURPLE             = "lcd-purple";
+    public static final String STYLE_CLASS_BLACK_RED          = "lcd-black-red";
+    public static final String STYLE_CLASS_DARKGREEN          = "lcd-darkgreen";
+    public static final String STYLE_CLASS_AMBER              = "lcd-amber";
+    public static final String STYLE_CLASS_LIGHTBLUE          = "lcd-lightblue";
+    public static final String STYLE_CLASS_GREEN_BLACK        = "lcd-green-black";
+    public static final String STYLE_CLASS_YELLOW_BLACK       = "lcd-yellow-black";
+    public static final String STYLE_CLASS_BLACK_YELLOW       = "lcd-black-yellow";
+    public static final String STYLE_CLASS_LIGHTGREEN_BLACK   = "lcd-lightgreen-black";
+    public static final String STYLE_CLASS_DARKPURPLE         = "lcd-darkpurple";
+    public static final String STYLE_CLASS_DARKAMBER          = "lcd-darkamber";
+    public static final String STYLE_CLASS_BLUE_LIGHTBLUE2    = "lcd-blue-lightblue2";
+    public static final String STYLE_CLASS_GRAY_PURPLE        = "lcd-gray-purple";
+    public static final String STYLE_CLASS_SECTIONS           = "lcd-sections";
+    public static final String STYLE_CLASS_YOCTOPUCE          = "lcd-yoctopuce";
+
+    public static final String STYLE_CLASS_FLAT_TURQOISE      = "lcd-flat-turqoise";
+    public static final String STYLE_CLASS_FLAT_GREEN_SEA     = "lcd-flat-green-sea";
+    public static final String STYLE_CLASS_FLAT_EMERLAND      = "lcd-flat-emerland";
+    public static final String STYLE_CLASS_FLAT_NEPHRITIS     = "lcd-flat-nephritis";
+    public static final String STYLE_CLASS_FLAT_PETER_RIVER   = "lcd-flat-peter-river";
+    public static final String STYLE_CLASS_FLAT_BELIZE_HOLE   = "lcd-flat-belize-hole";
+    public static final String STYLE_CLASS_FLAT_AMETHYST      = "lcd-flat-amethyst";
+    public static final String STYLE_CLASS_FLAT_WISTERIA      = "lcd-flat-wisteria";
+    public static final String STYLE_CLASS_FLAT_SUNFLOWER     = "lcd-flat-sunflower";
+    public static final String STYLE_CLASS_FLAT_ORANGE        = "lcd-flat-orange";
+    public static final String STYLE_CLASS_FLAT_CARROT        = "lcd-flat-carrot";
+    public static final String STYLE_CLASS_FLAT_PUMPKIN       = "lcd-flat-pumpkin";
+    public static final String STYLE_CLASS_FLAT_ALIZARIN      = "lcd-flat-alizarin";
+    public static final String STYLE_CLASS_FLAT_POMEGRANATE   = "lcd-flat-pomegranate";
+    public static final String STYLE_CLASS_FLAT_CLOUDS        = "lcd-flat-clouds";
+    public static final String STYLE_CLASS_FLAT_SILVER        = "lcd-flat-silver";
+    public static final String STYLE_CLASS_FLAT_CONCRETE      = "lcd-flat-concrete";
+    public static final String STYLE_CLASS_FLAT_ASBESTOS      = "lcd-flat-asbestos";
+    public static final String STYLE_CLASS_FLAT_WET_ASPHALT   = "lcd-flat-wet-asphalt";
+    public static final String STYLE_CLASS_FLAT_MIDNIGHT_BLUE = "lcd-flat-midnight-blue";
     public static enum LcdFont {
         STANDARD,
         LCD,
@@ -196,6 +217,8 @@ public class Lcd extends Control {
     private BooleanProperty              backgroundVisible;
     private boolean                      _crystalOverlayVisible = false;
     private BooleanProperty              crystalOverlayVisible;
+    private boolean                      _mainInnerShadowVisible = false;
+    private BooleanProperty              mainInnerShadowVisible;
     private boolean                      _foregroundShadowVisible = false;
     private BooleanProperty              foregroundShadowVisible;
     private boolean                      _titleVisible = true;
@@ -874,6 +897,23 @@ public class Lcd extends Control {
             crystalOverlayVisible = new SimpleBooleanProperty(this, "crystalOverlayVisible", _crystalOverlayVisible);
         }
         return crystalOverlayVisible;
+    }
+
+    public final boolean isMainInnerShadowVisible() {
+        return null == mainInnerShadowVisible ? _mainInnerShadowVisible : mainInnerShadowVisible.get();
+    }
+    public final void setMainInnerShadowVisible(final boolean MAIN_INNER_SHADOW_VISIBLE) {
+        if (null == mainInnerShadowVisible) {
+            _mainInnerShadowVisible = MAIN_INNER_SHADOW_VISIBLE;
+        } else {
+            mainInnerShadowVisible.set(MAIN_INNER_SHADOW_VISIBLE);
+        }
+    }
+    public final BooleanProperty mainInnerShadowVisibleProperty() {
+        if (null == mainInnerShadowVisible) {
+            mainInnerShadowVisible = new SimpleBooleanProperty(this, "mainInnerShadowVisible", _mainInnerShadowVisible);
+        }
+        return mainInnerShadowVisible;
     }
 
     public final boolean isForegroundShadowVisible() {

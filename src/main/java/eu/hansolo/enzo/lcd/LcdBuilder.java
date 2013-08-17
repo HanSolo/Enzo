@@ -116,6 +116,11 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
         return this;
     }
 
+    public final LcdBuilder mainInnerShadowVisible(final boolean MAIN_INNER_SHADOW_VISIBLE) {
+        properties.put("mainInnerShadowVisible", new SimpleBooleanProperty(MAIN_INNER_SHADOW_VISIBLE));
+        return this;
+    }
+
     public final LcdBuilder foregroundShadowVisible(final boolean FOREGROUND_SHADOW_VISIBLE) {
         properties.put("foregroundShadowVisible", new SimpleBooleanProperty(FOREGROUND_SHADOW_VISIBLE));
         return this;
@@ -396,6 +401,8 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
                 CONTROL.setBackgroundVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("crystalOverlayVisible".equals(key)) {
                 CONTROL.setCrystalOverlayVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("mainInnerShadowVisible".equals(key)) {
+                CONTROL.setMainInnerShadowVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("foregroundShadowVisible".equals(key)) {
                 CONTROL.setForegroundShadowVisible(((BooleanProperty) properties.get(key)).get());
             } else if("minMeasuredValueVisible".equals(key)) {

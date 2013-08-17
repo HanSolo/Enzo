@@ -105,7 +105,6 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     // ******************** Constructors **************************************
     public LcdSkin(final Lcd CONTROL) {
         super(CONTROL);
-        pane                  = new Pane();
         valueOffsetLeft       = 0.0;
         valueOffsetRight      = 0.0;
         digitalFontSizeFactor = 1.0;
@@ -177,7 +176,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         mainInnerShadow1.setBlurType(BlurType.TWO_PASS_BOX);
         mainInnerShadow1.setInput(mainInnerShadow0);
 
-        main.setEffect(mainInnerShadow1);
+        main.setEffect(getSkinnable().isMainInnerShadowVisible() ? mainInnerShadow1 : null);
 
         mainClip = new SVGPath();
         mainClip.setContent("M 1 5 C 1 3 3 1 5 1 C 5 1 127 1 127 1 C 129 1 131 3 131 5 " +
@@ -274,6 +273,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
                                          upperRightText,
                                          lowerCenterText);
 
+        pane = new Pane();
         pane.getChildren().setAll(frame,
                                   main,
                                   crystalOverlay,
@@ -311,6 +311,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         getSkinnable().numberSystemVisibleProperty().addListener(observable -> handleControlPropertyChanged("NUMBER_SYSTEM_VISIBLE") );
         getSkinnable().backgroundVisibleProperty().addListener(observable -> handleControlPropertyChanged("BACKGROUND_VISIBLE") );
         getSkinnable().crystalOverlayVisibleProperty().addListener(observable -> handleControlPropertyChanged("CRYSTAL_OVERLAY_VISIBLE") );
+        getSkinnable().mainInnerShadowVisibleProperty().addListener(observable -> handleControlPropertyChanged("MAIN_INNER_SHADOW_VISIBLE"));
         getSkinnable().foregroundShadowVisibleProperty().addListener(observable -> handleControlPropertyChanged("FOREGROUND_SHADOW_VISIBLE") );
         getSkinnable().animationDurationProperty().addListener(observable -> handleControlPropertyChanged("ANIMATION_DURATION") );
         getSkinnable().trendProperty().addListener(observable -> handleControlPropertyChanged("TREND") );
@@ -355,6 +356,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         } else if ("CRYSTAL_OVERLAY_VISIBLE".equals(PROPERTY)) {
             crystalOverlay.setOpacity(getSkinnable().isCrystalOverlayVisible() ? 1 : 0);
             resize();
+        } else if ("MAIN_INNER_SHADOW_VISIBLE".equals(PROPERTY)) {
+            main.setEffect(getSkinnable().isMainInnerShadowVisible() ? mainInnerShadow1 : null);
         } else if ("FOREGROUND_SHADOW_VISIBLE".equals(PROPERTY)) {
             shadowGroup.setEffect(getSkinnable().isForegroundShadowVisible() ? FOREGROUND_SHADOW : null);
         } else if ("TREND".equals(PROPERTY)) {

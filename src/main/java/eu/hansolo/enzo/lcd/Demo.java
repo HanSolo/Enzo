@@ -70,7 +70,27 @@ public class Demo extends Application {
     "lcd-darkamber",
     "lcd-blue-lightblue2",
     "lcd-gray-purple",
-    "lcd-sections"
+    "lcd-sections",
+    "lcd-flat-turqoise",
+    "lcd-flat-gree-sea",
+    "lcd-flat-emerland",
+    "lcd-flat-nephritis",
+    "lcd-flat-peter-river",
+    "lcd-flat-belize-hole",
+    "lcd-flat-amethyst",
+    "lcd-flat-wisteria",
+    "lcd-flat-sunflower",
+    "lcd-flat-orange",
+    "lcd-flat-carrot",
+    "lcd-flat-pumpkin",
+    "lcd-flat-alizarin",
+    "lcd-flat-pomegranate",
+    "lcd-flat-clouds",
+    "lcd-flat-silver",
+    "lcd-flat-concrete",
+    "lcd-flat-asbestos",
+    "lcd-flat-wet-asphalt",
+    "lcd-flat-midnight-blue"
     };
     private Lcd                 control;
     private long                lastTimerCall;
@@ -116,13 +136,18 @@ public class Demo extends Application {
         });
 
         charge = 0.0;
-        styleClassCounter = 0;
+        styleClassCounter = 34;
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 5_000_000_000l) {
                     styleClassCounter ++;
-                    if (styleClassCounter > 34) styleClassCounter = 0;
+                    if (styleClassCounter >= STYLE_CLASSES.length) {
+                        styleClassCounter = 0;
+                        control.setMainInnerShadowVisible(true);
+                        control.setForegroundShadowVisible(true);
+                        control.setCrystalOverlayVisible(true);
+                    }
                     control.getStyleClass().setAll("lcd", STYLE_CLASSES[styleClassCounter]);
                     control.setValue(RND.nextDouble() * 100);
                     control.setTrend(Lcd.Trend.values()[RND.nextInt(5)]);
@@ -130,6 +155,11 @@ public class Demo extends Application {
                     if (charge > 1.0) charge = 0.0;
                     control.setBatteryCharge(charge);
                     control.setSignalStrength(charge);
+                    if (styleClassCounter > 34) {
+                        control.setMainInnerShadowVisible(false);
+                        control.setForegroundShadowVisible(false);
+                        control.setCrystalOverlayVisible(false);
+                    }
                     lastTimerCall = now;
                 }
             }
