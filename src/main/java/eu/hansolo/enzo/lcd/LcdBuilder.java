@@ -106,6 +106,11 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
         return this;
     }
 
+    public final LcdBuilder noFrame(final boolean NO_FRAME) {
+        properties.put("noFrame", new SimpleBooleanProperty(NO_FRAME));
+        return this;
+    }
+
     public final LcdBuilder backgroundVisible(final boolean BACKGROUND_VISIBLE) {
         properties.put("backgroundVisible", new SimpleBooleanProperty(BACKGROUND_VISIBLE));
         return this;
@@ -397,6 +402,8 @@ public class LcdBuilder<B extends LcdBuilder<B>> {
                 CONTROL.setDecimals(((IntegerProperty) properties.get(key)).get());
             } else if ("keepAspect".equals(key)) {
                 CONTROL.setKeepAspect(((BooleanProperty) properties.get(key)).get());
+            } else if ("noFrame".equals(key)) {
+                CONTROL.setNoFrame(((BooleanProperty) properties.get(key)).get());
             } else if ("backgroundVisible".equals(key)) {
                 CONTROL.setBackgroundVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("crystalOverlayVisible".equals(key)) {

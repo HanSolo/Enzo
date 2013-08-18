@@ -62,7 +62,6 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     private double                     width;
     private double                     height;
     private Pane                       pane;
-    private Region                     frame;
     private Region                     main;
     private ImageView                  crystalOverlay;
     private Image                      crystalImage;
@@ -152,10 +151,6 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/digitalreadoutb.ttf"), (0.5833333333 * PREFERRED_HEIGHT)); // "Digital Readout Thick Upright"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/elektra.ttf"), (0.58333333 * PREFERRED_HEIGHT));           // "Elektra"
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), (0.58333333 * PREFERRED_HEIGHT)); // "OpenSans"
-
-        frame = new Region();
-        frame.getStyleClass().setAll("frame");
-        frame.setOpacity(getSkinnable().isBackgroundVisible() ? 1.0 : 0.0);
 
         main = new Region();
         main.getStyleClass().setAll("main");
@@ -274,8 +269,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
                                          lowerCenterText);
 
         pane = new Pane();
-        pane.getChildren().setAll(frame,
-                                  main,
+        pane.getChildren().setAll(main,
                                   crystalOverlay,
                                   backgroundText,
                                   shadowGroup);                                  
@@ -350,7 +344,6 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         } else if ("PREF_SIZE".equals(PROPERTY)) {
             aspectRatio = getSkinnable().getPrefHeight() / getSkinnable().getPrefWidth();
         } else if ("BACKGROUND_VISIBLE".equals(PROPERTY)) {
-            frame.setOpacity(getSkinnable().isBackgroundVisible() ? 1 : 0);
             main.setOpacity(getSkinnable().isBackgroundVisible() ? 1 : 0);
             crystalOverlay.setOpacity(getSkinnable().isBackgroundVisible() ? 1 : 0);
         } else if ("CRYSTAL_OVERLAY_VISIBLE".equals(PROPERTY)) {
@@ -663,7 +656,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         // Update the lower right text
         lowerRightText.setText(getSkinnable().isNumberSystemVisible() ? getSkinnable().getNumberSystem().toString() : getSkinnable().getLowerRightText());
         lowerRightText.setX(width - lowerRightText.getLayoutBounds().getWidth() - 0.0416666667 * height);
-        lowerRightText.setY(main.getLayoutY() + height - 1 - 0.0416666667 * height);
+        lowerRightText.setY(main.getLayoutY() + height - 3 - 0.0416666667 * height);
         if (lowerRightText.getX() < lowerCenterText.getX() + lowerCenterText.getLayoutBounds().getWidth()) {
             lowerRightText.setText("...");
             lowerRightText.setX(width - lowerRightText.getLayoutBounds().getWidth() - 0.0416666667 * height);
@@ -712,50 +705,46 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         }
 
         if (width > 0 && height > 0) {
-            frame.setPrefSize(width, height);
-
-            main.setPrefSize(width - 2.0, height - 2.0);
-            main.setTranslateX(1);
-            main.setTranslateY(1);
+            main.setPrefSize(width, height);
             mainInnerShadow0.setRadius(3.0 / 132.0 * height);
             mainInnerShadow1.setRadius(2.0 / 132.0 * height);
 
             if (crystalOverlay.isVisible()) {
-                mainClip.setScaleX(width / (PREFERRED_WIDTH - 2.0));
-                mainClip.setScaleY(height / (PREFERRED_HEIGHT - 2.0));
-                mainClip.setTranslateX((width - PREFERRED_WIDTH - 2) * 0.5);
-                mainClip.setTranslateY((height - PREFERRED_HEIGHT - 2) * 0.5);
+                mainClip.setScaleX(width / (PREFERRED_WIDTH));
+                mainClip.setScaleY(height / (PREFERRED_HEIGHT));
+                mainClip.setTranslateX((width - PREFERRED_WIDTH) * 0.5);
+                mainClip.setTranslateY((height - PREFERRED_HEIGHT) * 0.5);
                 crystalOverlay.setImage(createNoiseImage(width, height, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8));
                 crystalOverlay.setCache(true);
             }
 
             threshold.setPrefSize(0.20 * height, 0.20 * height);
             threshold.setTranslateX(0.027961994662429348 * width);
-            threshold.setTranslateY(0.75 * height);
+            threshold.setTranslateY(0.75 * height - 2);
 
             trendDown.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
             trendDown.setTranslateX(0.1439393939 * width);
-            trendDown.setTranslateY(0.8125 * height);
+            trendDown.setTranslateY(0.8125 * height - 2);
 
             trendFalling.setPrefSize(0.06982171896732214 * width, 0.13879903157552084 * height);
             trendFalling.setTranslateX(0.1439393939 * width);
-            trendFalling.setTranslateY(0.8061291376749674 * height);
+            trendFalling.setTranslateY(0.8061291376749674 * height - 2);
 
             trendSteady.setPrefSize(0.0676060878869259 * width, 0.1342292626698812 * height);
             trendSteady.setTranslateX(0.1439393939 * width);
-            trendSteady.setTranslateY(0.8078853289286295 * height);
+            trendSteady.setTranslateY(0.8078853289286295 * height - 2);
 
             trendRising.setPrefSize(0.06982171896732214 * width, 0.13879903157552084 * height);
             trendRising.setTranslateX(0.1439393939 * width);
-            trendRising.setTranslateY(0.8050718307495117 * height);
+            trendRising.setTranslateY(0.8050718307495117 * height - 2);
 
             trendUp.setPrefSize(0.06718573425755356 * width, 0.1333622932434082 * height);
             trendUp.setTranslateX(0.1439393939 * width);
-            trendUp.setTranslateY(0.8041377067565918 * height);
+            trendUp.setTranslateY(0.8041377067565918 * height - 2);
 
             battery.setPrefSize(0.0833333333 * width, 0.1458333333 * height);
             battery.setTranslateX(0.6439393939 * width);
-            battery.setTranslateY(0.81 * height);
+            battery.setTranslateY(0.81 * height - 2);
 
             signal.setPrefSize(0.0416666667 * height, 0.5 * height);
             signal.setTranslateX(0.0151515152 * width);
@@ -763,7 +752,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
 
             alarm.setPrefSize(0.1666666667 * height, 0.1666666667 * height);
             alarm.setTranslateX(0.2651515152 * width);
-            alarm.setTranslateY(0.7916666667 * height);
+            alarm.setTranslateY(0.7916666667 * height - 2);
 
             updateFonts();
 
@@ -808,7 +797,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             title.setTextAlignment(TextAlignment.CENTER);
             title.setText(getSkinnable().getTitle());
             title.setX((width - title.getLayoutBounds().getWidth()) * 0.5);
-            title.setY(main.getLayoutY() + title.getLayoutBounds().getHeight() - 0.04 * height);
+            title.setY(main.getLayoutY() + title.getLayoutBounds().getHeight() - 0.04 * height + 2);
 
             // Info Text
             lowerRightText.setFont(smallFont);
@@ -816,27 +805,27 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             lowerRightText.setTextAlignment(TextAlignment.RIGHT);
             lowerRightText.setText(getSkinnable().getNumberSystem().toString());
             lowerRightText.setX(main.getLayoutX() + (main.getLayoutBounds().getWidth() - lowerRightText.getLayoutBounds().getWidth()) * 0.5);
-            lowerRightText.setY(main.getLayoutY() + height - 1 - 0.0416666667 * height);
+            lowerRightText.setY(main.getLayoutY() + height - 3 - 0.0416666667 * height);
 
             // Min measured value
             upperLeftText.setFont(smallFont);
             upperLeftText.setTextOrigin(VPos.BASELINE);
             upperLeftText.setTextAlignment(TextAlignment.RIGHT);
             upperLeftText.setX(main.getLayoutX() + 0.0416666667 * height);
-            upperLeftText.setY(main.getLayoutY() + upperLeftText.getLayoutBounds().getHeight() - 0.04 * height);
+            upperLeftText.setY(main.getLayoutY() + upperLeftText.getLayoutBounds().getHeight() - 0.04 * height + 2);
 
             // Max measured value
             upperRightText.setFont(smallFont);
             upperRightText.setTextOrigin(VPos.BASELINE);
             upperRightText.setTextAlignment(TextAlignment.RIGHT);
-            upperRightText.setY(main.getLayoutY() + upperRightText.getLayoutBounds().getHeight() - 0.04 * height);
+            upperRightText.setY(main.getLayoutY() + upperRightText.getLayoutBounds().getHeight() - 0.04 * height + 2);
 
             // Former value
             lowerCenterText.setFont(smallFont);
             lowerCenterText.setTextOrigin(VPos.BASELINE);
             lowerCenterText.setTextAlignment(TextAlignment.CENTER);
             lowerCenterText.setX((width - lowerCenterText.getLayoutBounds().getWidth()) * 0.5);
-            lowerCenterText.setY(main.getLayoutY() + height - 1 - 0.0416666667 * height);
+            lowerCenterText.setY(main.getLayoutY() + height - 3 - 0.0416666667 * height);
         }
     }
 }
