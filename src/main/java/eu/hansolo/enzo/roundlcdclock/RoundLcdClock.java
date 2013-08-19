@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.lcdclock;/**
+package eu.hansolo.enzo.roundlcdclock;/**
  * Created by
  * User: hansolo
  * Date: 11.07.13
@@ -44,7 +44,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 
 
-public class LcdClock extends Region {
+public class RoundLcdClock extends Region {
     private static final double       PREFERRED_WIDTH  = 200;
     private static final double       PREFERRED_HEIGHT = 200;
     private static final double       MINIMUM_WIDTH    = 25;
@@ -80,7 +80,7 @@ public class LcdClock extends Region {
 
 
     // ******************** Constructors **************************************
-    public LcdClock() {
+    public RoundLcdClock() {
         hColor        = new SimpleObjectProperty<>(this, "hourColor", Color.BLACK);
         mColor        = new SimpleObjectProperty<>(this, "minuteColor", Color.rgb(0, 0, 0, 0.5));
         m5Color       = new SimpleObjectProperty<>(this, "5MinuteColor", Color.BLACK);

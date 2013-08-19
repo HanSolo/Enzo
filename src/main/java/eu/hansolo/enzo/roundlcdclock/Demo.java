@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.lcdclock;
+package eu.hansolo.enzo.roundlcdclock;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -33,10 +33,10 @@ import java.time.LocalTime;
  */
 
 public class Demo extends Application {
-    private LcdClock clock;
+    private RoundLcdClock clock;
 
     @Override public void init() {
-        clock = LcdClockBuilder.create()
+        clock = RoundLcdClockBuilder.create()
                                //.color(Color.CYAN)
                                //.hourColor(Color.LIME)
                                //.minuteColor(Color.AQUA)
@@ -60,7 +60,7 @@ public class Demo extends Application {
         Scene scene = new Scene(pane);
         //scene.setFullScreen(true);
 
-        stage.setTitle("LcdClock");
+        stage.setTitle("RoundLcdClock");
         stage.setScene(scene);
         stage.show();
     }

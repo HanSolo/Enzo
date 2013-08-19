@@ -237,7 +237,7 @@ public class Lcd extends Control {
     private BooleanProperty              batteryVisible;
     private boolean                      _signalVisible = false;
     private BooleanProperty              signalVisible;
-    private boolean                      _AlarmVisible = false;
+    private boolean                      _alarmVisible = false;
     private BooleanProperty              alarmVisible;
     private Transition                   toValueAnimation;
     private boolean                      toggleValue;
@@ -1170,18 +1170,18 @@ public class Lcd extends Control {
     }
 
     public final boolean isAlarmVisible() {
-        return null == alarmVisible ? _AlarmVisible : alarmVisible.get();
+        return null == alarmVisible ? _alarmVisible : alarmVisible.get();
     }
     public final void setAlarmVisible(final boolean ALARM_VISIBLE) {
         if (null == alarmVisible) {
-            _AlarmVisible = ALARM_VISIBLE;
+            _alarmVisible = ALARM_VISIBLE;
         } else {
             alarmVisible.set(ALARM_VISIBLE);
         }
     }
     public final BooleanProperty alarmVisibleProperty() {
         if (null == alarmVisible) {
-            alarmVisible = new SimpleBooleanProperty(this, "alarmVisible", _AlarmVisible);
+            alarmVisible = new SimpleBooleanProperty(this, "alarmVisible", _alarmVisible);
         }
         return alarmVisible;
     }

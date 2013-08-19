@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.lcdclock;
+package eu.hansolo.enzo.roundlcdclock;
 
 import javafx.event.Event;
 import javafx.event.EventTarget;

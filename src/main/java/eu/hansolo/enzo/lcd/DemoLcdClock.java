@@ -29,104 +29,88 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.Random;
 
-
-public class Demo extends Application {
-    private static final Random   RND = new Random();
+/**
+ * Created by
+ * User: hansolo
+ * Date: 19.08.13
+ * Time: 08:21
+ */
+public class DemoLcdClock extends Application {
     private static int            noOfNodes = 0;
     private static final String[] STYLE_CLASSES = {
-    "lcd-beige",
-    "lcd-blue",
-    "lcd-orange",
-    "lcd-red",
-    "lcd-yellow",
-    "lcd-white",
-    "lcd-gray",
-    "lcd-black",
-    "lcd-green",
-    "lcd-green-darkgreen",
-    "lcd-blue2",
-    "lcd-blue-black",
-    "lcd-blue-darkblue",
-    "lcd-blue-lightblue",
-    "lcd-blue-gray",
-    "lcd-standard",
-    "lcd-lightgreen",
-    "lcd-standard-green",
-    "lcd-blue-blue",
-    "lcd-red-darkred",
-    "lcd-darkblue",
-    "lcd-purple",
-    "lcd-black-red",
-    "lcd-darkgreen",
-    "lcd-amber",
-    "lcd-lightblue",
-    "lcd-green-black",
-    "lcd-yellow-black",
-    "lcd-black-yellow",
-    "lcd-lightgreen-black",
-    "lcd-darkpurple",
-    "lcd-darkamber",
-    "lcd-blue-lightblue2",
-    "lcd-gray-purple",
-    "lcd-sections",
-    "lcd-flat-turqoise",
-    "lcd-flat-gree-sea",
-    "lcd-flat-emerland",
-    "lcd-flat-nephritis",
-    "lcd-flat-peter-river",
-    "lcd-flat-belize-hole",
-    "lcd-flat-amethyst",
-    "lcd-flat-wisteria",
-    "lcd-flat-sunflower",
-    "lcd-flat-orange",
-    "lcd-flat-carrot",
-    "lcd-flat-pumpkin",
-    "lcd-flat-alizarin",
-    "lcd-flat-pomegranate",
-    "lcd-flat-clouds",
-    "lcd-flat-silver",
-    "lcd-flat-concrete",
-    "lcd-flat-asbestos",
-    "lcd-flat-wet-asphalt",
-    "lcd-flat-midnight-blue"
+        "lcd-beige",
+        "lcd-blue",
+        "lcd-orange",
+        "lcd-red",
+        "lcd-yellow",
+        "lcd-white",
+        "lcd-gray",
+        "lcd-black",
+        "lcd-green",
+        "lcd-green-darkgreen",
+        "lcd-blue2",
+        "lcd-blue-black",
+        "lcd-blue-darkblue",
+        "lcd-blue-lightblue",
+        "lcd-blue-gray",
+        "lcd-standard",
+        "lcd-lightgreen",
+        "lcd-standard-green",
+        "lcd-blue-blue",
+        "lcd-red-darkred",
+        "lcd-darkblue",
+        "lcd-purple",
+        "lcd-black-red",
+        "lcd-darkgreen",
+        "lcd-amber",
+        "lcd-lightblue",
+        "lcd-green-black",
+        "lcd-yellow-black",
+        "lcd-black-yellow",
+        "lcd-lightgreen-black",
+        "lcd-darkpurple",
+        "lcd-darkamber",
+        "lcd-blue-lightblue2",
+        "lcd-gray-purple",
+        "lcd-sections",
+        "lcd-flat-turqoise",
+        "lcd-flat-gree-sea",
+        "lcd-flat-emerland",
+        "lcd-flat-nephritis",
+        "lcd-flat-peter-river",
+        "lcd-flat-belize-hole",
+        "lcd-flat-amethyst",
+        "lcd-flat-wisteria",
+        "lcd-flat-sunflower",
+        "lcd-flat-orange",
+        "lcd-flat-carrot",
+        "lcd-flat-pumpkin",
+        "lcd-flat-alizarin",
+        "lcd-flat-pomegranate",
+        "lcd-flat-clouds",
+        "lcd-flat-silver",
+        "lcd-flat-concrete",
+        "lcd-flat-asbestos",
+        "lcd-flat-wet-asphalt",
+        "lcd-flat-midnight-blue"
     };
-    private Lcd                 control;
+    private LcdClock            control;
     private long                lastTimerCall;
-    private double              charge;
     private int                 styleClassCounter;
     private AnimationTimer      timer;
 
     @Override public void init() {
-        control = LcdBuilder.create()
-                            .prefWidth(1280)
+        control = LcdClockBuilder.create()
+                            .prefWidth(760)
                             .prefHeight(400)
+                            .title("Münster")
                             .styleClass(Lcd.STYLE_CLASS_YOCTOPUCE)
                             .foregroundShadowVisible(true)
                             .crystalOverlayVisible(true)
-                            .title("Room Temp")
-                            .batteryVisible(true)
-                            .signalVisible(true)
                             .alarmVisible(true)
-                            .unit("°C")
-                            .unitVisible(true)
-                            .decimals(2)
-                            .animationDurationInMs(1500)
-                            .minMeasuredValueDecimals(2)
-                            .minMeasuredValueVisible(true)
-                            .maxMeasuredValueDecimals(2)
-                            .maxMeasuredValueVisible(true)
-                            .formerValueVisible(true)
-                            .threshold(26)
-                            .thresholdVisible(true)
-                            .trendVisible(true)
-                            //.numberSystemVisible(false)
-                            .lowerRightTextVisible(true)
-                            .lowerRightText("Info")
-                            //.valueFont(Lcd.LcdFont.BUS)
-                            .valueFont(Lcd.LcdFont.LCD)
-                            .animated(true)
+                            .lowerLeftText("Info")
+                            .valueFont(LcdClock.LcdFont.LCD)
                             .build();
 
         control.addEventHandler(ValueEvent.VALUE_EXCEEDED, new EventHandler<ValueEvent>() {
@@ -135,8 +119,7 @@ public class Demo extends Application {
             }
         });
 
-        charge = 0.0;
-        styleClassCounter = 34;
+        styleClassCounter = 0;
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
@@ -148,13 +131,7 @@ public class Demo extends Application {
                         control.setForegroundShadowVisible(true);
                         control.setCrystalOverlayVisible(true);
                     }
-                    control.getStyleClass().setAll("lcd", STYLE_CLASSES[styleClassCounter]);
-                    control.setValue(RND.nextDouble() * 100);
-                    control.setTrend(Lcd.Trend.values()[RND.nextInt(5)]);
-                    charge += 0.02;
-                    if (charge > 1.0) charge = 0.0;
-                    control.setBatteryCharge(charge);
-                    control.setSignalStrength(charge);
+                    control.getStyleClass().setAll("lcd-clock", STYLE_CLASSES[styleClassCounter]);
                     if (styleClassCounter > 34) {
                         control.setMainInnerShadowVisible(false);
                         control.setForegroundShadowVisible(false);
@@ -204,5 +181,4 @@ public class Demo extends Application {
         }
     }
 }
-
 

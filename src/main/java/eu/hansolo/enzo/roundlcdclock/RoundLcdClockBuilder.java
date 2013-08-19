@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.lcdclock;
+package eu.hansolo.enzo.roundlcdclock;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -36,66 +36,66 @@ import java.util.HashMap;
  * Date: 11.07.13
  * Time: 09:21
  */
-public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
+public class RoundLcdClockBuilder<B extends RoundLcdClockBuilder<B>> {
     private HashMap<String, Property> properties = new HashMap<>();
 
 
     // ******************** Constructors **************************************
-    protected LcdClockBuilder() {
+    protected RoundLcdClockBuilder() {
     }
 
 
     // ******************** Methods *******************************************
-    public final static LcdClockBuilder create() {
-        return new LcdClockBuilder();
+    public final static RoundLcdClockBuilder create() {
+        return new RoundLcdClockBuilder();
     }
 
-    public final LcdClockBuilder color(final Color COLOR) {
+    public final RoundLcdClockBuilder color(final Color COLOR) {
         properties.put("color", new SimpleObjectProperty<>(COLOR));
         return this;
     }
 
-    public final LcdClockBuilder hourColor(final Color HOUR_COLOR) {
+    public final RoundLcdClockBuilder hourColor(final Color HOUR_COLOR) {
         properties.put("hourColor", new SimpleObjectProperty<>(HOUR_COLOR));
         return this;
     }
 
-    public final LcdClockBuilder minuteColor(final Color MINUTE_COLOR) {
+    public final RoundLcdClockBuilder minuteColor(final Color MINUTE_COLOR) {
         properties.put("minuteColor", new SimpleObjectProperty<>(MINUTE_COLOR));
         return this;
     }
 
-    public final LcdClockBuilder secondColor(final Color SECOND_COLOR) {
+    public final RoundLcdClockBuilder secondColor(final Color SECOND_COLOR) {
         properties.put("secondColor", new SimpleObjectProperty<>(SECOND_COLOR));
         return this;
     }
 
-    public final LcdClockBuilder timeColor(final Color TIME_COLOR) {
+    public final RoundLcdClockBuilder timeColor(final Color TIME_COLOR) {
         properties.put("timeColor", new SimpleObjectProperty<>(TIME_COLOR));
         return this;
     }
 
-    public final LcdClockBuilder dateColor(final Color DATE_COLOR) {
+    public final RoundLcdClockBuilder dateColor(final Color DATE_COLOR) {
         properties.put("dateColor", new SimpleObjectProperty<>(DATE_COLOR));
         return this;
     }
 
-    public final LcdClockBuilder alarmOn(final boolean ALARM_ON) {
+    public final RoundLcdClockBuilder alarmOn(final boolean ALARM_ON) {
         properties.put("alarmOn", new SimpleBooleanProperty(ALARM_ON));
         return this;
     }
 
-    public final LcdClockBuilder alarm(final LocalTime ALARM) {
+    public final RoundLcdClockBuilder alarm(final LocalTime ALARM) {
         properties.put("alarm", new SimpleObjectProperty<>(ALARM));
         return this;
     }
 
-    public final LcdClockBuilder alarmVisible(final boolean ALARM_VISIBLE) {
+    public final RoundLcdClockBuilder alarmVisible(final boolean ALARM_VISIBLE) {
         properties.put("alarmVisible", new SimpleBooleanProperty(ALARM_VISIBLE));
         return this;
     }
 
-    public final LcdClockBuilder dateVisible(final boolean DATE_VISIBLE) {
+    public final RoundLcdClockBuilder dateVisible(final boolean DATE_VISIBLE) {
         properties.put("dateVisible", new SimpleBooleanProperty(DATE_VISIBLE));
         return this;
     }
@@ -160,8 +160,8 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
     }
 
 
-    public final LcdClock build() {
-        final LcdClock CONTROL = new LcdClock();
+    public final RoundLcdClock build() {
+        final RoundLcdClock CONTROL = new RoundLcdClock();
         for (String key : properties.keySet()) {
             if ("prefSize".equals(key)) {
                 Dimension2D dim = ((ObjectProperty<Dimension2D>) properties.get(key)).get();
