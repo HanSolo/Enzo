@@ -13,96 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /******************************************************************************
- * SIMPLEGAUGE class                                                          *
+ * SIMPLE CANVAS CHART                                                        *
  *****************************************************************************/
-.simple-gauge {
-    -fx-skin           : "eu.hansolo.enzo.gauge.skin.SimpleGaugeSkin";
-    -needle            : #5a615f;
-    -value             : white;
-    -section-text      : white;
-    -section-fill-0    : #ffffff;
-    -section-fill-1    : #f3622d;
-    -section-fill-2    : #fba71b;
-    -section-fill-3    : #57b757;
-    -section-fill-4    : #41a9c9;
-    -section-fill-5    : #4258c9;
-    -section-fill-6    : #9a42c8;
-    -section-fill-7    : #c84164;
-    -section-fill-8    : #888888;
-    -section-fill-9    : #aaaaaa;
+.simple-line-chart {
+    -fx-skin           : "eu.hansolo.enzo.charts.skin.SimpleLineChartSkin";
+    -section-fill-0    : rgba(  0,   0, 178, 0.5);
+    -section-fill-1    : rgba(  0, 128, 255, 0.5);
+    -section-fill-2    : rgba(  0, 255, 255, 0.5);
+    -section-fill-3    : rgba(  0, 255,  64, 0.5);
+    -section-fill-4    : rgba(128, 255,   0, 0.5);
+    -section-fill-5    : rgba(255, 255,   0, 0.5);
+    -section-fill-6    : rgba(255, 191,   0, 0.5);
+    -section-fill-7    : rgba(255, 128,   0, 0.5);
+    -section-fill-8    : rgba(255,  64,   0, 0.5);
+    -section-fill-9    : rgba(255,   0,   0, 0.5);
 }
-
 
 /******************************************************************************
- * SIMPLEGAUGE needle                                                         *
- *****************************************************************************/
-.simple-gauge .needle {
-    -fx-fill            :-needle;
-    -fx-stroke          : white;
-    -fx-stroke-line-cap : round;
-    -fx-stroke-line-join: bevel;
-}
-
-
-/******************************************************************************
- * SIMPLEGAUGE value, section-text                                            *
- *****************************************************************************/
-.simple-gauge .value {
-    -fx-fill: -value;
-}
-
-.simple-gauge .section-text {
-    -fx-fill: -section-text;
-}
-
-
-/******************************************************************************
- * SIMPLEGAUGE sections                                                       *
- *****************************************************************************/
-.simple-gauge .section0 {
-    -fx-fill: -section-fill-0;
-}
-.simple-gauge .section1 {
-    -fx-fill: -section-fill-1;
-}
-.simple-gauge .section2 {
-    -fx-fill: -section-fill-2;
-}
-.simple-gauge .section3 {
-    -fx-fill: -section-fill-3;
-}
-.simple-gauge .section4 {
-    -fx-fill: -section-fill-4;
-}
-.simple-gauge .section5 {
-    -fx-fill: -section-fill-5;
-}
-.simple-gauge .section6 {
-    -fx-fill: -section-fill-6;
-}
-.simple-gauge .section7 {
-    -fx-fill: -section-fill-7;
-}
-.simple-gauge .section8 {
-    -fx-fill: -section-fill-8;
-}
-.simple-gauge .section9 {
-    -fx-fill: -section-fill-9;
-}
-
-
-/******************************************************************************
- * SIMPLEGAUGE color schemes                                                  *
+ * SIMPLE CANVAS CHART color schemes                                          *
  *****************************************************************************/
 /* for 5 sections */
 .blue-to-red-5 {
-    -section-fill-0: #203afb;
-    -section-fill-1: #23c8f6;
-    -section-fill-2: #29fa3d;
-    -section-fill-3: #fbeb37;
-    -section-fill-4: #fb4a1c;
+    -bullet-fill   : #8e44ad;
+    -series-stroke : white;
+    -section-fill-0: #2c3e50;
+    -section-fill-1: #3498db;
+    -section-fill-2: #2ecc71;
+    -section-fill-3: #f1c40f;
+    -section-fill-4: #c0392b;
 }
 
 /* for 6 sections */

@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.gauge;
 
+import eu.hansolo.enzo.common.Section;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;

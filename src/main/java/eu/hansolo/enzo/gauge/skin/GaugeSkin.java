@@ -18,8 +18,8 @@ package eu.hansolo.enzo.gauge.skin;
 
 import eu.hansolo.enzo.gauge.Gauge;
 import eu.hansolo.enzo.common.ValueEvent;
-import eu.hansolo.enzo.gauge.Marker;
-import eu.hansolo.enzo.gauge.Section;
+import eu.hansolo.enzo.common.Marker;
+import eu.hansolo.enzo.common.Section;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;

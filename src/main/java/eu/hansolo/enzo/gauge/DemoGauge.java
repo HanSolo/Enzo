@@ -16,6 +16,8 @@
 
 package eu.hansolo.enzo.gauge;
 
+import eu.hansolo.enzo.common.Marker;
+import eu.hansolo.enzo.common.Section;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -43,7 +45,7 @@ public class DemoGauge extends Application {
     private Gauge               control;
     private long                lastTimerCall;
     private AnimationTimer      timer;
-    private Marker              marker0;
+    private Marker marker0;
 
 
     @Override public void init() {

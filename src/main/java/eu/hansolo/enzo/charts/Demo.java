@@ -14,74 +14,72 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.gauge;
+package eu.hansolo.enzo.charts;
 
-import eu.hansolo.enzo.common.Marker;
 import eu.hansolo.enzo.common.Section;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.util.Random;
 
 
 /**
  * Created by
  * User: hansolo
- * Date: 17.07.13
- * Time: 08:27
+ * Date: 19.08.13
+ * Time: 15:07
  */
 
-public class DemoRadialBargraph extends Application {
-    private static final Random RND       = new Random();
-    private static int          noOfNodes = 0;
-    private RadialBargraph      control;
-    private long                lastTimerCall;
-    private AnimationTimer      timer;
-
+public class Demo extends Application {
+    private static int        noOfNodes = 0;
+    private SimpleLineChart chart;
 
     @Override public void init() {
-        control = RadialBargraphBuilder.create()
-                                       .title("Enzo")
-                                       .unit("°C")
-                                       .markers(new Marker(40))
-                                       .sections(new Section(60, 80))
-                                       .thresholdVisible(true)
-                                       .build();
+        XYChart.Series series = new XYChart.Series();
+        series.setName("temperature");
+        series.getData().add(new XYChart.Data(1, 23d));
+        series.getData().add(new XYChart.Data(2, 18d));
+        series.getData().add(new XYChart.Data(3, 15d));
+        series.getData().add(new XYChart.Data(4, 17d));
+        series.getData().add(new XYChart.Data(5, 20d));
+        series.getData().add(new XYChart.Data(6, 25d));
+        series.getData().add(new XYChart.Data(7, 28d));
+        series.getData().add(new XYChart.Data(8, 32d));
+        series.getData().add(new XYChart.Data(9, 30d));
+        series.getData().add(new XYChart.Data(10, 26d));
+        series.getData().add(new XYChart.Data(11, 24d));
+        series.getData().add(new XYChart.Data(12, 22d));
 
-        lastTimerCall = System.nanoTime() + 2_000_000_000l;
-        timer = new AnimationTimer() {
-            @Override public void handle(long now) {
-                if (now > lastTimerCall + 5_000_000_000l) {
-                    control.setValue(RND.nextDouble() * 100);
-                    lastTimerCall = now;
-                }
-            }
-        };
+        chart = new SimpleLineChart();
+        chart.setSections(new Section[]{
+            new Section(-40, -20),
+            new Section(-20, 0),
+            new Section(0, 20),
+            new Section(20, 30),
+            new Section(30, 40)
+        });
+        chart.getStyleClass().addAll(SimpleLineChart.STYLE_CLASS_BLUE_TO_RED_5);
+        chart.setSectionRangeVisible(true);
+        chart.setUnit("°C");
+        chart.setSeries(series);
     }
 
     @Override public void start(Stage stage) throws Exception {
         StackPane pane = new StackPane();
-        pane.setBackground(null);
         pane.setPadding(new Insets(5, 5, 5, 5));
-        pane.getChildren().addAll(control);
+        pane.getChildren().addAll(chart);
 
-        Scene scene = new Scene(pane, Color.WHITE);
-
+        Scene scene = new Scene(pane);
         //scene.setFullScreen(true);
 
-        stage.setTitle("RadialBargraph");
+        stage.setTitle("Demo SimpleLineChart");
         stage.setScene(scene);
         stage.show();
-
-        timer.start();
 
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes + " Nodes in SceneGraph");

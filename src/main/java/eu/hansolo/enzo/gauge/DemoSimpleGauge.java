@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.gauge;
 
+import eu.hansolo.enzo.common.Section;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -42,7 +43,7 @@ public class DemoSimpleGauge extends Application {
     private static int     noOfNodes = 0;
     private SimpleGauge    thermoMeter;
     private SimpleGauge    wattMeter;
-    private SimpleGauge energyMeter;
+    private SimpleGauge    energyMeter;
     private long           lastTimerCall;
     private AnimationTimer timer;
 

@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.gauge;
 
+import eu.hansolo.enzo.common.Section;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.collections.ObservableList;

@@ -122,7 +122,7 @@ public class DemoLcdClock extends Application {
             }
         });
 
-        styleClassCounter = 0;
+        styleClassCounter = 34;
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {

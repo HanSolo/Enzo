@@ -16,7 +16,7 @@
 
 package eu.hansolo.enzo.gauge.skin;
 
-import eu.hansolo.enzo.gauge.Section;
+import eu.hansolo.enzo.common.Section;
 import eu.hansolo.enzo.gauge.SimpleGauge;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -74,8 +74,8 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
     // ******************** Constructors **************************************
     public SimpleGaugeSkin(SimpleGauge gauge) {
         super(gauge);
-        angleStep         = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
-        timeline          = new Timeline();
+        angleStep = gauge.getAngleRange() / (gauge.getMaxValue() - gauge.getMinValue());
+        timeline  = new Timeline();
 
         init();
         initGraphics();

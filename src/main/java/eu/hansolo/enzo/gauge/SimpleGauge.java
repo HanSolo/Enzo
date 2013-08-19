@@ -17,6 +17,7 @@
 package eu.hansolo.enzo.gauge;
 
 import com.sun.javafx.css.converters.PaintConverter;
+import eu.hansolo.enzo.common.Section;
 import eu.hansolo.enzo.gauge.skin.SimpleGaugeSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -54,6 +55,7 @@ import java.util.List;
  * Time: 17:10
  */
 public class SimpleGauge extends Control {
+    public static final String      STYLE_CLASS_BLUE_TO_RED_5        = "blue-to-red-5";
     public static final String      STYLE_CLASS_GREEN_TO_DARKGREEN_6 = "green-to-darkgreen-6";
     public static final String      STYLE_CLASS_GREEN_TO_RED_6       = "green-to-red-6";
     public static final String      STYLE_CLASS_RED_TO_GREEN_6       = "red-to-green-6";

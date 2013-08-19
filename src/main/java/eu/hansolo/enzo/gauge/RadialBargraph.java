@@ -17,6 +17,8 @@
 package eu.hansolo.enzo.gauge;
 
 import com.sun.javafx.css.converters.PaintConverter;
+import eu.hansolo.enzo.common.Marker;
+import eu.hansolo.enzo.common.Section;
 import eu.hansolo.enzo.gauge.skin.RadialBargraphSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;

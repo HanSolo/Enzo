@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.gauge;
+package eu.hansolo.enzo.common;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -36,7 +36,7 @@ import javafx.scene.layout.Region;
  * Time: 08:12
  */
 public class Marker extends Region {
-    private double         _start;
+    private double         _value;
     private DoubleProperty value;
     private String         _text;
     private StringProperty text;
@@ -51,7 +51,7 @@ public class Marker extends Region {
         this(VALUE, "Marker");
     }
     public Marker(final double VALUE, final String TEXT) {
-        _start   = VALUE;
+        _value = VALUE;
         _text    = TEXT;
         exceeded = false;
     }
@@ -59,18 +59,18 @@ public class Marker extends Region {
 
     // ******************** Methods *******************************************
     public final double getValue() {
-        return null == value ? _start : value.get();
+        return null == value ? _value : value.get();
     }
     public final void setValue(final double START) {
         if (null == value) {
-            _start = START;
+            _value = START;
         } else {
             value.set(START);
         }
     }
     public final DoubleProperty startProperty() {
         if (null == value) {
-            value = new SimpleDoubleProperty(this, "value", _start);
+            value = new SimpleDoubleProperty(this, "value", _value);
         }
         return value;
     }

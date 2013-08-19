@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.gauge;
+package eu.hansolo.enzo.common;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
