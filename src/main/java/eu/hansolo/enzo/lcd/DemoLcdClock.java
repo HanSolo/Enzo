@@ -100,6 +100,7 @@ public class DemoLcdClock extends Application {
     private long           lastTimerCall;
     private int            styleClassCounter;
     private AnimationTimer timer;
+    private Commando       commando = new Commando();
 
     @Override public void init() {
         control = LcdClockBuilder.create()
@@ -111,7 +112,7 @@ public class DemoLcdClock extends Application {
                                  .crystalOverlayVisible(true)
                                  .timeFont(LcdClock.LcdFont.LCD)
                                  .alarms(new Alarm[]{
-                                     new Alarm(Alarm.Repetition.ONCE, LocalDateTime.now().plusSeconds(20), false, "20s after Start")
+                                     new Alarm(Alarm.Repetition.ONCE, LocalDateTime.now().plusSeconds(20), Alarm.ARMED, "20s after Start", commando)
                                  })
                                  .build();
 
@@ -180,6 +181,13 @@ public class DemoLcdClock extends Application {
                     //System.out.println(n.getStyleClass().toString());
                 }
             }
+        }
+    }
+
+
+    public class Commando implements Alarm.Command {
+        @Override public void execute() {
+            System.out.println("Now execute something triggered by the Alarm");
         }
     }
 }

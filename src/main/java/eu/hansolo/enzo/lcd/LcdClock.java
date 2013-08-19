@@ -169,7 +169,7 @@ public class LcdClock extends Control {
                 switch(alarm.getRepetition()) {
                     case ONCE:
                         if (getTime().isAfter(alarm.getTime())) {
-                            if (alarm.isActive()) {
+                            if (alarm.isArmed()) {
                                 fireEvent(new Alarm.AlarmEvent(alarm, this, this, Alarm.AlarmEvent.ALARM));
                                 alarm.executeCommand();
                             }
@@ -179,7 +179,7 @@ public class LcdClock extends Control {
                     case HOURLY:
                         if (alarm.getTime().getHour() == getTime().getMinute() &&
                             alarm.getTime().getMinute() == getTime().getSecond()) {
-                            if (alarm.isActive()) {
+                            if (alarm.isArmed()) {
                                 fireEvent(new Alarm.AlarmEvent(alarm, this, this, Alarm.AlarmEvent.ALARM));
                                 alarm.executeCommand();
                             }
@@ -189,7 +189,7 @@ public class LcdClock extends Control {
                         if (alarm.getTime().getHour() == getTime().getHour() &&
                             alarm.getTime().getMinute() == getTime().getMinute() &&
                             alarm.getTime().getSecond() == getTime().getSecond()) {
-                            if (alarm.isActive()) {
+                            if (alarm.isArmed()) {
                                 fireEvent(new Alarm.AlarmEvent(alarm, this, this, Alarm.AlarmEvent.ALARM));
                                 alarm.executeCommand();
                             }
@@ -200,7 +200,7 @@ public class LcdClock extends Control {
                             alarm.getTime().getHour() == getTime().getHour() &&
                             alarm.getTime().getMinute() == getTime().getMinute() &&
                             alarm.getTime().getSecond() == getTime().getSecond()) {
-                            if (alarm.isActive()) {
+                            if (alarm.isArmed()) {
                                 fireEvent(new Alarm.AlarmEvent(alarm, this, this, Alarm.AlarmEvent.ALARM));
                                 alarm.executeCommand();
                             }

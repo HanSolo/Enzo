@@ -37,10 +37,12 @@ public class Alarm {
         DAILY,
         WEEKLY
     }
+    public static final boolean ARMED   = true;
+    public static final boolean UNARMED = false;
 
     private Repetition    repetition;
     private LocalDateTime time;
-    private boolean       active;
+    private boolean       armed;
     private String        text;
     private Command       command;
 
@@ -52,16 +54,16 @@ public class Alarm {
     public Alarm(final Repetition REPETITION, final LocalDateTime TIME) {
         this(REPETITION, TIME, true);
     }
-    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ACTIVE) {
-        this(REPETITION, TIME, ACTIVE, "");
+    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ARMED) {
+        this(REPETITION, TIME, ARMED, "");
     }
-    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ACTIVE, final String TEXT) {
-        this(REPETITION, TIME, ACTIVE, TEXT, null);
+    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ARMED, final String TEXT) {
+        this(REPETITION, TIME, ARMED, TEXT, null);
     }
-    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ACTIVE, final String TEXT, final Command COMMAND) {
+    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ARMED, final String TEXT, final Command COMMAND) {
         repetition = REPETITION;
         time           = TIME;
-        active         = ACTIVE;
+        armed = ARMED;
         text           = TEXT;
         command        = COMMAND;
     }
@@ -76,11 +78,11 @@ public class Alarm {
         return time;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isArmed() {
+        return armed;
     }
-    public void setActive(final boolean ACTIVE) {
-        active = ACTIVE;
+    public void setArmed(final boolean ARMED) {
+        armed = ARMED;
     }
 
     public String getText() {

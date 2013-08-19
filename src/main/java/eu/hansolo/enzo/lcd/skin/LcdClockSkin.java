@@ -303,7 +303,7 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
     private boolean allAlarmsInactive() {
         boolean allAlarmsInactive = true;
         for (Alarm alarm : getSkinnable().getAlarms()) {
-            if (alarm.isActive()) {
+            if (alarm.isArmed()) {
                 allAlarmsInactive = false;
                 break;
             }
@@ -475,8 +475,8 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
             }
 
             alarm.setPrefSize(0.15 * height, 0.15 * height);
-            alarm.setTranslateX(main.getLayoutBounds().getMaxX() - alarm.getLayoutBounds().getWidth() - height * 0.05);
-            alarm.setTranslateY(height * 0.42 - alarm.getLayoutBounds().getHeight());
+            alarm.setTranslateX(width - alarm.getPrefWidth() - height * 0.05);
+            alarm.setTranslateY(height * 0.42 - alarm.getPrefHeight());
 
             updateFonts();
 
@@ -515,7 +515,7 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
             dateText.setTextOrigin(VPos.BASELINE);
             dateText.setTextAlignment(TextAlignment.RIGHT);
             dateText.setText(getSkinnable().getTime().getMonthValue() + "/" + getSkinnable().getTime().getDayOfMonth() + "/" + getSkinnable().getTime().getYear());
-            dateText.setX(main.getLayoutX() + (main.getLayoutBounds().getWidth() - dateText.getLayoutBounds().getWidth()) * 0.5);
+            dateText.setX(main.getLayoutX() + (width - dateText.getLayoutBounds().getWidth()) * 0.5);
             dateText.setY(main.getLayoutY() + height - 3 - 0.0416666667 * height);
 
             // Day of week
