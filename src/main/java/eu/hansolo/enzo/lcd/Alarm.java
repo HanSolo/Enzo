@@ -16,8 +16,11 @@
 
 package eu.hansolo.enzo.lcd;
 
-import java.time.Duration;
-import java.time.LocalTime;
+import javafx.event.Event;
+import javafx.event.EventTarget;
+import javafx.event.EventType;
+
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 
@@ -28,74 +31,48 @@ import java.time.temporal.ChronoUnit;
  * Time: 10:27
  */
 public class Alarm {
-    public static enum Interval {
+    public static enum Repetition {
         ONCE,
         HOURLY,
         DAILY,
-        MO_TO_FR,
-        SA_SU,
-        WEEKLY,
-        MONTHLY,
-        CUSTOM
+        WEEKLY
     }
 
-    private Interval  interval;
-    private LocalTime time;
-    private Duration  duration;
-    private boolean   active;
-    private String    text;
-    private Command   command;
+    private Repetition    repetition;
+    private LocalDateTime time;
+    private boolean       active;
+    private String        text;
+    private Command       command;
 
 
     // ******************** Constructors **************************************
     public Alarm() {
-        this(Interval.ONCE, LocalTime.now().plus(5, ChronoUnit.MINUTES));
+        this(Repetition.ONCE, LocalDateTime.now().plus(5, ChronoUnit.MINUTES));
     }
-    public Alarm(final Interval INTERVAL, final LocalTime TIME) {
-        this(INTERVAL, TIME, null);
+    public Alarm(final Repetition REPETITION, final LocalDateTime TIME) {
+        this(REPETITION, TIME, true);
     }
-    public Alarm(final Interval INTERVAL, final LocalTime TIME, final Command COMMAND) {
-        this(INTERVAL, TIME, COMMAND, false);
+    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ACTIVE) {
+        this(REPETITION, TIME, ACTIVE, "");
     }
-    public Alarm(final Interval INTERVAL, final LocalTime TIME, final Command COMMAND, final boolean ACTIVE) {
-        this(INTERVAL, TIME, COMMAND, ACTIVE, "");
+    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ACTIVE, final String TEXT) {
+        this(REPETITION, TIME, ACTIVE, TEXT, null);
     }
-    public Alarm(final Interval INTERVAL, final LocalTime TIME, final Command COMMAND, final boolean ACTIVE, final String TEXT) {
-        interval = INTERVAL;
-        time     = TIME;
-        command  = COMMAND;
-        active   = ACTIVE;
-        text     = TEXT;
-        init();
-    }
-
-
-    // ******************** Initialization ************************************
-    private void init() {
-        switch(interval) {
-            case HOURLY:
-                duration = Duration.ofHours(1l);
-                break;
-            case DAILY:
-                duration = Duration.ofDays(1l);
-                break;
-            case WEEKLY:
-                duration = Duration.ofDays(7l);
-                break;
-            default:
-            case ONCE:
-                duration = Duration.ofSeconds(0l);
-                break;
-        }
+    public Alarm(final Repetition REPETITION, final LocalDateTime TIME, final boolean ACTIVE, final String TEXT, final Command COMMAND) {
+        repetition = REPETITION;
+        time           = TIME;
+        active         = ACTIVE;
+        text           = TEXT;
+        command        = COMMAND;
     }
 
 
     // ******************** Methods *******************************************
-    public Interval getInterval() {
-        return interval;
+    public Repetition getRepetition() {
+        return repetition;
     }
 
-    public LocalTime getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
@@ -125,6 +102,22 @@ public class Alarm {
 
 
     // ******************** Internal Classes **********************************
+    public static class AlarmEvent extends Event {
+        public static final EventType<AlarmEvent> ALARM = new EventType(ANY, "ALARM");
+        private Alarm alarm;
+
+
+        // ******************** Constructors **************************************
+        public AlarmEvent(final Alarm ALARM, final Object SOURCE, final EventTarget TARGET, EventType<AlarmEvent> TYPE) {
+            super(SOURCE, TARGET, TYPE);
+            alarm = ALARM;
+        }
+
+        public Alarm getAlarm() {
+            return alarm;
+        }
+    }
+
     public interface Command {
         void execute();
     }

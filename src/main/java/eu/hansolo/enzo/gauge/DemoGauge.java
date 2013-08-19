@@ -80,11 +80,12 @@ public class DemoGauge extends Application {
         control.addMarker(marker0);
 
 
-        lastTimerCall = System.nanoTime() + 2_000_000_000l;
+        lastTimerCall = System.nanoTime() + 500_000_000l;
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
-                if (now > lastTimerCall + 5_000_000_000l) {
+                if (now > lastTimerCall + 2_000_000_000l) {
                     control.setValue(RND.nextDouble() * 100);
+                    System.out.println(control.getValue());
                     lastTimerCall = now;
                 }
             }

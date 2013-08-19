@@ -623,6 +623,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         if (getSkinnable().isAnimated()) {
             timeline.stop();
+            //double animationDuration = (getSkinnable().getAnimationDuration() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue())) * Math.abs(getSkinnable().getValue() - getSkinnable().getOldValue());
             final KeyValue KEY_VALUE = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
             final KeyFrame KEY_FRAME = new KeyFrame(Duration.millis(getSkinnable().getAnimationDuration()), KEY_VALUE);
             timeline.getKeyFrames().setAll(KEY_FRAME);

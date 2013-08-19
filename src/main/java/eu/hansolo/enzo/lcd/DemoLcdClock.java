@@ -16,7 +16,6 @@
 
 package eu.hansolo.enzo.lcd;
 
-import eu.hansolo.enzo.common.ValueEvent;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -28,6 +27,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -95,27 +96,28 @@ public class DemoLcdClock extends Application {
         "lcd-flat-wet-asphalt",
         "lcd-flat-midnight-blue"
     };
-    private LcdClock            control;
-    private long                lastTimerCall;
-    private int                 styleClassCounter;
-    private AnimationTimer      timer;
+    private LcdClock       control;
+    private long           lastTimerCall;
+    private int            styleClassCounter;
+    private AnimationTimer timer;
 
     @Override public void init() {
         control = LcdClockBuilder.create()
-                            .prefWidth(760)
-                            .prefHeight(400)
-                            .title("Münster")
-                            .styleClass(Lcd.STYLE_CLASS_YOCTOPUCE)
-                            .foregroundShadowVisible(true)
-                            .crystalOverlayVisible(true)
-                            .alarmVisible(true)
-                            .lowerLeftText("Info")
-                            .valueFont(LcdClock.LcdFont.LCD)
-                            .build();
+                                 .prefWidth(760)
+                                 .prefHeight(400)
+                                 .title("Münster")
+                                 .styleClass(LcdClock.STYLE_CLASS_YOCTOPUCE)
+                                 .foregroundShadowVisible(true)
+                                 .crystalOverlayVisible(true)
+                                 .timeFont(LcdClock.LcdFont.LCD)
+                                 .alarms(new Alarm[]{
+                                     new Alarm(Alarm.Repetition.ONCE, LocalDateTime.now().plusSeconds(20), false, "20s after Start")
+                                 })
+                                 .build();
 
-        control.addEventHandler(ValueEvent.VALUE_EXCEEDED, new EventHandler<ValueEvent>() {
-            @Override public void handle(ValueEvent valueEvent) {
-                System.out.println("exceeded");
+        control.addEventHandler(Alarm.AlarmEvent.ALARM, new EventHandler<Alarm.AlarmEvent>() {
+            @Override public void handle(Alarm.AlarmEvent alarmEvent) {
+                System.out.println("Alarm: " + alarmEvent.getAlarm().getText());
             }
         });
 

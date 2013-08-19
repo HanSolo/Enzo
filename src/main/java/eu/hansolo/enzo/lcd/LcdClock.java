@@ -34,7 +34,6 @@ import javafx.scene.control.Skin;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,8 +114,6 @@ public class LcdClock extends Control {
     private boolean                       keepAspect;
     private String                        _title = "";
     private StringProperty                title;
-    private String                        _secondFont = "Open Sans";
-    private StringProperty                secondFont;
     private String                        _titleFont = "Open Sans";
     private StringProperty                titleFont;
     private LcdFont                       _timeFont = LcdFont.LCD;
@@ -133,8 +130,6 @@ public class LcdClock extends Control {
     private BooleanProperty               foregroundShadowVisible;
     private ObservableList<Alarm>         alarms;
     private List<Alarm>                   alarmsToRemove;
-    private boolean                       _alarmVisible = false;
-    private BooleanProperty               alarmVisible;
     private ObjectProperty<Clock>         clock;
     private ObjectProperty<LocalDateTime> time;
     private long                          lastTimerCall;
@@ -156,6 +151,7 @@ public class LcdClock extends Control {
             @Override public void handle(final long NOW) {
                 if (NOW > lastTimerCall + 1_000_000_000l) {
                     time.set(LocalDateTime.now(clock.get()));
+                    lastTimerCall = NOW;
                 }
             }
         };
@@ -167,19 +163,53 @@ public class LcdClock extends Control {
 
     // ******************** Initialization ************************************
     private void init() {
-        timeProperty().addListener((ov, oldValue, newValue) -> {
+        timeProperty().addListener(observable -> {
             alarmsToRemove.clear();
             for (Alarm alarm : alarms) {
-                if (alarm.isActive()) {
-                    if (alarm.getTime().equals(LocalTime.now(clock.get()))) {
-                        // ALARM
-                    }
-                } else if (alarm.getTime().isAfter(LocalTime.now(clock.get()))) {
-                    alarmsToRemove.add(alarm);
+                switch(alarm.getRepetition()) {
+                    case ONCE:
+                        if (getTime().isAfter(alarm.getTime())) {
+                            if (alarm.isActive()) {
+                                fireEvent(new Alarm.AlarmEvent(alarm, this, this, Alarm.AlarmEvent.ALARM));
+                                alarm.executeCommand();
+                            }
+                            alarmsToRemove.add(alarm);
+                        }
+                        break;
+                    case HOURLY:
+                        if (alarm.getTime().getHour() == getTime().getMinute() &&
+                            alarm.getTime().getMinute() == getTime().getSecond()) {
+                            if (alarm.isActive()) {
+                                fireEvent(new Alarm.AlarmEvent(alarm, this, this, Alarm.AlarmEvent.ALARM));
+                                alarm.executeCommand();
+                            }
+                        }
+                        break;
+                    case DAILY:
+                        if (alarm.getTime().getHour() == getTime().getHour() &&
+                            alarm.getTime().getMinute() == getTime().getMinute() &&
+                            alarm.getTime().getSecond() == getTime().getSecond()) {
+                            if (alarm.isActive()) {
+                                fireEvent(new Alarm.AlarmEvent(alarm, this, this, Alarm.AlarmEvent.ALARM));
+                                alarm.executeCommand();
+                            }
+                        }
+                        break;
+                    case WEEKLY:
+                        if (alarm.getTime().getDayOfWeek() == getTime().getDayOfWeek() &&
+                            alarm.getTime().getHour() == getTime().getHour() &&
+                            alarm.getTime().getMinute() == getTime().getMinute() &&
+                            alarm.getTime().getSecond() == getTime().getSecond()) {
+                            if (alarm.isActive()) {
+                                fireEvent(new Alarm.AlarmEvent(alarm, this, this, Alarm.AlarmEvent.ALARM));
+                                alarm.executeCommand();
+                            }
+                        }
+                        break;
                 }
             }
             for (Alarm alarm : alarmsToRemove) {
-                alarms.remove(alarm);
+                removeAlarm(alarm);
             }
         });
     }
@@ -335,23 +365,6 @@ public class LcdClock extends Control {
         return titleFont;
     }
 
-    public final String getSecondFont() {
-        return null == secondFont ? _secondFont : secondFont.get();
-    }
-    public final void setSecondFont(final String SECOND_FONT) {
-        if (null == secondFont) {
-            _secondFont = SECOND_FONT;
-        } else {
-            secondFont.set(SECOND_FONT);
-        }
-    }
-    public final StringProperty secondFontProperty() {
-        if (null == secondFont) {
-            secondFont = new SimpleStringProperty(this, "secondFont", _secondFont);
-        }
-        return secondFont;
-    }
-
     public final LcdFont getTimeFont() {
         return null == timeFont ? _timeFont : timeFont.get();
     }
@@ -386,36 +399,19 @@ public class LcdClock extends Control {
         return smallFont;
     }
 
-    public final boolean isAlarmVisible() {
-        return null == alarmVisible ? _alarmVisible : alarmVisible.get();
-    }
-    public final void setAlarmVisible(final boolean ALARM_VISIBLE) {
-        if (null == alarmVisible) {
-            _alarmVisible = ALARM_VISIBLE;
-        } else {
-            alarmVisible.set(ALARM_VISIBLE);
-        }
-    }
-    public final BooleanProperty alarmVisibleProperty() {
-        if (null == alarmVisible) {
-            alarmVisible = new SimpleBooleanProperty(this, "alarmVisible", _alarmVisible);
-        }
-        return alarmVisible;
-    }
-
     public final ObservableList<Alarm> getAlarms() {
         return alarms;
     }
-    public final void setSections(final List<Alarm> ALARMS) {
+    public final void setAlarms(final List<Alarm> ALARMS) {
         alarms.setAll(ALARMS);
     }
-    public final void setSections(final Alarm... ALARMS) {
-        setSections(Arrays.asList(ALARMS));
+    public final void setAlarms(final Alarm... ALARMS) {
+        setAlarms(Arrays.asList(ALARMS));
     }
-    public final void addSection(final Alarm ALARM) {
+    public final void addAlarm(final Alarm ALARM) {
         if (!alarms.contains(ALARM)) alarms.add(ALARM);
     }
-    public final void removeSection(final Alarm ALARM) {
+    public final void removeAlarm(final Alarm ALARM) {
         if (alarms.contains(ALARM)) alarms.remove(ALARM);
     }
 

@@ -33,7 +33,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -65,7 +65,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     private Region                     main;
     private ImageView                  crystalOverlay;
     private Image                      crystalImage;
-    private SVGPath                    mainClip;
+    private Rectangle                  crystalClip;
     private InnerShadow                mainInnerShadow0;
     private InnerShadow                mainInnerShadow1;
     private Region                     threshold;
@@ -173,14 +173,13 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
 
         main.setEffect(getSkinnable().isMainInnerShadowVisible() ? mainInnerShadow1 : null);
 
-        mainClip = new SVGPath();
-        mainClip.setContent("M 1 5 C 1 3 3 1 5 1 C 5 1 127 1 127 1 C 129 1 131 3 131 5 " +
-                            "C 131 5 131 43 131 43 C 131 45 129 47 127 47 C 127 47 5 47 5 47 " +
-                            "C 3 47 1 45 1 43 C 1 43 1 5 1 5 Z");
+        crystalClip = new Rectangle(0, 0, width, height);
+        crystalClip.setArcWidth(5);
+        crystalClip.setArcHeight(5);
 
-        crystalImage = createNoiseImage(132, 48, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8);
+        crystalImage = createNoiseImage(PREFERRED_WIDTH, PREFERRED_HEIGHT, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8);
         crystalOverlay = new ImageView(crystalImage);
-        crystalOverlay.setClip(mainClip);
+        crystalOverlay.setClip(crystalClip);
         crystalOverlay.setOpacity(getSkinnable().isCrystalOverlayVisible() ? 1 : 0);
 
         threshold = new Region();
@@ -710,10 +709,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             mainInnerShadow1.setRadius(2.0 / 132.0 * height);
 
             if (crystalOverlay.isVisible()) {
-                mainClip.setScaleX(width / (PREFERRED_WIDTH));
-                mainClip.setScaleY(height / (PREFERRED_HEIGHT));
-                mainClip.setTranslateX((width - PREFERRED_WIDTH) * 0.5);
-                mainClip.setTranslateY((height - PREFERRED_HEIGHT) * 0.5);
+                crystalClip.setWidth(width);
+                crystalClip.setHeight(height);
                 crystalOverlay.setImage(createNoiseImage(width, height, DARK_NOISE_COLOR, BRIGHT_NOISE_COLOR, 8));
                 crystalOverlay.setCache(true);
             }

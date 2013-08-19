@@ -29,6 +29,7 @@ import javafx.geometry.Dimension2D;
 
 import java.time.Clock;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -90,28 +91,18 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
         return this;
     }
 
-    public final LcdClockBuilder lowerLeftText(final String LOWER_LEFT_TEXT) {
-        properties.put("lowerLeftText", new SimpleStringProperty(LOWER_LEFT_TEXT));
-        return this;
-    }
-
     public final LcdClockBuilder title(final String TITLE) {
         properties.put("title", new SimpleStringProperty(TITLE));
         return this;
     }
 
-    public final LcdClockBuilder titleVisible(final boolean TITLE_VISIBLE) {
-        properties.put("titleVisible", new SimpleBooleanProperty(TITLE_VISIBLE));
+    public final LcdClockBuilder alarms(final Alarm... ALARMS) {
+        properties.put("alarmsArray", new SimpleObjectProperty<>(ALARMS));
         return this;
     }
 
-    public final LcdClockBuilder lowerRightText(final String LOWER_RIGHT_TEXT) {
-        properties.put("lowerRightText", new SimpleStringProperty(LOWER_RIGHT_TEXT));
-        return this;
-    }
-
-    public final LcdClockBuilder alarmVisible(final boolean ALARM_VISIBLE) {
-        properties.put("alarmVisible", new SimpleBooleanProperty(ALARM_VISIBLE));
+    public final LcdClockBuilder alarms(final List<Alarm> ALARMS) {
+        properties.put("alarmsList", new SimpleObjectProperty<>(ALARMS));
         return this;
     }
 
@@ -120,13 +111,13 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
         return this;
     }
 
-    public final LcdClockBuilder unitFont(final String UNIT_FONT) {
-        properties.put("unitFont", new SimpleStringProperty(UNIT_FONT));
+    public final LcdClockBuilder secondFont(final String SECOND_FONT) {
+        properties.put("secondFont", new SimpleStringProperty(SECOND_FONT));
         return this;
     }
 
-    public final LcdClockBuilder valueFont(final LcdClock.LcdFont VALUE_FONT) {
-        properties.put("valueFont", new SimpleObjectProperty<LcdClock.LcdFont>(VALUE_FONT));
+    public final LcdClockBuilder timeFont(final LcdClock.LcdFont TIME_FONT) {
+        properties.put("timeFont", new SimpleObjectProperty<LcdClock.LcdFont>(TIME_FONT));
         return this;
     }
 
@@ -225,7 +216,7 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
             } else if ("translateY".equals(key)) {
                 CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
             } else if("styleClass".equals(key)) {
-                CONTROL.getStyleClass().setAll("lcd", ((StringProperty) properties.get(key)).get());
+                CONTROL.getStyleClass().setAll("lcd-clock", ((StringProperty) properties.get(key)).get());
             } else if ("keepAspect".equals(key)) {
                 CONTROL.setKeepAspect(((BooleanProperty) properties.get(key)).get());
             } else if ("noFrame".equals(key)) {
@@ -240,16 +231,16 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
                 CONTROL.setForegroundShadowVisible(((BooleanProperty) properties.get(key)).get());
             } else if("title".equals(key)) {
                 CONTROL.setTitle(((StringProperty) properties.get(key)).get());
-            } else if ("alarmVisible".equals(key)) {
-                CONTROL.setAlarmVisible(((BooleanProperty) properties.get(key)).get());
-            } else if ("secondFont".equals(key)) {
-                CONTROL.setSecondFont(((StringProperty) properties.get(key)).get());
             } else if ("titleFont".equals(key)) {
                 CONTROL.setTitleFont(((StringProperty) properties.get(key)).get());
             } else if ("timeFont".equals(key)) {
                 CONTROL.setTimeFont(((ObjectProperty<LcdClock.LcdFont>) properties.get(key)).get());
             } else if ("smallFont".equals(key)) {
                 CONTROL.setSmallFont(((StringProperty) properties.get(key)).get());
+            } else if("alarmsArray".equals(key)) {
+                CONTROL.setAlarms(((ObjectProperty<Alarm[]>) properties.get(key)).get());
+            } else if("alarmsList".equals(key)) {
+                CONTROL.setAlarms(((ObjectProperty<List<Alarm>>) properties.get(key)).get());
             }
         }
         return CONTROL;
