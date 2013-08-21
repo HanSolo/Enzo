@@ -50,7 +50,9 @@ public class DemoSimpleGauge extends Application {
     @Override public void init() {
         thermoMeter = SimpleGaugeBuilder.create()
                                         .prefSize(400, 400)
-                                        .sections(new Section(0, 16.66666, "0"),
+                                        .minValue(-20)
+                                        .maxValue(100)
+                                        .sections(new Section(-20, 16.66666, "0"),
                                                   new Section(16.66666, 33.33333, "1"),
                                                   new Section(33.33333, 50.0, "2"),
                                                   new Section(50.0, 66.66666, "3"),
@@ -93,7 +95,8 @@ public class DemoSimpleGauge extends Application {
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 5_000_000_000l) {
-                    thermoMeter.setValue(RND.nextDouble() * 100);
+                    //thermoMeter.setValue(RND.nextDouble() * 100);
+                    System.out.println("Value: " + thermoMeter.getValue());
                     wattMeter.setValue(RND.nextDouble() * 100);
                     energyMeter.setValue(RND.nextDouble() * 100);
                     lastTimerCall = now;
@@ -116,6 +119,7 @@ public class DemoSimpleGauge extends Application {
         stage.show();
 
         wattMeter.setValue(50);
+        thermoMeter.setValue(60);
 
         timer.start();
 

@@ -80,13 +80,10 @@ public class SimpleGauge extends Control {
     private static final Color      DEFAULT_SECTION_FILL_8           = Color.web("#888888");
     private static final Color      DEFAULT_SECTION_FILL_9           = Color.web("#aaaaaa");
 
-    private double                  _value;
     private DoubleProperty          value;
-    private double                  _oldValue;
-    private double                  _minValue;
+    private double                  oldValue;
     private DoubleProperty          minValue;
     private double                  exactMinValue;
-    private double                  _maxValue;
     private DoubleProperty          maxValue;
     private double                  exactMaxValue;
     private int                     _decimals;
@@ -132,10 +129,10 @@ public class SimpleGauge extends Control {
     // ******************** Constructors **************************************
     public SimpleGauge() {
         getStyleClass().add("simple-gauge");
-        _value              = 0;
-        _oldValue           = 0;
-        _minValue           = 0;
-        _maxValue           = 100;
+        value               = new SimpleDoubleProperty(this, "value", 0);
+        minValue            = new SimpleDoubleProperty(this, "minValue", 0);
+        maxValue            = new SimpleDoubleProperty(this, "maxValue", 100);
+        oldValue            = 0;
         _decimals           = 0;
         _unit               = "";
         _animated           = true;
@@ -154,61 +151,39 @@ public class SimpleGauge extends Control {
 
     // ******************** Methods *******************************************
     public final double getValue() {
-        return null == value ? _value : value.get();
+        return value.get();
     }
     public final void setValue(final double VALUE) {
-        if (null == value) {
-            _oldValue = _value;
-            _value    = clamp(getMinValue(), getMaxValue(), VALUE);
-        } else {
-            _oldValue = value.get();
-            value.set(clamp(getMinValue(), getMaxValue(), VALUE));
-        }
+        oldValue = value.get();
+        value.set(clamp(getMinValue(), getMaxValue(), VALUE));
     }
     public final ReadOnlyDoubleProperty valueProperty() {
-        if (null == value) {
-            value = new SimpleDoubleProperty(this, "value", _value);
-        }
         return value;
     }
 
     public final double getOldValue() {
-        return _oldValue;
+        return oldValue;
     }
 
     public final double getMinValue() {
-        return null == minValue ? _minValue : minValue.get();
+        return minValue.get();
     }
     public final void setMinValue(final double MIN_VALUE) {
-        if (null == minValue) {
-            _minValue = clamp(Double.MIN_VALUE, _maxValue, MIN_VALUE);
-        } else {
-            minValue.set(clamp(Double.MIN_VALUE, getMaxValue(), MIN_VALUE));
-        }
+        minValue.set(clamp(Double.NEGATIVE_INFINITY, getMaxValue(), MIN_VALUE));
         validate();
     }
     public final DoubleProperty minValueProperty() {
-        if (null == minValue) {
-            minValue = new SimpleDoubleProperty(this, "minValue", _minValue);
-        }
         return minValue;
     }
 
     public final double getMaxValue() {
-        return null == maxValue ? _maxValue : maxValue.get();
+        return maxValue.get();
     }
     public final void setMaxValue(final double MAX_VALUE) {
-        if (null == maxValue) {
-            _maxValue = clamp(getMinValue(), Double.MAX_VALUE, MAX_VALUE);
-        } else {
-            maxValue.set(clamp(getMinValue(), Double.MAX_VALUE, MAX_VALUE));
-        }
+        maxValue.set(clamp(getMinValue(), Double.POSITIVE_INFINITY, MAX_VALUE));
         validate();
     }
     public final DoubleProperty maxValueProperty() {
-        if (null == maxValue) {
-            maxValue = new SimpleDoubleProperty(this, "maxValue", _maxValue);
-        }
         return maxValue;
     }
 
@@ -518,12 +493,14 @@ public class SimpleGauge extends Control {
     private void validate() {
         if (getValue() < getMinValue()) setValue(getMinValue());
         if (getValue() > getMaxValue()) setValue(getMaxValue());
+        /*
         for (Section section : sections) {
             if (section.getStart() < getMinValue()) section.setStart(getMinValue());
             if (section.getStart() > getMaxValue()) section.setStart(getMaxValue());
             if (section.getStop() < getMinValue()) section.setStop(getMinValue());
             if (section.getStop() > getMaxValue()) section.setStop(getMaxValue());
         }
+        */
     }
 
 

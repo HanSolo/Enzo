@@ -69,7 +69,7 @@ public class SimpleLineChart extends Control {
     private static final double               MAXIMUM_HEIGHT         = 1024;
     
     // CSS styleable properties
-    private static final Color                DEFAULT_BULLET_FILL    = Color.web("#8e44ad");
+    private static final Color                DEFAULT_BULLET_FILL    = Color.web("#5a615f");
     private static final Color                DEFAULT_SERIES_STROKE  = Color.web("#ffffff");
     private static final Color                DEFAULT_SECTION_FILL_0 = Color.web("#f3622d");
     private static final Color                DEFAULT_SECTION_FILL_1 = Color.web("#fba71b");

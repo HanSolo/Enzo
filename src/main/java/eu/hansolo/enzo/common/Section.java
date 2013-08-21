@@ -155,9 +155,9 @@ public class Section {
     @Override public String toString() {
         final StringBuilder NAME = new StringBuilder();
         NAME.append("Section: ").append("\n");
-        NAME.append("text      : ").append(text.get()).append("\n");
-        NAME.append("startValue: ").append(start.get()).append("\n");
-        NAME.append("stopValue : ").append(stop.get()).append("\n");
+        NAME.append("text      : ").append(getText()).append("\n");
+        NAME.append("startValue: ").append(getStart()).append("\n");
+        NAME.append("stopValue : ").append(getStop()).append("\n");
         return NAME.toString();
     }
 

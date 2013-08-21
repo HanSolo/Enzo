@@ -110,7 +110,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         sectionsCtx    = sectionsCanvas.getGraphicsContext2D();
 
         needleRotate = new Rotate(180 - getSkinnable().getStartAngle());
-        needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue()) * angleStep);
+        needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() - getSkinnable().getMinValue()) * angleStep);
 
         needle = new Path();
         needle.setFillRule(FillRule.EVEN_ODD);
@@ -157,9 +157,10 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             rotateNeedle();
         } else if ("RECALC".equals(PROPERTY)) {
             angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+            needleRotate.setAngle(180 - getSkinnable().getStartAngle() - (getSkinnable().getMinValue()) * angleStep);
             resize();
         } else if ("ANGLE".equals(PROPERTY)) {
-            double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep;
+            double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
             value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue) + getSkinnable().getUnit());
             value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
         }
@@ -214,14 +215,25 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
     private final void drawSections() {
         sectionsCtx.clearRect(0, 0, size, size);
         final double MIN_VALUE   = getSkinnable().getMinValue();
+        final double MAX_VALUE   = getSkinnable().getMaxValue();
         final double OFFSET      = getSkinnable().getStartAngle() - 90;
         final int NO_OF_SECTIONS = getSkinnable().getSections().size();
         double sinValue;
         double cosValue;
         for (int i = 0 ; i < NO_OF_SECTIONS ; i++) {
-            final Section SECTION              = getSkinnable().getSections().get(i);
-            final double  SECTION_START_ANGLE  = (SECTION.getStart() - MIN_VALUE) * angleStep;
-            final double  SECTION_ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
+            final Section SECTION = getSkinnable().getSections().get(i);
+            final double SECTION_START_ANGLE;
+            if (SECTION.getStart() < MIN_VALUE) {
+                SECTION_START_ANGLE = MIN_VALUE * angleStep;
+            } else {
+                SECTION_START_ANGLE = (SECTION.getStart() - MIN_VALUE) * angleStep;
+            }
+            final double SECTION_ANGLE_EXTEND;
+            if (SECTION.getStop() > MAX_VALUE) {
+                SECTION_ANGLE_EXTEND = MAX_VALUE * angleStep;
+            } else {
+                SECTION_ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
+            }
             sectionsCtx.save();
             switch(i) {
                 case 0: sectionsCtx.setFill(getSkinnable().getSectionFill0()); break;

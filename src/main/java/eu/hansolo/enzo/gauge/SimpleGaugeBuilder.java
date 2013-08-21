@@ -59,6 +59,16 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
         return this;
     }
 
+    public final SimpleGaugeBuilder minValue(final double MIN_VALUE) {
+        properties.put("minValue", new SimpleDoubleProperty(MIN_VALUE));
+        return this;
+    }
+
+    public final SimpleGaugeBuilder maxValue(final double MAX_VALUE) {
+        properties.put("maxValue", new SimpleDoubleProperty(MAX_VALUE));
+        return this;
+    }
+
     public final SimpleGaugeBuilder threshold(final double THRESHOLD) {
         properties.put("threshold", new SimpleDoubleProperty(THRESHOLD));
         return this;
