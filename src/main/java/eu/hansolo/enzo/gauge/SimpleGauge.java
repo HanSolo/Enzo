@@ -56,6 +56,7 @@ import java.util.List;
  */
 public class SimpleGauge extends Control {
     public static final String      STYLE_CLASS_BLUE_TO_RED_5        = "blue-to-red-5";
+    public static final String      STYLE_CLASS_RED_TO_BLUE_5        = "red-to-blue-5";
     public static final String      STYLE_CLASS_GREEN_TO_DARKGREEN_6 = "green-to-darkgreen-6";
     public static final String      STYLE_CLASS_GREEN_TO_RED_6       = "green-to-red-6";
     public static final String      STYLE_CLASS_RED_TO_GREEN_6       = "red-to-green-6";

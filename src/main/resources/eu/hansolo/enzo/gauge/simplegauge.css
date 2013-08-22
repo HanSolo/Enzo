@@ -98,12 +98,20 @@
  *****************************************************************************/
 /* for 5 sections */
 .blue-to-red-5 {
-    -section-fill-0: #203afb;
-    -section-fill-1: #23c8f6;
+    -section-fill-0: #2976fa;
+    -section-fill-1: #29c0fa;
     -section-fill-2: #29fa3d;
-    -section-fill-3: #fbeb37;
-    -section-fill-4: #fb4a1c;
+    -section-fill-3: #ffd82a;
+    -section-fill-4: #ff312a;
 }
+.red-to-blue-5 {
+    -section-fill-0: #ff312a;
+    -section-fill-1: #ffd82a;
+    -section-fill-2: #29fa3d;
+    -section-fill-3: #29c0fa;
+    -section-fill-4: #2976fa;
+}
+
 
 /* for 6 sections */
 .green-to-darkgreen-6 {

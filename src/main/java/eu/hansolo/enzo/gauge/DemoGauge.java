@@ -53,7 +53,9 @@ public class DemoGauge extends Application {
                               .prefSize(700, 700)
                               .startAngle(330)
                               .angleRange(300)
-                              .sections(new Section(40, 60),
+                              .minValue(0)
+                              .maxValue(100)
+                              .sections(new Section(0, 60),
                                         new Section(60, 80),
                                         new Section(80, 100))
                               .majorTickSpace(20)

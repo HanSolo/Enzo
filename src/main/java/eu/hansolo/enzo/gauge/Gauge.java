@@ -123,13 +123,10 @@ public class Gauge extends Control {
 
     private BooleanProperty                      interactive;
 
-    private double                               _value;
     private DoubleProperty                       value;
-    private double                               _oldValue;
-    private double                               _minValue;
+    private double                               oldValue;
     private DoubleProperty                       minValue;
     private double                               exactMinValue;
-    private double                               _maxValue;
     private DoubleProperty                       maxValue;
     private double                               exactMaxValue;
     private double                               _threshold;
@@ -210,10 +207,10 @@ public class Gauge extends Control {
     // ******************** Constructors **************************************
     public Gauge() {
         getStyleClass().add("gauge");
-        _value                   = 0;
-        _oldValue                = 0;
-        _minValue                = 0;
-        _maxValue                = 100;
+        value                    = new SimpleDoubleProperty(this, "value", 0);
+        minValue                 = new SimpleDoubleProperty(this, "minValue", 0);
+        maxValue                 = new SimpleDoubleProperty(this, "maxValue", 100);
+        oldValue                 = 0;
         _threshold               = 50;
         _thresholdVisible        = false;
         _minMeasuredValue        = 100;
@@ -247,62 +244,40 @@ public class Gauge extends Control {
 
     // ******************** Methods *******************************************
     public final double getValue() {
-        return null == value ? _value : value.get();
+        return value.get();
     }
     public final void setValue(final double VALUE) {
         if (isInteractive()) return;
-        if (null == value) {
-            _oldValue = _value;
-            _value = clamp(_minValue, _maxValue, VALUE);
-        } else {
-            _oldValue = value.get();
-            value.set(clamp(getMinValue(), getMaxValue(), VALUE));
-        }
+        oldValue = value.get();
+        value.set(clamp(getMinValue(), getMaxValue(), VALUE));
     }
     public final ReadOnlyDoubleProperty valueProperty() {
-        if (null == value) {
-            value = new SimpleDoubleProperty(this, "value", _value);
-        }
         return value;
     }
 
     public final double getOldValue() {
-        return _oldValue;
+        return oldValue;
     }
 
     public final double getMinValue() {
-        return null == minValue ? _minValue : minValue.get();
+        return minValue.get();
     }
     public final void setMinValue(final double MIN_VALUE) {
-        if (null == minValue) {
-            _minValue = clamp(Double.MIN_VALUE, _maxValue, MIN_VALUE);
-        } else {
-            minValue.set(clamp(Double.MIN_VALUE, getMaxValue(), MIN_VALUE));
-        }
+        minValue.set(clamp(Double.NEGATIVE_INFINITY, getMaxValue(), MIN_VALUE));
         validate();
     }
     public final DoubleProperty minValueProperty() {
-        if (null == minValue) {
-            minValue = new SimpleDoubleProperty(this, "minValue", _minValue);
-        }
         return minValue;
     }
 
     public final double getMaxValue() {
-        return null == maxValue ? _maxValue : maxValue.get();
+        return maxValue.get();
     }
     public final void setMaxValue(final double MAX_VALUE) {
-        if (null == maxValue) {
-            _maxValue = clamp(getMinValue(), Double.MAX_VALUE, MAX_VALUE);
-        } else {
-            maxValue.set(clamp(getMinValue(), Double.MAX_VALUE, MAX_VALUE));
-        }
+        maxValue.set(clamp(getMinValue(), Double.POSITIVE_INFINITY, MAX_VALUE));
         validate();
     }
     public final DoubleProperty maxValueProperty() {
-        if (null == maxValue) {
-            maxValue = new SimpleDoubleProperty(this, "maxValue", _maxValue);
-        }
         return maxValue;
     }
 
@@ -358,14 +333,14 @@ public class Gauge extends Control {
     }
 
     public void resetMinMeasuredValue() {
-        setMinMeasuredValue(_value);
+        setMinMeasuredValue(getValue());
     }
     public void resetMaxMeasuredValue() {
-        setMaxMeasuredValue(_value);
+        setMaxMeasuredValue(getValue());
     }
     public void resetMinAndMaxMeasuredValue() {
-        setMinMeasuredValue(_value);
-        setMaxMeasuredValue(_value);
+        setMinMeasuredValue(getValue());
+        setMaxMeasuredValue(getValue());
     }
 
     public final int getDecimals() {

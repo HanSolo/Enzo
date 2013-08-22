@@ -54,21 +54,21 @@ import java.util.Locale;
  * Time: 17:18
  */
 public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<SimpleGauge> {
-    private static final double      PREFERRED_WIDTH  = 200;
-    private static final double      PREFERRED_HEIGHT = 200;
-    private static final double      MINIMUM_WIDTH    = 50;
-    private static final double      MINIMUM_HEIGHT   = 50;
-    private static final double      MAXIMUM_WIDTH    = 1024;
-    private static final double      MAXIMUM_HEIGHT   = 1024;
-    private double                   size;
-    private Pane                     pane;
-    private Canvas                   sectionsCanvas;
-    private GraphicsContext          sectionsCtx;
-    private Path                     needle;
-    private Rotate                   needleRotate;
-    private Text                     value;
-    private double                   angleStep;
-    private Timeline                 timeline;
+    private static final double PREFERRED_WIDTH  = 200;
+    private static final double PREFERRED_HEIGHT = 200;
+    private static final double MINIMUM_WIDTH    = 50;
+    private static final double MINIMUM_HEIGHT   = 50;
+    private static final double MAXIMUM_WIDTH    = 1024;
+    private static final double MAXIMUM_HEIGHT   = 1024;
+    private double              size;
+    private Pane                pane;
+    private Canvas              sectionsCanvas;
+    private GraphicsContext     sectionsCtx;
+    private Path                needle;
+    private Rotate              needleRotate;
+    private Text                value;
+    private double              angleStep;
+    private Timeline            timeline;
 
 
     // ******************** Constructors **************************************

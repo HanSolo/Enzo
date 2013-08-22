@@ -184,21 +184,21 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
 
         minMeasuredValue = new Region();
         minMeasuredValue.getStyleClass().setAll("min-measured-value");
-        minMeasuredValueRotate = new Rotate(180 - getSkinnable().getStartAngle());
+        minMeasuredValueRotate = new Rotate(180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
         minMeasuredValue.getTransforms().setAll(minMeasuredValueRotate);
         minMeasuredValue.setOpacity(getSkinnable().isMinMeasuredValueVisible() ? 1 : 0);
         minMeasuredValue.setManaged(getSkinnable().isMinMeasuredValueVisible());
 
         maxMeasuredValue = new Region();
         maxMeasuredValue.getStyleClass().setAll("max-measured-value");
-        maxMeasuredValueRotate = new Rotate(180 - getSkinnable().getStartAngle());
+        maxMeasuredValueRotate = new Rotate(180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
         maxMeasuredValue.getTransforms().setAll(maxMeasuredValueRotate);
         maxMeasuredValue.setOpacity(getSkinnable().isMaxMeasuredValueVisible() ? 1 : 0);
         maxMeasuredValue.setManaged(getSkinnable().isMaxMeasuredValueVisible());
 
         threshold = new Region();
         threshold.getStyleClass().setAll("threshold");
-        thresholdRotate = new Rotate(180 - getSkinnable().getStartAngle());
+        thresholdRotate = new Rotate(180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
         threshold.getTransforms().setAll(thresholdRotate);
         threshold.setOpacity(getSkinnable().isThresholdVisible() ? 1 : 0);
         threshold.setManaged(getSkinnable().isThresholdVisible());
@@ -207,6 +207,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         needle = new Region();
         needle.getStyleClass().setAll(Gauge.STYLE_CLASS_NEEDLE_STANDARD);
         needleRotate = new Rotate(180 - getSkinnable().getStartAngle());
+        needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() - getSkinnable().getMinValue()) * angleStep);
         needle.getTransforms().setAll(needleRotate);
 
         needleHighlight = new Region();
@@ -236,7 +237,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         unit.setTextOrigin(VPos.CENTER);
         unit.getStyleClass().setAll("unit");
 
-        value = new Text(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
+        value = new Text(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getValue()));
         value.setMouseTransparent(true);
         value.setTextOrigin(VPos.CENTER);
         value.getStyleClass().setAll("value");
@@ -329,11 +330,12 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             rotateNeedle();
         } else if ("RECALC".equals(PROPERTY)) {
             angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+            needleRotate.setAngle(180 - getSkinnable().getStartAngle() - (getSkinnable().getMinValue()) * angleStep);
             resize();
         } else if ("ANGLE".equals(PROPERTY)) {
             if (getSkinnable().isInteractive()) return;
 
-            double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep;
+            double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
             value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue));
             value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
             // Check threshold
@@ -365,11 +367,11 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             // Check min- and maxMeasuredValue
             if (currentValue < getSkinnable().getMinMeasuredValue()) {
                 getSkinnable().setMinMeasuredValue(currentValue);
-                minMeasuredValueRotate.setAngle(currentValue * angleStep - 180 - getSkinnable().getStartAngle());
+                minMeasuredValueRotate.setAngle(currentValue * angleStep - 180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
             }
             if (currentValue > getSkinnable().getMaxMeasuredValue()) {
                 getSkinnable().setMaxMeasuredValue(currentValue);
-                maxMeasuredValueRotate.setAngle(currentValue * angleStep - 180 - getSkinnable().getStartAngle());
+                maxMeasuredValueRotate.setAngle(currentValue * angleStep - 180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
             }
         } else if ("PLAIN_VALUE".equals(PROPERTY)) {
             value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);
@@ -576,8 +578,8 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         double theta     = getTheta(X, Y);
         interactiveAngle = (theta + 90) % 360;
         double newValue  = Double.compare(interactiveAngle, 180) <= 0 ?
-                           (interactiveAngle + 180.0 + getSkinnable().getStartAngle() - 360) / angleStep :
-                           (interactiveAngle - 180.0 + getSkinnable().getStartAngle() - 360) / angleStep;
+                           (interactiveAngle + 180.0 + getSkinnable().getStartAngle() - 360) / angleStep + getSkinnable().getMinValue():
+                           (interactiveAngle - 180.0 + getSkinnable().getStartAngle() - 360) / angleStep + getSkinnable().getMinValue();
         if (Double.compare(newValue, getSkinnable().getMinValue()) >= 0 && Double.compare(newValue, getSkinnable().getMaxValue()) <= 0) {
             ROTATE.setAngle(interactiveAngle);
             value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", newValue));
@@ -752,7 +754,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             marker.relocate((size - marker.getPrefWidth()) * 0.5, size * 0.04);
             getSkinnable().getMarkers().get(marker).setPivotX(marker.getPrefWidth() * 0.5);
             getSkinnable().getMarkers().get(marker).setPivotY(size * 0.46);
-            getSkinnable().getMarkers().get(marker).setAngle(marker.getValue() * angleStep - 180 - getSkinnable().getStartAngle());
+            getSkinnable().getMarkers().get(marker).setAngle(marker.getValue() * angleStep - 180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
         }
     }
 
@@ -799,19 +801,19 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         minMeasuredValue.relocate((size - minMeasuredValue.getPrefWidth()) * 0.5, size * 0.11);
         minMeasuredValueRotate.setPivotX(minMeasuredValue.getPrefWidth() * 0.5);
         minMeasuredValueRotate.setPivotY(size * 0.39);
-        minMeasuredValueRotate.setAngle(getSkinnable().getMinMeasuredValue() * angleStep - 180 - getSkinnable().getStartAngle());
+        minMeasuredValueRotate.setAngle(getSkinnable().getMinMeasuredValue() * angleStep - 180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
 
         maxMeasuredValue.setPrefSize(0.03 * size, 0.03 * size);
         maxMeasuredValue.relocate((size - maxMeasuredValue.getPrefWidth()) * 0.5, size * 0.11);
         maxMeasuredValueRotate.setPivotX(maxMeasuredValue.getPrefWidth() * 0.5);
         maxMeasuredValueRotate.setPivotY(size * 0.39);
-        maxMeasuredValueRotate.setAngle(getSkinnable().getMaxMeasuredValue() * angleStep - 180 - getSkinnable().getStartAngle());
+        maxMeasuredValueRotate.setAngle(getSkinnable().getMaxMeasuredValue() * angleStep - 180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
 
         threshold.setPrefSize(0.03 * size, 0.0275 * size);
         threshold.relocate((size - threshold.getPrefWidth()) * 0.5, size * 0.11);
         thresholdRotate.setPivotX(threshold.getPrefWidth() * 0.5);
         thresholdRotate.setPivotY(size * 0.39);
-        thresholdRotate.setAngle(getSkinnable().getThreshold() * angleStep - 180 - getSkinnable().getStartAngle());
+        thresholdRotate.setAngle(getSkinnable().getThreshold() * angleStep - 180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
 
         value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep));
 
