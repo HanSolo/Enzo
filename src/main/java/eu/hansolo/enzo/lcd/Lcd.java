@@ -444,9 +444,9 @@ public class Lcd extends Control {
     }
     public final void setMinValue(final double MIN_VALUE) {
         if (null == minValue) {
-            _minValue = MIN_VALUE;
+            _minValue = clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE);
         } else {
-            minValue.set(MIN_VALUE);
+            minValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE));
         }
     }
     public final DoubleProperty minValueProperty() {
@@ -461,9 +461,9 @@ public class Lcd extends Control {
     }
     public final void setMaxValue(final double MAX_VALUE) {
         if (null == maxValue) {
-            _maxValue = MAX_VALUE;
+            _maxValue = clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE);
         } else {
-            maxValue.set(MAX_VALUE);
+            maxValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE));
         }
     }
     public final DoubleProperty maxValueProperty() {

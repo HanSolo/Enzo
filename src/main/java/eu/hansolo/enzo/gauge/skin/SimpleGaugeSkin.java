@@ -172,6 +172,9 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
             value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue) + getSkinnable().getUnit());
             value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+            if (value.getLayoutBounds().getWidth() > 0.5 * size) {
+                resizeText();
+            }
         }
     }
 
@@ -278,6 +281,13 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
 
     private void resizeText() {
         value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.15));
+        if (value.getLayoutBounds().getWidth() > 0.5 * size) {
+            double decrement = 0d;
+            while (value.getLayoutBounds().getWidth() > 0.5 * size && value.getFont().getSize() > 0) {
+                value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * (0.15 - decrement)));
+                decrement += 0.01;
+            }
+        }
         value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
         value.setTranslateY(size * 0.5);
     }

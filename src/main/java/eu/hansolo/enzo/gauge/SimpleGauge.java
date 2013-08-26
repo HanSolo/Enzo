@@ -170,7 +170,7 @@ public class SimpleGauge extends Control {
         return minValue.get();
     }
     public final void setMinValue(final double MIN_VALUE) {
-        minValue.set(clamp(Double.NEGATIVE_INFINITY, getMaxValue(), MIN_VALUE));
+        minValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE));
         validate();
     }
     public final DoubleProperty minValueProperty() {
@@ -181,7 +181,7 @@ public class SimpleGauge extends Control {
         return maxValue.get();
     }
     public final void setMaxValue(final double MAX_VALUE) {
-        maxValue.set(clamp(getMinValue(), Double.POSITIVE_INFINITY, MAX_VALUE));
+        maxValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE));
         validate();
     }
     public final DoubleProperty maxValueProperty() {
