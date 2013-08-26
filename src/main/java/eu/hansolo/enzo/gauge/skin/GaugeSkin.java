@@ -329,8 +329,13 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         } else if ("VALUE".equals(PROPERTY)) {
             rotateNeedle();
         } else if ("RECALC".equals(PROPERTY)) {
-            angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
-            needleRotate.setAngle(180 - getSkinnable().getStartAngle() - (getSkinnable().getMinValue()) * angleStep);
+            if (getSkinnable().getMinValue() < 0) {
+                angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+                needleRotate.setAngle(180 - getSkinnable().getStartAngle() - (getSkinnable().getMinValue()) * angleStep);
+            } else {
+                angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() + getSkinnable().getMinValue());
+                needleRotate.setAngle(180 - getSkinnable().getStartAngle() * angleStep);
+            }
             resize();
         } else if ("ANGLE".equals(PROPERTY)) {
             if (getSkinnable().isInteractive()) return;
@@ -723,11 +728,28 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
         final double xy        = (size - 0.83 * size) / 2;
         final double wh        = size * 0.83;
         final double MIN_VALUE = getSkinnable().getMinValue();
+        final double MAX_VALUE = getSkinnable().getMaxValue();
         final double OFFSET = 90 - getSkinnable().getStartAngle();
         for (int i = 0 ; i < getSkinnable().getSections().size() ; i++) {
-            final Section SECTION      = getSkinnable().getSections().get(i);
-            final double  ANGLE_START  = (SECTION.getStart() - MIN_VALUE) * angleStep;
-            final double  ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
+            final Section SECTION = getSkinnable().getSections().get(i);
+
+            if (SECTION.getStart() > MAX_VALUE || SECTION.getStop() < MIN_VALUE) continue;
+
+            final double SECTION_START_ANGLE;
+            if (SECTION.getStart() > MAX_VALUE || SECTION.getStop() < MIN_VALUE) continue;
+
+            if (SECTION.getStart() < MIN_VALUE && SECTION.getStop() < MAX_VALUE) {
+                SECTION_START_ANGLE = MIN_VALUE * angleStep;
+            } else {
+                SECTION_START_ANGLE = (SECTION.getStart() - MIN_VALUE) * angleStep;
+            }
+            final double SECTION_ANGLE_EXTEND;
+            if (SECTION.getStop() > MAX_VALUE) {
+                SECTION_ANGLE_EXTEND = MAX_VALUE * angleStep;
+            } else {
+                SECTION_ANGLE_EXTEND = (SECTION.getStop() - SECTION.getStart()) * angleStep;
+            }
+
             CTX.save();
             switch(i) {
                 case 0: CTX.setStroke(getSkinnable().getSectionFill0()); break;
@@ -743,7 +765,7 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             }
             CTX.setLineWidth(size * 0.037);
             CTX.setLineCap(StrokeLineCap.BUTT);
-            CTX.strokeArc(xy, xy, wh, wh, -(OFFSET + ANGLE_START), -ANGLE_EXTEND, ArcType.OPEN);
+            CTX.strokeArc(xy, xy, wh, wh, -(OFFSET + SECTION_START_ANGLE), -SECTION_ANGLE_EXTEND, ArcType.OPEN);
             CTX.restore();
         }
     }

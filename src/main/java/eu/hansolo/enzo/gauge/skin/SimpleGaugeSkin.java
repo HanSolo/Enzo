@@ -110,14 +110,18 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         sectionsCtx    = sectionsCanvas.getGraphicsContext2D();
 
         needleRotate = new Rotate(180 - getSkinnable().getStartAngle());
-        needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() - getSkinnable().getMinValue()) * angleStep);
+        if (getSkinnable().getMinValue() < 0) {
+            needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() - getSkinnable().getMinValue()) * angleStep);
+        } else {
+            //needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() + getSkinnable().getMinValue()) * angleStep);
+        }
 
         needle = new Path();
         needle.setFillRule(FillRule.EVEN_ODD);
         needle.getStyleClass().setAll("needle");
         needle.getTransforms().setAll(needleRotate);
 
-        value = new Text(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getValue()));
+        value = new Text(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getMinValue()) + getSkinnable().getUnit());
         value.setMouseTransparent(true);
         value.setTextOrigin(VPos.CENTER);
         value.getStyleClass().setAll("value");
@@ -156,8 +160,13 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         } else if ("VALUE".equals(PROPERTY)) {
             rotateNeedle();
         } else if ("RECALC".equals(PROPERTY)) {
-            angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
-            needleRotate.setAngle(180 - getSkinnable().getStartAngle() - (getSkinnable().getMinValue()) * angleStep);
+            if (getSkinnable().getMinValue() < 0) {
+                angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+                needleRotate.setAngle(180 - getSkinnable().getStartAngle() - (getSkinnable().getMinValue()) * angleStep);
+            } else {
+                angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() + getSkinnable().getMinValue());
+                needleRotate.setAngle(180 - getSkinnable().getStartAngle() * angleStep);
+            }
             resize();
         } else if ("ANGLE".equals(PROPERTY)) {
             double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
@@ -198,7 +207,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
 
     // ******************** Private Methods ***********************************
     private void rotateNeedle() {
-        angleStep          = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+        angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
         double targetAngle = needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue()) * angleStep;
 
         if (getSkinnable().isAnimated()) {
@@ -223,7 +232,9 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         for (int i = 0 ; i < NO_OF_SECTIONS ; i++) {
             final Section SECTION = getSkinnable().getSections().get(i);
             final double SECTION_START_ANGLE;
-            if (SECTION.getStart() < MIN_VALUE) {
+            if (SECTION.getStart() > MAX_VALUE || SECTION.getStop() < MIN_VALUE) continue;
+
+            if (SECTION.getStart() < MIN_VALUE && SECTION.getStop() < MAX_VALUE) {
                 SECTION_START_ANGLE = MIN_VALUE * angleStep;
             } else {
                 SECTION_START_ANGLE = (SECTION.getStart() - MIN_VALUE) * angleStep;
@@ -282,7 +293,9 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         sectionsCanvas.setCache(true);
         sectionsCanvas.setCacheHint(CacheHint.QUALITY);
 
-        value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep) + getSkinnable().getUnit());
+        double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
+        value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue) + getSkinnable().getUnit());
+        //value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep) + getSkinnable().getUnit());
 
         needle.getElements().clear();
         needle.getElements().add(new MoveTo(0.24 * size, 0.5 * size));

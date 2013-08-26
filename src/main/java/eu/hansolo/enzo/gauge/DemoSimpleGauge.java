@@ -39,8 +39,8 @@ import java.util.Random;
  */
 
 public class DemoSimpleGauge extends Application {
-    private static final Random RND       = new Random();
-    private static int     noOfNodes = 0;
+    private static final   Random RND = new Random();
+    private static int     noOfNodes  = 0;
     private SimpleGauge    thermoMeter;
     private SimpleGauge    wattMeter;
     private SimpleGauge    energyMeter;
