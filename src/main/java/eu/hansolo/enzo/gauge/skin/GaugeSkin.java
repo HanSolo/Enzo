@@ -16,10 +16,10 @@
 
 package eu.hansolo.enzo.gauge.skin;
 
-import eu.hansolo.enzo.gauge.Gauge;
-import eu.hansolo.enzo.common.ValueEvent;
 import eu.hansolo.enzo.common.Marker;
 import eu.hansolo.enzo.common.Section;
+import eu.hansolo.enzo.common.ValueEvent;
+import eu.hansolo.enzo.gauge.Gauge;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -377,6 +377,13 @@ public class GaugeSkin extends SkinBase<Gauge> implements Skin<Gauge> {
             if (currentValue > getSkinnable().getMaxMeasuredValue()) {
                 getSkinnable().setMaxMeasuredValue(currentValue);
                 maxMeasuredValueRotate.setAngle(currentValue * angleStep - 180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
+            }
+            // Check sections
+            for (Section section : getSkinnable().getSections()) {
+                if (section.contains(currentValue)) {
+                    section.fireSectionEvent(new Section.SectionEvent(section, null, Section.SectionEvent.ENTERING_SECTION));
+                    break;
+                }
             }
         } else if ("PLAIN_VALUE".equals(PROPERTY)) {
             value.setEffect(getSkinnable().isPlainValue() ? null : valueBlend);

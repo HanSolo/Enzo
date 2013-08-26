@@ -36,7 +36,7 @@ import javafx.stage.Stage;
  */
 
 public class Demo extends Application {
-    private static int        noOfNodes = 0;
+    private static int      noOfNodes = 0;
     private SimpleLineChart chart;
 
     @Override public void init() {

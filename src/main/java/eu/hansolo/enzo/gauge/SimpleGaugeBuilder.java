@@ -99,6 +99,11 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
         return this;
     }
 
+    public final SimpleGaugeBuilder sectionIconVisible(final boolean SECTION_ICON_VISIBLE) {
+        properties.put("sectionIconVisible", new SimpleBooleanProperty(SECTION_ICON_VISIBLE));
+        return this;
+    }
+
     public final SimpleGaugeBuilder animated(final boolean ANIMATED) {
         properties.put("animated", new SimpleBooleanProperty(ANIMATED));
         return this;
@@ -292,6 +297,8 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
                 CONTROL.setUnit(((StringProperty) properties.get(key)).get());
             } else if("sectionTextVisible".equals(key)) {
                 CONTROL.setSectionTextVisible(((BooleanProperty) properties.get(key)).get());
+            } else if("sectionIconVisible".equals(key)) {
+                CONTROL.setSectionIconVisible(((BooleanProperty) properties.get(key)).get());
             } else if("animated".equals(key)) {
                 CONTROL.setAnimated(((BooleanProperty) properties.get(key)).get());
             } else if("animationDuration".equals(key)) {

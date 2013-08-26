@@ -104,6 +104,8 @@ public class SimpleGauge extends Control {
     private BooleanProperty         autoScale;
     private boolean                 _sectionTextVisible;
     private BooleanProperty         sectionTextVisible;
+    private boolean                 _sectionIconVisible;
+    private BooleanProperty         sectionIconVisible;
 
     private Color                   _needleColor;
     private ObjectProperty<Color>   needleColor;
@@ -143,6 +145,7 @@ public class SimpleGauge extends Control {
         _autoScale          = false;
         _needleColor        = Color.web("#5a615f");
         _sectionTextVisible = false;
+        _sectionIconVisible = false;
         sections            = FXCollections.observableArrayList();
         _majorTickSpace     = 10;
         _minorTickSpace     = 1;
@@ -404,6 +407,23 @@ public class SimpleGauge extends Control {
             sectionTextVisible = new SimpleBooleanProperty(this, "sectionTextVisible", _sectionTextVisible);
         }
         return sectionTextVisible;
+    }
+
+    public final boolean isSectionIconVisible() {
+        return null == sectionIconVisible ? _sectionIconVisible : sectionIconVisible.get();
+    }
+    public final void setSectionIconVisible(final boolean SECTION_ICON_VISIBLE) {
+        if (null == sectionIconVisible) {
+            _sectionIconVisible = SECTION_ICON_VISIBLE;
+        } else {
+            sectionIconVisible.set(SECTION_ICON_VISIBLE);
+        }
+    }
+    public final BooleanProperty sectionIconVisibleProperty() {
+        if (null == sectionIconVisible) {
+            sectionIconVisible = new SimpleBooleanProperty(this, "sectionIconVisible", _sectionIconVisible);
+        }
+        return sectionIconVisible;
     }
 
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {

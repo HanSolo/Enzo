@@ -20,12 +20,14 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
+import javafx.scene.image.Image;
 
 
 /**
@@ -33,12 +35,13 @@ import javafx.event.EventType;
  * @author hansolo
  */
 public class Section {
-    private double         _start;
-    private DoubleProperty start;
-    private double         _stop;
-    private DoubleProperty stop;
-    private String         _text;
-    private StringProperty text;
+    private double                _start;
+    private DoubleProperty        start;
+    private double                _stop;
+    private DoubleProperty        stop;
+    private String                _text;
+    private StringProperty        text;
+    private ObjectProperty<Image> icon;
 
 
     // ******************** Constructors **************************************
@@ -49,9 +52,13 @@ public class Section {
         this(START, STOP, "");
     }
     public Section(final double START, final double STOP, final String TEXT) {
+        this(START, STOP, TEXT, null);
+    }
+    public Section(final double START, final double STOP, final String TEXT, final Image ICON) {
         _start = START;
         _stop  = STOP;
         _text  = TEXT;
+        icon   = new SimpleObjectProperty<>(this, "icon", ICON);
     }
 
 
@@ -107,6 +114,16 @@ public class Section {
         return text;
     }
 
+    public final Image getImage() {
+        return icon.get();
+    }
+    public final void setIcon(final Image IMAGE) {
+        icon.set(IMAGE);
+    }
+    public final ObjectProperty<Image> iconProperty() {
+        return icon;
+    }
+
     public boolean contains(final double VALUE) {
         return ((Double.compare(VALUE, getStart()) >= 0 && Double.compare(VALUE, getStop()) <= 0));
     }
@@ -144,8 +161,7 @@ public class Section {
 
         HANDLER.handle(EVENT);
     }
-    
-    
+
     public boolean equals(final Section SECTION) {
         return (Double.compare(SECTION.getStart(), getStart()) == 0 &&
                 Double.compare(SECTION.getStop(), getStop()) == 0 &&

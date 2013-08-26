@@ -30,6 +30,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.ClosePath;
@@ -146,6 +147,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED"));
         getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE"));
         getSkinnable().sectionTextVisibleProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
+        getSkinnable().sectionIconVisibleProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().sectionTextColorProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("RESIZE"));
 
@@ -174,6 +176,13 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
             if (value.getLayoutBounds().getWidth() > 0.5 * size) {
                 resizeText();
+            }
+            // Check sections
+            for (Section section : getSkinnable().getSections()) {
+                if (section.contains(currentValue)) {
+                    section.fireSectionEvent(new Section.SectionEvent(section, null, Section.SectionEvent.ENTERING_SECTION));
+                    break;
+                }
             }
         }
     }
@@ -263,7 +272,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             }
             sectionsCtx.fillArc(0, 0, size, size, (OFFSET - SECTION_START_ANGLE), -SECTION_ANGLE_EXTEND, ArcType.ROUND);
 
-            // Draw Section text
+            // Draw Section Text
             if (getSkinnable().isSectionTextVisible()) {
                 sinValue = -Math.sin(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
                 cosValue = -Math.cos(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
@@ -275,6 +284,18 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
                 sectionsCtx.fillText(SECTION.getText(), textPoint.getX(), textPoint.getY());
             }
 
+            // Draw Section Icon
+            if (size > 0) {
+                if (getSkinnable().isSectionIconVisible() && !getSkinnable().isSectionTextVisible()) {
+                    if (null != SECTION.getImage()) {
+                        Image icon = SECTION.getImage();
+                        sinValue = -Math.sin(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
+                        cosValue = -Math.cos(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
+                        Point2D iconPoint = new Point2D(size * 0.5 + size * 0.4 * sinValue, size * 0.5 + size * 0.4 * cosValue);
+                        sectionsCtx.drawImage(icon, iconPoint.getX() - size * 0.06, iconPoint.getY() - size * 0.06, size * 0.12, size * 0.12);
+                    }
+                }
+            }
             sectionsCtx.restore();
         }
     }
