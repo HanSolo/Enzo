@@ -20,7 +20,8 @@
 .simple-gauge {
     -fx-skin           : "eu.hansolo.enzo.gauge.skin.SimpleGaugeSkin";
     -needle            : #5a615f;
-    -value             : white;
+    -value-text        : white;
+    -title-text        : white;
     -section-text      : white;
     -section-fill-0    : #ffffff;
     -section-fill-1    : #f3622d;
@@ -47,13 +48,17 @@
 
 
 /******************************************************************************
- * SIMPLEGAUGE value, section-text                                            *
+ * SIMPLEGAUGE value, title, section-text                                     *
  *****************************************************************************/
 .simple-gauge .value {
-    -fx-fill: -value;
+    -fx-fill: -value-text;
 }
 
-.simple-gauge .section-text {
+.simple-gauge .title {
+    -fx-fill: -title-text;
+}
+
+.simple-gauge .section {
     -fx-fill: -section-text;
 }
 

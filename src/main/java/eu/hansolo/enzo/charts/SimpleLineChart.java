@@ -93,10 +93,13 @@ public class SimpleLineChart extends Control {
     private ObjectProperty<Paint>             sectionFill7;
     private ObjectProperty<Paint>             sectionFill8;
     private ObjectProperty<Paint>             sectionFill9;
+
     private ObservableList<Section>           sections;
-    private XYChart.Series                    series;
+    private XYChart.Series<?,?>               series;
     private BooleanProperty                   sectionRangeVisible;
     private StringProperty                    unit;
+    private StringProperty                    from;
+    private StringProperty                    to;
 
 
     // ******************** Constructors **************************************
@@ -124,10 +127,10 @@ public class SimpleLineChart extends Control {
         if (sections.contains(SECTION)) sections.remove(SECTION);
     }
 
-    public final XYChart.Series<Double, Double> getSeries() {
+    public final XYChart.Series<?, ?> getSeries() {
         return series;
     }
-    public final void setSeries(final XYChart.Series<Double, Double> SERIES) {
+    public final void setSeries(final XYChart.Series<?, ?> SERIES) {
         series = SERIES;
     }
 
@@ -155,6 +158,32 @@ public class SimpleLineChart extends Control {
             unit = new SimpleStringProperty(this, "unit", "");
         }
         return unit;
+    }
+
+    public final String getFrom() {
+        return null == from ? "" : from.get();
+    }
+    public final void setFrom(final String FROM) {
+        fromProperty().set(FROM);
+    }
+    public final StringProperty fromProperty() {
+        if (null == from) {
+            from = new SimpleStringProperty(this, "from", "");
+        }
+        return from;
+    }
+
+    public final String getTo() {
+        return null == to ? "" : to.get();
+    }
+    public final void setTo(final String TO) {
+        toProperty().set(TO);
+    }
+    public final StringProperty toProperty() {
+        if (null == to) {
+            to = new SimpleStringProperty(this, "to", "");
+        }
+        return to;
     }
 
 

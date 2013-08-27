@@ -33,6 +33,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 
 /**
@@ -109,6 +110,8 @@ public class SimpleLineChartSkin extends SkinBase<SimpleLineChart> implements Sk
 
         getChildren().setAll(pane);
         resize();
+        drawBackground();
+        drawForeground();
     }
 
     private void registerListeners() {
@@ -118,6 +121,8 @@ public class SimpleLineChartSkin extends SkinBase<SimpleLineChart> implements Sk
         getSkinnable().unitProperty().addListener(observable -> handleControlPropertyChanged("REDRAW_BACKGROUND"));
         getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().getSeries().getData().addListener((ListChangeListener) change -> handleControlPropertyChanged("REDRAW_FOREGROUND"));
+        getSkinnable().fromProperty().addListener(observable -> handleControlPropertyChanged("REDRAW_FOREGROUND"));
+        getSkinnable().toProperty().addListener(observable -> handleControlPropertyChanged("REDRAW_FOREGROUND"));
     }
 
 
@@ -192,6 +197,14 @@ public class SimpleLineChartSkin extends SkinBase<SimpleLineChart> implements Sk
         ctxFg.save();
         ctxFg.applyEffect(new DropShadow(0.025 * height, 0, 0.025 * height, Color.rgb(0, 0, 0, 0.65)));
         ctxFg.restore();
+
+        ctxFg.setFill(Color.WHITE);
+        ctxFg.setFont(Font.font("Open Sans", height * 0.1));
+        ctxFg.setTextBaseline(VPos.BOTTOM);
+        ctxFg.setTextAlign(TextAlignment.LEFT);
+        ctxFg.fillText(getSkinnable().getFrom(), 2, height - 2);
+        ctxFg.setTextAlign(TextAlignment.RIGHT);
+        ctxFg.fillText(getSkinnable().getTo(), width - 2, height -2);
 
         ctxFg.restore();
     }

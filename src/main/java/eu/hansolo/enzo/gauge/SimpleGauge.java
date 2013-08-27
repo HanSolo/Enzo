@@ -69,6 +69,8 @@ public class SimpleGauge extends Control {
     public static final String      STYLE_CLASS_PURPLE_TO_CYAN_10    = "purple-to-cyan-10";
 
     // Default section colors
+    private static final Color      DEFAULT_VALUE_TEXT_COLOR         = Color.web("#ffffff");
+    private static final Color      DEFAULT_TITLE_TEXT_COLOR         = Color.web("#ffffff");
     private static final Color      DEFAULT_SECTION_TEXT_COLOR       = Color.web("#ffffff");
     private static final Color      DEFAULT_SECTION_FILL_0           = Color.web("#f3622d");
     private static final Color      DEFAULT_SECTION_FILL_1           = Color.web("#fba71b");
@@ -114,8 +116,12 @@ public class SimpleGauge extends Control {
     private DoubleProperty          majorTickSpace;
     private double                  _minorTickSpace;
     private DoubleProperty          minorTickSpace;
+    private String                  _title;
+    private StringProperty          title;
 
     // CSS styleable properties
+    private ObjectProperty<Paint>   valueTextColor;
+    private ObjectProperty<Paint>   titleTextColor;
     private ObjectProperty<Paint>   sectionTextColor;
     private ObjectProperty<Paint>   sectionFill0;
     private ObjectProperty<Paint>   sectionFill1;
@@ -149,6 +155,7 @@ public class SimpleGauge extends Control {
         sections            = FXCollections.observableArrayList();
         _majorTickSpace     = 10;
         _minorTickSpace     = 1;
+        _title              = "";
         animationDuration   = 3000;
     }
 
@@ -392,6 +399,23 @@ public class SimpleGauge extends Control {
         return minorTickSpace;
     }
 
+    public final String getTitle() {
+        return null == title ? _title : title.get();
+    }
+    public final void setTitle(final String TITLE) {
+        if (null == title) {
+            _title = TITLE;
+        } else {
+            title.set(TITLE);
+        }
+    }
+    public final StringProperty titleProperty() {
+        if (null == title) {
+            title = new SimpleStringProperty(this, "title", _title);
+        }
+        return title;
+    }
+
     public final boolean isSectionTextVisible() {
         return null == sectionTextVisible ? _sectionTextVisible : sectionTextVisible.get();
     }
@@ -526,6 +550,40 @@ public class SimpleGauge extends Control {
 
 
     // ******************** CSS Stylable Properties ***************************
+    public final Paint getValueTextColor() {
+        return null == valueTextColor ? DEFAULT_VALUE_TEXT_COLOR : valueTextColor.get();
+    }
+    public final void setValueTextColor(Paint value) {
+        valueTextColorProperty().set(value);
+    }
+    public final ObjectProperty<Paint> valueTextColorProperty() {
+        if (null == valueTextColor) {
+            valueTextColor = new StyleableObjectProperty<Paint>(DEFAULT_VALUE_TEXT_COLOR) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.VALUE_TEXT_COLOR; }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "valueTextColor"; }
+            };
+        }
+        return valueTextColor;
+    }
+
+    public final Paint getTitleTextColor() {
+        return null == titleTextColor ? DEFAULT_TITLE_TEXT_COLOR : titleTextColor.get();
+    }
+    public final void setTitleTextColor(Paint value) {
+        titleTextColorProperty().set(value);
+    }
+    public final ObjectProperty<Paint> titleTextColorProperty() {
+        if (null == titleTextColor) {
+            sectionTextColor = new StyleableObjectProperty<Paint>(DEFAULT_TITLE_TEXT_COLOR) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.TITLE_TEXT_COLOR; }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "titleTextColor"; }
+            };
+        }
+        return sectionTextColor;
+    }
+
     public final Paint getSectionTextColor() {
         return null == sectionTextColor ? DEFAULT_SECTION_TEXT_COLOR : sectionTextColor.get();
     }
@@ -724,6 +782,38 @@ public class SimpleGauge extends Control {
     }
 
     private static class StyleableProperties {
+        private static final CssMetaData<SimpleGauge, Paint> VALUE_TEXT_COLOR =
+            new CssMetaData<SimpleGauge, Paint>("-value-text", PaintConverter.getInstance(), DEFAULT_VALUE_TEXT_COLOR) {
+
+                @Override public boolean isSettable(SimpleGauge gauge) {
+                    return null == gauge.valueTextColor || !gauge.valueTextColor.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleGauge gauge) {
+                    return (StyleableProperty) gauge.valueTextColorProperty();
+                }
+
+                @Override public Paint getInitialValue(SimpleGauge gauge) {
+                    return gauge.getValueTextColor();
+                }
+            };
+
+        private static final CssMetaData<SimpleGauge, Paint> TITLE_TEXT_COLOR =
+            new CssMetaData<SimpleGauge, Paint>("-title-text", PaintConverter.getInstance(), DEFAULT_TITLE_TEXT_COLOR) {
+
+                @Override public boolean isSettable(SimpleGauge gauge) {
+                    return null == gauge.titleTextColor || !gauge.titleTextColor.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleGauge gauge) {
+                    return (StyleableProperty) gauge.titleTextColorProperty();
+                }
+
+                @Override public Paint getInitialValue(SimpleGauge gauge) {
+                    return gauge.getTitleTextColor();
+                }
+            };
+
         private static final CssMetaData<SimpleGauge, Paint> SECTION_TEXT_COLOR =
             new CssMetaData<SimpleGauge, Paint>("-section-text", PaintConverter.getInstance(), DEFAULT_SECTION_TEXT_COLOR) {
 
@@ -904,6 +994,8 @@ public class SimpleGauge extends Control {
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
+                               VALUE_TEXT_COLOR,
+                               TITLE_TEXT_COLOR,
                                SECTION_TEXT_COLOR,
                                SECTION_FILL_0,
                                SECTION_FILL_1,

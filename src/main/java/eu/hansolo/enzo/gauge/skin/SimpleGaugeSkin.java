@@ -68,6 +68,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
     private Path                needle;
     private Rotate              needleRotate;
     private Text                value;
+    private Text                title;
     private double              angleStep;
     private Timeline            timeline;
 
@@ -127,11 +128,16 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         value.setTextOrigin(VPos.CENTER);
         value.getStyleClass().setAll("value");
 
+        title = new Text(getSkinnable().getTitle());
+        title.setTextOrigin(VPos.CENTER);
+        title.getStyleClass().setAll("title");
+
         // Add all nodes
         pane = new Pane();
         pane.getChildren().setAll(sectionsCanvas,
                                   needle,
-                                  value);
+                                  value,
+                                  title);
 
         getChildren().setAll(pane);
         resize();
@@ -143,11 +149,14 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         getSkinnable().valueProperty().addListener(observable -> handleControlPropertyChanged("VALUE"));
         getSkinnable().minValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
         getSkinnable().maxValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
+        getSkinnable().titleProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().needleColorProperty().addListener(observable -> handleControlPropertyChanged("NEEDLE_COLOR"));
         getSkinnable().animatedProperty().addListener(observable -> handleControlPropertyChanged("ANIMATED"));
         getSkinnable().angleRangeProperty().addListener(observable -> handleControlPropertyChanged("ANGLE_RANGE"));
         getSkinnable().sectionTextVisibleProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().sectionIconVisibleProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
+        getSkinnable().valueTextColorProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
+        getSkinnable().titleTextColorProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().sectionTextColorProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("RESIZE"));
 
@@ -311,6 +320,17 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         }
         value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
         value.setTranslateY(size * 0.5);
+
+        title.setFont(Font.font("Open Sans", FontWeight.NORMAL, size * 0.05));
+        if (value.getLayoutBounds().getWidth() > 0.5 * size) {
+            double decrement = 0d;
+            while (title.getLayoutBounds().getWidth() > 0.5 * size && title.getFont().getSize() > 0) {
+                title.setFont(Font.font("Open Sans", FontWeight.BOLD, size * (0.05 - decrement)));
+                decrement += 0.01;
+            }
+        }
+        title.setTranslateX((size - title.getLayoutBounds().getWidth()) * 0.5);
+        title.setTranslateY(size * 0.5 + value.getFont().getSize() * 0.75);
     }
 
     private void resize() {
@@ -327,6 +347,8 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
         value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue) + getSkinnable().getUnit());
         //value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep) + getSkinnable().getUnit());
+
+        title.setText(getSkinnable().getTitle());
 
         needle.getElements().clear();
         needle.getElements().add(new MoveTo(0.24 * size, 0.5 * size));
