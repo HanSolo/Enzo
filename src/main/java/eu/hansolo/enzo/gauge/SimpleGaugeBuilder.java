@@ -104,6 +104,21 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
         return this;
     }
 
+    public final SimpleGaugeBuilder valueTextColor(final Color VALUE_TEXT_COLOR) {
+        properties.put("valueTextColor", new SimpleObjectProperty<Color>(VALUE_TEXT_COLOR));
+        return this;
+    }
+
+    public final SimpleGaugeBuilder titleTextColor(final Color TITLE_TEXT_COLOR) {
+        properties.put("titleTextColor", new SimpleObjectProperty<Color>(TITLE_TEXT_COLOR));
+        return this;
+    }
+
+    public final SimpleGaugeBuilder sectionTextColor(final Color SECTION_TEXT_COLOR) {
+        properties.put("sectionTextColor", new SimpleObjectProperty<Color>(SECTION_TEXT_COLOR));
+        return this;
+    }
+
     public final SimpleGaugeBuilder animated(final boolean ANIMATED) {
         properties.put("animated", new SimpleBooleanProperty(ANIMATED));
         return this;
@@ -335,6 +350,12 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
                 CONTROL.setSectionFill8(((ObjectProperty<Color>) properties.get(key)).get());
             } else if("sectionFill9".equals(key)) {
                 CONTROL.setSectionFill9(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("valueTextColor".equals(key)) {
+                CONTROL.setValueTextColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("titleTextColor".equals(key)) {
+                CONTROL.setTitleTextColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("sectionTextColor".equals(key)) {
+                CONTROL.setSectionTextColor(((ObjectProperty<Color>) properties.get(key)).get());
             }
         }
         return CONTROL;
