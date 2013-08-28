@@ -43,8 +43,9 @@ import java.util.TreeSet;
  * Time: 06:06
  */
 public class ConicalGradient {
-    private Point2D    center;
-    private List<Stop> sortedStops;
+    private static final double ANGLE_FACTOR = 1d / 360d;
+    private Point2D             center;
+    private List<Stop>          sortedStops;
 
 
     // ******************** Constructors **************************************
@@ -102,7 +103,7 @@ public class ConicalGradient {
     // ******************** Methods *******************************************
     public void recalculateWithAngle(final double ANGLE) {
         double angle = ANGLE % 360;
-        recalculate((1d / 360d) * angle);
+        recalculate(ANGLE_FACTOR * angle);
     }
 
     public void recalculate(final double OFFSET) {
