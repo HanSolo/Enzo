@@ -82,7 +82,22 @@ public class Util {
         return COLOR.toString().replace("0x", "#");
     }
 
-    private static int clamp(final int MIN, final int MAX, final int VALUE) {
+    public static int clamp(final int MIN, final int MAX, final int VALUE) {
+        if (VALUE < MIN) return MIN;
+        if (VALUE > MAX) return MAX;
+        return VALUE;
+    }
+    public static long clamp(final long MIN, final long MAX, final long VALUE) {
+        if (VALUE < MIN) return MIN;
+        if (VALUE > MAX) return MAX;
+        return VALUE;
+    }
+    public static float clamp(final float MIN, final float MAX, final float VALUE) {
+        if (VALUE < MIN) return MIN;
+        if (VALUE > MAX) return MAX;
+        return VALUE;
+    }
+    public static double clamp(final double MIN, final double MAX, final double VALUE) {
         if (VALUE < MIN) return MIN;
         if (VALUE > MAX) return MAX;
         return VALUE;
