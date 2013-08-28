@@ -24,11 +24,13 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -44,6 +46,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.paint.Stop;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
@@ -83,26 +86,26 @@ public class RadialBargraph extends Control {
     }
 
     // Default section colors
-    private static final Color       DEFAULT_SECTION_FILL_0      = Color.rgb(0, 0, 178, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_1      = Color.rgb(0, 128, 255, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_2      = Color.rgb(  0, 255, 255, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_3      = Color.rgb(  0, 255,  64, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_4      = Color.rgb(128, 255,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_5      = Color.rgb(255, 255,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_6      = Color.rgb(255, 191,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_7      = Color.rgb(255, 128,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_8      = Color.rgb(255,  64,   0, 0.5);
-    private static final Color       DEFAULT_SECTION_FILL_9      = Color.rgb(255,   0,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_0   = Color.rgb(0, 0, 178, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_1   = Color.rgb(0, 128, 255, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_2   = Color.rgb(  0, 255, 255, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_3   = Color.rgb(  0, 255,  64, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_4   = Color.rgb(128, 255,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_5   = Color.rgb(255, 255,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_6   = Color.rgb(255, 191,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_7   = Color.rgb(255, 128,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_8   = Color.rgb(255,  64,   0, 0.5);
+    private static final Color       DEFAULT_SECTION_FILL_9   = Color.rgb(255,   0,   0, 0.5);
 
     // Default marker colors
-    private static final Color       DEFAULT_MARKER_FILL_0       = Color.rgb(  0, 200,   0, 0.5);
-    private static final Color       DEFAULT_MARKER_FILL_1       = Color.rgb(200, 200,   0, 0.5);
-    private static final Color       DEFAULT_MARKER_FILL_2       = Color.rgb(200,   0,   0, 0.5);
-    private static final Color       DEFAULT_MARKER_FILL_3       = Color.rgb(  0,   0, 200, 0.5);
-    private static final Color       DEFAULT_MARKER_FILL_4       = Color.rgb(  0, 200, 200, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_0    = Color.rgb(  0, 200,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_1    = Color.rgb(200, 200,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_2    = Color.rgb(200,   0,   0, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_3    = Color.rgb(  0,   0, 200, 0.5);
+    private static final Color       DEFAULT_MARKER_FILL_4    = Color.rgb(  0, 200, 200, 0.5);
 
     // CSS Pseudo classes
-    private static final PseudoClass INTERACTIVE_PSEUDO_CLASS    = PseudoClass.getPseudoClass("interactive");
+    private static final PseudoClass INTERACTIVE_PSEUDO_CLASS = PseudoClass.getPseudoClass("interactive");
 
     private BooleanProperty               interactive;
 
@@ -146,6 +149,10 @@ public class RadialBargraph extends Control {
     private BooleanProperty               autoScale;
     private Color                         _barColor;
     private ObjectProperty<Color>         barColor;
+    private ObservableList<Stop>          _barGradient;
+    private ListProperty<Stop>            barGradient;
+    private boolean                       _barGradientEnabled;
+    private BooleanProperty               barGradientEnabled;
     private NumberFormat                  _numberFormat;
     private ObjectProperty<NumberFormat>  numberFormat;
     private ObservableList<Section>       sections;
@@ -202,6 +209,8 @@ public class RadialBargraph extends Control {
         _clockwise               = true;
         _autoScale               = false;
         _barColor                = Color.rgb(248, 202, 0);
+        _barGradient             = FXCollections.observableArrayList();
+        _barGradientEnabled      = false;
         _numberFormat            = NumberFormat.STANDARD;
         sections                 = FXCollections.observableArrayList();
         _sectionsVisible         = true;
@@ -504,6 +513,41 @@ public class RadialBargraph extends Control {
             barColor = new SimpleObjectProperty<>(this, "barColor", _barColor);
         }
         return barColor;
+    }
+
+    public final ObservableList<Stop> getBarGradient() {
+        return null == barGradient ? _barGradient : barGradient.get();
+    }
+    public final void setBarGradient(final List<Stop> BAR_GRADIENT) {
+        if (null == barGradient) {
+            _barGradient.clear();
+            _barGradient.setAll(BAR_GRADIENT);
+        } else {
+            barGradient.setAll(BAR_GRADIENT);
+        }
+    }
+    public final ListProperty<Stop> barGradientProperty() {
+        if (null == barGradient) {
+            barGradient = new SimpleListProperty<>(this, "barGradient", _barGradient);
+        }
+        return barGradient;
+    }
+
+    public final boolean isBarGradientEnabled() {
+        return null == barGradientEnabled ? _barGradientEnabled : barGradientEnabled.get();
+    }
+    public final void setBarGradientEnabled(final boolean BAR_GRADIENT_ENABLED) {
+        if (null == barGradientEnabled) {
+            _barGradientEnabled = BAR_GRADIENT_ENABLED;
+        } else {
+            barGradientEnabled.set(BAR_GRADIENT_ENABLED);
+        }
+    }
+    public final BooleanProperty barGradientEnabledProperty() {
+        if (null == barGradientEnabled) {
+            barGradientEnabled = new SimpleBooleanProperty(this, "barGradientEnabled", _barGradientEnabled);
+        }
+        return barGradientEnabled;
     }
 
     public final NumberFormat getNumberFormat() {

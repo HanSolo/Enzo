@@ -110,6 +110,12 @@ public class ConicalGradient {
         List<Stop> stops = new ArrayList<>(sortedStops.size());
         for (Stop stop : sortedStops) {
             double newOffset = (stop.getOffset() + OFFSET) % 1;
+            if(Double.compare(newOffset, 0d) == 0) {
+                newOffset = 1.0;
+                stops.add(new Stop(0.000001, stop.getColor()));
+            } else if (stop.getOffset() + OFFSET > 1d) {
+                newOffset -= 0.000001;
+            }
             stops.add(new Stop(newOffset, stop.getColor()));
         }
 

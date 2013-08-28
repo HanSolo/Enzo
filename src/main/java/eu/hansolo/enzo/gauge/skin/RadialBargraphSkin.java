@@ -16,10 +16,11 @@
 
 package eu.hansolo.enzo.gauge.skin;
 
-import eu.hansolo.enzo.common.ValueEvent;
+import eu.hansolo.enzo.common.ConicalGradient;
 import eu.hansolo.enzo.common.Marker;
-import eu.hansolo.enzo.gauge.RadialBargraph;
 import eu.hansolo.enzo.common.Section;
+import eu.hansolo.enzo.common.ValueEvent;
+import eu.hansolo.enzo.gauge.RadialBargraph;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -47,12 +48,14 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Arc;
@@ -66,6 +69,7 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -114,6 +118,7 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
     private EventHandler<TouchEvent> touchEventHandler;
     private List<Node>               markersToRemove;
     private Color                    barColor;
+    private ConicalGradient          barGradient;
 
 
     // ******************** Constructors **************************************
@@ -155,7 +160,9 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
     private void initGraphics() {
         Font.loadFont(getClass().getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), (0.06 * PREFERRED_HEIGHT)); // "OpenSans"
 
-        barColor       = getSkinnable().getBarColor();
+        barColor    = getSkinnable().getBarColor();
+        barGradient = new ConicalGradient(new Stop(0.0, Color.TRANSPARENT),
+                                          new Stop(1.0, Color.TRANSPARENT));
 
         valueBlendBottomShadow = new DropShadow();
         valueBlendBottomShadow.setBlurType(BlurType.TWO_PASS_BOX);
@@ -291,6 +298,8 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
         getSkinnable().interactiveProperty().addListener(observable -> handleControlPropertyChanged("INTERACTIVE"));
         getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("CANVAS_REFRESH"));
         getSkinnable().getMarkers().addListener((MapChangeListener<Marker, Rotate>) change -> handleControlPropertyChanged("MARKER"));
+        getSkinnable().barGradientProperty().addListener((ListChangeListener<Stop>) change -> handleControlPropertyChanged("BAR_GRADIENT"));
+        getSkinnable().barGradientEnabledProperty().addListener(observable -> handleControlPropertyChanged("BAR_COLOR"));
 
         angle.addListener(observable -> handleControlPropertyChanged("ANGLE"));
 
@@ -424,7 +433,7 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
             }
             drawMarkers();
         } else if ("BAR_COLOR".equals(PROPERTY)) {
-            barColor       = getSkinnable().getBarColor();
+            barColor = getSkinnable().getBarColor();
             resize();
         }
     }
@@ -695,6 +704,44 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
         }
     }
 
+    private void recalculateBarGradient() {
+        double angleFactor = 1d / 360d;
+        double emptyRange  = 360d - getSkinnable().getAngleRange();
+        double offset      = angleFactor * ((360 - getSkinnable().getStartAngle() + 180 - emptyRange * 0.5) % 360);
+        List<Stop> stops   = new LinkedList<>();
+
+        double emptyOffset = (emptyRange * 0.5) * angleFactor;
+
+        double minFraction = 1.0;
+        double maxFraction = 0.0;
+        Color  minFractionColor = Color.TRANSPARENT;
+        Color  maxFractionColor = Color.TRANSPARENT;
+
+        for (Stop stop : getSkinnable().getBarGradient()) {
+            double fraction = stop.getOffset();
+            if (fraction < minFraction) {
+                minFraction      = fraction;
+                minFractionColor = stop.getColor();
+            }
+            if (fraction > maxFraction) {
+                maxFraction      = fraction;
+                maxFractionColor = stop.getColor();
+            }
+        }
+        stops.add(new Stop(0d, minFractionColor));
+        stops.add(new Stop(0d + emptyOffset, minFractionColor));
+        stops.add(new Stop(1d - emptyOffset, maxFractionColor));
+        stops.add(new Stop(1d, maxFractionColor));
+        if (getSkinnable().getBarGradient().size() == 2) {
+            stops.add(new Stop((maxFraction - minFraction) * 0.5, (Color) Interpolator.LINEAR.interpolate(minFractionColor, maxFractionColor, 0.5)));
+        }
+        for (Stop stop : getSkinnable().getBarGradient()) {
+            if (Double.compare(stop.getOffset(), minFraction) == 0 || Double.compare(stop.getOffset(), maxFraction) == 0) continue;
+            stops.add(stop);
+        }
+        barGradient = new ConicalGradient(new Point2D(size * 0.5, size * 0.5), offset, stops);
+    }
+
     private void resizeText() {
         title.setFont(Font.font("Open Sans", FontWeight.NORMAL, size * 0.1));
         title.setTranslateX((size - title.getLayoutBounds().getWidth()) * 0.5);
@@ -760,15 +807,20 @@ public class RadialBargraphSkin extends SkinBase<RadialBargraph> implements Skin
         bar.setRadiusX(RADIUS);
         bar.setRadiusY(RADIUS);
 
-        bar.setFill(new RadialGradient(0, 0,
-                                       centerX, centerY,
-                                       RADIUS, false, CycleMethod.NO_CYCLE,
-                                       new Stop(0.0, barColor),
-                                       new Stop(0.76, barColor.deriveColor(-5, 1, 1, 1)), // -5 for on the barColorHue)
-                                       new Stop(0.79, barColor),
-                                       new Stop(0.97, barColor),
-                                       new Stop(1.0, barColor.deriveColor(-5, 1, 1, 1)))); // -5 for on the barColorHue)
-
+        if (getSkinnable().isBarGradientEnabled()) {
+            recalculateBarGradient();
+            Image image = barGradient.getImage(size, size);
+            bar.setFill(new ImagePattern(image, 0, 0, size, size, false));
+        } else {
+            bar.setFill(new RadialGradient(0, 0,
+                                           centerX, centerY,
+                                           RADIUS, false, CycleMethod.NO_CYCLE,
+                                           new Stop(0.0, barColor),
+                                           new Stop(0.76, barColor.deriveColor(-5, 1, 1, 1)), // -5 for on the barColorHue)
+                                           new Stop(0.79, barColor),
+                                           new Stop(0.97, barColor),
+                                           new Stop(1.0, barColor.deriveColor(-5, 1, 1, 1)))); // -5 for on the barColorHue)
+        }
         knob.setPrefSize(size * 0.75, size * 0.75);
         knob.setTranslateX((size - knob.getPrefWidth()) * 0.5);
         knob.setTranslateY((size - knob.getPrefHeight()) * 0.5);

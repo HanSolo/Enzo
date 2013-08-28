@@ -27,8 +27,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -52,9 +55,19 @@ public class DemoRadialBargraph extends Application {
                                        .title("Enzo")
                                        .unit("°C")
                                        .markers(new Marker(40))
+                                       .threshold(25)
                                        .sections(new Section(60, 80))
                                        .thresholdVisible(true)
                                        .build();
+        control.setBarGradientEnabled(true);
+
+        List<Stop> stops = new ArrayList<>();
+        stops.add(new Stop(0.0, Color.BLUE));
+        //stops.add(new Stop(0.31, Color.CYAN));
+        //stops.add(new Stop(0.5, Color.LIME));
+        //stops.add(new Stop(0.69, Color.YELLOW));
+        stops.add(new Stop(1.0, Color.RED));
+        control.setBarGradient(stops);
 
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {
