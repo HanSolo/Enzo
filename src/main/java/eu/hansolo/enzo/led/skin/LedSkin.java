@@ -50,7 +50,6 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     // ******************** Constructors **************************************
     public LedSkin(final Led CONTROL) {
         super(CONTROL);
-        pane    = new Pane();
         init();
         initGraphics();
         registerListeners();
@@ -101,9 +100,11 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         changeStyle();
 
         // Add all nodes
+        pane = new Pane();
         pane.getChildren().setAll(frame, led, highlight);
 
         getChildren().setAll(pane);
+        resize();
     }
 
     private void registerListeners() {

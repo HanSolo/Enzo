@@ -100,6 +100,7 @@ public class SimpleLineChart extends Control {
     private StringProperty                    unit;
     private StringProperty                    from;
     private StringProperty                    to;
+    private BooleanProperty                   titleVisible;
 
 
     // ******************** Constructors **************************************
@@ -184,6 +185,19 @@ public class SimpleLineChart extends Control {
             to = new SimpleStringProperty(this, "to", "");
         }
         return to;
+    }
+
+    public final boolean isTitleVisible() {
+        return null == titleVisible ? true : titleVisible.get();
+    }
+    public final void setTitleVisible(final boolean TITLE_VISIBLE) {
+        titleVisibleProperty().set(TITLE_VISIBLE);
+    }
+    public final BooleanProperty titleVisibleProperty() {
+        if (null == titleVisible) {
+            titleVisible = new SimpleBooleanProperty(this, "titleVisible", true);
+        }
+        return titleVisible;
     }
 
 

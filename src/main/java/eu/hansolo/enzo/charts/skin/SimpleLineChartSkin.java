@@ -123,6 +123,7 @@ public class SimpleLineChartSkin extends SkinBase<SimpleLineChart> implements Sk
         getSkinnable().getSeries().getData().addListener((ListChangeListener) change -> handleControlPropertyChanged("REDRAW_FOREGROUND"));
         getSkinnable().fromProperty().addListener(observable -> handleControlPropertyChanged("REDRAW_FOREGROUND"));
         getSkinnable().toProperty().addListener(observable -> handleControlPropertyChanged("REDRAW_FOREGROUND"));
+        getSkinnable().titleVisibleProperty().addListener(observable -> handleControlPropertyChanged("REDRAW_FOREGROUND"));
     }
 
 
@@ -198,6 +199,7 @@ public class SimpleLineChartSkin extends SkinBase<SimpleLineChart> implements Sk
         ctxFg.applyEffect(new DropShadow(0.025 * height, 0, 0.025 * height, Color.rgb(0, 0, 0, 0.65)));
         ctxFg.restore();
 
+        // draw from and to text
         ctxFg.setFill(Color.WHITE);
         ctxFg.setFont(Font.font("Open Sans", height * 0.1));
         ctxFg.setTextBaseline(VPos.BOTTOM);
@@ -205,6 +207,13 @@ public class SimpleLineChartSkin extends SkinBase<SimpleLineChart> implements Sk
         ctxFg.fillText(getSkinnable().getFrom(), 2, height - 2);
         ctxFg.setTextAlign(TextAlignment.RIGHT);
         ctxFg.fillText(getSkinnable().getTo(), width - 2, height -2);
+
+        // draw title text
+        if (getSkinnable().isTitleVisible()) {
+            ctxFg.setTextBaseline(VPos.TOP);
+            ctxFg.setTextAlign(TextAlignment.CENTER);
+            ctxFg.fillText(getSkinnable().getSeries().getName(), width * 0.5, 2);
+        }
 
         ctxFg.restore();
     }
