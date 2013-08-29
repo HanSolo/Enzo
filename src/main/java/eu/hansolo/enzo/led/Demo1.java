@@ -39,7 +39,7 @@ public class Demo1 extends Application {
 
     @Override public void init() {
         led                = LedBuilder.create()
-                                       .ledType(Led.LedType.TRIANGLE_RIGHT)
+                                       //.ledType(Led.LedType.TRIANGLE_RIGHT)
                                        .ledColor(Color.MAGENTA)
                                        .prefWidth(64)
                                        .prefHeight(64)
