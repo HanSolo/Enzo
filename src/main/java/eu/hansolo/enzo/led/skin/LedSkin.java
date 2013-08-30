@@ -23,7 +23,6 @@ import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
@@ -39,7 +38,6 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
     private static final double MINIMUM_SIZE   = 8;
     private static final double MAXIMUM_SIZE   = 1024;
     private double              size;
-    private Pane                pane;
     private Region              frame;
     private Region              led;
     private Region              highlight;
@@ -100,11 +98,7 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         changeStyle();
 
         // Add all nodes
-        pane = new Pane();
-        pane.getChildren().setAll(frame, led, highlight);
-
-        getChildren().setAll(pane);
-        resize();
+        getChildren().setAll(frame, led, highlight);
     }
 
     private void registerListeners() {
@@ -223,101 +217,82 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
 
             switch(getSkinnable().getLedType()) {
                 case HORIZONTAL:
-                    frame.setPrefSize(size, 0.56 * size);
+                    frame.setMaxSize(size, 0.56 * size);
                     frame.setTranslateY(0.22 * size);
 
-                    led.setPrefSize(0.72 * size, 0.28 * size);
-                    led.setTranslateX(0.14 * size);
-                    led.setTranslateY(0.36 * size);
+                    led.setMaxSize(0.72 * size, 0.28 * size);
+                    led.relocate(0.14 * size, 0.36 * size);
 
-                    highlight.setPrefSize(0.68 * size, 0.12 * size);
-                    highlight.setTranslateX(0.16 * size);
-                    highlight.setTranslateY(0.38 * size);
+                    highlight.setMaxSize(0.68 * size, 0.12 * size);
+                    highlight.relocate(0.16 * size, 0.38 * size);
                     break;
                 case VERTICAL:
-                    frame.setPrefSize(0.56 * size, size);
+                    frame.setMaxSize(0.56 * size, size);
                     frame.setTranslateX(0.22 * size);
 
-                    led.setPrefSize(0.28 * size, 0.72 * size);
-                    led.setTranslateX(0.36 * size);
-                    led.setTranslateY(0.14 * size);
+                    led.setMaxSize(0.28 * size, 0.72 * size);
+                    led.relocate(0.26 * size, 0.14 * size);
 
-                    highlight.setPrefSize(0.22 * size, 0.23 * size);
-                    highlight.setTranslateX(0.39 * size);
-                    highlight.setTranslateY(0.17 * size);
+                    highlight.setMaxSize(0.22 * size, 0.23 * size);
+                    highlight.relocate(0.39 * size, 0.17 * size);
                     break;
                 case SQUARE:
-                    frame.setPrefSize(size, size);
+                    frame.setMaxSize(size, size);
 
-                    led.setPrefSize(0.72 * size, 0.72 * size);
-                    led.setTranslateX(0.14 * size);
-                    led.setTranslateY(0.14 * size);
+                    led.setMaxSize(0.72 * size, 0.72 * size);
+                    led.relocate(0.14 * size, 0.14 * size);
 
-                    highlight.setPrefSize(0.66 * size, 0.23 * size);
-                    highlight.setTranslateX(0.17 * size);
-                    highlight.setTranslateY(0.17 * size);
+                    highlight.setMaxSize(0.66 * size, 0.23 * size);
+                    highlight.relocate(0.17 * size, 0.17 * size);
                     break;
                 case TRIANGLE_UP:
-                    frame.setPrefSize(1.0035383605957031 * size, 0.9975 * size);
-                    frame.setTranslateX(-0.0017691457271575928 * size);
-                    frame.setTranslateY(0.0025 * size);
+                    frame.setMaxSize(1.0035383605957031 * size, 0.9975 * size);
+                    frame.relocate(-0.0017691457271575928 * size, 0.0025 * size);
 
-                    led.setPrefSize(0.6956922149658203 * size, 0.7 * size);
-                    led.setTranslateX(0.15215388298034668 * size);
-                    led.setTranslateY(0.2 * size);
+                    led.setMaxSize(0.6956922149658203 * size, 0.7 * size);
+                    led.relocate(0.15215388298034668 * size, 0.2 * size);
 
-                    highlight.setPrefSize(0.30249504089355467 * size, 0.635 * size);
-                    highlight.setTranslateX(0.1975049591064453 * size);
-                    highlight.setTranslateY(0.235 * size);
+                    highlight.setMaxSize(0.30249504089355467 * size, 0.635 * size);
+                    highlight.relocate(0.1975049591064453 * size, 0.235 * size);
                     break;
                 case TRIANGLE_RIGHT:
-                    frame.setPrefSize(size, size);
+                    frame.setMaxSize(size, size);
 
-                    led.setPrefSize(0.7 * size, 0.6956920623779297 * size);
-                    led.setTranslateX(0.1 * size);
-                    led.setTranslateY(0.152153902053833 * size);
+                    led.setMaxSize(0.7 * size, 0.6956920623779297 * size);
+                    led.relocate(0.1 * size, 0.152153902053833 * size);
 
-                    highlight.setPrefSize(0.635 * size, 0.3 * size);
-                    highlight.setTranslateX(0.13 * size);
-                    highlight.setTranslateY(0.19 * size);
+                    highlight.setMaxSize(0.635 * size, 0.3 * size);
+                    highlight.relocate(0.13 * size, 0.19 * size);
                     break;
                 case TRIANGLE_DOWN:
-                    frame.setPrefSize(1.0035383605957031 * size, 0.9975 * size);
+                    frame.setMaxSize(1.0035383605957031 * size, 0.9975 * size);
                     frame.setTranslateX(-0.0017691457271575928 * size);
 
+                    led.setMaxSize(0.6956922149658203 * size, 0.7 * size);
+                    led.relocate(0.15215388298034668 * size, 0.1 * size);
 
-                    led.setPrefSize(0.6956922149658203 * size, 0.7 * size);
-                    led.setTranslateX(0.15215388298034668 * size);
-                    led.setTranslateY(0.1 * size);
-
-                    highlight.setPrefSize(0.6024949645996094 * size, 0.63 * size);
-                    highlight.setTranslateX(0.1975049591064453 * size);
-                    highlight.setTranslateY(0.13 * size);
+                    highlight.setMaxSize(0.6024949645996094 * size, 0.63 * size);
+                    highlight.relocate(0.1975049591064453 * size, 0.13 * size);
                     break;
                 case TRIANGLE_LEFT:
-                    frame.setPrefSize(0.9975 * size, 1.0035382843017577 * size);
-                    frame.setTranslateX(0.0025 * size);
-                    frame.setTranslateY(-0.0017691445350646972 * size);
+                    frame.setMaxSize(0.9975 * size, 1.0035382843017577 * size);
+                    frame.relocate(0.0025 * size, -0.0017691445350646972 * size);
 
-                    led.setPrefSize(0.7 * size, 0.6956920623779297 * size);
-                    led.setTranslateX(0.2 * size);
-                    led.setTranslateY(0.152153902053833 * size);
+                    led.setMaxSize(0.7 * size, 0.6956920623779297 * size);
+                    led.relocate(0.2 * size, 0.152153902053833 * size);
 
-                    highlight.setPrefSize(0.635 * size, 0.3 * size);
-                    highlight.setTranslateX(0.235 * size);
-                    highlight.setTranslateY(0.19 * size);
+                    highlight.setMaxSize(0.635 * size, 0.3 * size);
+                    highlight.relocate(0.235 * size, 0.19 * size);
                     break;
                 case ROUND:
                 default:
-                    frame.setPrefSize(size, size);
+                    frame.setMaxSize(size, size);
 
-                    led.setPrefSize(0.72 * size, 0.72 * size);
-                    led.setTranslateX(0.14 * size);
-                    led.setTranslateY(0.14 * size);
+                    led.setMaxSize(0.72 * size, 0.72 * size);
+                    led.relocate(0.14 * size, 0.14 * size);
 
-                    highlight.setPrefSize(0.58 * size, 0.58 * size);
-                    highlight.setTranslateX(0.21 * size);
-                    highlight.setTranslateY(0.21 * size);
+                    highlight.setMaxSize(0.58 * size, 0.58 * size);
+                    highlight.relocate(0.21 * size, 0.21 * size);
                     break;
             }
         }

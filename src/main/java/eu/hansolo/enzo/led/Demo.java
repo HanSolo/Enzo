@@ -17,6 +17,9 @@
 package eu.hansolo.enzo.led;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -33,6 +36,7 @@ import java.util.Random;
  */
 public class Demo extends Application {
     private static final Random RND = new Random();
+    private static int noOfNodes    = 0;
 
     @Override public void init() {
     }
@@ -55,6 +59,9 @@ public class Demo extends Application {
         stage.setTitle("Led demo");
         stage.setScene(scene);
         stage.show();
+
+        calcNoOfNodes(scene.getRoot());
+        System.out.println(noOfNodes + " Nodes in SceneGraph");
     }
 
     @Override public void stop() {
@@ -63,5 +70,20 @@ public class Demo extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+
+    // ******************** Misc **********************************************
+    private static void calcNoOfNodes(Node node) {
+        if (node instanceof Parent) {
+            if (((Parent) node).getChildrenUnmodifiable().size() != 0) {
+                ObservableList<Node> tempChildren = ((Parent) node).getChildrenUnmodifiable();
+                noOfNodes += tempChildren.size();
+                for (Node n : tempChildren) {
+                    calcNoOfNodes(n);
+                    //System.out.println(n.getStyleClass().toString());
+                }
+            }
+        }
     }
 }
