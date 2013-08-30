@@ -81,16 +81,10 @@ public class LedSkin extends SkinBase<Led> implements Skin<Led> {
         led = new Region();
         led.setStyle("-led-color: " + Util.colorToCss((Color) getSkinnable().getLedColor()) + ";");
 
-        innerShadow = new InnerShadow();
-        innerShadow.setColor(Color.rgb(0, 0, 0, 0.65));
-        innerShadow.setRadius(8);
-        innerShadow.setBlurType(BlurType.TWO_PASS_BOX);
+        innerShadow = new InnerShadow(BlurType.TWO_PASS_BOX, Color.rgb(0, 0, 0, 0.65), 8, 0d, 0d, 0d);
 
-        glow = new DropShadow();
+        glow = new DropShadow(BlurType.TWO_PASS_BOX, (Color) getSkinnable().getLedColor(), 20, 0d, 0d, 0d);
         glow.setInput(innerShadow);
-        glow.setColor((Color) getSkinnable().getLedColor());
-        glow.setRadius(20);
-        glow.setBlurType(BlurType.TWO_PASS_BOX);
 
         highlight = new Region();
 
