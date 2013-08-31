@@ -39,6 +39,7 @@ public class Demo extends Application {
     private static final Random RND = new Random();
     private static int   noOfNodes  = 0;
     private LocalTime    start;
+    private LocalTime    stop;
 
     @Override public void init() {
     }
@@ -63,12 +64,14 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
+        stop = LocalTime.now();
         System.out.println("CSS Led: ");
         System.out.println("Start: " + start);
-        System.out.println("Stop : " + LocalTime.now());
+        System.out.println("Stop : " + stop);
 
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes + " Nodes in SceneGraph");
+        System.out.println(((stop.toNanoOfDay() - start.toNanoOfDay())) / noOfNodes / 1000000d + " [ms/node]");
     }
 
     @Override public void stop() {
