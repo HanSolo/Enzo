@@ -82,8 +82,8 @@ public class Led extends Control {
     private ObjectProperty<LedType> ledType;
 
     // Properties
-    private boolean                 _blink = false;
-    private BooleanProperty         blink;
+    private boolean                 _blinking = false;
+    private BooleanProperty         blinking;
     private boolean                 _frameVisible = true;
     private BooleanProperty         frameVisible;
     private boolean                 toggle;
@@ -129,26 +129,26 @@ public class Led extends Control {
     }
 
     public final boolean isBlinking() {
-        return null == blink ? _blink : blink.get();
+        return null == blinking ? _blinking : blinking.get();
     }
-    public final void setBlink(final boolean BLINK) {
-        if (null == blink) {
-            _blink = BLINK;
+    public final void setBlinking(final boolean BLINKING) {
+        if (null == blinking) {
+            _blinking = BLINKING;
         } else {
-            blink.set(BLINK);
+            blinking.set(BLINKING);
         }
-        if (BLINK) {
+        if (BLINKING) {
             timer.start();
         } else {
             timer.stop();
             setOn(false);
         }
     }
-    public final BooleanProperty blinkProperty() {
-        if (null == blink) {
-            blink = new SimpleBooleanProperty(this, "blink", _blink);
+    public final BooleanProperty blinkingProperty() {
+        if (null == blinking) {
+            blinking = new SimpleBooleanProperty(this, "blinking", _blinking);
         }
-        return blink;
+        return blinking;
     }
 
     public final long getInterval() {

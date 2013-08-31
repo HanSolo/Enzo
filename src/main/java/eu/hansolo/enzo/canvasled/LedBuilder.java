@@ -1,20 +1,4 @@
-/*
- * Copyright (c) 2013 by Gerrit Grunwald
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package eu.hansolo.enzo.led;
+package eu.hansolo.enzo.canvasled;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -36,8 +20,8 @@ import java.util.HashMap;
 /**
  * Created by
  * User: hansolo
- * Date: 16.11.12
- * Time: 09:20
+ * Date: 31.08.13
+ * Time: 08:33
  */
 public class LedBuilder<B extends LedBuilder<B>> {
     private HashMap<String, Property> properties = new HashMap<>();
@@ -60,11 +44,6 @@ public class LedBuilder<B extends LedBuilder<B>> {
 
     public final LedBuilder ledColor(final Color LED_COLOR) {
         properties.put("ledColor", new SimpleObjectProperty<>(LED_COLOR));
-        return this;
-    }
-
-    public final LedBuilder ledType(final Led.LedType LED_TYPE) {
-        properties.put("ledType", new SimpleObjectProperty<>(LED_TYPE));
         return this;
     }
 
@@ -181,8 +160,6 @@ public class LedBuilder<B extends LedBuilder<B>> {
                 CONTROL.getStyleClass().setAll("led", ((StringProperty) properties.get(key)).get());
             } else if ("ledColor".equals(key)) {
                 CONTROL.setLedColor(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if ("ledType".equals(key)) {
-                CONTROL.setLedType(((ObjectProperty<Led.LedType>) properties.get(key)).get());
             } else if ("on".equals(key)) {
                 CONTROL.setOn(((BooleanProperty) properties.get(key)).get());
             } else if ("blinking".equals(key)) {
@@ -196,3 +173,4 @@ public class LedBuilder<B extends LedBuilder<B>> {
         return CONTROL;
     }
 }
+
