@@ -336,7 +336,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
 
-        pane.setPrefSize(size, size);
+        //pane.setPrefSize(size, size);
 
         sectionsCanvas.setWidth(size);
         sectionsCanvas.setHeight(size);
