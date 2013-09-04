@@ -20,7 +20,7 @@
 ************************************************************/
 .push-button {
     -fx-skin: "eu.hansolo.enzo.experimental.pushbutton.skin.PushButtonSkin";
-    -icon-on: red;
+    -icon-on: cyan;
 }
 
 /************************************************************

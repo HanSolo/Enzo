@@ -50,7 +50,7 @@ public class DemoGauge extends Application {
 
     @Override public void init() {
         control = GaugeBuilder.create()
-                              .prefSize(700, 700)
+                              .prefSize(400, 400)
                               .startAngle(330)
                               .angleRange(300)
                               .minValue(0)

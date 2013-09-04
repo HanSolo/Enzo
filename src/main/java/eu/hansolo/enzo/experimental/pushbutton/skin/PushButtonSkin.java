@@ -166,7 +166,6 @@ public class PushButtonSkin extends SkinBase<PushButton> implements Skin<PushBut
 
         icon = new Region();
         icon.getStyleClass().setAll("icon");
-        icon.setBackground(new Background(new BackgroundFill(getSkinnable().getColor(), null, null)));
         pane.getChildren().setAll(frame,
                                   deselected,
                                   selected,
