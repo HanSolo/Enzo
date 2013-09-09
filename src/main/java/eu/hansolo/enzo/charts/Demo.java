@@ -42,25 +42,25 @@ public class Demo extends Application {
     @Override public void init() {
         XYChart.Series series = new XYChart.Series();
         series.setName("temperature");
-        series.getData().add(new XYChart.Data(1, 23d));
-        series.getData().add(new XYChart.Data(2, 18d));
-        series.getData().add(new XYChart.Data(3, 15d));
-        series.getData().add(new XYChart.Data(4, 17d));
-        series.getData().add(new XYChart.Data(5, 20d));
-        series.getData().add(new XYChart.Data(6, 25d));
-        series.getData().add(new XYChart.Data(7, 28d));
-        series.getData().add(new XYChart.Data(8, 32d));
-        series.getData().add(new XYChart.Data(9, 30d));
-        series.getData().add(new XYChart.Data(10, 26d));
-        series.getData().add(new XYChart.Data(11, 24d));
-        series.getData().add(new XYChart.Data(12, 22d));
+        series.getData().add(new XYChart.Data("7:00", 27.3));
+        series.getData().add(new XYChart.Data("8:00", 28.2));
+        series.getData().add(new XYChart.Data("9:00", 28.5));
+        series.getData().add(new XYChart.Data("10:00", 29.2));
+        series.getData().add(new XYChart.Data("11:00", 29.6));
+        series.getData().add(new XYChart.Data("12:00", 31.5));
+        series.getData().add(new XYChart.Data("13:00", 32.0));
+        series.getData().add(new XYChart.Data("14:00", 31.2));
+        series.getData().add(new XYChart.Data("15:00", 30.2));
+        series.getData().add(new XYChart.Data("16:00", 29.68));
+        series.getData().add(new XYChart.Data("17:00", 30.05));
+        series.getData().add(new XYChart.Data("18:00", 31.25));
 
         chart = new SimpleLineChart();
         chart.setSections(new Section[]{
-            new Section(-40, -20),
-            new Section(-20, 0),
-            new Section(0, 20),
-            new Section(20, 30),
+            new Section(0, 10),
+            new Section(10, 15),
+            new Section(15, 25),
+            new Section(25, 30),
             new Section(30, 40)
         });
         chart.getStyleClass().addAll(SimpleLineChart.STYLE_CLASS_BLUE_TO_RED_5);

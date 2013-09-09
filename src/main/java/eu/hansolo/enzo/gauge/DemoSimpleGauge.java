@@ -50,14 +50,12 @@ public class DemoSimpleGauge extends Application {
     @Override public void init() {
         thermoMeter = SimpleGaugeBuilder.create()
                                         .prefSize(400, 400)
-                                        .minValue(0)
-                                        .maxValue(100)
                                         .sections(new Section(0, 16.66666, "0"),
-                                                  new Section(16.66666, 33.33333, "1"),
-                                                  new Section(33.33333, 50.0, "2"),
-                                                  new Section(50.0, 66.66666, "3"),
-                                                  new Section(66.66666, 83.33333, "4"),
-                                                  new Section(83.33333, 100.0, "5"))
+                                            new Section(16.66666, 33.33333, "1"),
+                                            new Section(33.33333, 50.0, "2"),
+                                            new Section(50.0, 66.66666, "3"),
+                                            new Section(66.66666, 83.33333, "4"),
+                                            new Section(83.33333, 100.0, "5"))
                                         .unit("C")
                                         .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_RED_6)
                                         .build();

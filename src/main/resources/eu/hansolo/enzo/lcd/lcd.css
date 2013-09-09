@@ -22,7 +22,7 @@
     -lcd-frame  : linear-gradient(from 50% 0% to 50% 97%,
                                   rgb(26, 26, 26) 0%,
                                   rgb(77, 77, 77) 1%,
-                                  rgb(77, 77, 77) 93%,
+                                  rgb(77, 77, 77) 99%,
                                   rgb(221, 221, 221) 100%);
     -lcd-bg0    : rgb(131, 133, 119);
     -lcd-bg1    : rgb(176, 183, 167);
@@ -45,7 +45,7 @@
                                            -lcd-bg2 50%,
                                            -lcd-bg3 50%,
                                            -lcd-bg4 100%);
-    -fx-background-insets: 0, 2;
+    -fx-background-insets: 0, 1;
     -fx-background-radius: 5, 4;
     /*
     -fx-scale-shape      : true;
