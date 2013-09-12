@@ -45,7 +45,7 @@ public class DemoGauge extends Application {
     private Gauge               control;
     private long                lastTimerCall;
     private AnimationTimer      timer;
-    private Marker marker0;
+    private Marker              marker0;
 
 
     @Override public void init() {
@@ -109,7 +109,7 @@ public class DemoGauge extends Application {
         stage.setScene(scene);
         stage.show();
 
-        timer.start();
+        //timer.start();
 
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes + " Nodes in SceneGraph");
