@@ -74,8 +74,8 @@ public class MenuItemBuilder implements Builder<MenuItem> {
         return this;
     }
 
-    public final MenuItemBuilder symbol(final Symbol.Type SYMBOL_TYPE) {
-        properties.put("SYMBOL", new SimpleObjectProperty<Symbol.Type>(SYMBOL_TYPE));
+    public final MenuItemBuilder symbol(final SymbolType SYMBOL_TYPE) {
+        properties.put("SYMBOL", new SimpleObjectProperty<SymbolType>(SYMBOL_TYPE));
         return this;
     }
 
@@ -99,7 +99,7 @@ public class MenuItemBuilder implements Builder<MenuItem> {
             } else if ("FOREGROUND_COLOR".equals(key)) {
                 CONTROL.setForegroundColor(((ObjectProperty<Color>) property).get());
             } else if ("SYMBOL".equals(key)) {
-                CONTROL.setSymbol(((ObjectProperty<Symbol.Type>) property).get());
+                CONTROL.setSymbolType(((ObjectProperty<SymbolType>) property).get());
             } else if ("THUMBNAIL_IMAGE_NAME".equals(key)) {
                 CONTROL.setThumbnailImageName(((StringProperty) property).get());
             }

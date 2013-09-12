@@ -17,8 +17,6 @@
 package eu.hansolo.enzo.radialmenu;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -48,63 +46,34 @@ public class Demo extends Application {
                                                                               .build())
                                                        .items(
                                                            MenuItemBuilder.create().thumbnailImageName(getClass().getResource("star.png").toExternalForm()).size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.LOCATION).tooltip("Location").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.MUSIC).tooltip("Music").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.SPEECH_BUBBLE).tooltip("Chat").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.BLUE_TOOTH).tooltip("Bluetooth").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.BULB).tooltip("Ideas").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.HEAD_PHONES).tooltip("Sound").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.TWITTER).tooltip("Twitter").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.TAGS).tooltip("Tags").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.CART).tooltip("Shop").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.ALARM).tooltip("Alarm").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(Symbol.Type.CLOCK).tooltip("Clock").size(64).build())
+                                                           MenuItemBuilder.create().symbol(SymbolType.LOCATION).tooltip("Location").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.MUSIC).tooltip("Music").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.SPEECH_BUBBLE).tooltip("Chat").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.BLUE_TOOTH).tooltip("Bluetooth").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.BULB).tooltip("Ideas").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.HEAD_PHONES).tooltip("Sound").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.TWITTER).tooltip("Twitter").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.TAGS).tooltip("Tags").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.CART).tooltip("Shop").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.ALARM).tooltip("Alarm").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.CLOCK).tooltip("Clock").size(64).build())
                                                        .build();
         radialMenu.setPrefSize(500, 500);
-        radialMenu.setOnItemSelected(new EventHandler<RadialMenu.ItemEvent>() {
-            @Override public void handle(RadialMenu.ItemEvent selectionEvent) {
-                System.out.println("item " + selectionEvent.getItem().getTooltip() + " selected");
-            }
-        });
-        radialMenu.setOnMenuOpenStarted(new EventHandler<RadialMenu.MenuEvent>() {
-            @Override public void handle(RadialMenu.MenuEvent menuEvent) {
-                System.out.println("Menu starts to open");
-            }
-        });
-        radialMenu.setOnMenuOpenFinished(new EventHandler<RadialMenu.MenuEvent>() {
-            @Override public void handle(RadialMenu.MenuEvent menuEvent) {
-                System.out.println("Menu finished to open");
-            }
-        });
-        radialMenu.setOnMenuCloseStarted(new EventHandler<RadialMenu.MenuEvent>() {
-            @Override public void handle(RadialMenu.MenuEvent menuEvent) {
-                System.out.println("Menu starts to close");
-            }
-        });
-        radialMenu.setOnMenuCloseFinished(new EventHandler<RadialMenu.MenuEvent>() {
-            @Override public void handle(RadialMenu.MenuEvent menuEvent) {
-                System.out.println("Menu finished to close");
-            }
-        });
-
+        radialMenu.setOnItemSelected(selectionEvent -> System.out.println("item " + selectionEvent.item.getTooltip() + " selected"));
+        radialMenu.setOnMenuOpenStarted(menuEvent -> System.out.println("Menu starts to open"));
+        radialMenu.setOnMenuOpenFinished(menuEvent -> System.out.println("Menu finished to open"));
+        radialMenu.setOnMenuCloseStarted(menuEvent -> System.out.println("Menu starts to close"));
+        radialMenu.setOnMenuCloseFinished(menuEvent -> System.out.println("Menu finished to close"));
 
         HBox buttons = new HBox();
         buttons.setSpacing(10);
         buttons.setPadding(new Insets(10, 10, 10, 10));
         Button buttonShow = new Button("Show menu");
-        buttonShow.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent actionEvent) {
-                radialMenu.show();
-            }
-        });
+        buttonShow.setOnAction(actionEvent -> radialMenu.show());
         buttons.getChildren().add(buttonShow);
 
         Button buttonHide = new Button("Hide menu");
-        buttonHide.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent actionEvent) {
-                radialMenu.hide();
-            }
-        });
+        buttonHide.setOnAction(actionEvent -> radialMenu.hide());
         buttons.getChildren().add(buttonHide);
 
         VBox pane = new VBox();

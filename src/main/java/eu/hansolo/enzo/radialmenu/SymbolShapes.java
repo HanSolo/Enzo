@@ -16,7 +16,7 @@
 
 package eu.hansolo.enzo.radialmenu;
 
-import javafx.scene.Group;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.CubicCurveTo;
@@ -24,8 +24,6 @@ import javafx.scene.shape.FillRule;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 
 /**
@@ -35,15 +33,12 @@ import javafx.scene.shape.Shape;
  * Time: 09:22
  * To change this template use File | Settings | File Templates.
  */
-public class SymbolShapes extends Symbol {
+public class SymbolShapes {
 
     // ******************** Methods *******************************************
-    public static final Group getSymbol(final Type TYPE, final double SIZE, final Color COLOR) {
-        final Group SYMBOL_GROUP = new Group();
-
-        final Shape IBOUNDS = new Rectangle(0, 0, SIZE, SIZE);
-        IBOUNDS.setOpacity(0.0);
-        SYMBOL_GROUP.getChildren().add(IBOUNDS);
+    public static final StackPane getSymbol(final SymbolType TYPE, final double SIZE, final Color COLOR) {
+        final StackPane PANE = new StackPane();
+        PANE.setPrefSize(SIZE, SIZE);
 
         final Path SYMBOL;
         switch(TYPE) {
@@ -315,10 +310,10 @@ public class SymbolShapes extends Symbol {
 
         SYMBOL.setFill(COLOR);
 
-        SYMBOL_GROUP.getChildren().addAll(IBOUNDS, SYMBOL);
-        SYMBOL_GROUP.setCache(true);
+        PANE.getChildren().add(SYMBOL);
+        PANE.setCache(true);
 
-        return SYMBOL_GROUP;
+        return PANE;
     }
 
 

@@ -29,6 +29,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -38,12 +39,11 @@ import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -90,7 +90,7 @@ public class RadialMenu extends Pane {
     private Group                           button;
     private Group                           cross;
     private Circle                          mainMenuMouseCatcher;
-    private boolean                         isDirty;
+    private boolean                         firstTime;
     private EventHandler<MouseEvent>        mouseHandler;
 
 
@@ -100,45 +100,45 @@ public class RadialMenu extends Pane {
     }
     public RadialMenu(final Options OPTIONS, final List<MenuItem> ITEMS) {
         options               = OPTIONS;
-        items                 = javafx.collections.FXCollections.observableHashMap();
-        state                 = new SimpleObjectProperty<State>(State.CLOSED);
+        items                 = FXCollections.observableHashMap();
+        getStylesheets().add(getClass().getResource("radialmenu.css").toExternalForm());
+        getStyleClass().addAll("radial-menu");
+        state                 = new SimpleObjectProperty<>(this, "state", State.CLOSED);
         degrees               = Math.max(Math.min(360, options.getDegrees()), 0);
         positions             = Double.compare(degrees, 360.0) == 0 ? ITEMS.size() : ITEMS.size() - 1;
         openTimeLines         = new Timeline[ITEMS.size()];
         closeTimeLines        = new Timeline[ITEMS.size()];
         button                = new Group();
         cross                 = new Group();
-        isDirty               = true;
-        mouseHandler          = new EventHandler<MouseEvent>() {
-            @Override public void handle(final MouseEvent EVENT) {
-                final Object SOURCE = EVENT.getSource();
-                if (MouseEvent.MOUSE_CLICKED == EVENT.getEventType()) {
-                    if(EVENT.getSource().equals(mainMenuMouseCatcher)) {
-                        if (State.CLOSED == getState()) {
-                            open();
-                        } else {
-                            close();
-                        }
-                    }
-                } else if (MouseEvent.MOUSE_PRESSED == EVENT.getEventType()) {
-                    if (SOURCE.equals(mainMenuMouseCatcher)) {
-                        mainMenuMouseCatcher.setFill(Color.rgb(0, 0, 0, 0.5));
+        firstTime             = true;
+        mouseHandler          = mouseEvent -> {
+            final Object SOURCE = mouseEvent.getSource();
+            if (MouseEvent.MOUSE_CLICKED == mouseEvent.getEventType()) {
+                if(mouseEvent.getSource().equals(mainMenuMouseCatcher)) {
+                    if (State.CLOSED == getState()) {
+                        open();
                     } else {
-                        select(items.get(SOURCE));
-                        fireItemEvent(new ItemEvent(items.get(SOURCE), this, null, ItemEvent.ITEM_SELECTED));
+                        close();
                     }
-                } else if (MouseEvent.MOUSE_RELEASED == EVENT.getEventType()) {
-                    if (EVENT.getSource().equals(mainMenuMouseCatcher)) {
-                        mainMenuMouseCatcher.setFill(Color.TRANSPARENT);
-                    }
-                } else if (MouseEvent.MOUSE_ENTERED == EVENT.getEventType()) {
-                    if (EVENT.getSource().equals(mainMenuMouseCatcher)) {
+                }
+            } else if (MouseEvent.MOUSE_PRESSED == mouseEvent.getEventType()) {
+                if (SOURCE.equals(mainMenuMouseCatcher)) {
+                    mainMenuMouseCatcher.setFill(Color.rgb(0, 0, 0, 0.5));
+                } else {
+                    select(items.get(SOURCE));
+                    fireItemEvent(new ItemEvent(items.get(SOURCE), this, null, ItemEvent.ITEM_SELECTED));
+                }
+            } else if (MouseEvent.MOUSE_RELEASED == mouseEvent.getEventType()) {
+                if (mouseEvent.getSource().equals(mainMenuMouseCatcher)) {
+                    mainMenuMouseCatcher.setFill(Color.TRANSPARENT);
+                }
+            } else if (MouseEvent.MOUSE_ENTERED == mouseEvent.getEventType()) {
+                if (mouseEvent.getSource().equals(mainMenuMouseCatcher)) {
 
-                    } else {
-
-                    }
+                } else {
 
                 }
+
             }
         };
         initMainButton();
@@ -203,34 +203,37 @@ public class RadialMenu extends Pane {
             MenuItem item = ITEMS.get(i);
 
             // Create graphical representation of each menu item
-            final StackPane NODE = new StackPane();
+            final StackPane ITEM_CONTAINER = new StackPane();
 
-            NODE.getChildren().add(createItemShape(item, SHADOW));
+            ITEM_CONTAINER.getChildren().add(createItemShape(item, SHADOW));
 
-            if (Symbol.Type.NONE == item.getSymbol() && item.getThumbnailImageName().isEmpty()) {
+            if (SymbolType.NONE == item.getSymbolType() && item.getThumbnailImageName().isEmpty()) {
                 Text text = new Text(Integer.toString(i));
                 text.setFont(Font.font("Verdana", FontWeight.BOLD, item.getSize() * 0.5));
                 text.setFill(item.getForegroundColor());
-                NODE.getChildren().add(text);
+                text.setMouseTransparent(true);
+                ITEM_CONTAINER.getChildren().add(text);
             } else if (!item.getThumbnailImageName().isEmpty()) {
                 try {
-                    NODE.getChildren().add(createCanvasThumbnail(item));
+                    ITEM_CONTAINER.getChildren().add(createThumbnail(item));
                 } catch (IllegalArgumentException exception) {
                     Text text = new Text(Integer.toString(i));
                     text.setFont(Font.font("Verdana", FontWeight.BOLD, item.getSize() * 0.5));
                     text.setFill(item.getForegroundColor());
-                    NODE.getChildren().add(text);
+                    text.setMouseTransparent(true);
+                    ITEM_CONTAINER.getChildren().add(text);
                 }
             } else {
-                Canvas symbol = SymbolCanvas.getSymbol(item.getSymbol(), 0.7 * item.getSize(), Color.WHITE);
-                NODE.getChildren().add(symbol);
+                //Canvas symbol = SymbolCanvas.getSymbol(item.getSymbolType(), 0.7 * item.getSize(), Color.WHITE);
+                //StackPane symbol = SymbolShapes.getSymbol(item.getSymbolType(), 0.7 * item.getSize(), Color.WHITE);
+                Symbol symbol = new Symbol(item.getSymbolType(), 0.7 * item.getSize(), Color.WHITE);
+                symbol.setMouseTransparent(true);
+                ITEM_CONTAINER.getChildren().add(symbol);
             }
 
-            Circle itemMouseCatcher = new Circle(item.getSize() * 0.5);
-            itemMouseCatcher.setFill(Color.TRANSPARENT);
-            itemMouseCatcher.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseHandler);
-            NODE.getChildren().add(itemMouseCatcher);
-            NODE.setOpacity(0.0);
+            ITEM_CONTAINER.setPickOnBounds(false);
+            ITEM_CONTAINER.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseHandler);
+            ITEM_CONTAINER.setOpacity(0.0);
 
             // Add animations for each menu item
             double  degree    = (((degrees / positions) * i) + options.getOffset()) % 360;
@@ -239,17 +242,15 @@ public class RadialMenu extends Pane {
             double y          = Math.round(position.getY() * options.getRadius());
             double delay      = (200 / ITEMS.size()) * i;
 
-            openTimeLines[i]  = createItemOpenTimeLine(NODE, x, y, delay);
-            closeTimeLines[i] = createItemCloseTimeLine(NODE, x, y, delay);
+            openTimeLines[i]  = createItemOpenTimeLine(ITEM_CONTAINER, x, y, delay);
+            closeTimeLines[i] = createItemCloseTimeLine(ITEM_CONTAINER, x, y, delay);
 
             // Add mouse event handler to each item
-            //REGION.setOnMouseEntered(mouseHandler);
-            //REGION.setOnMouseClicked(mouseHandler);
-            NODE.setOnMousePressed(mouseHandler);
-            NODE.setOnMouseReleased(mouseHandler);
+            ITEM_CONTAINER.setOnMousePressed(mouseHandler);
+            ITEM_CONTAINER.setOnMouseReleased(mouseHandler);
 
             // Add items and nodes to map
-            itemMap.put(NODE, item);
+            itemMap.put(ITEM_CONTAINER, item);
         }
         items.putAll(itemMap);
     }
@@ -260,21 +261,17 @@ public class RadialMenu extends Pane {
     }
 
     private void registerListeners() {
-        widthProperty().addListener((ov, oldWidth, newWidth) -> {
-            if (oldWidth.doubleValue() != newWidth.doubleValue()) isDirty = true;
-        });
-        heightProperty().addListener((ov, oldHeight, newHeight) -> {
-            if (oldHeight.doubleValue() != newHeight.doubleValue()) isDirty = true;
-        });
+        widthProperty().addListener(observable -> resize());
+        heightProperty().addListener(observable -> resize());
     }
 
 
     // ******************** Methods *******************************************
     @Override public void layoutChildren() {
         super.layoutChildren();
-        if (isDirty) {
+        if (firstTime) {
             resize();
-            isDirty = false;
+            firstTime = false;
         }
     }
 
@@ -317,7 +314,7 @@ public class RadialMenu extends Pane {
         initGraphics();
     }
     public List<MenuItem> getItems() {
-        List<MenuItem> tmpList = new ArrayList<MenuItem>(items.size());
+        List<MenuItem> tmpList = new ArrayList<>(items.size());
         for (MenuItem item : items.values()) {
             tmpList.add(item);
         }
@@ -411,7 +408,7 @@ public class RadialMenu extends Pane {
     }
 
     public void select(final MenuItem SELECTED_ITEM) {
-        List<Transition> transitions = new ArrayList<Transition>(items.size() * 2);
+        List<Transition> transitions = new ArrayList<>(items.size() * 2);
         for (Parent node : items.keySet()) {
             if (items.get(node).equals(SELECTED_ITEM)) {
                 // Add enlarge transition to selected item
@@ -469,6 +466,10 @@ public class RadialMenu extends Pane {
 
     private Circle createItemShape(final MenuItem ITEM, final Effect EFFECT) {
         Circle circle = new Circle(ITEM.getSize() * 0.5);
+        //Region circle = new Region();
+        //circle.setPrefSize(ITEM.getSize() * 0.5);
+        //circle.getStyleClass().add("item");
+
         circle.setFill(ITEM.getInnerColor());
         circle.setStroke(ITEM.getFrameColor());
         circle.setStrokeWidth(0.09375 * ITEM.getSize());
@@ -477,73 +478,68 @@ public class RadialMenu extends Pane {
         return circle;
     }
 
-    private Canvas createCanvasThumbnail(final MenuItem ITEM) {
-        final Image  THUMBNAIL = new Image(ITEM.getThumbnailImageName());
-        final double SIZE      = THUMBNAIL.getWidth() > THUMBNAIL.getHeight() ? THUMBNAIL.getWidth() : THUMBNAIL.getHeight();
-        final double SCALE     = (0.7 * ITEM.getSize()) / SIZE;
+    private ImageView createThumbnail(final MenuItem ITEM) {
+        ImageView imageItem = new ImageView(new Image(ITEM.getThumbnailImageName()));
+        imageItem.setFitWidth(ITEM.getSize() * 0.7);
+        imageItem.setFitHeight(ITEM.getSize() * 0.7);
+        imageItem.setMouseTransparent(true);
 
-        Canvas canvasThumbnail = new Canvas(0.7 * ITEM.getSize(), 0.7 * ITEM.getSize());
-        GraphicsContext ctx    = canvasThumbnail.getGraphicsContext2D();
-
-        ctx.scale(SCALE, SCALE);
-        ctx.drawImage(THUMBNAIL, 0, 0);
-
-        return canvasThumbnail;
+        return imageItem;
     }
 
     private Timeline createItemOpenTimeLine(final StackPane NODE, final double X, final double Y, final double DELAY) {
-        KeyValue kvX1     = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
-        KeyValue kvY1     = new KeyValue(NODE.translateYProperty(), 0, Interpolator.EASE_OUT);
-        KeyValue kvR1     = new KeyValue(NODE.rotateProperty(), 0, Interpolator.EASE_OUT);
-        KeyValue kvO1     = new KeyValue(NODE.opacityProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvX1  = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvY1  = new KeyValue(NODE.translateYProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvR1  = new KeyValue(NODE.rotateProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvO1  = new KeyValue(NODE.opacityProperty(), 0, Interpolator.EASE_OUT);
 
-        KeyValue kvX2     = new KeyValue(NODE.translateXProperty(), 0.0);
-        KeyValue kvY2     = new KeyValue(NODE.translateYProperty(), 0.0);
+        KeyValue kvX2  = new KeyValue(NODE.translateXProperty(), 0.0);
+        KeyValue kvY2  = new KeyValue(NODE.translateYProperty(), 0.0);
 
-        KeyValue kvX3     = new KeyValue(NODE.translateXProperty(), 1.1 * X, Interpolator.EASE_IN);
-        KeyValue kvY3     = new KeyValue(NODE.translateYProperty(), 1.1 * Y, Interpolator.EASE_IN);
+        KeyValue kvX3  = new KeyValue(NODE.translateXProperty(), 1.1 * X, Interpolator.EASE_IN);
+        KeyValue kvY3  = new KeyValue(NODE.translateYProperty(), 1.1 * Y, Interpolator.EASE_IN);
 
-        KeyValue kvX4     = new KeyValue(NODE.translateXProperty(), 0.95 * X, Interpolator.EASE_OUT);
-        KeyValue kvY4     = new KeyValue(NODE.translateYProperty(), 0.95 * Y, Interpolator.EASE_OUT);
-        KeyValue kvRO4    = new KeyValue(NODE.rotateProperty(), 360);
-        KeyValue kvO4     = new KeyValue(NODE.opacityProperty(), 1.0, Interpolator.EASE_OUT);
+        KeyValue kvX4  = new KeyValue(NODE.translateXProperty(), 0.95 * X, Interpolator.EASE_OUT);
+        KeyValue kvY4  = new KeyValue(NODE.translateYProperty(), 0.95 * Y, Interpolator.EASE_OUT);
+        KeyValue kvRO4 = new KeyValue(NODE.rotateProperty(), 360);
+        KeyValue kvO4  = new KeyValue(NODE.opacityProperty(), 1.0, Interpolator.EASE_OUT);
 
-        KeyValue kvX5     = new KeyValue(NODE.translateXProperty(), X);
-        KeyValue kvY5     = new KeyValue(NODE.translateYProperty(), Y);
+        KeyValue kvX5  = new KeyValue(NODE.translateXProperty(), X);
+        KeyValue kvY5  = new KeyValue(NODE.translateYProperty(), Y);
 
-        KeyFrame kfO1     = new KeyFrame(Duration.millis(0), kvX1, kvY1, kvR1, kvO1);
-        KeyFrame kfO2     = new KeyFrame(Duration.millis(50 + DELAY), kvX2, kvY2);
-        KeyFrame kfO3     = new KeyFrame(Duration.millis(250 + DELAY), kvX3, kvY3);
-        KeyFrame kfO4     = new KeyFrame(Duration.millis(400 + DELAY), kvX4, kvY4, kvRO4, kvO4);
-        KeyFrame kfO5     = new KeyFrame(Duration.millis(600 + DELAY), kvX5, kvY5);
+        KeyFrame kfO1  = new KeyFrame(Duration.millis(0), kvX1, kvY1, kvR1, kvO1);
+        KeyFrame kfO2  = new KeyFrame(Duration.millis(50 + DELAY), kvX2, kvY2);
+        KeyFrame kfO3  = new KeyFrame(Duration.millis(250 + DELAY), kvX3, kvY3);
+        KeyFrame kfO4  = new KeyFrame(Duration.millis(400 + DELAY), kvX4, kvY4, kvRO4, kvO4);
+        KeyFrame kfO5  = new KeyFrame(Duration.millis(600 + DELAY), kvX5, kvY5);
 
         return new Timeline(kfO1, kfO2, kfO3, kfO4, kfO5);
     }
     private Timeline createItemCloseTimeLine(final StackPane NODE, final double X, final double Y, final double DELAY) {
-        KeyValue kvX1     = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
-        KeyValue kvY1     = new KeyValue(NODE.translateYProperty(), 0, Interpolator.EASE_OUT);
-        KeyValue kvR1     = new KeyValue(NODE.rotateProperty(), 0, Interpolator.EASE_OUT);
-        KeyValue kvO1     = new KeyValue(NODE.opacityProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvX1  = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvY1  = new KeyValue(NODE.translateYProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvR1  = new KeyValue(NODE.rotateProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvO1  = new KeyValue(NODE.opacityProperty(), 0, Interpolator.EASE_OUT);
 
-        KeyValue kvX2     = new KeyValue(NODE.translateXProperty(), 0.0);
-        KeyValue kvY2     = new KeyValue(NODE.translateYProperty(), 0.0);
+        KeyValue kvX2  = new KeyValue(NODE.translateXProperty(), 0.0);
+        KeyValue kvY2  = new KeyValue(NODE.translateYProperty(), 0.0);
 
-        KeyValue kvX3     = new KeyValue(NODE.translateXProperty(), 1.1 * X, Interpolator.EASE_IN);
-        KeyValue kvY3     = new KeyValue(NODE.translateYProperty(), 1.1 * Y, Interpolator.EASE_IN);
+        KeyValue kvX3  = new KeyValue(NODE.translateXProperty(), 1.1 * X, Interpolator.EASE_IN);
+        KeyValue kvY3  = new KeyValue(NODE.translateYProperty(), 1.1 * Y, Interpolator.EASE_IN);
 
-        KeyValue kvX4     = new KeyValue(NODE.translateXProperty(), 0.95 * X, Interpolator.EASE_OUT);
-        KeyValue kvY4     = new KeyValue(NODE.translateYProperty(), 0.95 * Y, Interpolator.EASE_OUT);
-        KeyValue kvRC4    = new KeyValue(NODE.rotateProperty(), 720);
-        KeyValue kvO4     = new KeyValue(NODE.opacityProperty(), 1.0, Interpolator.EASE_OUT);
+        KeyValue kvX4  = new KeyValue(NODE.translateXProperty(), 0.95 * X, Interpolator.EASE_OUT);
+        KeyValue kvY4  = new KeyValue(NODE.translateYProperty(), 0.95 * Y, Interpolator.EASE_OUT);
+        KeyValue kvRC4 = new KeyValue(NODE.rotateProperty(), 720);
+        KeyValue kvO4  = new KeyValue(NODE.opacityProperty(), 1.0, Interpolator.EASE_OUT);
 
-        KeyValue kvX5     = new KeyValue(NODE.translateXProperty(), X);
-        KeyValue kvY5     = new KeyValue(NODE.translateYProperty(), Y);
+        KeyValue kvX5  = new KeyValue(NODE.translateXProperty(), X);
+        KeyValue kvY5  = new KeyValue(NODE.translateYProperty(), Y);
 
-        KeyFrame kfC1     = new KeyFrame(Duration.millis(0), kvX5, kvY5);
-        KeyFrame kfC2     = new KeyFrame(Duration.millis(50 + DELAY), kvX4, kvY4, kvRC4, kvO4);
-        KeyFrame kfC3     = new KeyFrame(Duration.millis(250 + DELAY), kvX3, kvY3);
-        KeyFrame kfC4     = new KeyFrame(Duration.millis(400 + DELAY), kvX2, kvY2);
-        KeyFrame kfC5     = new KeyFrame(Duration.millis(600 + DELAY), kvX1, kvY1, kvR1, kvO1);
+        KeyFrame kfC1  = new KeyFrame(Duration.millis(0), kvX5, kvY5);
+        KeyFrame kfC2  = new KeyFrame(Duration.millis(50 + DELAY), kvX4, kvY4, kvRC4, kvO4);
+        KeyFrame kfC3  = new KeyFrame(Duration.millis(250 + DELAY), kvX3, kvY3);
+        KeyFrame kfC4  = new KeyFrame(Duration.millis(400 + DELAY), kvX2, kvY2);
+        KeyFrame kfC5  = new KeyFrame(Duration.millis(600 + DELAY), kvX1, kvY1, kvR1, kvO1);
 
         return new Timeline(kfC1, kfC2, kfC3, kfC4, kfC5);
     }
@@ -568,6 +564,8 @@ public class RadialMenu extends Pane {
     };
 
     public void fireItemEvent(final ItemEvent EVENT) {
+        fireEvent(EVENT);
+
         final EventHandler<ItemEvent> HANDLER = getOnItemSelected();
 
         if (HANDLER != null) {
@@ -608,7 +606,9 @@ public class RadialMenu extends Pane {
     };
 
     public void fireMenuEvent(final MenuEvent EVENT) {
-        final EventType               TYPE    = EVENT.getEventType();
+        fireEvent(EVENT);
+
+        final EventType               TYPE = EVENT.getEventType();
         final EventHandler<MenuEvent> HANDLER;
 
         if (MenuEvent.MENU_OPEN_STARTED == TYPE) {
@@ -633,7 +633,7 @@ public class RadialMenu extends Pane {
     public static class ItemEvent extends Event {
         public static final EventType<ItemEvent> ITEM_SELECTED = new EventType(ANY, "itemSelected");
 
-        private MenuItem item;
+        public MenuItem item;
 
 
         // ******************** Constructors **********************************
@@ -642,11 +642,6 @@ public class RadialMenu extends Pane {
             item = ITEM;
         }
 
-
-        // ******************** Methods ***************************************
-        public final MenuItem getItem() {
-            return item;
-        }
     }
 
     public static class MenuEvent extends Event {

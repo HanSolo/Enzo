@@ -28,10 +28,10 @@ import javafx.scene.paint.Color;
  * Time: 09:00
  * To change this template use File | Settings | File Templates.
  */
-public class SymbolCanvas extends Symbol {
+public class SymbolCanvas {
 
     // ******************** Methods *******************************************
-    public static final Canvas getSymbol(final Type TYPE, final double SIZE, final Color COLOR) {
+    public static final Canvas getSymbol(final SymbolType TYPE, final double SIZE, final Color COLOR) {
         final Canvas          CANVAS = new Canvas(SIZE, SIZE);
         final GraphicsContext CTX    = CANVAS.getGraphicsContext2D();
 

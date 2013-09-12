@@ -35,7 +35,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class RadialMenuBuilder implements Builder<RadialMenu> {
-    private HashMap<String, Property> properties = new HashMap<String, Property>();
+    private HashMap<String, Property> properties = new HashMap<>();
 
 
     // ******************** Constructors **************************************
@@ -48,29 +48,29 @@ public class RadialMenuBuilder implements Builder<RadialMenu> {
     }
 
     public final RadialMenuBuilder options(final Options OPTIONS) {
-        properties.put("OPTIONS", new SimpleObjectProperty<Options>(OPTIONS));
+        properties.put("options", new SimpleObjectProperty<>(OPTIONS));
         return this;
     }
 
     public final RadialMenuBuilder items(final MenuItem... MENU_ITEMS) {
-        properties.put("ITEMS_ARRAY", new SimpleObjectProperty<MenuItem[]>(MENU_ITEMS));
+        properties.put("itemsArray", new SimpleObjectProperty<>(MENU_ITEMS));
         return this;
     }
 
     public final RadialMenuBuilder items(final List<MenuItem> MENU_ITEMS) {
-        properties.put("ITEMS_LIST", new SimpleObjectProperty<List<MenuItem>>(MENU_ITEMS));
+        properties.put("itemsList", new SimpleObjectProperty<>(MENU_ITEMS));
         return this;
     }
 
     @Override public final RadialMenu build() {
-        Options        options = properties.keySet().contains("OPTIONS") ? ((ObjectProperty<Options>) properties.get("OPTIONS")).get() : new Options();
+        Options        options = properties.keySet().contains("options") ? ((ObjectProperty<Options>) properties.get("options")).get() : new Options();
         List<MenuItem> items;
-        if (properties.keySet().contains("ITEMS_ARRAY")) {
-            items = Arrays.asList(((ObjectProperty<MenuItem[]>) properties.get("ITEMS_ARRAY")).get());
-        } else if (properties.keySet().contains("ITEMS_LIST")) {
-            items = ((ObjectProperty<List<MenuItem>>) properties.get("ITEMS_LIST")).get();
+        if (properties.keySet().contains("itemsArray")) {
+            items = Arrays.asList(((ObjectProperty<MenuItem[]>) properties.get("itemsArray")).get());
+        } else if (properties.keySet().contains("itemsList")) {
+            items = ((ObjectProperty<List<MenuItem>>) properties.get("itemsList")).get();
         } else {
-            items = new ArrayList<MenuItem>();
+            items = new ArrayList<>();
             items.add(new MenuItem());
         }
         return new RadialMenu(options, items);

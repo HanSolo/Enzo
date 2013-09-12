@@ -16,102 +16,114 @@
 
 package eu.hansolo.enzo.radialmenu;
 
+import eu.hansolo.enzo.common.Util;
+import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+
+
 /**
- * Created with IntelliJ IDEA.
+ * Created by
  * User: hansolo
- * Date: 25.09.12
- * Time: 09:04
- * To change this template use File | Settings | File Templates.
+ * Date: 11.09.13
+ * Time: 22:15
  */
-public abstract class Symbol {
-    public static enum Type {
-        ALARM,
-        ALIGN_LEFT,
-        ALIGN_RIGHT,
-        ATTACHMENT,
-        BACK,
-        BIG_BRUSH,
-        BLUE_TOOTH,
-        BOOLEAN,
-        BRIGHTNESS,
-        BRUSH,
-        BULB_ON,
-        BULB,
-        CALENDAR,
-        CAMERA,
-        CAR,
-        CART,
-        CENTER,
-        CLOCK,
-        CLOUD,
-        COMPASS,
-        COMPOSE,
-        CONTRAST,
-        CROP,
-        CURSOR,
-        CURSOR1,
-        CURSOR2,
-        DELETE,
-        EJECT,
-        ERASER,
-        EYE,
-        EYEDROPPER,
-        FACEBOOK,
-        FORWARD,
-        GAUGE,
-        GLOBE,
-        GOOGLE,
-        GRAPH,
-        HEAD_PHONES,
-        HEART,
-        JUSTIFIED,
-        LAYERS,
-        LINE,
-        LINK,
-        LOCATION,
-        LOCK,
-        LUGGAGE,
-        MAIL,
-        MONITOR,
-        MUSIC,
-        NEXT,
-        NONE,
-        PAUSE,
-        PEN,
-        PEN1,
-        PENCIL,
-        PHONE,
-        PHOTO,
-        PLANE,
-        PLAY,
-        REFRESH,
-        REPEAT,
-        REWIND,
-        ROCKET,
-        SCISSORS,
-        SEARCH,
-        SELECTION,
-        SELECTION1,
-        SELECTION2,
-        SELECTION3,
-        SETTINGS,
-        SHUFFLE,
-        SMUDGE,
-        SPEECH_BUBBLE,
-        STAR,
-        TAG,
-        TAGS,
-        TEXT,
-        TOOL,
-        TRAIN,
-        TRASH,
-        TWITTER,
-        UNDO,
-        UNLOCK,
-        USER,
-        VOLUME,
-        WEB,
-        ZOOM_IN,
-        ZOOM_OUT
+public class Symbol extends Region {
+    private static final double PREFERRED_WIDTH  = 28;
+    private static final double PREFERRED_HEIGHT = 28;
+    private static final double MINIMUM_WIDTH    = 5;
+    private static final double MINIMUM_HEIGHT   = 5;
+    private static final double MAXIMUM_WIDTH    = 1024;
+    private static final double MAXIMUM_HEIGHT   = 1024;
+    private SymbolType          symbolType;
+    private Color               color;
+
+
+    // ******************** Constructor ***************************************
+    public Symbol(final SymbolType SYMBOL_TYPE, final double SIZE, final Color COLOR) {
+        symbolType = SYMBOL_TYPE;
+        color      = COLOR;
+        setMinSize(SIZE * SYMBOL_TYPE.WIDTH_FACTOR, SIZE * SYMBOL_TYPE.HEIGHT_FACTOR);
+        setPrefSize(SIZE * SYMBOL_TYPE.WIDTH_FACTOR, SIZE * SYMBOL_TYPE.HEIGHT_FACTOR);
+        setMaxSize(SIZE * SYMBOL_TYPE.WIDTH_FACTOR, SIZE * SYMBOL_TYPE.HEIGHT_FACTOR);
+        getStylesheets().add(getClass().getResource("symbols.css").toExternalForm());
+        getStyleClass().setAll("symbol");
+        init();
+        initGraphics();
+        registerListeners();
+    }
+
+
+    // ******************** Initialization ************************************
+    private void init() {
+        if (Double.compare(getPrefWidth(), 0.0) <= 0 || Double.compare(getPrefHeight(), 0.0) <= 0 ||
+            Double.compare(getWidth(), 0.0) <= 0 || Double.compare(getHeight(), 0.0) <= 0) {
+            if (getPrefWidth() > 0 && getPrefHeight() > 0) {
+                setPrefSize(getPrefWidth(), getPrefHeight());
+            } else {
+                setPrefSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
+            }
+        }
+
+        if (Double.compare(getMinWidth(), 0.0) <= 0 || Double.compare(getMinHeight(), 0.0) <= 0) {
+            setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
+        }
+
+        if (Double.compare(getMaxWidth(), 0.0) <= 0 || Double.compare(getMaxHeight(), 0.0) <= 0) {
+            setMaxSize(MAXIMUM_WIDTH, MAXIMUM_HEIGHT);
+        }
+    }
+
+    private void initGraphics() {
+        setId(symbolType.STYLE_CLASS);
+        setStyle("-symbol-color: " + Util.colorToCss(color) + ";");
+    }
+
+    private void registerListeners() {}
+
+
+    // ******************** Methods *******************************************
+    @Override protected double computePrefWidth(final double PREF_HEIGHT) {
+        double prefHeight = PREFERRED_HEIGHT;
+        if (PREF_HEIGHT != -1) {
+            prefHeight = Math.max(0, PREF_HEIGHT - getInsets().getTop() - getInsets().getBottom());
+        }
+        return super.computePrefWidth(prefHeight);
+    }
+    @Override protected double computePrefHeight(final double PREF_WIDTH) {
+        double prefWidth = PREFERRED_WIDTH;
+        if (PREF_WIDTH != -1) {
+            prefWidth = Math.max(0, PREF_WIDTH - getInsets().getLeft() - getInsets().getRight());
+        }
+        return super.computePrefWidth(prefWidth);
+    }
+
+    @Override protected double computeMinWidth(final double MIN_HEIGHT) {
+        return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, MIN_HEIGHT - getInsets().getTop() - getInsets().getBottom()));
+    }
+    @Override protected double computeMinHeight(final double MIN_WIDTH) {
+        return super.computeMinHeight(Math.max(MINIMUM_WIDTH, MIN_WIDTH - getInsets().getLeft() - getInsets().getRight()));
+    }
+
+    @Override protected double computeMaxWidth(final double MAX_HEIGHT) {
+        return super.computeMaxWidth(Math.min(MAXIMUM_HEIGHT, MAX_HEIGHT - getInsets().getTop() - getInsets().getBottom()));
+    }
+    @Override protected double computeMaxHeight(final double MAX_WIDTH) {
+        return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getInsets().getLeft() - getInsets().getRight()));
+    }
+
+    public SymbolType getSymbolType() {
+        return symbolType;
+    }
+    public void setSymbolType(final SymbolType SYMBOL_TYPE) {
+        symbolType = SYMBOL_TYPE;
+        setId(symbolType.STYLE_CLASS);
+    }
+
+    public Color getColor() {
+        return color;
+    }
+    public void setColor(final Color COLOR) {
+        color = COLOR;
+        setStyle("-symbol-color: " + Util.colorToCss(color) + ";");
     }
 }

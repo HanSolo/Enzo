@@ -33,149 +33,149 @@ import javafx.scene.paint.Color;
  * To change this template use File | Settings | File Templates.
  */
 public class MenuItem {
-    private String                      defaultTooltip;
-    private StringProperty              tooltip;
-    private double                      defaultSize;
-    private DoubleProperty              size;
-    private Color                       defaultInnerColor;
-    private ObjectProperty<Color>       innerColor;
-    private Color                       defaultFrameColor;
-    private ObjectProperty<Color>       frameColor;
-    private Color                       defaultForegroundColor;
-    private ObjectProperty<Color>       foregroundColor;
-    private Symbol.Type                 defaultSymbol;
-    private ObjectProperty<Symbol.Type> symbol;
-    private StringProperty              thumbnailImageName;
+    private String                     _tooltip;
+    private StringProperty             tooltip;
+    private double                     _size;
+    private DoubleProperty             size;
+    private Color                      _innerColor;
+    private ObjectProperty<Color>      innerColor;
+    private Color                      _frameColor;
+    private ObjectProperty<Color>      frameColor;
+    private Color                      _foregroundColor;
+    private ObjectProperty<Color>      foregroundColor;
+    private SymbolType                 _symbolType;
+    private ObjectProperty<SymbolType> symbolType;
+    private StringProperty             thumbnailImageName;
 
 
     // ******************** Constructors **************************************
     public MenuItem() {
-        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Symbol.Type.NONE, "");
+        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, SymbolType.NONE, "");
     }
-    public MenuItem(final Symbol.Type SYMBOL_TYPE) {
+    public MenuItem(final SymbolType SYMBOL_TYPE) {
         this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, SYMBOL_TYPE, "");
     }
     public MenuItem(final String THUMBNAIL_IMAGE_NAME) {
-        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Symbol.Type.NONE, THUMBNAIL_IMAGE_NAME);
+        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, SymbolType.NONE, THUMBNAIL_IMAGE_NAME);
     }
-    public MenuItem(final Symbol.Type SYMBOL_TYPE, final String TOOLTIP) {
+    public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP) {
         this(TOOLTIP, 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, SYMBOL_TYPE, "");
     }
-    public MenuItem(final Symbol.Type SYMBOL_TYPE, final String TOOLTIP, final Color INNER_COLOR) {
+    public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP, final Color INNER_COLOR) {
         this(TOOLTIP, 32, INNER_COLOR, Color.WHITE, Color.WHITE, SYMBOL_TYPE, "");
     }
-    public MenuItem(final String TOOLTIP, final double SIZE, final Color INNER_COLOR, final Color FRAME_COLOR, final Color FOREGROUND_COLOR, final Symbol.Type SYMBOL_TYPE, final String THUMBNAIL_IMAGE_NAME) {
-        defaultTooltip         = TOOLTIP;
-        defaultSize            = SIZE;
-        defaultInnerColor      = INNER_COLOR;
-        defaultFrameColor      = FRAME_COLOR;
-        defaultForegroundColor = FOREGROUND_COLOR;
-        defaultSymbol          = SYMBOL_TYPE;
-        thumbnailImageName     = new SimpleStringProperty(this, "thumbnailImageName", THUMBNAIL_IMAGE_NAME);
+    public MenuItem(final String TOOLTIP, final double SIZE, final Color INNER_COLOR, final Color FRAME_COLOR, final Color FOREGROUND_COLOR, final SymbolType SYMBOL_TYPE, final String THUMBNAIL_IMAGE_NAME) {
+        _tooltip           = TOOLTIP;
+        _size              = SIZE;
+        _innerColor        = INNER_COLOR;
+        _frameColor        = FRAME_COLOR;
+        _foregroundColor   = FOREGROUND_COLOR;
+        _symbolType = SYMBOL_TYPE;
+        thumbnailImageName = new SimpleStringProperty(this, "thumbnailImageName", THUMBNAIL_IMAGE_NAME);
     }
 
 
     // ******************** Methods *******************************************
     public String getTooltip() {
-        return null == tooltip ? defaultTooltip : tooltip.get();
+        return null == tooltip ? _tooltip : tooltip.get();
     }
     public void setTooltip(final String TOOLTIP) {
         if (null == tooltip) {
-            defaultTooltip = TOOLTIP;
+            _tooltip = TOOLTIP;
         } else {
             tooltip.set(TOOLTIP);
         }
     }
     public StringProperty tooltipProperty() {
         if (null == tooltip) {
-            tooltip = new SimpleStringProperty(this, "tooltip", defaultTooltip);
+            tooltip = new SimpleStringProperty(this, "tooltip", _tooltip);
         }
         return tooltip;
     }
 
     public double getSize() {
-        return null == size ? defaultSize : size.get();
+        return null == size ? _size : size.get();
     }
     public void setSize(final double SIZE) {
         if (null == size) {
-            defaultSize = SIZE;
+            _size = SIZE;
         } else {
             size.set(SIZE);
         }
     }
     public DoubleProperty sizeProperty() {
         if (null == size) {
-            size = new SimpleDoubleProperty(this, "size", defaultSize);
+            size = new SimpleDoubleProperty(this, "size", _size);
         }
         return size;
     }
 
     public Color getInnerColor() {
-        return null == innerColor ? defaultInnerColor : innerColor.get();
+        return null == innerColor ? _innerColor : innerColor.get();
     }
     public void setInnerColor(final Color INNER_COLOR) {
         if (null == innerColor) {
-            defaultInnerColor = INNER_COLOR;
+            _innerColor = INNER_COLOR;
         } else {
             innerColor.set(INNER_COLOR);
         }
     }
     public ObjectProperty<Color>innerColorProperty() {
         if (null == innerColor) {
-            innerColor = new SimpleObjectProperty<>(this, "innerColor", defaultInnerColor);
+            innerColor = new SimpleObjectProperty<>(this, "innerColor", _innerColor);
         }
         return innerColor;
     }
 
     public Color getFrameColor() {
-        return null == frameColor ? defaultFrameColor : frameColor.get();
+        return null == frameColor ? _frameColor : frameColor.get();
     }
     public void setFrameColor(final Color FRAME_COLOR) {
         if (null == frameColor) {
-            defaultFrameColor = FRAME_COLOR;
+            _frameColor = FRAME_COLOR;
         } else {
             frameColor.set(FRAME_COLOR);
         }
     }
     public ObjectProperty<Color> frameColorProperty() {
         if (null == frameColor) {
-            frameColor = new SimpleObjectProperty<>(this, "frameColor", defaultFrameColor);
+            frameColor = new SimpleObjectProperty<>(this, "frameColor", _frameColor);
         }
         return frameColor;
     }
 
     public Color getForegroundColor() {
-        return null == foregroundColor ? defaultForegroundColor : foregroundColor.get();
+        return null == foregroundColor ? _foregroundColor : foregroundColor.get();
     }
     public void setForegroundColor(final Color FOREGROUND_COLOR) {
         if (null == foregroundColor) {
-            defaultForegroundColor = FOREGROUND_COLOR;
+            _foregroundColor = FOREGROUND_COLOR;
         } else {
             foregroundColor.set(FOREGROUND_COLOR);
         }
     }
     public ObjectProperty<Color> foregroundColorProperty() {
         if (null == foregroundColor) {
-            foregroundColor = new SimpleObjectProperty<>(this, "foregroundColor", defaultForegroundColor);
+            foregroundColor = new SimpleObjectProperty<>(this, "foregroundColor", _foregroundColor);
         }
         return foregroundColor;
     }
 
-    public Symbol.Type getSymbol() {
-        return null == symbol ? defaultSymbol : symbol.get();
+    public SymbolType getSymbolType() {
+        return null == symbolType ? _symbolType : symbolType.get();
     }
-    public void setSymbol(final Symbol.Type SYMBOL_TYPE) {
-        if (null == symbol) {
-            defaultSymbol = SYMBOL_TYPE;
+    public void setSymbolType(final SymbolType SYMBOL_TYPE) {
+        if (null == symbolType) {
+            _symbolType = SYMBOL_TYPE;
         } else {
-            symbol.set(SYMBOL_TYPE);
+            symbolType.set(SYMBOL_TYPE);
         }
     }
-    public ObjectProperty<Symbol.Type> symbolProperty() {
-        if (null == symbol) {
-            symbol = new SimpleObjectProperty<>(this, "symbol", defaultSymbol);
+    public ObjectProperty<SymbolType> symbolTypeProperty() {
+        if (null == symbolType) {
+            symbolType = new SimpleObjectProperty<>(this, "symbolType", _symbolType);
         }
-        return symbol;
+        return symbolType;
    }
 
     public String getThumbnailImageName() {
