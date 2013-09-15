@@ -112,10 +112,10 @@ public class RadialMenu extends Pane {
         button                = new Group();
         cross                 = new Group();
         firstTime             = true;
+        initHandler();
         initMainButton();
         initMenuItems(ITEMS);
         initGraphics();
-        initHandler();
         registerListeners();
     }
 
