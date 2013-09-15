@@ -497,7 +497,7 @@ public class RadialMenu extends Region {
         //circle.setPrefSize(ITEM.getSize() * 0.5);
         //circle.getStyleClass().add("item");
 
-        circle.setFill(ITEM.getFillColor());
+        circle.setFill((ITEM.isSelected() && ITEM.isSelectable()) ? ITEM.getSelectedColor() : ITEM.getFillColor());
         circle.setStroke(ITEM.getStrokeColor());
         circle.setStrokeWidth(0.09375 * ITEM.getSize());
         circle.setStrokeType(StrokeType.CENTERED);
