@@ -61,13 +61,13 @@ public class MenuItemBuilder implements Builder<MenuItem> {
         return this;
     }
 
-    public final MenuItemBuilder innerColor(final Color INNER_COLOR) {
-        properties.put("innerColor", new SimpleObjectProperty<>(INNER_COLOR));
+    public final MenuItemBuilder fillColor(final Color FILL_COLOR) {
+        properties.put("fillColor", new SimpleObjectProperty<>(FILL_COLOR));
         return this;
     }
 
-    public final MenuItemBuilder frameColor(final Color FRAME_COLOR) {
-        properties.put("frameColor", new SimpleObjectProperty<>(FRAME_COLOR));
+    public final MenuItemBuilder strokeColor(final Color STROKE_COLOR) {
+        properties.put("strokeColor", new SimpleObjectProperty<>(STROKE_COLOR));
         return this;
     }
 
@@ -91,6 +91,11 @@ public class MenuItemBuilder implements Builder<MenuItem> {
         return this;
     }
 
+    public final MenuItemBuilder text(final String TEXT) {
+        properties.put("text", new SimpleStringProperty(TEXT));
+        return this;
+    }
+
     public final MenuItemBuilder selectable(final boolean SELECTABLE) {
         properties.put("selectable", new SimpleBooleanProperty(SELECTABLE));
         return this;
@@ -104,10 +109,10 @@ public class MenuItemBuilder implements Builder<MenuItem> {
                 CONTROL.setTooltip(((StringProperty) property).get());
             } else if("size".equals(key)) {
                 CONTROL.setSize(((DoubleProperty) property).get());
-            } else if ("innerColor".equals(key)) {
-                CONTROL.setInnerColor(((ObjectProperty<Color>) property).get());
-            } else if ("frameColor".equals(key)) {
-                CONTROL.setFrameColor(((ObjectProperty<Color>) property).get());
+            } else if ("fillColor".equals(key)) {
+                CONTROL.setFillColor(((ObjectProperty<Color>) property).get());
+            } else if ("strokeColor".equals(key)) {
+                CONTROL.setStrokeColor(((ObjectProperty<Color>) property).get());
             } else if ("foregroundColor".equals(key)) {
                 CONTROL.setForegroundColor(((ObjectProperty<Color>) property).get());
             } else if ("selectedColor".equals(key)) {
@@ -116,6 +121,8 @@ public class MenuItemBuilder implements Builder<MenuItem> {
                 CONTROL.setSymbolType(((ObjectProperty<SymbolType>) property).get());
             } else if ("thumbnailImageName".equals(key)) {
                 CONTROL.setThumbnailImageName(((StringProperty) property).get());
+            } else if ("text".equals(key)) {
+                CONTROL.setText(((StringProperty) property).get());
             } else if ("selectable".equals(key)) {
                 CONTROL.setSelectable(((BooleanProperty) property).get());
             }

@@ -39,10 +39,10 @@ public class MenuItem {
     private StringProperty             tooltip;
     private double                     _size;
     private DoubleProperty             size;
-    private Color                      _innerColor;
-    private ObjectProperty<Color>      innerColor;
-    private Color                      _frameColor;
-    private ObjectProperty<Color>      frameColor;
+    private Color                      _fillColor;
+    private ObjectProperty<Color>      fillColor;
+    private Color                      _strokeColor;
+    private ObjectProperty<Color>      strokeColor;
     private Color                      _foregroundColor;
     private ObjectProperty<Color>      foregroundColor;
     private Color                      _selectedColor;
@@ -50,6 +50,7 @@ public class MenuItem {
     private SymbolType                 _symbolType;
     private ObjectProperty<SymbolType> symbolType;
     private StringProperty             thumbnailImageName;
+    private StringProperty             text;
     private boolean                    _selectable;
     private BooleanProperty            selectable;
     private boolean                    _selected;
@@ -72,11 +73,11 @@ public class MenuItem {
     public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP, final Color INNER_COLOR, final Color SELECTED_COLOR) {
         this(TOOLTIP, 32, INNER_COLOR, Color.WHITE, Color.WHITE, SELECTED_COLOR, SYMBOL_TYPE, "");
     }
-    public MenuItem(final String TOOLTIP, final double SIZE, final Color INNER_COLOR, final Color FRAME_COLOR, final Color FOREGROUND_COLOR, final Color SELECTED_COLOR, final SymbolType SYMBOL_TYPE, final String THUMBNAIL_IMAGE_NAME) {
+    public MenuItem(final String TOOLTIP, final double SIZE, final Color INNER_COLOR, final Color STROKE_COLOR, final Color FOREGROUND_COLOR, final Color SELECTED_COLOR, final SymbolType SYMBOL_TYPE, final String THUMBNAIL_IMAGE_NAME) {
         _tooltip           = TOOLTIP;
         _size              = SIZE;
-        _innerColor        = INNER_COLOR;
-        _frameColor        = FRAME_COLOR;
+        _fillColor = INNER_COLOR;
+        _strokeColor       = STROKE_COLOR;
         _foregroundColor   = FOREGROUND_COLOR;
         _selectedColor     = SELECTED_COLOR;
         _symbolType        = SYMBOL_TYPE;
@@ -121,38 +122,38 @@ public class MenuItem {
         return size;
     }
 
-    public Color getInnerColor() {
-        return null == innerColor ? _innerColor : innerColor.get();
+    public Color getFillColor() {
+        return null == fillColor ? _fillColor : fillColor.get();
     }
-    public void setInnerColor(final Color INNER_COLOR) {
-        if (null == innerColor) {
-            _innerColor = INNER_COLOR;
+    public void setFillColor(final Color Fill_COLOR) {
+        if (null == fillColor) {
+            _fillColor = Fill_COLOR;
         } else {
-            innerColor.set(INNER_COLOR);
+            fillColor.set(Fill_COLOR);
         }
     }
-    public ObjectProperty<Color>innerColorProperty() {
-        if (null == innerColor) {
-            innerColor = new SimpleObjectProperty<>(this, "innerColor", _innerColor);
+    public ObjectProperty<Color> fillColorProperty() {
+        if (null == fillColor) {
+            fillColor = new SimpleObjectProperty<>(this, "fillColor", _fillColor);
         }
-        return innerColor;
+        return fillColor;
     }
 
-    public Color getFrameColor() {
-        return null == frameColor ? _frameColor : frameColor.get();
+    public Color getStrokeColor() {
+        return null == strokeColor ? _strokeColor : strokeColor.get();
     }
-    public void setFrameColor(final Color FRAME_COLOR) {
-        if (null == frameColor) {
-            _frameColor = FRAME_COLOR;
+    public void setStrokeColor(final Color STROKE_COLOR) {
+        if (null == strokeColor) {
+            _strokeColor = STROKE_COLOR;
         } else {
-            frameColor.set(FRAME_COLOR);
+            strokeColor.set(STROKE_COLOR);
         }
     }
-    public ObjectProperty<Color> frameColorProperty() {
-        if (null == frameColor) {
-            frameColor = new SimpleObjectProperty<>(this, "frameColor", _frameColor);
+    public ObjectProperty<Color> strokeColorProperty() {
+        if (null == strokeColor) {
+            strokeColor = new SimpleObjectProperty<>(this, "strokeColor", _strokeColor);
         }
-        return frameColor;
+        return strokeColor;
     }
 
     public Color getForegroundColor() {
@@ -214,6 +215,19 @@ public class MenuItem {
     }
     public StringProperty thumbnailImageNameProperty() {
         return thumbnailImageName;
+    }
+
+    public String getText() {
+        return null == text ? "" : text.get();
+    }
+    public void setText(final String TEXT) {
+        textProperty().set(TEXT);
+    }
+    public StringProperty textProperty() {
+        if (null == text) {
+            text = new SimpleStringProperty(this, "text", "");
+        }
+        return text;
     }
 
     public boolean isSelectable() {

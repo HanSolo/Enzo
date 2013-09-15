@@ -219,8 +219,8 @@ public class RadialMenu extends Pane {
             ITEM_CONTAINER.getChildren().add(createItemShape(item, SHADOW));
 
             if (SymbolType.NONE == item.getSymbolType() && item.getThumbnailImageName().isEmpty()) {
-                Text text = new Text(Integer.toString(i));
-                text.setFont(Font.font("Verdana", FontWeight.BOLD, item.getSize() * 0.5));
+                Text text = new Text(item.getText());
+                text.setFont(Font.font("Open Sans", FontWeight.BOLD, item.getSize() * 0.5));
                 text.setFill(item.getForegroundColor());
                 text.setMouseTransparent(true);
                 ITEM_CONTAINER.getChildren().add(text);
@@ -229,7 +229,7 @@ public class RadialMenu extends Pane {
                     ITEM_CONTAINER.getChildren().add(createThumbnail(item));
                 } catch (IllegalArgumentException exception) {
                     Text text = new Text(Integer.toString(i));
-                    text.setFont(Font.font("Verdana", FontWeight.BOLD, item.getSize() * 0.5));
+                    text.setFont(Font.font("Open Sans", FontWeight.BOLD, item.getSize() * 0.5));
                     text.setFill(item.getForegroundColor());
                     text.setMouseTransparent(true);
                     ITEM_CONTAINER.getChildren().add(text);
@@ -480,7 +480,7 @@ public class RadialMenu extends Pane {
             if (items.get(node).equals(SELECTED_ITEM)) {
                 for (Node child : node.getChildrenUnmodifiable()) {
                     if (child instanceof Circle) {
-                        ((Circle) child).setFill(SELECTED_ITEM.isSelected() ? SELECTED_ITEM.getSelectedColor() : SELECTED_ITEM.getInnerColor());
+                        ((Circle) child).setFill(SELECTED_ITEM.isSelected() ? SELECTED_ITEM.getSelectedColor() : SELECTED_ITEM.getFillColor());
                     }
                 }
             }
@@ -493,8 +493,8 @@ public class RadialMenu extends Pane {
         //circle.setPrefSize(ITEM.getSize() * 0.5);
         //circle.getStyleClass().add("item");
 
-        circle.setFill(ITEM.getInnerColor());
-        circle.setStroke(ITEM.getFrameColor());
+        circle.setFill(ITEM.getFillColor());
+        circle.setStroke(ITEM.getStrokeColor());
         circle.setStrokeWidth(0.09375 * ITEM.getSize());
         circle.setStrokeType(StrokeType.CENTERED);
         circle.setEffect(EFFECT);
