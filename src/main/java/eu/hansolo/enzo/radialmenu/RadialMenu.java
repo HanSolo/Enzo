@@ -126,13 +126,14 @@ public class RadialMenu extends Pane {
                 if (SOURCE.equals(mainMenuButton)) {
 
                 } else {
-                    if (items.get(SOURCE).isSelectable()) {
-                        items.get(SOURCE).setSelected(!items.get(SOURCE).isSelected());
-                        select(items.get(SOURCE));
-                        fireItemEvent(new ItemEvent(items.get(SOURCE), this, null, ItemEvent.ITEM_SELECTED));
+                    MenuItem item = items.get(SOURCE);
+                    if (item.isSelectable()) {
+                        item.setSelected(!item.isSelected());
+                        select(item);
+                        fireItemEvent(new ItemEvent(item, this, null, ItemEvent.ITEM_SELECTED));
                     } else {
-                        click(items.get(SOURCE));
-                        fireItemEvent(new ItemEvent(items.get(SOURCE), this, null, ItemEvent.ITEM_CLICKED));
+                        click(item);
+                        fireItemEvent(new ItemEvent(item, this, null, ItemEvent.ITEM_CLICKED));
                     }
                 }
             } else if (MouseEvent.MOUSE_RELEASED == mouseEvent.getEventType()) {
@@ -356,9 +357,8 @@ public class RadialMenu extends Pane {
         fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_OPEN_STARTED));
     }
     public void close() {
-        if (State.CLOSED == getState()) {
-            return;
-        }
+        if (State.CLOSED == getState()) return;
+
         setState(State.CLOSED);
         RotateTransition rotate = new RotateTransition();
         rotate.setNode(cross);
