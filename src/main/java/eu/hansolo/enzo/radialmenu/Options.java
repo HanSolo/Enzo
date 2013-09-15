@@ -53,6 +53,8 @@ public class Options {
     private BooleanProperty       buttonVisible;
     private boolean               _buttonHideOnSelect;
     private BooleanProperty       buttonHideOnSelect;
+    private boolean               _hideOnClose;
+    private BooleanProperty       hideOnClose;
     private boolean               _tooltipsEnabled;
     private BooleanProperty       tooltipsEnabled;
 
@@ -62,9 +64,9 @@ public class Options {
         this(360, -90, 100);
     }
     public Options(final double DEGREES, final double OFFSET, final double RADIUS) {
-        this(DEGREES, OFFSET, RADIUS, 44, Color.hsb(0, 0.1, 0.1), Color.WHITE, Color.WHITE, true, false, 0.5, true);
+        this(DEGREES, OFFSET, RADIUS, 44, Color.hsb(0, 0.1, 0.1), Color.WHITE, Color.WHITE, true, false, false, 0.5, true);
     }
-    public Options(final double DEGREES, final double OFFSET, final double RADIUS, final double BUTTON_SIZE, final Color BUTTON_INNER_COLOR, final Color BUTTON_FRAME_COLOR, final Color BUTTON_FOREGROUND_COLOR, final boolean BUTTON_HIDE_ON_SELECT, final boolean TOOLTIPS_ENABLED, final double BUTTON_ALPHA, final boolean BUTTON_VISIBLE) {
+    public Options(final double DEGREES, final double OFFSET, final double RADIUS, final double BUTTON_SIZE, final Color BUTTON_INNER_COLOR, final Color BUTTON_FRAME_COLOR, final Color BUTTON_FOREGROUND_COLOR, final boolean BUTTON_HIDE_ON_SELECT, final boolean HIDE_ON_CLOSE, final boolean TOOLTIPS_ENABLED, final double BUTTON_ALPHA, final boolean BUTTON_VISIBLE) {
         _degrees               = DEGREES;
         _offset                = OFFSET;
         _radius                = RADIUS;
@@ -74,6 +76,7 @@ public class Options {
         _buttonForegroundColor = BUTTON_FOREGROUND_COLOR;
         _buttonAlpha           = BUTTON_ALPHA;
         _buttonHideOnSelect    = BUTTON_HIDE_ON_SELECT;
+        _hideOnClose           = HIDE_ON_CLOSE;
         _tooltipsEnabled       = TOOLTIPS_ENABLED;
         _buttonVisible         = BUTTON_VISIBLE;
     }
@@ -232,6 +235,23 @@ public class Options {
             buttonHideOnSelect = new SimpleBooleanProperty(this, "buttonHideOnSelect", _buttonHideOnSelect);
         }
         return buttonHideOnSelect;
+    }
+
+    public boolean isHideOnClose() {
+        return null == hideOnClose ? _hideOnClose : hideOnClose.get();
+    }
+    public void setHideOnClose(final boolean HIDE_ON_CLOSE) {
+        if (null == hideOnClose) {
+            _hideOnClose = HIDE_ON_CLOSE;
+        } else {
+            hideOnClose.set(HIDE_ON_CLOSE);
+        }
+    }
+    public BooleanProperty hideOnCloseProperty() {
+        if (null == hideOnClose) {
+            hideOnClose = new SimpleBooleanProperty(this, "hideOnClose", _hideOnClose);
+        }
+        return hideOnClose;
     }
 
     public boolean isTooltipsEnabled() {

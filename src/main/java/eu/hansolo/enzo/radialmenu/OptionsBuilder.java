@@ -50,57 +50,62 @@ public class OptionsBuilder implements Builder<Options> {
     }
 
     public final OptionsBuilder degrees(final double DEGREES) {
-        properties.put("DEGREES", new SimpleDoubleProperty(DEGREES));
+        properties.put("degrees", new SimpleDoubleProperty(DEGREES));
         return this;
     }
 
     public final OptionsBuilder offset(final double OFFSET) {
-        properties.put("OFFSET", new SimpleDoubleProperty(OFFSET));
+        properties.put("offset", new SimpleDoubleProperty(OFFSET));
         return this;
     }
 
     public final OptionsBuilder radius(final double RADIUS) {
-        properties.put("RADIUS", new SimpleDoubleProperty(RADIUS));
+        properties.put("radius", new SimpleDoubleProperty(RADIUS));
         return this;
     }
 
     public final OptionsBuilder buttonSize(final double BUTTON_SIZE) {
-        properties.put("BUTTON_SIZE", new SimpleDoubleProperty(BUTTON_SIZE));
+        properties.put("buttonSize", new SimpleDoubleProperty(BUTTON_SIZE));
         return this;
     }
 
     public final OptionsBuilder buttonInnerColor(final Color BUTTON_INNER_COLOR) {
-        properties.put("BUTTON_INNER_COLOR", new SimpleObjectProperty<Color>(BUTTON_INNER_COLOR));
+        properties.put("buttonInnerColor", new SimpleObjectProperty<Color>(BUTTON_INNER_COLOR));
         return this;
     }
 
     public final OptionsBuilder buttonFrameColor(final Color BUTTON_FRAME_COLOR) {
-        properties.put("BUTTON_FRAME_COLOR", new SimpleObjectProperty<Color>(BUTTON_FRAME_COLOR));
+        properties.put("buttonFrameColor", new SimpleObjectProperty<Color>(BUTTON_FRAME_COLOR));
         return this;
     }
 
     public final OptionsBuilder buttonForegroundColor(final Color BUTTON_FOREGROUND_COLOR) {
-        properties.put("BUTTON_FOREGROUND_COLOR", new SimpleObjectProperty<Color>(BUTTON_FOREGROUND_COLOR));
+        properties.put("buttonForegroundColor", new SimpleObjectProperty<Color>(BUTTON_FOREGROUND_COLOR));
         return this;
     }
 
     public final OptionsBuilder buttonAlpha(final double BUTTON_ALPHA) {
-        properties.put("BUTTON_ALPHA", new SimpleDoubleProperty(BUTTON_ALPHA));
+        properties.put("buttonAlpha", new SimpleDoubleProperty(BUTTON_ALPHA));
         return this;
     }
 
     public final OptionsBuilder buttonHideOnSelect(final boolean BUTTON_HIDE_ON_SELECT) {
-        properties.put("BUTTON_HIDE_ON_SELECT", new SimpleBooleanProperty(BUTTON_HIDE_ON_SELECT));
+        properties.put("buttonHideOnSelect", new SimpleBooleanProperty(BUTTON_HIDE_ON_SELECT));
+        return this;
+    }
+
+    public final OptionsBuilder hideOnClose(final boolean HIDE_ON_CLOSE) {
+        properties.put("hideOnClose", new SimpleBooleanProperty(HIDE_ON_CLOSE));
         return this;
     }
 
     public final OptionsBuilder tooltipsEnabled(final boolean TOOLTIPS_ENABLED) {
-        properties.put("TOOLTIPS_ENABLED", new SimpleBooleanProperty(TOOLTIPS_ENABLED));
+        properties.put("tooltipsEnabled", new SimpleBooleanProperty(TOOLTIPS_ENABLED));
         return this;
     }
 
     public final OptionsBuilder buttonVisible(final boolean BUTTON_VISIBLE) {
-        properties.put("BUTTON_VISIBLE", new SimpleBooleanProperty(BUTTON_VISIBLE));
+        properties.put("buttonVisible", new SimpleBooleanProperty(BUTTON_VISIBLE));
         return this;
     }
 
@@ -108,27 +113,29 @@ public class OptionsBuilder implements Builder<Options> {
         final Options CONTROL = new Options();
 
         properties.forEach((key, property) -> {
-            if ("DEGREES".equals(key)) {
+            if ("degrees".equals(key)) {
                 CONTROL.setDegrees(((DoubleProperty) property).get());
-            } else if("OFFSET".equals(key)) {
+            } else if("offset".equals(key)) {
                 CONTROL.setOffset(((DoubleProperty) property).get());
-            } else if ("RADIUS".equals(key)) {
+            } else if ("radius".equals(key)) {
                 CONTROL.setRadius(((DoubleProperty) property).get());
-            } else if ("BUTTON_SIZE".equals(key)) {
+            } else if ("buttonSize".equals(key)) {
                 CONTROL.setButtonSize(((DoubleProperty) property).get());
-            } else if ("BUTTON_INNER_COLOR".equals(key)) {
+            } else if ("buttonInnerColor".equals(key)) {
                 CONTROL.setButtonInnerColor(((ObjectProperty<Color>) property).get());
-            } else if ("BUTTON_FRAME_COLOR".equals(key)) {
+            } else if ("buttonFrameColor".equals(key)) {
                 CONTROL.setButtonFrameColor(((ObjectProperty<Color>) property).get());
-            } else if ("BUTTON_FOREGROUND_COLOR".equals(key)) {
+            } else if ("buttonForegroundColor".equals(key)) {
                 CONTROL.setButtonForegroundColor(((ObjectProperty<Color>) property).get());
-            } else if ("BUTTON_ALPHA".equals(key)) {
+            } else if ("buttonAlpha".equals(key)) {
                 CONTROL.setButtonAlpha(((DoubleProperty) property).get());
-            } else if ("BUTTON_HIDE_ON_SELECT".equals(key)) {
+            } else if ("buttonHideOnSelect".equals(key)) {
                 CONTROL.setButtonHideOnSelect(((BooleanProperty) property).get());
-            } else if ("TOOLTIPS_ENABLED".equals(key)) {
+            } else if ("hideOnClose".equals(key)) {
+                CONTROL.setHideOnClose(((BooleanProperty) property).get());
+            } else if ("tooltipsEnabled".equals(key)) {
                 CONTROL.setTooltipsEnabled(((BooleanProperty) property).get());
-            } else if ("BUTTON_VISIBLE".equals(key)) {
+            } else if ("buttonVisible".equals(key)) {
                 CONTROL.setButtonVisible(((BooleanProperty) property).get());
             }
         });

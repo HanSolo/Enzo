@@ -42,12 +42,14 @@ public class Demo extends Application {
                                                                               .offset(-90)
                                                                               .radius(200)
                                                                               .buttonSize(72)
+                                                                              .buttonHideOnSelect(true)
+                                                                              .hideOnClose(false)
                                                                               .buttonAlpha(1.0)
                                                                               .build())
                                                        .items(
                                                            MenuItemBuilder.create().thumbnailImageName(getClass().getResource("star.png").toExternalForm()).size(64).build(),
                                                            MenuItemBuilder.create().symbol(SymbolType.LOCATION).tooltip("Location").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(SymbolType.MUSIC).tooltip("Music").size(64).build(),
+                                                           MenuItemBuilder.create().selectable(true).symbol(SymbolType.MUSIC).tooltip("Music").size(64).build(),
                                                            MenuItemBuilder.create().symbol(SymbolType.SPEECH_BUBBLE).tooltip("Chat").size(64).build(),
                                                            MenuItemBuilder.create().symbol(SymbolType.BLUE_TOOTH).tooltip("Bluetooth").size(64).build(),
                                                            MenuItemBuilder.create().symbol(SymbolType.BULB).tooltip("Ideas").size(64).build(),
@@ -60,6 +62,7 @@ public class Demo extends Application {
                                                        .build();
         radialMenu.setPrefSize(500, 500);
         radialMenu.setOnItemSelected(selectionEvent -> System.out.println("item " + selectionEvent.item.getTooltip() + " selected"));
+        radialMenu.setOnItemClicked(clickEvent -> System.out.println("item " + clickEvent.item.getTooltip() + " clicked"));
         radialMenu.setOnMenuOpenStarted(menuEvent -> System.out.println("Menu starts to open"));
         radialMenu.setOnMenuOpenFinished(menuEvent -> System.out.println("Menu finished to open"));
         radialMenu.setOnMenuCloseStarted(menuEvent -> System.out.println("Menu starts to close"));

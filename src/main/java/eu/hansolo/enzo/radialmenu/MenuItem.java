@@ -16,8 +16,10 @@
 
 package eu.hansolo.enzo.radialmenu;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -43,34 +45,43 @@ public class MenuItem {
     private ObjectProperty<Color>      frameColor;
     private Color                      _foregroundColor;
     private ObjectProperty<Color>      foregroundColor;
+    private Color                      _selectedColor;
+    private ObjectProperty<Color>      selectedColor;
     private SymbolType                 _symbolType;
     private ObjectProperty<SymbolType> symbolType;
     private StringProperty             thumbnailImageName;
+    private boolean                    _selectable;
+    private BooleanProperty            selectable;
+    private boolean                    _selected;
+    private BooleanProperty            selected;
 
 
     // ******************** Constructors **************************************
     public MenuItem() {
-        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, SymbolType.NONE, "");
+        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Color.rgb(255,153,0), SymbolType.NONE, "");
     }
     public MenuItem(final SymbolType SYMBOL_TYPE) {
-        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, SYMBOL_TYPE, "");
+        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Color.rgb(255,153,0), SYMBOL_TYPE, "");
     }
     public MenuItem(final String THUMBNAIL_IMAGE_NAME) {
-        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, SymbolType.NONE, THUMBNAIL_IMAGE_NAME);
+        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Color.rgb(255,153,0), SymbolType.NONE, THUMBNAIL_IMAGE_NAME);
     }
     public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP) {
-        this(TOOLTIP, 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, SYMBOL_TYPE, "");
+        this(TOOLTIP, 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Color.rgb(255,153,0), SYMBOL_TYPE, "");
     }
-    public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP, final Color INNER_COLOR) {
-        this(TOOLTIP, 32, INNER_COLOR, Color.WHITE, Color.WHITE, SYMBOL_TYPE, "");
+    public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP, final Color INNER_COLOR, final Color SELECTED_COLOR) {
+        this(TOOLTIP, 32, INNER_COLOR, Color.WHITE, Color.WHITE, SELECTED_COLOR, SYMBOL_TYPE, "");
     }
-    public MenuItem(final String TOOLTIP, final double SIZE, final Color INNER_COLOR, final Color FRAME_COLOR, final Color FOREGROUND_COLOR, final SymbolType SYMBOL_TYPE, final String THUMBNAIL_IMAGE_NAME) {
+    public MenuItem(final String TOOLTIP, final double SIZE, final Color INNER_COLOR, final Color FRAME_COLOR, final Color FOREGROUND_COLOR, final Color SELECTED_COLOR, final SymbolType SYMBOL_TYPE, final String THUMBNAIL_IMAGE_NAME) {
         _tooltip           = TOOLTIP;
         _size              = SIZE;
         _innerColor        = INNER_COLOR;
         _frameColor        = FRAME_COLOR;
         _foregroundColor   = FOREGROUND_COLOR;
-        _symbolType = SYMBOL_TYPE;
+        _selectedColor     = SELECTED_COLOR;
+        _symbolType        = SYMBOL_TYPE;
+        _selectable        = false;
+        _selected          = false;
         thumbnailImageName = new SimpleStringProperty(this, "thumbnailImageName", THUMBNAIL_IMAGE_NAME);
     }
 
@@ -161,6 +172,23 @@ public class MenuItem {
         return foregroundColor;
     }
 
+    public Color getSelectedColor() {
+        return null == selectedColor ? _selectedColor : selectedColor.get();
+    }
+    public void setSelectedColor(final Color SELECTED_COLOR) {
+        if (null == selectedColor) {
+            _selectedColor = SELECTED_COLOR;
+        } else {
+            selectedColor.set(SELECTED_COLOR);
+        }
+    }
+    public ObjectProperty<Color> selectedColorProperty() {
+        if (null == selectedColor) {
+            selectedColor = new SimpleObjectProperty<>(this, "selectedColor", _selectedColor);
+        }
+        return selectedColor;
+    }
+
     public SymbolType getSymbolType() {
         return null == symbolType ? _symbolType : symbolType.get();
     }
@@ -186,5 +214,39 @@ public class MenuItem {
     }
     public StringProperty thumbnailImageNameProperty() {
         return thumbnailImageName;
+    }
+
+    public boolean isSelectable() {
+        return null == selectable ? _selectable : selectable.get();
+    }
+    public void setSelectable(final boolean SELECTABLE) {
+        if (null == selectable) {
+            _selectable = SELECTABLE;
+        } else {
+            selectable.set(SELECTABLE);
+        }
+    }
+    public BooleanProperty selectableProperty() {
+        if (null == selectable) {
+            selectable = new SimpleBooleanProperty(this, "selectable", _selectable);
+        }
+        return selectable;
+    }
+
+    public boolean isSelected() {
+        return null == selected ? _selected : selected.get();
+    }
+    public void setSelected(final boolean SELECTED) {
+        if (null == selected) {
+            _selected = SELECTED;
+        } else {
+            selected.set(SELECTED);
+        }
+    }
+    public BooleanProperty selectedProperty() {
+        if (null == selected) {
+            selected = new SimpleBooleanProperty(this, "selected", _selected);
+        }
+        return selected;
     }
 }
