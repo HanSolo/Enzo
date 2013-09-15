@@ -112,46 +112,10 @@ public class RadialMenu extends Pane {
         button                = new Group();
         cross                 = new Group();
         firstTime             = true;
-        mouseHandler          = mouseEvent -> {
-            final Object SOURCE = mouseEvent.getSource();
-            if (MouseEvent.MOUSE_CLICKED == mouseEvent.getEventType()) {
-                if(mouseEvent.getSource().equals(mainMenuButton)) {
-                    if (State.CLOSED == getState()) {
-                        open();
-                    } else {
-                        close();
-                    }
-                }
-            } else if (MouseEvent.MOUSE_PRESSED == mouseEvent.getEventType()) {
-                if (SOURCE.equals(mainMenuButton)) {
-
-                } else {
-                    MenuItem item = items.get(SOURCE);
-                    if (item.isSelectable()) {
-                        item.setSelected(!item.isSelected());
-                        select(item);
-                        fireItemEvent(new ItemEvent(item, this, null, ItemEvent.ITEM_SELECTED));
-                    } else {
-                        click(item);
-                        fireItemEvent(new ItemEvent(item, this, null, ItemEvent.ITEM_CLICKED));
-                    }
-                }
-            } else if (MouseEvent.MOUSE_RELEASED == mouseEvent.getEventType()) {
-                if (mouseEvent.getSource().equals(mainMenuButton)) {
-
-                }
-            } else if (MouseEvent.MOUSE_ENTERED == mouseEvent.getEventType()) {
-                if (mouseEvent.getSource().equals(mainMenuButton)) {
-
-                } else {
-
-                }
-
-            }
-        };
         initMainButton();
         initMenuItems(ITEMS);
         initGraphics();
+        initHandler();
         registerListeners();
     }
 
@@ -267,6 +231,46 @@ public class RadialMenu extends Pane {
     private void initGraphics() {
         getChildren().setAll(items.keySet());
         getChildren().add(button);
+    }
+
+    private void initHandler() {
+        mouseHandler          = mouseEvent -> {
+            final Object SOURCE = mouseEvent.getSource();
+            if (MouseEvent.MOUSE_CLICKED == mouseEvent.getEventType()) {
+                if(mouseEvent.getSource().equals(mainMenuButton) && button.getOpacity() > 0) {
+                    if (State.CLOSED == getState()) {
+                        open();
+                    } else {
+                        close();
+                    }
+                }
+            } else if (MouseEvent.MOUSE_PRESSED == mouseEvent.getEventType()) {
+                if (SOURCE.equals(mainMenuButton)) {
+
+                } else {
+                    MenuItem item = items.get(SOURCE);
+                    if (item.isSelectable()) {
+                        item.setSelected(!item.isSelected());
+                        select(item);
+                        fireItemEvent(new ItemEvent(item, this, null, ItemEvent.ITEM_SELECTED));
+                    } else {
+                        click(item);
+                        fireItemEvent(new ItemEvent(item, this, null, ItemEvent.ITEM_CLICKED));
+                    }
+                }
+            } else if (MouseEvent.MOUSE_RELEASED == mouseEvent.getEventType()) {
+                if (mouseEvent.getSource().equals(mainMenuButton)) {
+
+                }
+            } else if (MouseEvent.MOUSE_ENTERED == mouseEvent.getEventType()) {
+                if (mouseEvent.getSource().equals(mainMenuButton)) {
+
+                } else {
+
+                }
+
+            }
+        };
     }
 
     private void registerListeners() {
