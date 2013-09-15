@@ -69,13 +69,13 @@ public class OptionsBuilder implements Builder<Options> {
         return this;
     }
 
-    public final OptionsBuilder buttonInnerColor(final Color BUTTON_INNER_COLOR) {
-        properties.put("buttonInnerColor", new SimpleObjectProperty<Color>(BUTTON_INNER_COLOR));
+    public final OptionsBuilder buttonFillColor(final Color BUTTON_INNER_COLOR) {
+        properties.put("buttonFillColor", new SimpleObjectProperty<Color>(BUTTON_INNER_COLOR));
         return this;
     }
 
-    public final OptionsBuilder buttonFrameColor(final Color BUTTON_FRAME_COLOR) {
-        properties.put("buttonFrameColor", new SimpleObjectProperty<Color>(BUTTON_FRAME_COLOR));
+    public final OptionsBuilder buttonStrokeColor(final Color BUTTON_FRAME_COLOR) {
+        properties.put("buttonStrokeColor", new SimpleObjectProperty<Color>(BUTTON_FRAME_COLOR));
         return this;
     }
 
@@ -94,8 +94,8 @@ public class OptionsBuilder implements Builder<Options> {
         return this;
     }
 
-    public final OptionsBuilder hideOnClose(final boolean HIDE_ON_CLOSE) {
-        properties.put("hideOnClose", new SimpleBooleanProperty(HIDE_ON_CLOSE));
+    public final OptionsBuilder buttonHideOnClose(final boolean BUTTON_HIDE_ON_CLOSE) {
+        properties.put("buttonHideOnClose", new SimpleBooleanProperty(BUTTON_HIDE_ON_CLOSE));
         return this;
     }
 
@@ -121,18 +121,18 @@ public class OptionsBuilder implements Builder<Options> {
                 CONTROL.setRadius(((DoubleProperty) property).get());
             } else if ("buttonSize".equals(key)) {
                 CONTROL.setButtonSize(((DoubleProperty) property).get());
-            } else if ("buttonInnerColor".equals(key)) {
-                CONTROL.setButtonInnerColor(((ObjectProperty<Color>) property).get());
-            } else if ("buttonFrameColor".equals(key)) {
-                CONTROL.setButtonFrameColor(((ObjectProperty<Color>) property).get());
+            } else if ("buttonFillColor".equals(key)) {
+                CONTROL.setButtonFillColor(((ObjectProperty<Color>) property).get());
+            } else if ("buttonStrokeColor".equals(key)) {
+                CONTROL.setButtonStrokeColor(((ObjectProperty<Color>) property).get());
             } else if ("buttonForegroundColor".equals(key)) {
                 CONTROL.setButtonForegroundColor(((ObjectProperty<Color>) property).get());
             } else if ("buttonAlpha".equals(key)) {
                 CONTROL.setButtonAlpha(((DoubleProperty) property).get());
             } else if ("buttonHideOnSelect".equals(key)) {
                 CONTROL.setButtonHideOnSelect(((BooleanProperty) property).get());
-            } else if ("hideOnClose".equals(key)) {
-                CONTROL.setHideOnClose(((BooleanProperty) property).get());
+            } else if ("buttonHideOnClose".equals(key)) {
+                CONTROL.setButtonHideOnClose(((BooleanProperty) property).get());
             } else if ("tooltipsEnabled".equals(key)) {
                 CONTROL.setTooltipsEnabled(((BooleanProperty) property).get());
             } else if ("buttonVisible".equals(key)) {

@@ -43,7 +43,7 @@ public class Demo extends Application {
                                                                               .radius(200)
                                                                               .buttonSize(72)
                                                                               .buttonHideOnSelect(true)
-                                                                              .hideOnClose(false)
+                                                                              .buttonHideOnClose(false)
                                                                               .buttonAlpha(1.0)
                                                                               .build())
                                                        .items(

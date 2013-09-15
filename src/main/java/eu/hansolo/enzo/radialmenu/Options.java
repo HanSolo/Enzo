@@ -41,10 +41,10 @@ public class Options {
     private DoubleProperty        radius;
     private double                _buttonSize;
     private DoubleProperty        buttonSize;
-    private Color                 _buttonInnerColor;
-    private ObjectProperty<Color> buttonInnerColor;
-    private Color                 _buttonFrameColor;
-    private ObjectProperty<Color> buttonFrameColor;
+    private Color                 _buttonFillColor;
+    private ObjectProperty<Color> buttonFillColor;
+    private Color                 _buttonStrokeColor;
+    private ObjectProperty<Color> buttonStrokeColor;
     private Color                 _buttonForegroundColor;
     private ObjectProperty<Color> buttonForegroundColor;
     private double                _buttonAlpha;
@@ -53,8 +53,8 @@ public class Options {
     private BooleanProperty       buttonVisible;
     private boolean               _buttonHideOnSelect;
     private BooleanProperty       buttonHideOnSelect;
-    private boolean               _hideOnClose;
-    private BooleanProperty       hideOnClose;
+    private boolean               _buttonHideOnClose;
+    private BooleanProperty       buttonHideOnClose;
     private boolean               _tooltipsEnabled;
     private BooleanProperty       tooltipsEnabled;
 
@@ -71,12 +71,12 @@ public class Options {
         _offset                = OFFSET;
         _radius                = RADIUS;
         _buttonSize            = BUTTON_SIZE;
-        _buttonInnerColor      = BUTTON_INNER_COLOR;
-        _buttonFrameColor      = BUTTON_FRAME_COLOR;
+        _buttonFillColor       = BUTTON_INNER_COLOR;
+        _buttonStrokeColor     = BUTTON_FRAME_COLOR;
         _buttonForegroundColor = BUTTON_FOREGROUND_COLOR;
         _buttonAlpha           = BUTTON_ALPHA;
         _buttonHideOnSelect    = BUTTON_HIDE_ON_SELECT;
-        _hideOnClose           = HIDE_ON_CLOSE;
+        _buttonHideOnClose = HIDE_ON_CLOSE;
         _tooltipsEnabled       = TOOLTIPS_ENABLED;
         _buttonVisible         = BUTTON_VISIBLE;
     }
@@ -151,38 +151,38 @@ public class Options {
         return buttonSize;
     }
 
-    public Color getButtonInnerColor() {
-        return null == buttonInnerColor ? _buttonInnerColor : buttonInnerColor.get();
+    public Color getButtonFillColor() {
+        return null == buttonFillColor ? _buttonFillColor : buttonFillColor.get();
     }
-    public void setButtonInnerColor(final Color BUTTON_INNER_COLOR) {
-        if (null == buttonInnerColor) {
-            _buttonInnerColor = BUTTON_INNER_COLOR;
+    public void setButtonFillColor(final Color BUTTON_FILL_COLOR) {
+        if (null == buttonFillColor) {
+            _buttonFillColor = BUTTON_FILL_COLOR;
         } else {
-            buttonInnerColor.set(BUTTON_INNER_COLOR);
+            buttonFillColor.set(BUTTON_FILL_COLOR);
         }
     }
-    public ObjectProperty<Color> buttonInnerColorProperty() {
-        if (null == buttonInnerColor) {
-            buttonInnerColor = new SimpleObjectProperty<>(this, "buttonInnerColor", _buttonInnerColor);
+    public ObjectProperty<Color> buttonFillColorProperty() {
+        if (null == buttonFillColor) {
+            buttonFillColor = new SimpleObjectProperty<>(this, "buttonFillColor", _buttonFillColor);
         }
-        return buttonInnerColor;
+        return buttonFillColor;
     }
 
-    public Color getButtonFrameColor() {
-        return null == buttonFrameColor ? _buttonFrameColor : buttonFrameColor.get();
+    public Color getButtonStrokeColor() {
+        return null == buttonStrokeColor ? _buttonStrokeColor : buttonStrokeColor.get();
     }
-    public void setButtonFrameColor(final Color BUTTON_FRAME_COLOR) {
-        if (null == buttonFrameColor) {
-            _buttonFrameColor = BUTTON_FRAME_COLOR;
+    public void setButtonStrokeColor(final Color BUTTON_STROKE_COLOR) {
+        if (null == buttonStrokeColor) {
+            _buttonStrokeColor = BUTTON_STROKE_COLOR;
         } else {
-            buttonFrameColor.set(BUTTON_FRAME_COLOR);
+            buttonStrokeColor.set(BUTTON_STROKE_COLOR);
         }
     }
-    public ObjectProperty<Color> buttonFrameColorProperty() {
-        if (null == buttonFrameColor) {
-            buttonFrameColor = new SimpleObjectProperty<>(this, "buttonFrameColor", _buttonFrameColor);
+    public ObjectProperty<Color> buttonStrokeColorProperty() {
+        if (null == buttonStrokeColor) {
+            buttonStrokeColor = new SimpleObjectProperty<>(this, "buttonStrokeColor", _buttonStrokeColor);
         }
-        return buttonForegroundColor;
+        return buttonStrokeColor;
     }
 
     public Color getButtonForegroundColor() {
@@ -237,21 +237,21 @@ public class Options {
         return buttonHideOnSelect;
     }
 
-    public boolean isHideOnClose() {
-        return null == hideOnClose ? _hideOnClose : hideOnClose.get();
+    public boolean isButtonHideOnClose() {
+        return null == buttonHideOnClose ? _buttonHideOnClose : buttonHideOnClose.get();
     }
-    public void setHideOnClose(final boolean HIDE_ON_CLOSE) {
-        if (null == hideOnClose) {
-            _hideOnClose = HIDE_ON_CLOSE;
+    public void setButtonHideOnClose(final boolean BUTTON_HIDE_ON_CLOSE) {
+        if (null == buttonHideOnClose) {
+            _buttonHideOnClose = BUTTON_HIDE_ON_CLOSE;
         } else {
-            hideOnClose.set(HIDE_ON_CLOSE);
+            buttonHideOnClose.set(BUTTON_HIDE_ON_CLOSE);
         }
     }
-    public BooleanProperty hideOnCloseProperty() {
-        if (null == hideOnClose) {
-            hideOnClose = new SimpleBooleanProperty(this, "hideOnClose", _hideOnClose);
+    public BooleanProperty buttonHideOnCloseProperty() {
+        if (null == buttonHideOnClose) {
+            buttonHideOnClose = new SimpleBooleanProperty(this, "buttonHideOnClose", _buttonHideOnClose);
         }
-        return hideOnClose;
+        return buttonHideOnClose;
     }
 
     public boolean isTooltipsEnabled() {

@@ -169,11 +169,11 @@ public class RadialMenu extends Pane {
         mainMenuButton.setFill(new LinearGradient(0, mainMenuButton.getLayoutBounds().getMinY(),
                                                0, mainMenuButton.getLayoutBounds().getMaxY(),
                                                false, CycleMethod.NO_CYCLE,
-                                               new Stop(0.0, Color.hsb(options.getButtonInnerColor().getHue(), 0.80, 0.90)),
-                                               new Stop(0.5, Color.hsb(options.getButtonInnerColor().getHue(), 0.75, 0.90)),
-                                               new Stop(0.5, Color.hsb(options.getButtonInnerColor().getHue(), 0.85, 0.90)),
-                                               new Stop(1.0, Color.hsb(options.getButtonInnerColor().getHue(), 0.90, 0.80))));
-        mainMenuButton.setStroke(options.getButtonFrameColor());
+                                               new Stop(0.0, Color.hsb(options.getButtonFillColor().getHue(), 0.80, 0.90)),
+                                               new Stop(0.5, Color.hsb(options.getButtonFillColor().getHue(), 0.75, 0.90)),
+                                               new Stop(0.5, Color.hsb(options.getButtonFillColor().getHue(), 0.85, 0.90)),
+                                               new Stop(1.0, Color.hsb(options.getButtonFillColor().getHue(), 0.90, 0.80))));
+        mainMenuButton.setStroke(options.getButtonStrokeColor());
         mainMenuButton.setStrokeWidth(0.0681818182 * options.getButtonSize());
 
         cross.getChildren().clear();
@@ -374,7 +374,7 @@ public class RadialMenu extends Pane {
                 buttonFadeOut.setToValue(options.getButtonAlpha());
                 buttonFadeOut.play();
                 buttonFadeOut.setOnFinished(event -> {
-                    if (options.isHideOnClose()) hide();
+                    if (options.isButtonHideOnClose()) hide();
                     fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_CLOSE_FINISHED));
                 });
             }
