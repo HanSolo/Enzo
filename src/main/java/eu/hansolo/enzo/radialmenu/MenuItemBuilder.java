@@ -81,6 +81,11 @@ public class MenuItemBuilder implements Builder<MenuItem> {
         return this;
     }
 
+    public final MenuItemBuilder selected(final boolean SELECTED) {
+        properties.put("selected", new SimpleBooleanProperty(SELECTED));
+        return this;
+    }
+
     public final MenuItemBuilder symbol(final SymbolType SYMBOL_TYPE) {
         properties.put("symbol", new SimpleObjectProperty<SymbolType>(SYMBOL_TYPE));
         return this;
@@ -125,6 +130,8 @@ public class MenuItemBuilder implements Builder<MenuItem> {
                 CONTROL.setText(((StringProperty) property).get());
             } else if ("selectable".equals(key)) {
                 CONTROL.setSelectable(((BooleanProperty) property).get());
+            } else if ("selected".equals(key)) {
+                CONTROL.setSelected(((BooleanProperty) property).get());
             }
         });
 

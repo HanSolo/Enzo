@@ -64,7 +64,7 @@ public class Options {
         this(360, -90, 100);
     }
     public Options(final double DEGREES, final double OFFSET, final double RADIUS) {
-        this(DEGREES, OFFSET, RADIUS, 44, Color.hsb(0, 0.1, 0.1), Color.WHITE, Color.WHITE, true, false, false, 0.5, true);
+        this(DEGREES, OFFSET, RADIUS, 44, Color.RED, Color.WHITE, Color.WHITE, true, false, false, 0.5, true);
     }
     public Options(final double DEGREES, final double OFFSET, final double RADIUS, final double BUTTON_SIZE, final Color BUTTON_INNER_COLOR, final Color BUTTON_FRAME_COLOR, final Color BUTTON_FOREGROUND_COLOR, final boolean BUTTON_HIDE_ON_SELECT, final boolean HIDE_ON_CLOSE, final boolean TOOLTIPS_ENABLED, final double BUTTON_ALPHA, final boolean BUTTON_VISIBLE) {
         _degrees               = DEGREES;
@@ -76,7 +76,7 @@ public class Options {
         _buttonForegroundColor = BUTTON_FOREGROUND_COLOR;
         _buttonAlpha           = BUTTON_ALPHA;
         _buttonHideOnSelect    = BUTTON_HIDE_ON_SELECT;
-        _buttonHideOnClose = HIDE_ON_CLOSE;
+        _buttonHideOnClose     = HIDE_ON_CLOSE;
         _tooltipsEnabled       = TOOLTIPS_ENABLED;
         _buttonVisible         = BUTTON_VISIBLE;
     }

@@ -46,12 +46,9 @@ import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeType;
@@ -74,7 +71,7 @@ import java.util.Map;
  * Time: 13:25
  * To change this template use File | Settings | File Templates.
  */
-public class RadialMenu extends Pane {
+public class RadialMenu extends Region {
     public static enum State {
         OPENED,
         CLOSED
@@ -130,6 +127,7 @@ public class RadialMenu extends Pane {
 
         final Point2D CENTER     = new Point2D(getPrefWidth() * 0.5, getPrefHeight() * 0.5);
         mainMenuButton = new Circle(CENTER.getX(), CENTER.getY(), options.getButtonSize() * 0.5);
+        /*
         mainMenuButton.setFill(new LinearGradient(0, mainMenuButton.getLayoutBounds().getMinY(),
                                                0, mainMenuButton.getLayoutBounds().getMaxY(),
                                                false, CycleMethod.NO_CYCLE,
@@ -137,6 +135,8 @@ public class RadialMenu extends Pane {
                                                new Stop(0.5, Color.hsb(options.getButtonFillColor().getHue(), 0.75, 0.90)),
                                                new Stop(0.5, Color.hsb(options.getButtonFillColor().getHue(), 0.85, 0.90)),
                                                new Stop(1.0, Color.hsb(options.getButtonFillColor().getHue(), 0.90, 0.80))));
+        */
+        mainMenuButton.setFill(options.getButtonFillColor());
         mainMenuButton.setStroke(options.getButtonStrokeColor());
         mainMenuButton.setStrokeWidth(0.0681818182 * options.getButtonSize());
 
