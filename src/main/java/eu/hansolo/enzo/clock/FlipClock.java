@@ -30,7 +30,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 
 /**
@@ -112,7 +112,7 @@ public class FlipClock extends Application {
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 500_000_000l) {
-                    String day = WEEK_DAYS[Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1];
+                    String day = WEEK_DAYS[LocalDateTime.now().getDayOfWeek().getValue()];
                     if (day.equals("SAT") || day.equals("SUN")) {
                         if (!dayLeft.getTextColor().equals(Color.CRIMSON)) {
                             dayLeft.setTextColor(Color.CRIMSON);
@@ -130,7 +130,7 @@ public class FlipClock extends Application {
                     dayMid.setText(day.substring(1, 2));
                     dayRight.setText(day.substring(2));
 
-                    date = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                    date = LocalDateTime.now().getDayOfMonth();
                     String dateString = Integer.toString(date);
                     if (date < 10) {
                         dateLeft.setText("0");
@@ -140,12 +140,12 @@ public class FlipClock extends Application {
                         dateRight.setText(dateString.substring(1));
                     }
 
-                    String month = MONTHS[Calendar.getInstance().get(Calendar.MONTH)];
+                    String month = MONTHS[LocalDateTime.now().getMonthValue()];
                     monthLeft.setText(month.substring(0, 1));
                     monthMid.setText(month.substring(1, 2));
                     monthRight.setText(month.substring(2));
 
-                    hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                    hours = LocalDateTime.now().getHour();
                     String hourString = Integer.toString(hours);
                     if (hours < 10) {
                         hourLeft.setText("0");
@@ -155,7 +155,7 @@ public class FlipClock extends Application {
                         hourRight.setText(hourString.substring(1));
                     }
 
-                    minutes = Calendar.getInstance().get(Calendar.MINUTE);
+                    minutes = LocalDateTime.now().getMinute();
                     String minutesString = Integer.toString(minutes);
                     if (minutes < 10) {
                         minLeft.setText("0");
@@ -165,7 +165,7 @@ public class FlipClock extends Application {
                         minRight.setText(minutesString.substring(1));
                     }
 
-                    seconds = Calendar.getInstance().get(Calendar.SECOND);
+                    seconds = LocalDateTime.now().getSecond();
                     String secondsString = Integer.toString(seconds);
                     if (seconds < 10) {
                         secLeft.setText("0");

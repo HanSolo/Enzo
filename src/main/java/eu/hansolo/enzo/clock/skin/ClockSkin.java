@@ -44,8 +44,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import java.time.LocalTime;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 
@@ -143,14 +144,14 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
                 if (NOW >= lastTimerCall + INTERVAL) {
                     // SecondsRight
                     if (getSkinnable().isDiscreteSecond()) {
-                        secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6);
+                        secondAngle.setAngle(LocalTime.now().getSecond() * 6);
                     } else {
-                        secondAngle.setAngle(Calendar.getInstance().get(Calendar.SECOND) * 6 + Calendar.getInstance().get(Calendar.MILLISECOND) * 0.006);
+                        secondAngle.setAngle(LocalTime.now().getSecond() * 6 + LocalTime.now().get(ChronoField.MILLI_OF_SECOND) * 0.006);
                     }
                     // Minutes
-                    minute.set((Calendar.getInstance().get(Calendar.MINUTE)) * 6);
+                    minute.set(LocalTime.now().getMinute() * 6);
                     // Hours
-                    minuteAngle.setAngle((Calendar.getInstance().get(Calendar.HOUR)) * 30 + 0.5 * Calendar.getInstance().get(Calendar.MINUTE));
+                    minuteAngle.setAngle(LocalTime.now().getHour() * 30 + 0.5 * LocalTime.now().getMinute());
                     lastTimerCall = NOW;
                 }
             }

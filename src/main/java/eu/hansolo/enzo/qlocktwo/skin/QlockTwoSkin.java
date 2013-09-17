@@ -33,7 +33,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
-import java.util.Calendar;
+import java.time.LocalTime;
 
 
 public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
@@ -85,20 +85,19 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
         oldMinute            = 0;
         timeZoneOffsetHour   = 0;
         timeZoneOffsetMinute = 0;
-        texture = new BrushedMetalPaint(Color.web("#888888"));
-        stainlessBackground = new ImageView();
+        texture              = new BrushedMetalPaint(Color.web("#888888"));
+        stainlessBackground  = new ImageView();
         pane                 = new Pane();
         lastTimerCall        = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 if (now > lastTimerCall + 1_000_000_000l) {
-                    Calendar cal = Calendar.getInstance();
 
                     // Hours
-                    hour = cal.get(Calendar.HOUR) - timeZoneOffsetHour;// + ((java.util.Calendar.getInstance().get(java.util.Calendar.DST_OFFSET)) / 3600000);
+                    hour = LocalTime.now().getHour() - timeZoneOffsetHour;
 
                     // Minutes
-                    minute = cal.get(Calendar.MINUTE) + timeZoneOffsetMinute;
+                    minute = LocalTime.now().getMinute() + timeZoneOffsetMinute;
 
                     if (oldMinute < minute || (oldMinute == 59 && minute == 0)) {
                         updateClock();
@@ -107,7 +106,7 @@ public class QlockTwoSkin extends SkinBase<QlockTwo> implements Skin<QlockTwo> {
 
                     // SecondsRight
                     if (getSkinnable().isSecondsMode()) {
-                        second = cal.get(Calendar.SECOND);
+                        second = LocalTime.now().getSecond();
                         if (second < 10) {
                             secondLeft  = QlockTwo.SecondsLeft.ZERO;
                             secondRight = QlockTwo.SecondsRight.values()[second];
