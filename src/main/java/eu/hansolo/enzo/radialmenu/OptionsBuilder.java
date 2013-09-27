@@ -109,6 +109,16 @@ public class OptionsBuilder implements Builder<Options> {
         return this;
     }
 
+    public final OptionsBuilder simpleMode(final boolean SIMPLE_MODE) {
+        properties.put("simpleMode", new SimpleBooleanProperty(SIMPLE_MODE));
+        return this;
+    }
+
+    public final OptionsBuilder strokeVisible(final boolean STROKE_VISIBLE) {
+        properties.put("strokeVisible", new SimpleBooleanProperty(STROKE_VISIBLE));
+        return this;
+    }
+
     @Override public final Options build() {
         final Options CONTROL = new Options();
 
@@ -137,6 +147,10 @@ public class OptionsBuilder implements Builder<Options> {
                 CONTROL.setTooltipsEnabled(((BooleanProperty) property).get());
             } else if ("buttonVisible".equals(key)) {
                 CONTROL.setButtonVisible(((BooleanProperty) property).get());
+            } else if ("simpleMode".equals(key)) {
+                CONTROL.setSimpleMode(((BooleanProperty) property).get());
+            } else if ("strokeVisible".equals(key)) {
+                CONTROL.setStrokeVisible(((BooleanProperty) property).get());
             }
         });
 

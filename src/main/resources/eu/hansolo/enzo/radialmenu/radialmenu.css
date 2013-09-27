@@ -20,13 +20,21 @@
     -item-border    : white;
 }
 
-#main-button {
-
+.radial-menu #main-button {
+    -fx-background-color : white, red;
+    -fx-background-insets: 0, 2;
+    -fx-scale-shape      : true;
+    -fx-shape            : "";
 }
 
-#item {
+.radial-menu.item {
     -fx-text-fill        : -item-text;
     -fx-background-color : -item-border, -item-background;
     -fx-background-insets: 9%, 0%;
     -fx-background-radius: 1024;
+}
+.radial-menu.item:selected {
+    -item-text      : white;
+    -item-border    : white;
+    -item-background: orange;
 }

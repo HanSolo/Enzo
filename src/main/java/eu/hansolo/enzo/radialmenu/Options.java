@@ -57,6 +57,10 @@ public class Options {
     private BooleanProperty       buttonHideOnClose;
     private boolean               _tooltipsEnabled;
     private BooleanProperty       tooltipsEnabled;
+    private boolean               _simpleMode;
+    private BooleanProperty       simpleMode;
+    private boolean               _strokeVisible;
+    private BooleanProperty       strokeVisible;
 
 
     // ******************** Constructors **************************************
@@ -79,6 +83,8 @@ public class Options {
         _buttonHideOnClose     = HIDE_ON_CLOSE;
         _tooltipsEnabled       = TOOLTIPS_ENABLED;
         _buttonVisible         = BUTTON_VISIBLE;
+        _simpleMode            = false;
+        _strokeVisible         = true;
     }
 
 
@@ -286,5 +292,39 @@ public class Options {
             buttonVisible = new SimpleBooleanProperty(this, "buttonVisible", _buttonVisible);
         }
         return buttonVisible;
+    }
+
+    public boolean isSimpleMode() {
+        return null == simpleMode ? _simpleMode : simpleMode.get();
+    }
+    public void setSimpleMode(final boolean SIMPLE_MODE) {
+        if (null == simpleMode) {
+            _simpleMode = SIMPLE_MODE;
+        } else {
+            simpleMode.set(SIMPLE_MODE);
+        }
+    }
+    public BooleanProperty simpleModeProperty() {
+        if (null == simpleMode) {
+            simpleMode = new SimpleBooleanProperty(this, "simpleMode", _simpleMode);
+        }
+        return simpleMode;
+    }
+
+    public boolean isStrokeVisible() {
+        return null == strokeVisible ? _strokeVisible : strokeVisible.get();
+    }
+    public void setStrokeVisible(final boolean STROKE_VISIBLE) {
+        if (null == strokeVisible) {
+            _strokeVisible = STROKE_VISIBLE;
+        } else {
+            strokeVisible.set(STROKE_VISIBLE);
+        }
+    }
+    public BooleanProperty strokeVisibleProperty() {
+        if (null == strokeVisible) {
+            strokeVisible = new SimpleBooleanProperty(this, "strokeVisible", _strokeVisible);
+        }
+        return strokeVisible;
     }
 }

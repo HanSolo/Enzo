@@ -20,8 +20,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -82,8 +81,9 @@ public class Demo extends Application {
         VBox pane = new VBox();
         pane.getChildren().add(radialMenu);
         pane.getChildren().add(buttons);
+        pane.setBackground(new Background(new BackgroundFill(Color.rgb(50, 50, 50), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        Scene scene = new Scene(pane, Color.GRAY);      //, Color.rgb(159, 143, 110));
+        Scene scene = new Scene(pane);
 
         stage.setScene(scene);
         stage.show();

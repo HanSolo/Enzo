@@ -125,20 +125,16 @@ public class RadialMenu extends Region {
         mainMenuButton.getStyleClass().add("main-menu-button");
          */
 
-        final Point2D CENTER     = new Point2D(getPrefWidth() * 0.5, getPrefHeight() * 0.5);
+        final Point2D CENTER = new Point2D(getPrefWidth() * 0.5, getPrefHeight() * 0.5);
         mainMenuButton = new Circle(CENTER.getX(), CENTER.getY(), options.getButtonSize() * 0.5);
-        /*
-        mainMenuButton.setFill(new LinearGradient(0, mainMenuButton.getLayoutBounds().getMinY(),
-                                               0, mainMenuButton.getLayoutBounds().getMaxY(),
-                                               false, CycleMethod.NO_CYCLE,
-                                               new Stop(0.0, Color.hsb(options.getButtonFillColor().getHue(), 0.80, 0.90)),
-                                               new Stop(0.5, Color.hsb(options.getButtonFillColor().getHue(), 0.75, 0.90)),
-                                               new Stop(0.5, Color.hsb(options.getButtonFillColor().getHue(), 0.85, 0.90)),
-                                               new Stop(1.0, Color.hsb(options.getButtonFillColor().getHue(), 0.90, 0.80))));
-        */
         mainMenuButton.setFill(options.getButtonFillColor());
-        mainMenuButton.setStroke(options.getButtonStrokeColor());
-        mainMenuButton.setStrokeWidth(0.0681818182 * options.getButtonSize());
+        if (options.isStrokeVisible()) {
+            mainMenuButton.setStroke(options.getButtonStrokeColor());
+            mainMenuButton.setStrokeWidth(0.0681818182 * options.getButtonSize());
+        } else {
+            mainMenuButton.setStroke(Color.TRANSPARENT);
+            mainMenuButton.setStrokeWidth(0);
+        }
 
         cross.getChildren().clear();
         final Line HOR = new Line(CENTER.getX() - (0.1818181818 * options.getButtonSize()), CENTER.getY(), CENTER.getX() + (0.1818181818 * options.getButtonSize()), CENTER.getY());
@@ -150,16 +146,16 @@ public class RadialMenu extends Region {
         cross.getChildren().addAll(HOR, VER);
         cross.setMouseTransparent(true);
 
-        mainMenuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseHandler);
-        mainMenuButton.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseHandler);
-        mainMenuButton.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseHandler);
-        mainMenuButton.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseHandler);
+        mainMenuButton.setOnMouseClicked(mouseHandler);
+        mainMenuButton.setOnMousePressed(mouseHandler);
+        mainMenuButton.setOnMouseReleased(mouseHandler);
+        mainMenuButton.setOnMouseEntered(mouseHandler);
 
         final DropShadow SHADOW = new DropShadow();
         SHADOW.setRadius(0.1590909091 * options.getButtonSize());
         SHADOW.setColor(Color.rgb(0, 0, 0, 0.6));
         SHADOW.setBlurType(BlurType.TWO_PASS_BOX);
-        button.setEffect(SHADOW);
+        button.setEffect(options.isSimpleMode() ? null : SHADOW);
 
         button.setOpacity(options.isButtonVisible() ? options.getButtonAlpha() : 0.0);
 
@@ -215,8 +211,8 @@ public class RadialMenu extends Region {
             double y          = Math.round(position.getY() * options.getRadius());
             double delay      = (200 / ITEMS.size()) * i;
 
-            openTimeLines[i]  = createItemOpenTimeLine(ITEM_CONTAINER, x, y, delay);
-            closeTimeLines[i] = createItemCloseTimeLine(ITEM_CONTAINER, x, y, delay);
+            openTimeLines[i]  = options.isSimpleMode() ? createSimpleItemOpenTimeLine(ITEM_CONTAINER, x, y, delay) : createItemOpenTimeLine(ITEM_CONTAINER, x, y, delay);
+            closeTimeLines[i] = options.isSimpleMode() ? createSimpleItemCloseTimeLine(ITEM_CONTAINER, x, y, delay) : createItemCloseTimeLine(ITEM_CONTAINER, x, y, delay);
 
             // Add mouse event handler to each item
             ITEM_CONTAINER.setOnMousePressed(mouseHandler);
@@ -346,15 +342,11 @@ public class RadialMenu extends Region {
         button.setOpacity(1.0);
         RotateTransition rotate = new RotateTransition();
         rotate.setNode(cross);
-        rotate.setToAngle(45);
+        rotate.setToAngle(options.isSimpleMode() ? 45 : -135);
         rotate.setDuration(Duration.millis(200));
         rotate.setInterpolator(Interpolator.EASE_BOTH);
         rotate.play();
-        openTimeLines[openTimeLines.length - 1].setOnFinished(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent actionEvent) {
-                fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_OPEN_FINISHED));
-            }
-        });
+        openTimeLines[openTimeLines.length - 1].setOnFinished(actionEvent -> fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_OPEN_FINISHED)));
         for (int i = 0 ; i < openTimeLines.length ; i++) {
             openTimeLines[i].play();
         }
@@ -370,18 +362,16 @@ public class RadialMenu extends Region {
         rotate.setDuration(Duration.millis(200));
         rotate.setInterpolator(Interpolator.EASE_BOTH);
         rotate.play();
-        closeTimeLines[closeTimeLines.length - 1].setOnFinished(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent actionEvent) {
-                FadeTransition buttonFadeOut = new FadeTransition();
-                buttonFadeOut.setNode(button);
-                buttonFadeOut.setDuration(Duration.millis(100));
-                buttonFadeOut.setToValue(options.getButtonAlpha());
-                buttonFadeOut.play();
-                buttonFadeOut.setOnFinished(event -> {
-                    if (options.isButtonHideOnClose()) hide();
-                    fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_CLOSE_FINISHED));
-                });
-            }
+        closeTimeLines[closeTimeLines.length - 1].setOnFinished(actionEvent -> {
+            FadeTransition buttonFadeOut = new FadeTransition();
+            buttonFadeOut.setNode(button);
+            buttonFadeOut.setDuration(Duration.millis(100));
+            buttonFadeOut.setToValue(options.getButtonAlpha());
+            buttonFadeOut.play();
+            buttonFadeOut.setOnFinished(event -> {
+                if (options.isButtonHideOnClose()) hide();
+                fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_CLOSE_FINISHED));
+            });
         });
         for (int i = 0 ; i < closeTimeLines.length ; i++) {
             closeTimeLines[i].play();
@@ -498,10 +488,15 @@ public class RadialMenu extends Region {
         //circle.getStyleClass().add("item");
 
         circle.setFill((ITEM.isSelected() && ITEM.isSelectable()) ? ITEM.getSelectedColor() : ITEM.getFillColor());
-        circle.setStroke(ITEM.getStrokeColor());
-        circle.setStrokeWidth(0.09375 * ITEM.getSize());
-        circle.setStrokeType(StrokeType.CENTERED);
-        circle.setEffect(EFFECT);
+        if (options.isStrokeVisible()) {
+            circle.setStroke(ITEM.getStrokeColor());
+            circle.setStrokeWidth(0.09375 * ITEM.getSize());
+            circle.setStrokeType(StrokeType.CENTERED);
+        } else {
+            circle.setStroke(Color.TRANSPARENT);
+            circle.setStrokeWidth(0);
+        }
+        circle.setEffect(options.isSimpleMode() ? null : EFFECT);
         return circle;
     }
 
@@ -518,7 +513,7 @@ public class RadialMenu extends Region {
         KeyValue kvX1  = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
         KeyValue kvY1  = new KeyValue(NODE.translateYProperty(), 0, Interpolator.EASE_OUT);
         KeyValue kvR1  = new KeyValue(NODE.rotateProperty(), 0, Interpolator.EASE_OUT);
-        KeyValue kvO1  = new KeyValue(NODE.opacityProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvO1  = new KeyValue(NODE.opacityProperty(), 0.0, Interpolator.EASE_OUT);
 
         KeyValue kvX2  = new KeyValue(NODE.translateXProperty(), 0.0);
         KeyValue kvY2  = new KeyValue(NODE.translateYProperty(), 0.0);
@@ -538,11 +533,40 @@ public class RadialMenu extends Region {
         KeyFrame kfO2  = new KeyFrame(Duration.millis(50 + DELAY), kvX2, kvY2);
         KeyFrame kfO3  = new KeyFrame(Duration.millis(250 + DELAY), kvX3, kvY3);
         KeyFrame kfO4  = new KeyFrame(Duration.millis(400 + DELAY), kvX4, kvY4, kvRO4, kvO4);
-        KeyFrame kfO5  = new KeyFrame(Duration.millis(600 + DELAY), kvX5, kvY5);
+        KeyFrame kfO5  = new KeyFrame(Duration.millis(550 + DELAY), kvX5, kvY5);
 
         return new Timeline(kfO1, kfO2, kfO3, kfO4, kfO5);
     }
     private Timeline createItemCloseTimeLine(final StackPane NODE, final double X, final double Y, final double DELAY) {
+        KeyValue kvX1  = new KeyValue(NODE.translateXProperty(), X);
+        KeyValue kvY1  = new KeyValue(NODE.translateYProperty(), Y);
+
+        KeyValue kvRC2 = new KeyValue(NODE.rotateProperty(), 720);
+
+        KeyValue kvX3  = new KeyValue(NODE.translateXProperty(), X, Interpolator.EASE_IN);
+        KeyValue kvY3  = new KeyValue(NODE.translateYProperty(), Y, Interpolator.EASE_IN);
+
+        KeyValue kvX4  = new KeyValue(NODE.translateXProperty(), 0);
+        KeyValue kvY4  = new KeyValue(NODE.translateYProperty(), 0);
+
+        KeyValue kvX5  = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvY5  = new KeyValue(NODE.translateYProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvR5  = new KeyValue(NODE.rotateProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvO5  = new KeyValue(NODE.opacityProperty(), 0.5);
+
+        KeyValue kvO6  = new KeyValue(NODE.opacityProperty(), 0);
+
+        KeyFrame kfC1  = new KeyFrame(Duration.millis(0), kvX1, kvY1);
+        KeyFrame kfC2  = new KeyFrame(Duration.millis(50 + DELAY), kvRC2);
+        KeyFrame kfC3  = new KeyFrame(Duration.millis(250 + DELAY), kvX3, kvY3);
+        KeyFrame kfC4  = new KeyFrame(Duration.millis(400 + DELAY), kvX4, kvY4);
+        KeyFrame kfC5  = new KeyFrame(Duration.millis(550 + DELAY), kvX5, kvY5, kvR5, kvO5);
+        KeyFrame kfC6  = new KeyFrame(Duration.millis(551 + DELAY), kvO6);
+
+        return new Timeline(kfC1, kfC2, kfC3, kfC4, kfC5, kfC6);
+    }
+
+    private Timeline createSimpleItemOpenTimeLine(final StackPane NODE, final double X, final double Y, final double DELAY) {
         KeyValue kvX1  = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
         KeyValue kvY1  = new KeyValue(NODE.translateYProperty(), 0, Interpolator.EASE_OUT);
         KeyValue kvR1  = new KeyValue(NODE.rotateProperty(), 0, Interpolator.EASE_OUT);
@@ -554,21 +578,49 @@ public class RadialMenu extends Region {
         KeyValue kvX3  = new KeyValue(NODE.translateXProperty(), 1.1 * X, Interpolator.EASE_IN);
         KeyValue kvY3  = new KeyValue(NODE.translateYProperty(), 1.1 * Y, Interpolator.EASE_IN);
 
-        KeyValue kvX4  = new KeyValue(NODE.translateXProperty(), 0.95 * X, Interpolator.EASE_OUT);
-        KeyValue kvY4  = new KeyValue(NODE.translateYProperty(), 0.95 * Y, Interpolator.EASE_OUT);
-        KeyValue kvRC4 = new KeyValue(NODE.rotateProperty(), 720);
+        KeyValue kvX4  = new KeyValue(NODE.translateXProperty(), 0.97 * X, Interpolator.EASE_OUT);
+        KeyValue kvY4  = new KeyValue(NODE.translateYProperty(), 0.97 * Y, Interpolator.EASE_OUT);
+        KeyValue kvRO4 = new KeyValue(NODE.rotateProperty(), 360);
         KeyValue kvO4  = new KeyValue(NODE.opacityProperty(), 1.0, Interpolator.EASE_OUT);
 
         KeyValue kvX5  = new KeyValue(NODE.translateXProperty(), X);
         KeyValue kvY5  = new KeyValue(NODE.translateYProperty(), Y);
 
-        KeyFrame kfC1  = new KeyFrame(Duration.millis(0), kvX5, kvY5);
-        KeyFrame kfC2  = new KeyFrame(Duration.millis(50 + DELAY), kvX4, kvY4, kvRC4, kvO4);
-        KeyFrame kfC3  = new KeyFrame(Duration.millis(250 + DELAY), kvX3, kvY3);
-        KeyFrame kfC4  = new KeyFrame(Duration.millis(400 + DELAY), kvX2, kvY2);
-        KeyFrame kfC5  = new KeyFrame(Duration.millis(600 + DELAY), kvX1, kvY1, kvR1, kvO1);
+        KeyFrame kfO1  = new KeyFrame(Duration.millis(0), kvX1, kvY1, kvR1, kvO1);
+        KeyFrame kfO2  = new KeyFrame(Duration.millis(50 + DELAY), kvX2, kvY2);
+        KeyFrame kfO3  = new KeyFrame(Duration.millis(150 + DELAY), kvX3, kvY3);
+        KeyFrame kfO4  = new KeyFrame(Duration.millis(300 + DELAY), kvX4, kvY4, kvRO4, kvO4);
+        KeyFrame kfO5  = new KeyFrame(Duration.millis(400 + DELAY), kvX5, kvY5);
 
-        return new Timeline(kfC1, kfC2, kfC3, kfC4, kfC5);
+        return new Timeline(kfO1, kfO2, kfO3, kfO4, kfO5);
+    }
+    private Timeline createSimpleItemCloseTimeLine(final StackPane NODE, final double X, final double Y, final double DELAY) {
+        KeyValue kvX1  = new KeyValue(NODE.translateXProperty(), X);
+        KeyValue kvY1  = new KeyValue(NODE.translateYProperty(), Y);
+
+        KeyValue kvRC2 = new KeyValue(NODE.rotateProperty(), 360);
+
+        KeyValue kvX3  = new KeyValue(NODE.translateXProperty(), 1.0 * X, Interpolator.EASE_IN);
+        KeyValue kvY3  = new KeyValue(NODE.translateYProperty(), 1.0 * Y, Interpolator.EASE_IN);
+
+        KeyValue kvX4  = new KeyValue(NODE.translateXProperty(), 0.0);
+        KeyValue kvY4  = new KeyValue(NODE.translateYProperty(), 0.0);
+
+        KeyValue kvX5  = new KeyValue(NODE.translateXProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvY5  = new KeyValue(NODE.translateYProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvR5  = new KeyValue(NODE.rotateProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue kvO5  = new KeyValue(NODE.opacityProperty(), 0.5);
+
+        KeyValue kvO6  = new KeyValue(NODE.opacityProperty(), 0);
+
+        KeyFrame kfC1  = new KeyFrame(Duration.millis(0), kvX1, kvY1);
+        KeyFrame kfC2  = new KeyFrame(Duration.millis(50 + DELAY), kvRC2);
+        KeyFrame kfC3  = new KeyFrame(Duration.millis(250 + DELAY), kvX3, kvY3);
+        KeyFrame kfC4  = new KeyFrame(Duration.millis(400 + DELAY), kvX4, kvY4);
+        KeyFrame kfC5  = new KeyFrame(Duration.millis(550 + DELAY), kvX5, kvY5, kvR5, kvO5);
+        KeyFrame kfC6  = new KeyFrame(Duration.millis(551 + DELAY), kvO6);
+
+        return new Timeline(kfC1, kfC2, kfC3, kfC4, kfC5, kfC6);
     }
 
     private void resize() {
@@ -601,7 +653,7 @@ public class RadialMenu extends Region {
     public void fireItemEvent(final ItemEvent EVENT) {
         fireEvent(EVENT);
 
-        final EventType               TYPE = EVENT.getEventType();
+        final EventType TYPE = EVENT.getEventType();
         final EventHandler<ItemEvent> HANDLER;
 
         if (ItemEvent.ITEM_CLICKED == TYPE) {
@@ -652,7 +704,7 @@ public class RadialMenu extends Region {
     public void fireMenuEvent(final MenuEvent EVENT) {
         fireEvent(EVENT);
 
-        final EventType               TYPE = EVENT.getEventType();
+        final EventType TYPE = EVENT.getEventType();
         final EventHandler<MenuEvent> HANDLER;
 
         if (MenuEvent.MENU_OPEN_STARTED == TYPE) {
