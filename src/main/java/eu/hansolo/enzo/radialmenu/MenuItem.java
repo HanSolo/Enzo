@@ -128,7 +128,13 @@ public class MenuItem extends Region {
         setPickOnBounds(false);
     }
 
-    private void registerListeners() {}
+    private void registerListeners() {
+        backgroundColor.addListener(observable -> adjustStyle());
+        borderColor.addListener(observable -> adjustStyle());
+        foregroundColor.addListener(observable -> adjustStyle());
+        selectedBackgroundColor.addListener(observable -> adjustStyle());
+        selectedForegroundColor.addListener(observable -> adjustStyle());
+    }
 
 
     // ******************** Methods *******************************************
@@ -204,9 +210,8 @@ public class MenuItem extends Region {
         } else {
             backgroundColor.set(BACKGROUND_COLOR);
         }
-        setStyle("-item-background: " + (BACKGROUND_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ReadOnlyObjectProperty<Color> backgroundColorProperty() {
+    public ObjectProperty<Color> backgroundColorProperty() {
         if (null == backgroundColor) {
             backgroundColor = new StyleableObjectProperty<Color>(DEFAULT_BACKGROUND_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.BACKGROUND_COLOR; }
@@ -226,9 +231,8 @@ public class MenuItem extends Region {
         } else {
             borderColor.set(BORDER_COLOR);
         }
-        setStyle("-item-border: " + (BORDER_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ReadOnlyObjectProperty<Color> borderColorProperty() {
+    public ObjectProperty<Color> borderColorProperty() {
         if (null == borderColor) {
             borderColor = new StyleableObjectProperty<Color>(DEFAULT_BORDER_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.BORDER_COLOR; }
@@ -248,9 +252,8 @@ public class MenuItem extends Region {
         } else {
             foregroundColor.set(FOREGROUND_COLOR);
         }
-        setStyle("-item-foreground: " + (FOREGROUND_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ReadOnlyObjectProperty<Color> foregroundColorProperty() {
+    public ObjectProperty<Color> foregroundColorProperty() {
         if (null == foregroundColor) {
             foregroundColor = new StyleableObjectProperty<Color>(DEFAULT_FOREGROUND_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.FOREGROUND_COLOR; }
@@ -270,9 +273,8 @@ public class MenuItem extends Region {
         } else {
             selectedBackgroundColor.set(SELECTED_BACKGROUND_COLOR);
         }
-        setStyle("-item-selected-background: " + (SELECTED_BACKGROUND_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ReadOnlyObjectProperty<Color> selectedBackgroundColorProperty() {
+    public ObjectProperty<Color> selectedBackgroundColorProperty() {
         if (null == selectedBackgroundColor) {
             selectedBackgroundColor = new StyleableObjectProperty<Color>(DEFAULT_SELECTED_BACKGROUND_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SELECTED_BACKGROUND_COLOR; }
@@ -292,9 +294,8 @@ public class MenuItem extends Region {
         } else {
             selectedForegroundColor.set(SELECTED_FOREGROUND_COLOR);
         }
-        setStyle("-item-selected-foreground: " + (SELECTED_FOREGROUND_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ReadOnlyObjectProperty<Color> selectedForegroundColorProperty() {
+    public ObjectProperty<Color> selectedForegroundColorProperty() {
         if (null == selectedForegroundColor) {
             selectedForegroundColor = new StyleableObjectProperty<Color>(DEFAULT_SELECTED_FOREGROUND_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SELECTED_FOREGROUND_COLOR; }
@@ -381,6 +382,15 @@ public class MenuItem extends Region {
             @Override public Object getBean() { return this; }
             @Override public String getName() { return "select"; }
         };
+    }
+
+    private void adjustStyle() {
+        // TODO: replace with applyStyle approach
+        setStyle("-item-background: " + (getBackgroundColor()).toString().replace("0x", "#") + ";" +
+                 "-item-border: " + (getBorderColor().toString().replace("0x", "#") + ";") +
+                 "-item-foreground:" + (getForegroundColor()).toString().replace("0x", "#") + ";" +
+                 "-item-selected-background:" + (getSelectedBackgroundColor()).toString().replace("0x", "#") + ";" +
+                 "-item-selected-foreground:" + (getSelectedForegroundColor()).toString().replace("0x", "#") + ";");
     }
 
 
