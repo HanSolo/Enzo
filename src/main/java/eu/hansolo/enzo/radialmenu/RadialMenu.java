@@ -134,7 +134,7 @@ public class RadialMenu extends Region {
             if (SymbolType.NONE == item.getSymbolType() && item.getThumbnailImageName().isEmpty()) {
                 Text text = new Text(item.getText());
                 text.setFont(Font.font("Open Sans", FontWeight.BOLD, item.getSize() * 0.5));
-                text.setFill(item.getForegroundFill());
+                text.setFill(item.getForegroundColor());
                 text.setMouseTransparent(true);
                 ITEM_CONTAINER.getChildren().add(text);
             } else if (!item.getThumbnailImageName().isEmpty()) {
@@ -143,7 +143,7 @@ public class RadialMenu extends Region {
                 } catch (IllegalArgumentException exception) {
                     Text text = new Text(Integer.toString(i));
                     text.setFont(Font.font("Open Sans", FontWeight.BOLD, item.getSize() * 0.5));
-                    text.setFill(item.getForegroundFill());
+                    text.setFill(item.getForegroundColor());
                     text.setMouseTransparent(true);
                     ITEM_CONTAINER.getChildren().add(text);
                 }

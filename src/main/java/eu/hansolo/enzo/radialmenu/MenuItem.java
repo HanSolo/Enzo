@@ -17,13 +17,11 @@
 package eu.hansolo.enzo.radialmenu;
 
 import com.sun.javafx.css.converters.ColorConverter;
-import com.sun.javafx.css.converters.PaintConverter;
 import javafx.beans.property.*;
 import javafx.css.*;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,17 +36,17 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class MenuItem extends Region {
-    private static final double        PREFERRED_SIZE                   = 35;
-    private static final double        MINIMUM_SIZE                     = 15;
-    private static final double        MAXIMUM_SIZE                     = 1024;
+    private static final double        PREFERRED_SIZE                    = 35;
+    private static final double        MINIMUM_SIZE                      = 15;
+    private static final double        MAXIMUM_SIZE                      = 1024;
 
-    public static final Paint          DEFAULT_BACKGROUND_FILL          = Color.YELLOW;
-    public static final Color          DEFAULT_BORDER_COLOR             = Color.YELLOW;
-    public static final Paint          DEFAULT_FOREGROUND_FILL          = Color.WHITE;
-    public static final Paint          DEFAULT_SELECTED_BACKGROUND_FILL = Color.ORANGE;
-    public static final Paint          DEFAULT_SELECTED_FOREGROUND_FILL = Color.WHITE;
+    public static final Color          DEFAULT_BACKGROUND_COLOR          = Color.rgb(41, 41, 40);
+    public static final Color          DEFAULT_BORDER_COLOR              = Color.rgb(24, 24, 24);
+    public static final Color          DEFAULT_FOREGROUND_COLOR          = Color.WHITE;
+    public static final Color          DEFAULT_SELECTED_BACKGROUND_COLOR = Color.rgb(253,153,52);
+    public static final Color          DEFAULT_SELECTED_FOREGROUND_COLOR = Color.WHITE;
 
-    private static final PseudoClass   SELECT_PSEUDO_CLASS              = PseudoClass.getPseudoClass("select");
+    private static final PseudoClass   SELECT_PSEUDO_CLASS               = PseudoClass.getPseudoClass("select");
     private BooleanProperty            selected;
     private boolean                    _selectable;
     private BooleanProperty            selectable;
@@ -56,16 +54,16 @@ public class MenuItem extends Region {
     private StringProperty             tooltip;
     private double                     _size;
     private DoubleProperty             size;
-    private Paint                      _backgroundFill;
-    private ObjectProperty<Paint>      backgroundFill;
+    private Color                      _backgroundColor;
+    private ObjectProperty<Color>      backgroundColor;
     private Color                      _borderColor;
     private ObjectProperty<Color>      borderColor;
-    private Paint                      _foregroundFill;
-    private ObjectProperty<Paint>      foregroundFill;
-    private Paint                      _selectedBackgroundFill;
-    private ObjectProperty<Paint>      selectedBackgroundFill;
-    private Paint                      _selectedForegroundFill;
-    private ObjectProperty<Paint>      selectedForegroundFill;
+    private Color                      _foregroundColor;
+    private ObjectProperty<Color>      foregroundColor;
+    private Color                      _selectedBackgroundColor;
+    private ObjectProperty<Color>      selectedBackgroundColor;
+    private Color                      _selectedForegroundColor;
+    private ObjectProperty<Color>      selectedForegroundColor;
     private SymbolType                 _symbolType;
     private ObjectProperty<SymbolType> symbolType;
     private StringProperty             thumbnailImageName;
@@ -74,33 +72,33 @@ public class MenuItem extends Region {
 
     // ******************** Constructors **************************************
     public MenuItem() {
-        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Color.rgb(255,153,0), SymbolType.NONE, "");
+        this("", 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_SELECTED_FOREGROUND_COLOR, SymbolType.NONE, "");
     }
     public MenuItem(final SymbolType SYMBOL_TYPE) {
-        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Color.rgb(255,153,0), SYMBOL_TYPE, "");
+        this("", 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_FOREGROUND_COLOR, SYMBOL_TYPE, "");
     }
     public MenuItem(final String THUMBNAIL_IMAGE_NAME) {
-        this("", 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Color.rgb(255,153,0), SymbolType.NONE, THUMBNAIL_IMAGE_NAME);
+        this("", 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_FOREGROUND_COLOR, SymbolType.NONE, THUMBNAIL_IMAGE_NAME);
     }
     public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP) {
-        this(TOOLTIP, 32, Color.rgb(68, 64, 60), Color.WHITE, Color.WHITE, Color.rgb(255,153,0), SYMBOL_TYPE, "");
+        this(TOOLTIP, 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_FOREGROUND_COLOR, SYMBOL_TYPE, "");
     }
     public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP, final Color INNER_COLOR, final Color SELECTED_COLOR) {
-        this(TOOLTIP, 32, INNER_COLOR, Color.WHITE, Color.WHITE, SELECTED_COLOR, SYMBOL_TYPE, "");
+        this(TOOLTIP, 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_FOREGROUND_COLOR, SYMBOL_TYPE, "");
     }
-    public MenuItem(final String TOOLTIP, final double SIZE, final Color BACKGROUND_FILL, final Color STROKE_COLOR, final Color FOREGROUND_FILL, final Color SELECTED_BACKGROUND_FILL, final SymbolType SYMBOL_TYPE, final String THUMBNAIL_IMAGE_NAME) {
+    public MenuItem(final String TOOLTIP, final double SIZE, final Color BACKGROUND_COLOR, final Color BORDER_COLOR, final Color FOREGROUND_COLOR, final Color SELECTED_BACKGROUND_COLOR, final Color SELECTED_FOREGROUND_COLOR, final SymbolType SYMBOL_TYPE, final String THUMBNAIL_IMAGE_NAME) {
         getStyleClass().setAll("menu-item");
 
-        _tooltip                = TOOLTIP;
-        _size                   = SIZE;
-        _backgroundFill         = BACKGROUND_FILL;
-        _borderColor = STROKE_COLOR;
-        _foregroundFill         = FOREGROUND_FILL;
-        _selectedBackgroundFill = SELECTED_BACKGROUND_FILL;
-        _selectedForegroundFill = Color.WHITE;
-        _symbolType             = SYMBOL_TYPE;
-        _selectable             = false;
-        thumbnailImageName      = new SimpleStringProperty(this, "thumbnailImageName", THUMBNAIL_IMAGE_NAME);
+        _tooltip                 = TOOLTIP;
+        _size                    = SIZE;
+        _backgroundColor         = BACKGROUND_COLOR;
+        _borderColor             = BORDER_COLOR;
+        _foregroundColor         = FOREGROUND_COLOR;
+        _selectedBackgroundColor = SELECTED_BACKGROUND_COLOR;
+        _selectedForegroundColor = SELECTED_FOREGROUND_COLOR;
+        _symbolType              = SYMBOL_TYPE;
+        _selectable              = false;
+        thumbnailImageName       = new SimpleStringProperty(this, "thumbnailImageName", THUMBNAIL_IMAGE_NAME);
 
         init();
         initGraphics();
@@ -197,25 +195,25 @@ public class MenuItem extends Region {
         return size;
     }
 
-    public Paint getBackgroundFill() {
-        return null == backgroundFill ? _backgroundFill : backgroundFill.get();
+    public Color getBackgroundColor() {
+        return null == backgroundColor ? _backgroundColor : backgroundColor.get();
     }
-    public void setBackgroundFill(final Paint BACKGROUND_FILL) {
-        if (null == backgroundFill) {
-            _backgroundFill = BACKGROUND_FILL;
+    public void setBackgroundColor(final Color BACKGROUND_COLOR) {
+        if (null == backgroundColor) {
+            _backgroundColor = BACKGROUND_COLOR;
         } else {
-            backgroundFill.set(BACKGROUND_FILL);
+            backgroundColor.set(BACKGROUND_COLOR);
         }
     }
-    public ObjectProperty<Paint> backgroundFillProperty() {
-        if (null == backgroundFill) {
-            backgroundFill = new StyleableObjectProperty<Paint>(DEFAULT_BACKGROUND_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.BACKGROUND_FILL; }
+    public ObjectProperty<Color> backgroundColorProperty() {
+        if (null == backgroundColor) {
+            backgroundColor = new StyleableObjectProperty<Color>(DEFAULT_BACKGROUND_COLOR) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.BACKGROUND_COLOR; }
                 @Override public Object getBean() { return MenuItem.this; }
-                @Override public String getName() { return "backgroundFill"; }
+                @Override public String getName() { return "backgroundColor"; }
             };
         }
-        return backgroundFill;
+        return backgroundColor;
     }
 
     public Color getBorderColor() {
@@ -239,67 +237,67 @@ public class MenuItem extends Region {
         return borderColor;
     }
 
-    public Paint getForegroundFill() {
-        return null == foregroundFill ? _foregroundFill : foregroundFill.get();
+    public Color getForegroundColor() {
+        return null == foregroundColor ? _foregroundColor : foregroundColor.get();
     }
-    public void setForegroundFill(final Paint FOREGROUND_FILL) {
-        if (null == foregroundFill) {
-            _foregroundFill = FOREGROUND_FILL;
+    public void setForegroundColor(final Color FOREGROUND_COLOR) {
+        if (null == foregroundColor) {
+            _foregroundColor = FOREGROUND_COLOR;
         } else {
-            foregroundFill.set(FOREGROUND_FILL);
+            foregroundColor.set(FOREGROUND_COLOR);
         }
     }
-    public ObjectProperty<Paint> foregroundFillProperty() {
-        if (null == foregroundFill) {
-            foregroundFill = new StyleableObjectProperty<Paint>(DEFAULT_FOREGROUND_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.FOREGROUND_FILL; }
+    public ObjectProperty<Color> foregroundColorProperty() {
+        if (null == foregroundColor) {
+            foregroundColor = new StyleableObjectProperty<Color>(DEFAULT_FOREGROUND_COLOR) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.FOREGROUND_COLOR; }
                 @Override public Object getBean() { return MenuItem.this; }
-                @Override public String getName() { return "foregroundFill"; }
+                @Override public String getName() { return "foregroundColor"; }
             };
         }
-        return foregroundFill;
+        return foregroundColor;
     }
 
-    public Paint getSelectedBackgroundFill() {
-        return null == selectedBackgroundFill ? _selectedBackgroundFill : selectedBackgroundFill.get();
+    public Color getSelectedBackgroundColor() {
+        return null == selectedBackgroundColor ? _selectedBackgroundColor : selectedBackgroundColor.get();
     }
-    public void setSelectedBackgroundFill(final Paint SELECTED_BACKGROUND_FILL) {
-        if (null == selectedBackgroundFill) {
-            _selectedBackgroundFill = SELECTED_BACKGROUND_FILL;
+    public void setSelectedBackgroundColor(final Color SELECTED_BACKGROUND_COLOR) {
+        if (null == selectedBackgroundColor) {
+            _selectedBackgroundColor = SELECTED_BACKGROUND_COLOR;
         } else {
-            selectedBackgroundFill.set(SELECTED_BACKGROUND_FILL);
+            selectedBackgroundColor.set(SELECTED_BACKGROUND_COLOR);
         }
     }
-    public ObjectProperty<Paint> selectedBackgroundFillProperty() {
-        if (null == selectedBackgroundFill) {
-            selectedBackgroundFill = new StyleableObjectProperty<Paint>(DEFAULT_SELECTED_BACKGROUND_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SELECTED_BACKGROUND_FILL; }
+    public ObjectProperty<Color> selectedBackgroundColorProperty() {
+        if (null == selectedBackgroundColor) {
+            selectedBackgroundColor = new StyleableObjectProperty<Color>(DEFAULT_SELECTED_BACKGROUND_COLOR) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SELECTED_BACKGROUND_COLOR; }
                 @Override public Object getBean() { return MenuItem.this; }
-                @Override public String getName() { return "selectedBackgroundFill"; }
+                @Override public String getName() { return "selectedBackgroundColor"; }
             };
         }
-        return selectedBackgroundFill;
+        return selectedBackgroundColor;
     }
 
-    public Paint getSelectedForegroundFill() {
-        return null == selectedForegroundFill ? _selectedForegroundFill : selectedForegroundFill.get();
+    public Color getSelectedForegroundColor() {
+        return null == selectedForegroundColor ? _selectedForegroundColor : selectedForegroundColor.get();
     }
-    public void setSelectedForegroundFill(final Paint SELECTED_FOREGROUND_FILL) {
-        if (null == selectedForegroundFill) {
-            _selectedForegroundFill = SELECTED_FOREGROUND_FILL;
+    public void setSelectedForegroundColor(final Color SELECTED_FOREGROUND_COLOR) {
+        if (null == selectedForegroundColor) {
+            _selectedForegroundColor = SELECTED_FOREGROUND_COLOR;
         } else {
-            selectedForegroundFill.set(SELECTED_FOREGROUND_FILL);
+            selectedForegroundColor.set(SELECTED_FOREGROUND_COLOR);
         }
     }
-    public ObjectProperty<Paint> selectedForegroundFillProperty() {
-        if (null == selectedForegroundFill) {
-            selectedForegroundFill = new StyleableObjectProperty<Paint>(DEFAULT_SELECTED_FOREGROUND_FILL) {
-                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SELECTED_FOREGROUND_FILL; }
+    public ObjectProperty<Color> selectedForegroundColorProperty() {
+        if (null == selectedForegroundColor) {
+            selectedForegroundColor = new StyleableObjectProperty<Color>(DEFAULT_SELECTED_FOREGROUND_COLOR) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.SELECTED_FOREGROUND_COLOR; }
                 @Override public Object getBean() { return MenuItem.this; }
-                @Override public String getName() { return "selectedForegroundFill"; }
+                @Override public String getName() { return "selectedForegroundColor"; }
             };
         }
-        return selectedForegroundFill;
+        return selectedForegroundColor;
     }
 
     public SymbolType getSymbolType() {
@@ -383,19 +381,19 @@ public class MenuItem extends Region {
 
     // ******************** CSS Meta Data *************************************
     private static class StyleableProperties {
-        private static final CssMetaData<MenuItem, Paint> BACKGROUND_FILL =
-            new CssMetaData<MenuItem, Paint>("-item-background", PaintConverter.getInstance(), DEFAULT_BACKGROUND_FILL) {
+        private static final CssMetaData<MenuItem, Color> BACKGROUND_COLOR =
+            new CssMetaData<MenuItem, Color>("-item-background", ColorConverter.getInstance(), DEFAULT_BACKGROUND_COLOR) {
 
                 @Override public boolean isSettable(MenuItem node) {
-                    return null == node.backgroundFill || !node.backgroundFill.isBound();
+                    return null == node.backgroundColor || !node.backgroundColor.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(MenuItem node) {
-                    return (StyleableProperty) node.backgroundFillProperty();
+                @Override public StyleableProperty<Color> getStyleableProperty(MenuItem node) {
+                    return (StyleableProperty) node.backgroundColorProperty();
                 }
 
-                @Override public Paint getInitialValue(MenuItem node) {
-                    return node.getBackgroundFill();
+                @Override public Color getInitialValue(MenuItem node) {
+                    return node.getBackgroundColor();
                 }
             };
 
@@ -415,51 +413,51 @@ public class MenuItem extends Region {
                 }
             };
 
-        private static final CssMetaData<MenuItem, Paint> FOREGROUND_FILL =
-            new CssMetaData<MenuItem, Paint>("-item-foreground", PaintConverter.getInstance(), DEFAULT_FOREGROUND_FILL) {
+        private static final CssMetaData<MenuItem, Color> FOREGROUND_COLOR =
+            new CssMetaData<MenuItem, Color>("-item-foreground", ColorConverter.getInstance(), DEFAULT_FOREGROUND_COLOR) {
 
                 @Override public boolean isSettable(MenuItem node) {
-                    return null == node.foregroundFill || !node.foregroundFill.isBound();
+                    return null == node.foregroundColor || !node.foregroundColor.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(MenuItem node) {
-                    return (StyleableProperty) node.foregroundFillProperty();
+                @Override public StyleableProperty<Color> getStyleableProperty(MenuItem node) {
+                    return (StyleableProperty) node.foregroundColorProperty();
                 }
 
-                @Override public Paint getInitialValue(MenuItem node) {
-                    return node.getForegroundFill();
+                @Override public Color getInitialValue(MenuItem node) {
+                    return node.getForegroundColor();
                 }
             };
 
-        private static final CssMetaData<MenuItem, Paint> SELECTED_BACKGROUND_FILL =
-            new CssMetaData<MenuItem, Paint>("-item-selected-background", PaintConverter.getInstance(), DEFAULT_SELECTED_BACKGROUND_FILL) {
+        private static final CssMetaData<MenuItem, Color> SELECTED_BACKGROUND_COLOR =
+            new CssMetaData<MenuItem, Color>("-item-selected-background", ColorConverter.getInstance(), DEFAULT_SELECTED_BACKGROUND_COLOR) {
 
                 @Override public boolean isSettable(MenuItem node) {
-                    return null == node.selectedBackgroundFill || !node.selectedBackgroundFill.isBound();
+                    return null == node.selectedBackgroundColor || !node.selectedBackgroundColor.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(MenuItem node) {
-                    return (StyleableProperty) node.selectedBackgroundFillProperty();
+                @Override public StyleableProperty<Color> getStyleableProperty(MenuItem node) {
+                    return (StyleableProperty) node.selectedBackgroundColorProperty();
                 }
 
-                @Override public Paint getInitialValue(MenuItem node) {
-                    return node.getSelectedBackgroundFill();
+                @Override public Color getInitialValue(MenuItem node) {
+                    return node.getSelectedBackgroundColor();
                 }
             };
 
-        private static final CssMetaData<MenuItem, Paint> SELECTED_FOREGROUND_FILL =
-            new CssMetaData<MenuItem, Paint>("-item-selected-foreground", PaintConverter.getInstance(), DEFAULT_SELECTED_FOREGROUND_FILL) {
+        private static final CssMetaData<MenuItem, Color> SELECTED_FOREGROUND_COLOR =
+            new CssMetaData<MenuItem, Color>("-item-selected-foreground", ColorConverter.getInstance(), DEFAULT_SELECTED_FOREGROUND_COLOR) {
 
                 @Override public boolean isSettable(MenuItem node) {
-                    return null == node.selectedForegroundFill || !node.selectedForegroundFill.isBound();
+                    return null == node.selectedForegroundColor || !node.selectedForegroundColor.isBound();
                 }
 
-                @Override public StyleableProperty<Paint> getStyleableProperty(MenuItem node) {
-                    return (StyleableProperty) node.selectedForegroundFillProperty();
+                @Override public StyleableProperty<Color> getStyleableProperty(MenuItem node) {
+                    return (StyleableProperty) node.selectedForegroundColorProperty();
                 }
 
-                @Override public Paint getInitialValue(MenuItem node) {
-                    return node.getSelectedForegroundFill();
+                @Override public Color getInitialValue(MenuItem node) {
+                    return node.getSelectedForegroundColor();
                 }
             };
 
@@ -467,11 +465,11 @@ public class MenuItem extends Region {
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
-                               BACKGROUND_FILL,
+                                      BACKGROUND_COLOR,
                                BORDER_COLOR,
-                               FOREGROUND_FILL,
-                               SELECTED_BACKGROUND_FILL,
-                               SELECTED_FOREGROUND_FILL);
+                                      FOREGROUND_COLOR,
+                                      SELECTED_BACKGROUND_COLOR,
+                                      SELECTED_FOREGROUND_COLOR);
             STYLEABLES = Collections.unmodifiableList(styleables);
         }
     }

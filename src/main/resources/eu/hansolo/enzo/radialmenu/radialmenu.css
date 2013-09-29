@@ -16,21 +16,10 @@
 .radial-menu {
     -button-color            : rgb(170, 40, 0);
     -cross-color             : white;
-    -item-foreground         : white;
+    -item-background         : rgb(41, 41, 40);
     -item-border             : rgb(24, 24, 24);
-    -item-highlight          : linear-gradient(to bottom,
-                                               rgb(71,71,71) 0%,
-                                               rgb(35,35,34) 100%);
-    -item-background         : linear-gradient(to bottom,
-                                               rgb(53,53,52) 0%,
-                                               rgb(30,30,29) 100%);
-
-    -item-selected-highlight : linear-gradient(to bottom,
-                                               rgb(255, 180,101) 0%,
-                                               rgb(235,135,34) 100%);
-    -item-selected-background: linear-gradient(to bottom,
-                                               rgb(253,153,52) 0%,
-                                               rgb(230,130,29) 100%);
+    -item-foreground         : white;
+    -item-selected-background: rgb(253,153,52);
     -item-selected-foreground: white;
 }
 
@@ -62,11 +51,17 @@
 }
 
 .radial-menu .menu-item {
-    -fx-background-color : -item-border, -item-highlight, -item-background;
+    -fx-background-color : -item-border,
+                           linear-gradient(to bottom,
+                                           derive(-item-background, 30%) 0%,
+                                           derive(-item-background, -15%) 100%),
+                           linear-gradient(to bottom,
+                                           derive(-item-background, 10%) 0%,
+                                           derive(-item-background, -10%) 100%);
+
     -fx-background-insets: 0, 2, 3;
     -fx-background-radius: 1024;
 }
 .radial-menu .menu-item:select {;
-    -fx-background-color: -item-border, -item-selected-highlight, -item-selected-background;
-
+    -item-background: -item-selected-background;
 }
