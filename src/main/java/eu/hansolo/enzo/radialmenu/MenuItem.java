@@ -129,11 +129,13 @@ public class MenuItem extends Region {
     }
 
     private void registerListeners() {
-        backgroundColor.addListener(observable -> adjustStyle());
-        borderColor.addListener(observable -> adjustStyle());
-        foregroundColor.addListener(observable -> adjustStyle());
-        selectedBackgroundColor.addListener(observable -> adjustStyle());
-        selectedForegroundColor.addListener(observable -> adjustStyle());
+        // this is only needed as long as the setStyle approach ist used
+        // when using applyStyle this won't be needed any more
+        backgroundColorProperty().addListener(observable -> adjustStyle());
+        borderColorProperty().addListener(observable -> adjustStyle());
+        foregroundColorProperty().addListener(observable -> adjustStyle());
+        selectedBackgroundColorProperty().addListener(observable -> adjustStyle());
+        selectedForegroundColorProperty().addListener(observable -> adjustStyle());
     }
 
 
