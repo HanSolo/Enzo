@@ -118,11 +118,6 @@ public class RadialMenu extends Region {
     private void initMenuItems(final List<MenuItem> ITEMS) {
         Map<Parent, MenuItem> itemMap = new HashMap<>(ITEMS.size());
 
-        final DropShadow SHADOW = new DropShadow();
-        SHADOW.setRadius(0.1590909091 * options.getButtonSize());
-        SHADOW.setColor(Color.rgb(0, 0, 0, 0.6));
-        SHADOW.setBlurType(BlurType.TWO_PASS_BOX);
-
         for (int i = 0 ; i < ITEMS.size() ; i++) {
             MenuItem item = ITEMS.get(i);
             item.setPrefSize(item.getSize() * 0.77778, item.getSize() * 0.77778);
