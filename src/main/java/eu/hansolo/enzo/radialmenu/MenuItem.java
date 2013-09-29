@@ -128,15 +128,7 @@ public class MenuItem extends Region {
         setPickOnBounds(false);
     }
 
-    private void registerListeners() {
-        // this is only needed as long as the setStyle approach ist used
-        // when using applyStyle this won't be needed any more
-        backgroundColorProperty().addListener(observable -> adjustStyle());
-        borderColorProperty().addListener(observable -> adjustStyle());
-        foregroundColorProperty().addListener(observable -> adjustStyle());
-        selectedBackgroundColorProperty().addListener(observable -> adjustStyle());
-        selectedForegroundColorProperty().addListener(observable -> adjustStyle());
-    }
+    private void registerListeners() {}
 
 
     // ******************** Methods *******************************************
@@ -386,15 +378,6 @@ public class MenuItem extends Region {
         };
     }
 
-    private void adjustStyle() {
-        // TODO: replace with applyStyle approach
-        setStyle("-item-background: " + (getBackgroundColor()).toString().replace("0x", "#") + ";" +
-                 "-item-border: " + (getBorderColor().toString().replace("0x", "#") + ";") +
-                 "-item-foreground:" + (getForegroundColor()).toString().replace("0x", "#") + ";" +
-                 "-item-selected-background:" + (getSelectedBackgroundColor()).toString().replace("0x", "#") + ";" +
-                 "-item-selected-foreground:" + (getSelectedForegroundColor()).toString().replace("0x", "#") + ";");
-    }
-
 
     // ******************** CSS Meta Data *************************************
     private static class StyleableProperties {
@@ -482,11 +465,11 @@ public class MenuItem extends Region {
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             Collections.addAll(styleables,
-                                      BACKGROUND_COLOR,
+                               BACKGROUND_COLOR,
                                BORDER_COLOR,
-                                      FOREGROUND_COLOR,
-                                      SELECTED_BACKGROUND_COLOR,
-                                      SELECTED_FOREGROUND_COLOR);
+                               FOREGROUND_COLOR,
+                               SELECTED_BACKGROUND_COLOR,
+                               SELECTED_FOREGROUND_COLOR);
             STYLEABLES = Collections.unmodifiableList(styleables);
         }
     }
