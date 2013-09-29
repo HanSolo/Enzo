@@ -204,8 +204,9 @@ public class MenuItem extends Region {
         } else {
             backgroundColor.set(BACKGROUND_COLOR);
         }
+        setStyle("-item-background: " + (BACKGROUND_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ObjectProperty<Color> backgroundColorProperty() {
+    public ReadOnlyObjectProperty<Color> backgroundColorProperty() {
         if (null == backgroundColor) {
             backgroundColor = new StyleableObjectProperty<Color>(DEFAULT_BACKGROUND_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.BACKGROUND_COLOR; }
@@ -225,8 +226,9 @@ public class MenuItem extends Region {
         } else {
             borderColor.set(BORDER_COLOR);
         }
+        setStyle("-item-border: " + (BORDER_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ObjectProperty<Color> borderColorProperty() {
+    public ReadOnlyObjectProperty<Color> borderColorProperty() {
         if (null == borderColor) {
             borderColor = new StyleableObjectProperty<Color>(DEFAULT_BORDER_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.BORDER_COLOR; }
@@ -246,8 +248,9 @@ public class MenuItem extends Region {
         } else {
             foregroundColor.set(FOREGROUND_COLOR);
         }
+        setStyle("-item-foreground: " + (FOREGROUND_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ObjectProperty<Color> foregroundColorProperty() {
+    public ReadOnlyObjectProperty<Color> foregroundColorProperty() {
         if (null == foregroundColor) {
             foregroundColor = new StyleableObjectProperty<Color>(DEFAULT_FOREGROUND_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.FOREGROUND_COLOR; }
@@ -267,8 +270,9 @@ public class MenuItem extends Region {
         } else {
             selectedBackgroundColor.set(SELECTED_BACKGROUND_COLOR);
         }
+        setStyle("-item-selected-background: " + (SELECTED_BACKGROUND_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ObjectProperty<Color> selectedBackgroundColorProperty() {
+    public ReadOnlyObjectProperty<Color> selectedBackgroundColorProperty() {
         if (null == selectedBackgroundColor) {
             selectedBackgroundColor = new StyleableObjectProperty<Color>(DEFAULT_SELECTED_BACKGROUND_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SELECTED_BACKGROUND_COLOR; }
@@ -288,8 +292,9 @@ public class MenuItem extends Region {
         } else {
             selectedForegroundColor.set(SELECTED_FOREGROUND_COLOR);
         }
+        setStyle("-item-selected-foreground: " + (SELECTED_FOREGROUND_COLOR).toString().replace("0x", "#") + ";");
     }
-    public ObjectProperty<Color> selectedForegroundColorProperty() {
+    public ReadOnlyObjectProperty<Color> selectedForegroundColorProperty() {
         if (null == selectedForegroundColor) {
             selectedForegroundColor = new StyleableObjectProperty<Color>(DEFAULT_SELECTED_FOREGROUND_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SELECTED_FOREGROUND_COLOR; }
