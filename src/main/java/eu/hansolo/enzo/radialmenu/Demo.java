@@ -61,6 +61,7 @@ public class Demo extends Application {
                                                        .build();
         radialMenu.setPrefSize(500, 500);
         radialMenu.setOnItemSelected(selectionEvent -> System.out.println("item " + selectionEvent.item.getTooltip() + " selected"));
+        radialMenu.setOnItemDeselected(selectionEvent -> System.out.println("item " + selectionEvent.item.getTooltip() + " deselected"));
         radialMenu.setOnItemClicked(clickEvent -> System.out.println("item " + clickEvent.item.getTooltip() + " clicked"));
         radialMenu.setOnMenuOpenStarted(menuEvent -> System.out.println("Menu starts to open"));
         radialMenu.setOnMenuOpenFinished(menuEvent -> System.out.println("Menu finished to open"));
@@ -81,7 +82,7 @@ public class Demo extends Application {
         VBox pane = new VBox();
         pane.getChildren().add(radialMenu);
         pane.getChildren().add(buttons);
-        pane.setBackground(new Background(new BackgroundFill(Color.rgb(50, 50, 50), CornerRadii.EMPTY, Insets.EMPTY)));
+        pane.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 
         Scene scene = new Scene(pane);
 

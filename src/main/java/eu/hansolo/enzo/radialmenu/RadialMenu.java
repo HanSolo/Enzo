@@ -31,27 +31,20 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -85,8 +78,7 @@ public class RadialMenu extends Region {
     private Timeline[]                      openTimeLines;
     private Timeline[]                      closeTimeLines;
     private Options                         options;
-    private Group                           button;
-    private Circle                          mainMenuButton;
+    private MenuButton                      mainMenuButton;
     private Group                           cross;
     private boolean                         firstTime;
     private EventHandler<MouseEvent>        mouseHandler;
@@ -106,7 +98,6 @@ public class RadialMenu extends Region {
         positions             = Double.compare(degrees, 360.0) == 0 ? ITEMS.size() : ITEMS.size() - 1;
         openTimeLines         = new Timeline[ITEMS.size()];
         closeTimeLines        = new Timeline[ITEMS.size()];
-        button                = new Group();
         cross                 = new Group();
         firstTime             = true;
         initHandler();
@@ -120,46 +111,8 @@ public class RadialMenu extends Region {
     // ******************** Initialization ************************************
     private void initMainButton() {
         // Define main menu button
-        /*
-        mainMenuButton = new Region();
-        mainMenuButton.getStyleClass().add("main-menu-button");
-         */
-
-        final Point2D CENTER = new Point2D(getPrefWidth() * 0.5, getPrefHeight() * 0.5);
-        mainMenuButton = new Circle(CENTER.getX(), CENTER.getY(), options.getButtonSize() * 0.5);
-        mainMenuButton.setFill(options.getButtonFillColor());
-        if (options.isStrokeVisible()) {
-            mainMenuButton.setStroke(options.getButtonStrokeColor());
-            mainMenuButton.setStrokeWidth(0.0681818182 * options.getButtonSize());
-        } else {
-            mainMenuButton.setStroke(Color.TRANSPARENT);
-            mainMenuButton.setStrokeWidth(0);
-        }
-
-        cross.getChildren().clear();
-        final Line HOR = new Line(CENTER.getX() - (0.1818181818 * options.getButtonSize()), CENTER.getY(), CENTER.getX() + (0.1818181818 * options.getButtonSize()), CENTER.getY());
-        final Line VER = new Line(CENTER.getX(), CENTER.getY() - (0.1818181818 * options.getButtonSize()), CENTER.getX(), CENTER.getY() + (0.1818181818 * options.getButtonSize()));
-        HOR.setStrokeWidth(0.0909090909 * options.getButtonSize());
-        VER.setStrokeWidth(0.0909090909 * options.getButtonSize());
-        HOR.setStroke(Color.WHITE);
-        VER.setStroke(Color.WHITE);
-        cross.getChildren().addAll(HOR, VER);
-        cross.setMouseTransparent(true);
-
-        mainMenuButton.setOnMouseClicked(mouseHandler);
-        mainMenuButton.setOnMousePressed(mouseHandler);
-        mainMenuButton.setOnMouseReleased(mouseHandler);
-        mainMenuButton.setOnMouseEntered(mouseHandler);
-
-        final DropShadow SHADOW = new DropShadow();
-        SHADOW.setRadius(0.1590909091 * options.getButtonSize());
-        SHADOW.setColor(Color.rgb(0, 0, 0, 0.6));
-        SHADOW.setBlurType(BlurType.TWO_PASS_BOX);
-        button.setEffect(options.isSimpleMode() ? null : SHADOW);
-
-        button.setOpacity(options.isButtonVisible() ? options.getButtonAlpha() : 0.0);
-
-        button.getChildren().setAll(mainMenuButton, cross);
+        mainMenuButton = new MenuButton(this);
+        mainMenuButton.setPrefSize(options.getButtonSize(), options.getButtonSize());
     }
 
     private void initMenuItems(final List<MenuItem> ITEMS) {
@@ -172,16 +125,16 @@ public class RadialMenu extends Region {
 
         for (int i = 0 ; i < ITEMS.size() ; i++) {
             MenuItem item = ITEMS.get(i);
+            item.setPrefSize(item.getSize() * 0.77778, item.getSize() * 0.77778);
 
             // Create graphical representation of each menu item
             final StackPane ITEM_CONTAINER = new StackPane();
-
-            ITEM_CONTAINER.getChildren().add(createItemShape(item, SHADOW));
+            ITEM_CONTAINER.getChildren().add(item);
 
             if (SymbolType.NONE == item.getSymbolType() && item.getThumbnailImageName().isEmpty()) {
                 Text text = new Text(item.getText());
                 text.setFont(Font.font("Open Sans", FontWeight.BOLD, item.getSize() * 0.5));
-                text.setFill(item.getForegroundColor());
+                text.setFill(item.getForegroundFill());
                 text.setMouseTransparent(true);
                 ITEM_CONTAINER.getChildren().add(text);
             } else if (!item.getThumbnailImageName().isEmpty()) {
@@ -190,18 +143,17 @@ public class RadialMenu extends Region {
                 } catch (IllegalArgumentException exception) {
                     Text text = new Text(Integer.toString(i));
                     text.setFont(Font.font("Open Sans", FontWeight.BOLD, item.getSize() * 0.5));
-                    text.setFill(item.getForegroundColor());
+                    text.setFill(item.getForegroundFill());
                     text.setMouseTransparent(true);
                     ITEM_CONTAINER.getChildren().add(text);
                 }
             } else {
-                Symbol symbol = new Symbol(item.getSymbolType(), 0.7 * item.getSize(), Color.WHITE);
+                Symbol symbol = new Symbol(item.getSymbolType(), 0.5 * item.getSize(), Color.WHITE);
                 symbol.setMouseTransparent(true);
                 ITEM_CONTAINER.getChildren().add(symbol);
             }
 
             ITEM_CONTAINER.setPickOnBounds(false);
-            ITEM_CONTAINER.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseHandler);
             ITEM_CONTAINER.setOpacity(0.0);
 
             // Add animations for each menu item
@@ -226,45 +178,25 @@ public class RadialMenu extends Region {
 
     private void initGraphics() {
         getChildren().setAll(items.keySet());
-        getChildren().add(button);
+        getChildren().add(mainMenuButton);
     }
 
     private void initHandler() {
         mouseHandler          = mouseEvent -> {
             final Object SOURCE = mouseEvent.getSource();
-            if (MouseEvent.MOUSE_CLICKED == mouseEvent.getEventType()) {
-                if(mouseEvent.getSource().equals(mainMenuButton) && button.getOpacity() > 0) {
-                    if (State.CLOSED == getState()) {
-                        open();
+            if (MouseEvent.MOUSE_PRESSED == mouseEvent.getEventType()) {
+                MenuItem menuItem = items.get(SOURCE);
+                if (menuItem.isSelectable()) {
+                    menuItem.setSelected(!menuItem.isSelected());
+                    if (menuItem.isSelected()) {
+                        fireItemEvent(new ItemEvent(menuItem, this, null, ItemEvent.ITEM_SELECTED));
                     } else {
-                        close();
+                        fireItemEvent(new ItemEvent(menuItem, this, null, ItemEvent.ITEM_DESELECTED));
                     }
-                }
-            } else if (MouseEvent.MOUSE_PRESSED == mouseEvent.getEventType()) {
-                if (SOURCE.equals(mainMenuButton)) {
-
                 } else {
-                    MenuItem item = items.get(SOURCE);
-                    if (item.isSelectable()) {
-                        item.setSelected(!item.isSelected());
-                        select(item);
-                        fireItemEvent(new ItemEvent(item, this, null, ItemEvent.ITEM_SELECTED));
-                    } else {
-                        click(item);
-                        fireItemEvent(new ItemEvent(item, this, null, ItemEvent.ITEM_CLICKED));
-                    }
+                    click(menuItem);
+                    fireItemEvent(new ItemEvent(menuItem, this, null, ItemEvent.ITEM_CLICKED));
                 }
-            } else if (MouseEvent.MOUSE_RELEASED == mouseEvent.getEventType()) {
-                if (mouseEvent.getSource().equals(mainMenuButton)) {
-
-                }
-            } else if (MouseEvent.MOUSE_ENTERED == mouseEvent.getEventType()) {
-                if (mouseEvent.getSource().equals(mainMenuButton)) {
-
-                } else {
-
-                }
-
             }
         };
     }
@@ -272,6 +204,15 @@ public class RadialMenu extends Region {
     private void registerListeners() {
         widthProperty().addListener(observable -> resize());
         heightProperty().addListener(observable -> resize());
+        mainMenuButton.openProperty().addListener(observable -> {
+            if (mainMenuButton.isOpen()) {
+                fireMenuEvent(new RadialMenu.MenuEvent(this, this, MenuEvent.MENU_OPEN_STARTED));
+                open();
+            } else {
+                fireMenuEvent(new RadialMenu.MenuEvent(this, this, MenuEvent.MENU_CLOSE_STARTED));
+                close();
+            }
+        });
     }
 
 
@@ -330,7 +271,12 @@ public class RadialMenu extends Region {
         return tmpList;
     }
 
+    protected Options getOptions() {
+        return options;
+    }
+
     public void open() {
+        if (!mainMenuButton.isOpen()) mainMenuButton.setOpen(true);
         if (!options.isButtonHideOnSelect()) {
             show();
         }
@@ -339,18 +285,11 @@ public class RadialMenu extends Region {
             return;
         }
         setState(State.OPENED);
-        button.setOpacity(1.0);
-        RotateTransition rotate = new RotateTransition();
-        rotate.setNode(cross);
-        rotate.setToAngle(options.isSimpleMode() ? 45 : -135);
-        rotate.setDuration(Duration.millis(200));
-        rotate.setInterpolator(Interpolator.EASE_BOTH);
-        rotate.play();
+        mainMenuButton.setOpacity(1.0);
         openTimeLines[openTimeLines.length - 1].setOnFinished(actionEvent -> fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_OPEN_FINISHED)));
         for (int i = 0 ; i < openTimeLines.length ; i++) {
             openTimeLines[i].play();
         }
-        fireMenuEvent(new MenuEvent(this, null, MenuEvent.MENU_OPEN_STARTED));
     }
     public void close() {
         if (State.CLOSED == getState()) return;
@@ -364,7 +303,7 @@ public class RadialMenu extends Region {
         rotate.play();
         closeTimeLines[closeTimeLines.length - 1].setOnFinished(actionEvent -> {
             FadeTransition buttonFadeOut = new FadeTransition();
-            buttonFadeOut.setNode(button);
+            buttonFadeOut.setNode(mainMenuButton);
             buttonFadeOut.setDuration(Duration.millis(100));
             buttonFadeOut.setToValue(options.getButtonAlpha());
             buttonFadeOut.play();
@@ -380,18 +319,18 @@ public class RadialMenu extends Region {
     }
 
     public void show() {
-        if (options.isButtonHideOnSelect() && button.getOpacity() > 0) {
+        if (options.isButtonHideOnSelect() && mainMenuButton.getOpacity() > 0) {
             return;
         }
 
-        if (options.isButtonHideOnSelect() || button.getOpacity() == 0) {
-            button.setScaleX(1.0);
-            button.setScaleY(1.0);
+        if (options.isButtonHideOnSelect() || mainMenuButton.getOpacity() == 0) {
+            mainMenuButton.setScaleX(1.0);
+            mainMenuButton.setScaleY(1.0);
             cross.setRotate(0);
-            button.setRotate(0);
+            mainMenuButton.setRotate(0);
 
             FadeTransition buttonFadeIn = new FadeTransition();
-            buttonFadeIn.setNode(button);
+            buttonFadeIn.setNode(mainMenuButton);
             buttonFadeIn.setDuration(Duration.millis(200));
             buttonFadeIn.setToValue(options.getButtonAlpha());
             buttonFadeIn.play();
@@ -406,7 +345,8 @@ public class RadialMenu extends Region {
     }
     public void hide() {
         setState(State.CLOSED);
-        button.setOpacity(0.0);
+        mainMenuButton.setOpacity(0.0);
+        mainMenuButton.setOpen(false);
         for (Parent node : items.keySet()) {
             node.setOpacity(0);
         }
@@ -436,13 +376,13 @@ public class RadialMenu extends Region {
 
         // Add rotate and fade transition to main menu button
         if (options.isButtonHideOnSelect()) {
-            RotateTransition rotateMainButton = new RotateTransition(Duration.millis(300), button);
+            RotateTransition rotateMainButton = new RotateTransition(Duration.millis(300), mainMenuButton);
             rotateMainButton.setToAngle(225);
             transitions.add(rotateMainButton);
-            FadeTransition fadeOutMainButton = new FadeTransition(Duration.millis(300), button);
+            FadeTransition fadeOutMainButton = new FadeTransition(Duration.millis(300), mainMenuButton);
             fadeOutMainButton.setToValue(0.0);
             transitions.add(fadeOutMainButton);
-            ScaleTransition shrinkMainButton = new ScaleTransition(Duration.millis(300), button);
+            ScaleTransition shrinkMainButton = new ScaleTransition(Duration.millis(300), mainMenuButton);
             shrinkMainButton.setToX(0.0);
             shrinkMainButton.setToY(0.0);
             transitions.add(shrinkMainButton);
@@ -454,7 +394,7 @@ public class RadialMenu extends Region {
             rotateBackMainButton.setInterpolator(Interpolator.EASE_BOTH);
             transitions.add(rotateBackMainButton);
             FadeTransition mainButtonFadeOut = new FadeTransition();
-            mainButtonFadeOut.setNode(button);
+            mainButtonFadeOut.setNode(mainMenuButton);
             mainButtonFadeOut.setDuration(Duration.millis(100));
             mainButtonFadeOut.setToValue(options.getButtonAlpha());
             transitions.add(mainButtonFadeOut);
@@ -467,43 +407,13 @@ public class RadialMenu extends Region {
 
         // Set menu state back to closed
         setState(State.CLOSED);
-    }
-
-    public void select(final MenuItem SELECTED_ITEM) {
-        for (Parent node : items.keySet()) {
-            if (items.get(node).equals(SELECTED_ITEM)) {
-                for (Node child : node.getChildrenUnmodifiable()) {
-                    if (child instanceof Circle) {
-                        ((Circle) child).setFill(SELECTED_ITEM.isSelected() ? SELECTED_ITEM.getSelectedColor() : SELECTED_ITEM.getFillColor());
-                    }
-                }
-            }
-        }
-    }
-
-    private Circle createItemShape(final MenuItem ITEM, final Effect EFFECT) {
-        Circle circle = new Circle(ITEM.getSize() * 0.5);
-        //Region circle = new Region();
-        //circle.setPrefSize(ITEM.getSize() * 0.5);
-        //circle.getStyleClass().add("item");
-
-        circle.setFill((ITEM.isSelected() && ITEM.isSelectable()) ? ITEM.getSelectedColor() : ITEM.getFillColor());
-        if (options.isStrokeVisible()) {
-            circle.setStroke(ITEM.getStrokeColor());
-            circle.setStrokeWidth(0.09375 * ITEM.getSize());
-            circle.setStrokeType(StrokeType.CENTERED);
-        } else {
-            circle.setStroke(Color.TRANSPARENT);
-            circle.setStrokeWidth(0);
-        }
-        circle.setEffect(options.isSimpleMode() ? null : EFFECT);
-        return circle;
+        mainMenuButton.setOpen(false);
     }
 
     private ImageView createThumbnail(final MenuItem ITEM) {
         ImageView imageItem = new ImageView(new Image(ITEM.getThumbnailImageName()));
-        imageItem.setFitWidth(ITEM.getSize() * 0.7);
-        imageItem.setFitHeight(ITEM.getSize() * 0.7);
+        imageItem.setFitWidth(ITEM.getSize() * 0.5);
+        imageItem.setFitHeight(ITEM.getSize() * 0.5);
         imageItem.setMouseTransparent(true);
 
         return imageItem;
@@ -624,8 +534,7 @@ public class RadialMenu extends Region {
     }
 
     private void resize() {
-        button.setLayoutX((getPrefWidth()) * 0.5);
-        button.setLayoutY((getPrefHeight()) * 0.5);
+        mainMenuButton.relocate((getPrefWidth() - options.getButtonSize()) * 0.5, (getPrefHeight() - options.getButtonSize()) * 0.5);
         for (Parent node : items.keySet()) {
             node.setLayoutX((getPrefWidth() - node.getLayoutBounds().getWidth()) * 0.5);
             node.setLayoutY((getPrefHeight() - node.getLayoutBounds().getHeight()) * 0.5);
@@ -650,16 +559,25 @@ public class RadialMenu extends Region {
         @Override public String getName() { return "onItemSelected";}
     };
 
+    public final ObjectProperty<EventHandler<ItemEvent>> onItemDeselectedProperty() { return onItemDeselected; }
+    public final void setOnItemDeselected(EventHandler<ItemEvent> value) { onItemDeselectedProperty().set(value); }
+    public final EventHandler<ItemEvent> getOnItemDeselected() { return onItemDeselectedProperty().get(); }
+    private ObjectProperty<EventHandler<ItemEvent>> onItemDeselected = new ObjectPropertyBase<EventHandler<ItemEvent>>() {
+        @Override public Object getBean() { return this; }
+        @Override public String getName() { return "onItemDeselected";}
+    };
+
     public void fireItemEvent(final ItemEvent EVENT) {
         fireEvent(EVENT);
 
         final EventType TYPE = EVENT.getEventType();
         final EventHandler<ItemEvent> HANDLER;
-
         if (ItemEvent.ITEM_CLICKED == TYPE) {
             HANDLER = getOnItemClicked();
         } else if (ItemEvent.ITEM_SELECTED == TYPE) {
             HANDLER = getOnItemSelected();
+        } else if (ItemEvent.ITEM_DESELECTED == TYPE) {
+           HANDLER = getOnItemDeselected();
         } else {
             HANDLER = null;
         }
@@ -727,8 +645,9 @@ public class RadialMenu extends Region {
 
     // ******************** Inner classes *************************************
     public static class ItemEvent extends Event {
-        public static final EventType<ItemEvent> ITEM_CLICKED  = new EventType(ANY, "itemClicked");
-        public static final EventType<ItemEvent> ITEM_SELECTED = new EventType(ANY, "itemSelected");
+        public static final EventType<ItemEvent> ITEM_CLICKED    = new EventType(ANY, "itemClicked");
+        public static final EventType<ItemEvent> ITEM_SELECTED   = new EventType(ANY, "itemSelected");
+        public static final EventType<ItemEvent> ITEM_DESELECTED = new EventType(ANY, "itemDeselected");
 
         public MenuItem item;
 

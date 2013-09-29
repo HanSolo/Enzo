@@ -26,6 +26,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.util.Builder;
 
 import java.util.HashMap;
@@ -61,23 +62,28 @@ public class MenuItemBuilder implements Builder<MenuItem> {
         return this;
     }
 
-    public final MenuItemBuilder fillColor(final Color FILL_COLOR) {
-        properties.put("fillColor", new SimpleObjectProperty<>(FILL_COLOR));
+    public final MenuItemBuilder backgroundFill(final Paint BACKGROUND_FILL) {
+        properties.put("backgroundFill", new SimpleObjectProperty<>(BACKGROUND_FILL));
         return this;
     }
 
-    public final MenuItemBuilder strokeColor(final Color STROKE_COLOR) {
-        properties.put("strokeColor", new SimpleObjectProperty<>(STROKE_COLOR));
+    public final MenuItemBuilder borderColor(final Color STROKE_COLOR) {
+        properties.put("borderColor", new SimpleObjectProperty<>(STROKE_COLOR));
         return this;
     }
 
-    public final MenuItemBuilder foregroundColor(final Color FOREGROUND_COLOR) {
-        properties.put("foregroundColor", new SimpleObjectProperty<>(FOREGROUND_COLOR));
+    public final MenuItemBuilder foregroundFill(final Paint FOREGROUND_FILL) {
+        properties.put("foregroundFill", new SimpleObjectProperty<>(FOREGROUND_FILL));
         return this;
     }
 
-    public final MenuItemBuilder selectedColor(final Color SELECTED_COLOR) {
-        properties.put("selectedColor", new SimpleObjectProperty<>(SELECTED_COLOR));
+    public final MenuItemBuilder selectedBackgroundFill(final Paint SELECTED_BACKGROUND_FILL) {
+        properties.put("selectedBackgroundFill", new SimpleObjectProperty<>(SELECTED_BACKGROUND_FILL));
+        return this;
+    }
+
+    public final MenuItemBuilder selectedForegroundFill(final Paint SELECTED_FOREGROUND_FILL) {
+        properties.put("selectedForegroundFill", new SimpleObjectProperty<>(SELECTED_FOREGROUND_FILL));
         return this;
     }
 
@@ -114,14 +120,16 @@ public class MenuItemBuilder implements Builder<MenuItem> {
                 CONTROL.setTooltip(((StringProperty) property).get());
             } else if("size".equals(key)) {
                 CONTROL.setSize(((DoubleProperty) property).get());
-            } else if ("fillColor".equals(key)) {
-                CONTROL.setFillColor(((ObjectProperty<Color>) property).get());
-            } else if ("strokeColor".equals(key)) {
-                CONTROL.setStrokeColor(((ObjectProperty<Color>) property).get());
-            } else if ("foregroundColor".equals(key)) {
-                CONTROL.setForegroundColor(((ObjectProperty<Color>) property).get());
-            } else if ("selectedColor".equals(key)) {
-                CONTROL.setSelectedColor(((ObjectProperty<Color>) property).get());
+            } else if ("backgroundFill".equals(key)) {
+                CONTROL.setBackgroundFill(((ObjectProperty<Paint>) property).get());
+            } else if ("borderColor".equals(key)) {
+                CONTROL.setBorderColor(((ObjectProperty<Color>) property).get());
+            } else if ("foregroundFill".equals(key)) {
+                CONTROL.setForegroundFill(((ObjectProperty<Paint>) property).get());
+            } else if ("selectedBackgroundFill".equals(key)) {
+                CONTROL.setSelectedBackgroundFill(((ObjectProperty<Paint>) property).get());
+            } else if ("selectedForegroundFill".equals(key)) {
+                CONTROL.setSelectedForegroundFill(((ObjectProperty<Paint>) property).get());
             } else if ("symbol".equals(key)) {
                 CONTROL.setSymbolType(((ObjectProperty<SymbolType>) property).get());
             } else if ("thumbnailImageName".equals(key)) {

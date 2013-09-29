@@ -13,28 +13,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 .radial-menu {
-    -item-text      : white;
-    -item-background: rgb(68, 64, 60);
-    -item-border    : white;
+    -button-color            : rgb(170, 40, 0);
+    -cross-color             : white;
+    -item-foreground         : white;
+    -item-border             : rgb(24, 24, 24);
+    -item-highlight          : linear-gradient(to bottom,
+                                               rgb(71,71,71) 0%,
+                                               rgb(35,35,34) 100%);
+    -item-background         : linear-gradient(to bottom,
+                                               rgb(53,53,52) 0%,
+                                               rgb(30,30,29) 100%);
+
+    -item-selected-highlight : linear-gradient(to bottom,
+                                               rgb(255, 180,101) 0%,
+                                               rgb(235,135,34) 100%);
+    -item-selected-background: linear-gradient(to bottom,
+                                               rgb(253,153,52) 0%,
+                                               rgb(230,130,29) 100%);
+    -item-selected-foreground: white;
 }
 
-.radial-menu #main-button {
-    -fx-background-color : white, red;
-    -fx-background-insets: 0, 2;
-    -fx-scale-shape      : true;
-    -fx-shape            : "";
-}
-
-.radial-menu.item {
-    -fx-text-fill        : -item-text;
-    -fx-background-color : -item-border, -item-background;
-    -fx-background-insets: 9%, 0%;
+.radial-menu .menu-button {
+    -button-color        : rgb(170, 40, 0);
+    -cross-color         : white;
+    -fx-background-color : linear-gradient(to bottom,
+                                           rgba(0,0,0,0.2) 0%,
+                                           rgba(255,255,255,0.2) 100%),
+                                           rgba(0, 0, 0, 0.1),
+                                           rgba(0, 0, 0, 0.2),
+                           linear-gradient(to bottom,
+                                           rgb(250,88,31) 0%,
+                                           rgb(202,43,4) 100%),
+                           linear-gradient(to bottom,
+                                           rgb(231,44,0) 0%,
+                                           rgb(190,36,1) 100%);
+    -fx-background-insets: 0, 1, 5, 7, 9;
     -fx-background-radius: 1024;
 }
-.radial-menu.item:selected {
-    -item-text      : white;
-    -item-border    : white;
-    -item-background: orange;
+.radial-menu .menu-button .cross {
+    -fx-background-color: -cross-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 40 28 L 40 40.5 L 27.5 40.5 C 26.1193 40.5 25 41.6193 25 43 L 25 48 C 25 49.3807 26.1193 50.5 27.5 50.5 L 40 50.5 L 40 63 C 40 64.3807 41.1193 65.5 42.5 65.5 L 47.5 65.5 C 48.8807 65.5 50 64.3807 50 63 L 50 50.5 L 62.5 50.5 C 63.8807 50.5 65 49.3807 65 48 L 65 43 C 65 41.6193 63.8807 40.5 62.5 40.5 L 50 40.5 L 50 28 C 50 26.6193 48.8807 25.5 47.5 25.5 L 42.5 25.5 C 41.1193 25.5 40 26.6193 40 28 Z";
+    -fx-effect          : dropshadow(two-pass-box, rgba(0, 0, 0, 0.1), 2, 1, 0, -2);
+}
+.radial-menu .menu-button:open .cross {
+    -fx-effect: null;
+}
+
+.radial-menu .menu-item {
+    -fx-background-color : -item-border, -item-highlight, -item-background;
+    -fx-background-insets: 0, 2, 3;
+    -fx-background-radius: 1024;
+}
+.radial-menu .menu-item:select {;
+    -fx-background-color: -item-border, -item-selected-highlight, -item-selected-background;
+
 }
