@@ -57,6 +57,7 @@ public class DemoSimpleGauge extends Application {
                                             new Section(66.66666, 83.33333, "4"),
                                             new Section(83.33333, 100.0, "5"))
                                         .unit("C")
+                                        .value(20)
                                         .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_RED_6)
                                         .build();
 
