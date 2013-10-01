@@ -56,8 +56,8 @@ public class Demo extends Application {
                                                            MenuItemBuilder.create().symbol(SymbolType.TWITTER).tooltip("Twitter").size(64).build(),
                                                            MenuItemBuilder.create().symbol(SymbolType.TAGS).tooltip("Tags").size(64).build(),
                                                            MenuItemBuilder.create().symbol(SymbolType.CART).tooltip("Shop").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(SymbolType.ALARM).tooltip("Alarm").size(64).build(),
-                                                           MenuItemBuilder.create().symbol(SymbolType.CLOCK).tooltip("Clock").size(64).build())
+                                                           MenuItemBuilder.create().symbol(SymbolType.MULTI_RELAY).tooltip("MultiRelay").size(64).build(),
+                                                           MenuItemBuilder.create().symbol(SymbolType.RELAY).tooltip("Relay").size(64).build())
                                                        .build();
         radialMenu.setPrefSize(500, 500);
         radialMenu.setOnItemSelected(selectionEvent -> System.out.println("item " + selectionEvent.item.getTooltip() + " selected"));

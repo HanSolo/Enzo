@@ -111,6 +111,9 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         sectionsCanvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
         sectionsCtx    = sectionsCanvas.getGraphicsContext2D();
 
+        if (getSkinnable().getValue() < getSkinnable().getMinValue()) getSkinnable().setValue(getSkinnable().getMinValue());
+        if (getSkinnable().getValue() > getSkinnable().getMaxValue()) getSkinnable().setValue(getSkinnable().getMaxValue());
+
         needleRotate = new Rotate(180 - getSkinnable().getStartAngle());
         if (getSkinnable().getMinValue() < 0) {
             needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() - getSkinnable().getMinValue()) * angleStep);
