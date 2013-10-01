@@ -50,11 +50,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -244,7 +240,7 @@ public class RadialMenu extends Region {
         return getItems().get(INDEX);
     }
     public void addItem(final MenuItem ITEM) {
-        List<MenuItem> tmpItems = (List<MenuItem>) items.values();
+        List<MenuItem> tmpItems = new LinkedList<>(items.values());
         tmpItems.add(ITEM);
         initMenuItems(tmpItems);
         initGraphics();
