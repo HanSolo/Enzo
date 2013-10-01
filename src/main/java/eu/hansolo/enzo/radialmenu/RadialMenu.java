@@ -91,9 +91,6 @@ public class RadialMenu extends Region {
         getStyleClass().addAll("radial-menu");
         state                 = new SimpleObjectProperty<>(this, "state", State.CLOSED);
         degrees               = Math.max(Math.min(360, options.getDegrees()), 0);
-        positions             = Double.compare(degrees, 360.0) == 0 ? ITEMS.size() : ITEMS.size() - 1;
-        openTimeLines         = new Timeline[ITEMS.size()];
-        closeTimeLines        = new Timeline[ITEMS.size()];
         cross                 = new Group();
         firstTime             = true;
         initHandler();
@@ -113,6 +110,9 @@ public class RadialMenu extends Region {
 
     private void initMenuItems(final List<MenuItem> ITEMS) {
         Map<Parent, MenuItem> itemMap = new HashMap<>(ITEMS.size());
+        positions      = Double.compare(degrees, 360.0) == 0 ? ITEMS.size() : ITEMS.size() - 1;
+        openTimeLines  = new Timeline[ITEMS.size()];
+        closeTimeLines = new Timeline[ITEMS.size()];
 
         for (int i = 0 ; i < ITEMS.size() ; i++) {
             MenuItem item = ITEMS.get(i);
