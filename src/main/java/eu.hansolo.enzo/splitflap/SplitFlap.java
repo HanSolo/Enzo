@@ -38,57 +38,58 @@ public class SplitFlap extends Control {
     public static final String[] TIME_0_TO_9  = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
     public static final String[] NUMERIC      = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
     public static final String[] ALPHANUMERIC = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-                                                 "A", "B", "C", "D", "E", "F", "G", "H", "I", "I", "K",
-                                                 "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-                                                 "W", "X", "Y", "Z"};
-    public static final String[]   ALPHA      = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "I",
-                                                 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
-                                                 "V", "W", "X", "Y", "Z"};
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "I", "K",
+        "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+        "W", "X", "Y", "Z"};
+    public static final String[] ALPHA        = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "I",
+        "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+        "V", "W", "X", "Y", "Z"};
     public static final String[] EXTENDED     = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-                                                 "A", "B", "C", "D", "E", "F", "G", "H", "I", "I", "K",
-                                                 "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-                                                 "W", "X", "Y", "Z", "-", "/", ":", ",", ".", ";", "@",
-                                                 "#", "+", "?", "!", "%", "$", "=", "<", ">"};
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "I", "K",
+        "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+        "W", "X", "Y", "Z", "-", "/", ":", ",", "", ";", "@",
+        "#", "+", "?", "!", "%", "$", "=", "<", ">"};
 
-    private final FlipEvent              FLIP_FORWARD = new FlipEvent(this, null, FlipEvent.FLIP_FORWARD);
-    private final FlipEvent              FIP_BACKWARD = new FlipEvent(this, null, FlipEvent.FLIP_BACKWARD);
-    private boolean                      keepAspect;
-    private double                       _flipTime    = 500;
-    private DoubleProperty               flipTime;
-    private boolean                      _wordMode    = false;
-    private BooleanProperty              wordMode;
-    private boolean                      _withFixture = true;
-    private BooleanProperty              withFixture;
-    private boolean                      _darkFixture = false;
-    private BooleanProperty              darkFixture;
-    private boolean                      _squareFlaps = false;
-    private BooleanProperty              squareFlaps;
-    private Color                        _flapColor   = Color.rgb(59, 58, 53);
-    private ObjectProperty<Color>        flapColor;
-    private Color                        _textColor   = Color.WHITE;
-    private ObjectProperty<Color>        textColor;
-    private String                       _text        = "";
-    private StringProperty               text;
-    private ArrayList<String>            selectedSet;
-    private String[]                     selection;
-    private int                          currentSelectionIndex;
-    private int                          nextSelectionIndex;
-    private int                          previousSelectionIndex;
+    private final FlipEvent FLIP_FORWARD = new FlipEvent(this, null, FlipEvent.FLIP_FORWARD);
+    private final FlipEvent FIP_BACKWARD = new FlipEvent(this, null, FlipEvent.FLIP_BACKWARD);
+    private boolean keepAspect;
+    private double _flipTime = 500;
+    private DoubleProperty flipTime;
+    private boolean _wordMode = false;
+    private BooleanProperty wordMode;
+    private boolean _withFixture = true;
+    private BooleanProperty withFixture;
+    private boolean _darkFixture = false;
+    private BooleanProperty darkFixture;
+    private boolean _squareFlaps = false;
+    private BooleanProperty squareFlaps;
+    private Color _flapColor = Color.rgb(59, 58, 53);
+    private ObjectProperty<Color> flapColor;
+    private Color _textColor = Color.WHITE;
+    private ObjectProperty<Color> textColor;
+    private String _text = "";
+    private StringProperty    text;
+    private ArrayList<String> selectedSet;
+    private String[]          selection;
+    private int               currentSelectionIndex;
+    private int               nextSelectionIndex;
+    private int               previousSelectionIndex;
 
 
     // ******************** Constructors **************************************
     public SplitFlap() {
         this(EXTENDED, " ");
     }
+
     public SplitFlap(final String[] SELECTION, final String TEXT) {
         getStyleClass().add("split-flap");
-        keepAspect             = true;
-        selectedSet            = new ArrayList<>(64);
-        selection              = SELECTION;
-        currentSelectionIndex  = 0;
-        nextSelectionIndex     = 1;
+        keepAspect = true;
+        selectedSet = new ArrayList<>(64);
+        selection = SELECTION;
+        currentSelectionIndex = 0;
+        nextSelectionIndex = 1;
         previousSelectionIndex = selection.length - 1;
-        _text                  = TEXT;
+        _text = TEXT;
         selectedSet.addAll(Arrays.asList(selection));
     }
 
@@ -97,6 +98,7 @@ public class SplitFlap extends Control {
     public final boolean isKeepAspect() {
         return keepAspect;
     }
+
     public final void setKeepAspect(final boolean KEEP_ASPECT) {
         keepAspect = KEEP_ASPECT;
     }
@@ -104,6 +106,7 @@ public class SplitFlap extends Control {
     public final double getFlipTime() {
         return null == flipTime ? _flipTime : flipTime.get();
     }
+
     public final void setFlipTime(final double FLIP_TIME) {
         if (null == flipTime) {
             _flipTime = FLIP_TIME;
@@ -111,6 +114,7 @@ public class SplitFlap extends Control {
             flipTime.set(FLIP_TIME);
         }
     }
+
     public final DoubleProperty flipTimeProperty() {
         if (null == flipTime) {
             flipTime = new SimpleDoubleProperty(this, "flipTime", _flipTime);

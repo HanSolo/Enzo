@@ -26,7 +26,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.util.Builder;
 
 import java.util.HashMap;

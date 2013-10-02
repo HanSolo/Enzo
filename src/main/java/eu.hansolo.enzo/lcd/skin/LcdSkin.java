@@ -434,7 +434,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         decBuffer.append("0");
 
         if (DECIMALS > 0) {
-            decBuffer.append(".");
+            decBuffer.append("");
         }
 
         for (int i = 0; i < DECIMALS; i++) {
@@ -587,7 +587,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             backgroundTextBuilder.append(oneSegment.getText());
         }
         if (getSkinnable().getDecimals() != 0) {
-            backgroundTextBuilder.insert(0, ".");
+            backgroundTextBuilder.insert(0, "");
         }
 
         for (int i = 0 ; i < noOfSegments ; i++) {

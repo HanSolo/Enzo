@@ -46,83 +46,85 @@ import java.util.Arrays;
  * Time: 07:46
  */
 public class SplitFlap extends Region {
-    public static final String[]   TIME_0_TO_5  = {"1", "2", "3", "4", "5", "0"};
-    public static final String[]   TIME_0_TO_9  = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
-    public static final String[]   NUMERIC      = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
-    public static final String[]   ALPHANUMERIC = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-                                                   "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
-                                                   "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-                                                   "W", "X", "Y", "Z"};
-    public static final String[]   ALPHA        = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-                                                   "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
-                                                   "V", "W", "X", "Y", "Z"};
-    public static final String[]   EXTENDED     = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-                                                   "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
-                                                   "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-                                                   "W", "X", "Y", "Z", "-", "/", ":", ",", ".", ";", "@",
-                                                   "#", "+", "?", "!", "%", "$", "=", "<", ">"};
-    private static final Image     BACKGROUND     = new Image(SplitFlap.class.getResource("background.png").toExternalForm());
-    private static final Image     FLAP           = new Image(SplitFlap.class.getResource("flap.png").toExternalForm());
-    private static final double    DEFAULT_WIDTH  = 234;
-    private static final double    DEFAULT_HEIGHT = 402;
-    private static final double    MINIMUM_WIDTH  = 5;
-    private static final double    MINIMUM_HEIGHT = 5;
-    private static final double    MAXIMUM_WIDTH  = 1024;
-    private static final double    MAXIMUM_HEIGHT = 1024;
-    private static final double    MIN_FLIP_TIME  = 16_666_666.6666667; // 60 fps
-    private String[]               selection;
-    private ArrayList<String>      selectedSet;
-    private int                    currentSelectionIndex;
-    private int                    nextSelectionIndex;
-    private int                    previousSelectionIndex;
-    private String                 _text;
-    private StringProperty         text;
-    private Color                  _textColor;
-    private ObjectProperty<Color>  textColor;
-    private double                 width;
-    private double                 height;
-    private Pane                   pane;
-    private ImageView              background;
-    private ImageView              flap;
-    private Font                   font;
-    private Canvas                 upperBackgroundText;
-    private GraphicsContext        ctxUpperBackgroundText;
-    private Canvas                 lowerBackgroundText;
-    private GraphicsContext        ctxLowerBackgroundText;
-    private Canvas                 flapTextFront;
-    private GraphicsContext        ctxTextFront;
-    private Canvas                 flapTextBack;
-    private GraphicsContext        ctxTextBack;
-    private Rotate                 rotateFlap;
-    private Duration               flipTime;
-    private boolean                flipping;
-    private double                 angleStep;
-    private double                 currentAngle;
-    private AnimationTimer         timer;
+    public static final  String[] TIME_0_TO_5    = {"1", "2", "3", "4", "5", "0"};
+    public static final  String[] TIME_0_TO_9    = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+    public static final  String[] NUMERIC        = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+    public static final  String[] ALPHANUMERIC   = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+        "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+        "W", "X", "Y", "Z"};
+    public static final  String[] ALPHA          = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+        "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+        "V", "W", "X", "Y", "Z"};
+    public static final  String[] EXTENDED       = {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+        "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+        "W", "X", "Y", "Z", "-", "/", ":", ",", "", ";", "@",
+        "#", "+", "?", "!", "%", "$", "=", "<", ">"};
+    private static final Image    BACKGROUND     = new Image(SplitFlap.class.getResource("background.png").toExternalForm());
+    private static final Image    FLAP           = new Image(SplitFlap.class.getResource("flap.png").toExternalForm());
+    private static final double   DEFAULT_WIDTH  = 234;
+    private static final double   DEFAULT_HEIGHT = 402;
+    private static final double   MINIMUM_WIDTH  = 5;
+    private static final double   MINIMUM_HEIGHT = 5;
+    private static final double   MAXIMUM_WIDTH  = 1024;
+    private static final double   MAXIMUM_HEIGHT = 1024;
+    private static final double   MIN_FLIP_TIME  = 16_666_666.6666667; // 60 fps
+    private String[]              selection;
+    private ArrayList<String>     selectedSet;
+    private int                   currentSelectionIndex;
+    private int                   nextSelectionIndex;
+    private int                   previousSelectionIndex;
+    private String                _text;
+    private StringProperty        text;
+    private Color                 _textColor;
+    private ObjectProperty<Color> textColor;
+    private double                width;
+    private double                height;
+    private Pane                  pane;
+    private ImageView             background;
+    private ImageView             flap;
+    private Font                  font;
+    private Canvas                upperBackgroundText;
+    private GraphicsContext       ctxUpperBackgroundText;
+    private Canvas                lowerBackgroundText;
+    private GraphicsContext       ctxLowerBackgroundText;
+    private Canvas                flapTextFront;
+    private GraphicsContext       ctxTextFront;
+    private Canvas                flapTextBack;
+    private GraphicsContext       ctxTextBack;
+    private Rotate                rotateFlap;
+    private Duration              flipTime;
+    private boolean               flipping;
+    private double                angleStep;
+    private double                currentAngle;
+    private AnimationTimer        timer;
 
 
     // ******************** Constructors **************************************
     public SplitFlap() {
         this(EXTENDED, " ");
     }
-    public SplitFlap(final String[] SELECTION, final String TEXT) {        
-        selection              = SELECTION;
-        selectedSet            = new ArrayList<>(64);
+
+    public SplitFlap(final String[] SELECTION, final String TEXT) {
+        selection = SELECTION;
+        selectedSet = new ArrayList<>(64);
         selectedSet.addAll(Arrays.asList(selection));
-        _text                  = TEXT;
-        _textColor             = Color.WHITE;
-        currentSelectionIndex  = 0;
-        nextSelectionIndex     = 1;
+        _text = TEXT;
+        _textColor = Color.WHITE;
+        currentSelectionIndex = 0;
+        nextSelectionIndex = 1;
         previousSelectionIndex = selectedSet.size() - 1;
-        pane                   = new Pane();
-        rotateFlap             = new Rotate();
+        pane = new Pane();
+        rotateFlap = new Rotate();
         rotateFlap.setAxis(Rotate.X_AXIS);
         rotateFlap.setAngle(0);
-        flipTime               = Duration.millis(100);
-        flipping               = false;
-        angleStep              = 180.0 / ((flipTime.toMillis() * 1_000_000) / (MIN_FLIP_TIME));
-        timer                  = new AnimationTimer() {
-            @Override public void handle(long now) {
+        flipTime = Duration.millis(100);
+        flipping = false;
+        angleStep = 180.0 / ((flipTime.toMillis() * 1_000_000) / (MIN_FLIP_TIME));
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
                 flip(angleStep);
             }
         };
