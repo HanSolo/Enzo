@@ -1,0 +1,46 @@
+/*
+ * Copyright (c) 2013 by Gerrit Grunwald
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/************************************************************
+* ON-OFF-SWITCH class                                       *
+************************************************************/
+.on-off-switch {
+    -switch-color  : white;
+    -thumb-color   : white;
+    -text-color-on : white;
+    -text-color-off: white;
+}
+.on-off-switch > .background {
+    -fx-background-color: -switch-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 2 5 C 2 3.3431 3.3431 2 5 2 L 59 2 C 60.6569 2 62 3.3431 62 5 L 62 27 C 62 28.6569 60.6569 30 59 30 L 5 30 C 3.3431 30 2 28.6569 2 27 L 2 5 ZM 0 4 L 0 28 C 0 30.2092 1.7908 32 4 32 L 60 32 C 62.2092 32 64 30.2092 64 28 L 64 4 C 64 1.7908 62.2092 0 60 0 L 4 0 C 1.7908 0 0 1.7908 0 4 Z";
+}
+.on-off-switch > .on {
+    -fx-fill: -text-color-on;
+}
+.on-off-switch > .off {
+    -fx-fill: -text-color-off;
+}
+.on-off-switch > .thumb {
+    -fx-background-color: -thumb-color;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 34 6.7692 C 34 5.2398 35.2472 4 36.7857 4 L 57.2143 4 C 58.7528 4 60 5.2398 60 6.7692 L 60 25.2308 C 60 26.7602 58.7528 28 57.2143 28 L 36.7857 28 C 35.2472 28 34 26.7602 34 25.2308 L 34 6.7692 Z";
+}
+.on-off-switch:disabled {
+    -fx-opacity: 0.4;
+}
+
+
