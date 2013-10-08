@@ -76,6 +76,15 @@ sourceSets {
             srcDir 'src/main/resources/eu/hansolo/enzo/notification'
         }
     }
+    onoffswitch {
+        java {
+            srcDir 'src/main/java/eu/hansolo/enzo/onoffswitch'
+            srcDir 'src/main/java/eu/hansolo/enzo/common'
+        }
+        resources {
+            srcDir 'src/main/resources/eu/hansolo/enzo/onoffswitch'
+        }
+    }
     segments {
         java {
             srcDir 'src/main/java/eu/hansolo/enzo/matrixsegment'
