@@ -191,8 +191,9 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
 
             background.setPrefSize(width, height);
 
-            symbol.setPrefSize(height * 0.59375, height * 0.59375);
-            symbol.relocate(height * 0.125, height * 0.1875);
+            symbol.setPrefSize(height * 0.59375 * getSkinnable().getSymbolType().WIDTH_FACTOR, height * 0.59375 * getSkinnable().getSymbolType().HEIGHT_FACTOR);
+            symbol.relocate(height * 0.15 + (height * 0.59375 - height * 0.59375 * getSkinnable().getSymbolType().WIDTH_FACTOR) * 0.5,
+                            height * 0.18 + (height * 0.59375 - height * 0.59375 * getSkinnable().getSymbolType().HEIGHT_FACTOR) * 0.5);
 
             text.setFont(font);
             text.setVisible(!getSkinnable().getText().isEmpty() && SymbolType.NONE == getSkinnable().getSymbolType());
