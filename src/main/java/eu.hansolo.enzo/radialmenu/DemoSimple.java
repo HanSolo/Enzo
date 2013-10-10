@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.radialmenu;
 
+import eu.hansolo.enzo.common.SymbolType;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;

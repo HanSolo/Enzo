@@ -27,9 +27,7 @@ import javafx.css.PseudoClass;
 import javafx.css.Styleable;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
@@ -299,18 +297,5 @@ public class OnOffSwitch extends Control {
         }
         if (null == HANDLER) return;
         HANDLER.handle(EVENT);
-    }
-
-
-    // ******************** Inner classes *************************************
-    public static class SwitchEvent extends Event {
-        public static final EventType<SwitchEvent> ON  = new EventType(ANY, "on");
-        public static final EventType<SwitchEvent> OFF = new EventType(ANY, "off");
-
-
-        // ******************** Constructors **********************************
-        public SwitchEvent(final Object SOURCE, final EventTarget TARGET, final EventType<SwitchEvent> EVENT_TYPE) {
-            super(SOURCE, TARGET, EVENT_TYPE);
-        }
     }
 }

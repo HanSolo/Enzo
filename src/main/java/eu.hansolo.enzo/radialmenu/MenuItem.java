@@ -17,6 +17,7 @@
 package eu.hansolo.enzo.radialmenu;
 
 import com.sun.javafx.css.converters.ColorConverter;
+import eu.hansolo.enzo.common.SymbolType;
 import javafx.beans.property.*;
 import javafx.css.*;
 import javafx.scene.control.Control;
@@ -36,17 +37,17 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class MenuItem extends Region {
-    private static final double        PREFERRED_SIZE                    = 35;
-    private static final double        MINIMUM_SIZE                      = 15;
-    private static final double        MAXIMUM_SIZE                      = 1024;
+    private static final double PREFERRED_SIZE = 35;
+    private static final double MINIMUM_SIZE   = 15;
+    private static final double MAXIMUM_SIZE   = 1024;
 
-    public static final Color          DEFAULT_BACKGROUND_COLOR          = Color.rgb(41, 41, 40);
-    public static final Color          DEFAULT_BORDER_COLOR              = Color.rgb(24, 24, 24);
-    public static final Color          DEFAULT_FOREGROUND_COLOR          = Color.WHITE;
-    public static final Color          DEFAULT_SELECTED_BACKGROUND_COLOR = Color.rgb(253,153,52);
-    public static final Color          DEFAULT_SELECTED_FOREGROUND_COLOR = Color.WHITE;
+    public static final Color DEFAULT_BACKGROUND_COLOR          = Color.rgb(41, 41, 40);
+    public static final Color DEFAULT_BORDER_COLOR              = Color.rgb(24, 24, 24);
+    public static final Color DEFAULT_FOREGROUND_COLOR          = Color.WHITE;
+    public static final Color DEFAULT_SELECTED_BACKGROUND_COLOR = Color.rgb(253, 153, 52);
+    public static final Color DEFAULT_SELECTED_FOREGROUND_COLOR = Color.WHITE;
 
-    private static final PseudoClass   SELECT_PSEUDO_CLASS               = PseudoClass.getPseudoClass("select");
+    private static final PseudoClass SELECT_PSEUDO_CLASS = PseudoClass.getPseudoClass("select");
     private BooleanProperty            selected;
     private boolean                    _selectable;
     private BooleanProperty            selectable;
@@ -74,15 +75,19 @@ public class MenuItem extends Region {
     public MenuItem() {
         this("", 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_SELECTED_FOREGROUND_COLOR, SymbolType.NONE, "");
     }
+
     public MenuItem(final SymbolType SYMBOL_TYPE) {
         this("", 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_FOREGROUND_COLOR, SYMBOL_TYPE, "");
     }
+
     public MenuItem(final String THUMBNAIL_IMAGE_NAME) {
         this("", 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_FOREGROUND_COLOR, SymbolType.NONE, THUMBNAIL_IMAGE_NAME);
     }
+
     public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP) {
         this(TOOLTIP, 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_FOREGROUND_COLOR, SYMBOL_TYPE, "");
     }
+
     public MenuItem(final SymbolType SYMBOL_TYPE, final String TOOLTIP, final Color INNER_COLOR, final Color SELECTED_COLOR) {
         this(TOOLTIP, 35, DEFAULT_BACKGROUND_COLOR, DEFAULT_BORDER_COLOR, DEFAULT_FOREGROUND_COLOR, DEFAULT_SELECTED_BACKGROUND_COLOR, DEFAULT_FOREGROUND_COLOR, SYMBOL_TYPE, "");
     }

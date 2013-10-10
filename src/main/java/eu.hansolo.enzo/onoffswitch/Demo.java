@@ -20,25 +20,38 @@ package eu.hansolo.enzo.onoffswitch;/**
  * Time: 08:47
  */
 
+import eu.hansolo.enzo.common.SymbolType;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
 public class Demo extends Application {
     private OnOffSwitch onOffSwitch;
+    private IconSwitch  iconSwitchSymbol;
+    private IconSwitch  iconSwitchText;
 
     @Override public void init() {
         onOffSwitch = new OnOffSwitch();
+        iconSwitchSymbol = new IconSwitch();
+        iconSwitchSymbol.setSymbolType(SymbolType.BULB_ON);
 
-        onOffSwitch.setOnSwitchedOn(switchEvent -> System.out.println("switched on"));
+        iconSwitchText = new IconSwitch();
+        iconSwitchText.setText("A");
+
+        onOffSwitch.setOnSwitchedOn(switchEvent -> System.out.println("OnOff Switch switched on"));
+        iconSwitchSymbol.setOnSwitchedOn(switchEvent -> System.out.println("Icon Switch Symbol switched on"));
+        iconSwitchText.setOnSwitchedOn(switchEvent -> System.out.println("Icon Switch Text switched on"));
     }
 
     @Override public void start(Stage stage) {
-        StackPane pane = new StackPane();
-        pane.getChildren().add(onOffSwitch);
+        VBox pane = new VBox();
+        pane.setSpacing(20);
+        pane.setAlignment(Pos.CENTER);
+        pane.getChildren().addAll(onOffSwitch, iconSwitchSymbol, iconSwitchText);
 
         Scene scene = new Scene(pane, 200, 100, Color.BLACK);
 

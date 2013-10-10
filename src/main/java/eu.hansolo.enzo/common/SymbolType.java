@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.radialmenu;
+package eu.hansolo.enzo.common;
 
 /**
  * Created by

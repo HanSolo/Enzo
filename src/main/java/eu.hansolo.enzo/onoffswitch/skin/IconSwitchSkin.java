@@ -1,25 +1,12 @@
-/*
- * Copyright (c) 2013 by Gerrit Grunwald
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package eu.hansolo.enzo.onoffswitch.skin;
 
+import eu.hansolo.enzo.common.Symbol;
+import eu.hansolo.enzo.common.SymbolType;
 import eu.hansolo.enzo.common.Util;
-import eu.hansolo.enzo.onoffswitch.OnOffSwitch;
+import eu.hansolo.enzo.onoffswitch.IconSwitch;
 import javafx.animation.TranslateTransition;
-import javafx.geometry.VPos;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.Pane;
@@ -28,37 +15,39 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+
 
 
 /**
  * User: hansolo
- * Date: 08.10.13
- * Time: 07:50
+ * Date: 10.10.13
+ * Time: 08:46
  */
-public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOffSwitch> {
-    private static final double PREFERRED_WIDTH  = 64;
+public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwitch> {
+    private static final double PREFERRED_WIDTH  = 80;
     private static final double PREFERRED_HEIGHT = 32;
-    private static final double MINIMUM_WIDTH    = 16;
+    private static final double MINIMUM_WIDTH    = 20;
     private static final double MINIMUM_HEIGHT   = 8;
     private static final double MAXIMUM_WIDTH    = 1024;
     private static final double MAXIMUM_HEIGHT   = 1024;
+    private double              size;
     private double              width;
     private double              height;
     private Pane                pane;
     private double              aspectRatio;
     private Region              background;
     private Region              thumb;
-    private Text                on;
-    private Text                off;
+    private Symbol              symbol;
     private Font                font;
+    private Label               text;
     private TranslateTransition moveToSwitchedOff;
     private TranslateTransition moveToSwitchedOn;
 
 
     // ******************** Constructors **************************************
-    public OnOffSwitchSkin(final OnOffSwitch CONTROL) {
+    public IconSwitchSkin(final IconSwitch CONTROL) {
         super(CONTROL);
         aspectRatio = PREFERRED_HEIGHT / PREFERRED_WIDTH;
         init();
@@ -98,23 +87,24 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
         background = new Region();
         background.getStyleClass().setAll("background");
 
-        on  = new Text("1");
-        on.setFont(font);
-        on.getStyleClass().setAll("on");
+        symbol = getSkinnable().getSymbol();
+        symbol.setMouseTransparent(true);
 
-        off = new Text("0");
-        off.setFont(font);
-        off.getStyleClass().setAll("off");
+        text = new Label(getSkinnable().getText());
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setAlignment(Pos.CENTER);
+        text.setTextFill(getSkinnable().getSymbolColor());
+        text.setFont(font);
 
         thumb = new Region();
         thumb.getStyleClass().setAll("thumb");
         thumb.setMouseTransparent(true);
 
-        pane = new Pane(background, on, off, thumb);
-        pane.getStyleClass().setAll("on-off-switch");
+        pane = new Pane(background, symbol, text, thumb);
+        pane.getStyleClass().setAll("icon-switch");
 
         moveToSwitchedOff = new TranslateTransition(Duration.millis(180), thumb);
-        moveToSwitchedOn = new TranslateTransition(Duration.millis(180), thumb);
+        moveToSwitchedOn  = new TranslateTransition(Duration.millis(180), thumb);
 
         // Add all nodes
         getChildren().setAll(pane);
@@ -124,9 +114,9 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
         getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
         getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE") );
         getSkinnable().switchColorProperty().addListener(observable -> handleControlPropertyChanged("SWITCH_COLOR") );
-        getSkinnable().textColorOnProperty().addListener(observable -> handleControlPropertyChanged("TEXT_ON_COLOR"));
-        getSkinnable().textColorOffProperty().addListener(observable -> handleControlPropertyChanged("TEXT_OFF_COLOR"));
         getSkinnable().thumbColorProperty().addListener(observable -> handleControlPropertyChanged("THUMB_COLOR"));
+        getSkinnable().symbolColorProperty().addListener(observable -> handleControlPropertyChanged("SYMBOL_COLOR"));
+        getSkinnable().textProperty().addListener(observable -> handleControlPropertyChanged("TEXT"));
         getSkinnable().onProperty().addListener(observable -> handleControlPropertyChanged("ON"));
         pane.setOnMouseClicked(mouseEvent -> getSkinnable().setOn(!getSkinnable().isOn()));
     }
@@ -138,12 +128,13 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
             resize();
         } else if ("SWITCH_COLOR".equals(PROPERTY)) {
             background.setStyle("-switch-color: " + Util.colorToCss((Color) getSkinnable().getSwitchColor()) + ";");
-        } else if ("TEXT_ON_COLOR".equals(PROPERTY)) {
-            on.setStyle("-text-color-on: " + Util.colorToCss((Color) getSkinnable().getTextColorOn()) + ";");
-        } else if ("TEXT_OFF_COLOR".equals(PROPERTY)) {
-            off.setStyle("-text-color-off: " + Util.colorToCss((Color) getSkinnable().getTextColorOff()) + ";");
         } else if ("THUMB_COLOR".equals(PROPERTY)) {
             thumb.setStyle("-thumb-color: " + Util.colorToCss((Color) getSkinnable().getThumbColor()) + ";");
+        } else if ("SYMBOL_COLOR".equals(PROPERTY)) {
+            text.setTextFill(getSkinnable().getSymbolColor());
+        } else if ("TEXT".equals(PROPERTY)) {
+            text.setText(getSkinnable().getText());
+            resize();
         } else if ("ON".equals(PROPERTY)) {
             if (getSkinnable().isOn()) {
                 moveToSwitchedOn.play();
@@ -187,6 +178,7 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
     private void resize() {
         width  = getSkinnable().getWidth();
         height = getSkinnable().getHeight();
+        size   = width < height ? width : height;
 
         if (width > 0 && height > 0) {
             if (aspectRatio * width > height) {
@@ -195,27 +187,27 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
                 height = aspectRatio * width;
             }
 
-            font = Font.font("Open Sans", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 0.5 * height);
+            font = Font.font("Open Sans", FontWeight.BOLD, FontPosture.REGULAR, height * 0.5);
 
             background.setPrefSize(width, height);
 
-            on.setFont(font);
-            on.setTextOrigin(VPos.CENTER);
-            on.relocate(height * 0.3125, (height - on.getLayoutBounds().getHeight()) * 0.5);
+            symbol.setPrefSize(height * 0.59375, height * 0.59375);
+            symbol.relocate(height * 0.125, height * 0.1875);
 
-            off.setFont(font);
-            off.setTextOrigin(VPos.CENTER);
-            off.relocate(width - height * 0.3125 - off.getLayoutBounds().getWidth(), (height - off.getLayoutBounds().getHeight()) * 0.5);
+            text.setFont(font);
+            text.setVisible(!getSkinnable().getText().isEmpty() && SymbolType.NONE == getSkinnable().getSymbolType());
+            text.setPrefSize(height * 0.59375, height * 0.59375);
+            text.relocate(height * 0.125, height * 0.15);
 
             thumb.setPrefSize((height * 0.75), (height * 0.75));
-            thumb.setTranslateX(getSkinnable().isOn() ? height * 1.125 : height * 0.125);
+            thumb.setTranslateX(getSkinnable().isOn() ? height * 1.625 : height * 0.875);
             thumb.setTranslateY(height * 0.125);
 
-            moveToSwitchedOff.setFromX(height * 1.125);
-            moveToSwitchedOff.setToX(height * 0.125);
+            moveToSwitchedOff.setFromX(height * 1.625);
+            moveToSwitchedOff.setToX(height * 0.875);
 
-            moveToSwitchedOn.setFromX(height * 0.125);
-            moveToSwitchedOn.setToX(height * 1.125);
+            moveToSwitchedOn.setFromX(height * 0.875);
+            moveToSwitchedOn.setToX(height * 1.625);
         }
     }
 }

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.enzo.radialmenu;
+package eu.hansolo.enzo.common;
 
-import eu.hansolo.enzo.common.Util;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
@@ -28,23 +29,31 @@ import javafx.scene.paint.Color;
  * Time: 22:15
  */
 public class Symbol extends Region {
+    public static final boolean RESIZEABLE       = true;
+    public static final boolean NOT_RESIZEABLE   = false;
     private static final double PREFERRED_WIDTH  = 28;
     private static final double PREFERRED_HEIGHT = 28;
     private static final double MINIMUM_WIDTH    = 5;
     private static final double MINIMUM_HEIGHT   = 5;
     private static final double MAXIMUM_WIDTH    = 1024;
     private static final double MAXIMUM_HEIGHT   = 1024;
-    private SymbolType          symbolType;
-    private Color               color;
+    private ObjectProperty<SymbolType> symbolType;
+    private ObjectProperty<Color>      color;
+    private double                     size;
+    private boolean                    resizeable;
 
 
     // ******************** Constructor ***************************************
-    public Symbol(final SymbolType SYMBOL_TYPE, final double SIZE, final Color COLOR) {
-        symbolType = SYMBOL_TYPE;
-        color      = COLOR;
-        setMinSize(SIZE * SYMBOL_TYPE.WIDTH_FACTOR, SIZE * SYMBOL_TYPE.HEIGHT_FACTOR);
-        setPrefSize(SIZE * SYMBOL_TYPE.WIDTH_FACTOR, SIZE * SYMBOL_TYPE.HEIGHT_FACTOR);
-        setMaxSize(SIZE * SYMBOL_TYPE.WIDTH_FACTOR, SIZE * SYMBOL_TYPE.HEIGHT_FACTOR);
+    public Symbol(final SymbolType SYMBOL_TYPE, final double SIZE, final Color COLOR, final boolean RESIZEABLE) {
+        symbolType = new SimpleObjectProperty<>(this, "symbolType", (null == SYMBOL_TYPE) ? SymbolType.NONE : SYMBOL_TYPE);
+        color      = new SimpleObjectProperty<>(this, "color", (null == COLOR) ? Color.BLACK : COLOR);
+        size       = SIZE;
+        resizeable = RESIZEABLE;
+        if (!RESIZEABLE) {
+            setMinSize(size * getSymbolType().WIDTH_FACTOR, size * getSymbolType().HEIGHT_FACTOR);
+            setMaxSize(size * getSymbolType().WIDTH_FACTOR, size * getSymbolType().HEIGHT_FACTOR);
+        }
+        setPrefSize(size * getSymbolType().WIDTH_FACTOR, size * getSymbolType().HEIGHT_FACTOR);
         getStylesheets().add(getClass().getResource("symbols.css").toExternalForm());
         getStyleClass().setAll("symbol");
         init();
@@ -74,11 +83,19 @@ public class Symbol extends Region {
     }
 
     private void initGraphics() {
-        setId(symbolType.STYLE_CLASS);
-        setStyle("-symbol-color: " + Util.colorToCss(color) + ";");
+        setId(symbolType.get().STYLE_CLASS);
+        setStyle("-symbol-color: " + Util.colorToCss(getColor()) + ";");
     }
 
-    private void registerListeners() {}
+    private void registerListeners() {
+        widthProperty().addListener(observable -> resize());
+        heightProperty().addListener(observable -> resize());
+        symbolType.addListener(observable -> {
+            setId(getSymbolType().STYLE_CLASS);
+            resize();
+        });
+        color.addListener(observable -> setStyle("-symbol-color: " + Util.colorToCss(getColor()) + ";"));
+    }
 
 
     // ******************** Methods *******************************************
@@ -111,19 +128,36 @@ public class Symbol extends Region {
         return super.computeMaxHeight(Math.min(MAXIMUM_WIDTH, MAX_WIDTH - getInsets().getLeft() - getInsets().getRight()));
     }
 
-    public SymbolType getSymbolType() {
+    public final SymbolType getSymbolType() {
+        return symbolType.get();
+    }
+    public final void setSymbolType(final SymbolType SYMBOL_TYPE) {
+        symbolType.set(SYMBOL_TYPE);
+    }
+    public final ObjectProperty<SymbolType> symbolTypeProperty() {
         return symbolType;
     }
-    public void setSymbolType(final SymbolType SYMBOL_TYPE) {
-        symbolType = SYMBOL_TYPE;
-        setId(symbolType.STYLE_CLASS);
-    }
 
-    public Color getColor() {
+    public final Color getColor() {
+        return color.get();
+    }
+    public final void setColor(final Color COLOR) {
+        color.set(COLOR);
+    }
+    public final ObjectProperty<Color> colorProperty() {
         return color;
     }
-    public void setColor(final Color COLOR) {
-        color = COLOR;
-        setStyle("-symbol-color: " + Util.colorToCss(color) + ";");
+
+    public void resize() {
+        if (getPrefWidth() > 0 && getPrefHeight() > 0) {
+            if (resizeable) {
+                size = getPrefWidth() < getPrefHeight() ? getPrefWidth() : getPrefHeight();
+                setPrefSize(size * getSymbolType().WIDTH_FACTOR, size * getSymbolType().HEIGHT_FACTOR);
+            } else {
+                setMinSize(size * getSymbolType().WIDTH_FACTOR, size * getSymbolType().HEIGHT_FACTOR);
+                setPrefSize(size * getSymbolType().WIDTH_FACTOR, size * getSymbolType().HEIGHT_FACTOR);
+                setMaxSize(size * getSymbolType().WIDTH_FACTOR, size * getSymbolType().HEIGHT_FACTOR);
+            }
+        }
     }
 }

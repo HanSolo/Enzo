@@ -16,6 +16,7 @@
 
 package eu.hansolo.enzo.radialmenu;
 
+import eu.hansolo.enzo.common.SymbolType;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;

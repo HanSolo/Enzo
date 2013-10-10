@@ -16,6 +16,8 @@
 
 package eu.hansolo.enzo.radialmenu;
 
+import eu.hansolo.enzo.common.Symbol;
+import eu.hansolo.enzo.common.SymbolType;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -137,7 +139,7 @@ public class RadialMenu extends Region {
                     ITEM_CONTAINER.getChildren().add(text);
                 }
             } else {
-                Symbol symbol = new Symbol(item.getSymbolType(), 0.5 * item.getSize(), Color.WHITE);
+                Symbol symbol = new Symbol(item.getSymbolType(), 0.5 * item.getSize(), Color.WHITE, Symbol.NOT_RESIZEABLE);
                 symbol.setMouseTransparent(true);
                 ITEM_CONTAINER.getChildren().add(symbol);
             }
