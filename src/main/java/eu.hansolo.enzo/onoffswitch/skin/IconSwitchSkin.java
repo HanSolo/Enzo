@@ -134,7 +134,7 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
             text.setTextFill(getSkinnable().getSymbolColor());
         } else if ("TEXT".equals(PROPERTY)) {
             text.setText(getSkinnable().getText());
-            resize();
+            //resize();
         } else if ("ON".equals(PROPERTY)) {
             if (getSkinnable().isOn()) {
                 moveToSwitchedOn.play();
