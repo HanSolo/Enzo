@@ -86,6 +86,7 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
 
         background = new Region();
         background.getStyleClass().setAll("background");
+        background.setStyle("-switch-color: " + Util.colorToCss((Color) getSkinnable().getSwitchColor()) + ";");
 
         symbol = getSkinnable().getSymbol();
         symbol.setMouseTransparent(true);
@@ -98,6 +99,7 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
 
         thumb = new Region();
         thumb.getStyleClass().setAll("thumb");
+        thumb.setStyle("-thumb-color: " + Util.colorToCss((Color) getSkinnable().getThumbColor()) + ";");
         thumb.setMouseTransparent(true);
 
         pane = new Pane(background, symbol, text, thumb);
@@ -132,9 +134,10 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
             thumb.setStyle("-thumb-color: " + Util.colorToCss((Color) getSkinnable().getThumbColor()) + ";");
         } else if ("SYMBOL_COLOR".equals(PROPERTY)) {
             text.setTextFill(getSkinnable().getSymbolColor());
+            resize();
         } else if ("TEXT".equals(PROPERTY)) {
             text.setText(getSkinnable().getText());
-            //resize();
+            resize();
         } else if ("ON".equals(PROPERTY)) {
             if (getSkinnable().isOn()) {
                 moveToSwitchedOn.play();

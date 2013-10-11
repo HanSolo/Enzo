@@ -97,18 +97,22 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
 
         background = new Region();
         background.getStyleClass().setAll("background");
+        background.setStyle("-switch-color: " + Util.colorToCss((Color) getSkinnable().getSwitchColor()) + ";");
 
         on  = new Text("1");
         on.setFont(font);
         on.getStyleClass().setAll("on");
+        on.setStyle("-text-color-on: " + Util.colorToCss((Color) getSkinnable().getTextColorOn()) + ";");
 
         off = new Text("0");
         off.setFont(font);
         off.getStyleClass().setAll("off");
+        off.setStyle("-text-color-off: " + Util.colorToCss((Color) getSkinnable().getTextColorOff()) + ";");
 
         thumb = new Region();
         thumb.getStyleClass().setAll("thumb");
         thumb.setMouseTransparent(true);
+        thumb.setStyle("-thumb-color: " + Util.colorToCss((Color) getSkinnable().getThumbColor()) + ";");
 
         pane = new Pane(background, on, off, thumb);
         pane.getStyleClass().setAll("on-off-switch");

@@ -40,6 +40,7 @@ public class Demo extends Application {
 
     @Override public void init() {
         onOffSwitch = new OnOffSwitch();
+
         iconSwitchSymbol = new IconSwitch();
         iconSwitchSymbol.setSymbolType(SymbolType.POWER);
         iconSwitchSymbol.setSymbolColor(Color.web("#34495e"));
