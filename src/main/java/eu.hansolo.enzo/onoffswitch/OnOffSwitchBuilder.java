@@ -195,7 +195,7 @@ public class OnOffSwitchBuilder <B extends OnOffSwitchBuilder<B>> {
             } else if ("thumbColor".equals(key)) {
                 CONTROL.setThumbColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("on".equals(key)) {
-                CONTROL.setOn(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setSelected(((BooleanProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

@@ -186,7 +186,7 @@ public class IconSwitchBuilder  <B extends IconSwitchBuilder<B>> {
             } else if ("text".equals(key)) {
                 CONTROL.setText(((StringProperty) properties.get(key)).get());
             } else if ("on".equals(key)) {
-                CONTROL.setOn(((BooleanProperty) properties.get(key)).get());
+                CONTROL.setSelected(((BooleanProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

@@ -50,11 +50,11 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
     private double              aspectRatio;
     private Region              background;
     private Region              thumb;
-    private Text                on;
-    private Text                off;
+    private Text                selectedText;
+    private Text                deselectedText;
     private Font                font;
-    private TranslateTransition moveToSwitchedOff;
-    private TranslateTransition moveToSwitchedOn;
+    private TranslateTransition moveToDeselected;
+    private TranslateTransition moveToSelected;
 
 
     // ******************** Constructors **************************************
@@ -99,26 +99,26 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
         background.getStyleClass().setAll("background");
         background.setStyle("-switch-color: " + Util.colorToCss((Color) getSkinnable().getSwitchColor()) + ";");
 
-        on  = new Text("1");
-        on.setFont(font);
-        on.getStyleClass().setAll("on");
-        on.setStyle("-text-color-on: " + Util.colorToCss((Color) getSkinnable().getTextColorOn()) + ";");
+        selectedText  = new Text("1");
+        selectedText.setFont(font);
+        selectedText.getStyleClass().setAll("selected-text");
+        selectedText.setStyle("-text-color-on: " + Util.colorToCss((Color) getSkinnable().getTextColorOn()) + ";");
 
-        off = new Text("0");
-        off.setFont(font);
-        off.getStyleClass().setAll("off");
-        off.setStyle("-text-color-off: " + Util.colorToCss((Color) getSkinnable().getTextColorOff()) + ";");
+        deselectedText = new Text("0");
+        deselectedText.setFont(font);
+        deselectedText.getStyleClass().setAll("deselected-text");
+        deselectedText.setStyle("-text-color-off: " + Util.colorToCss((Color) getSkinnable().getTextColorOff()) + ";");
 
         thumb = new Region();
         thumb.getStyleClass().setAll("thumb");
         thumb.setMouseTransparent(true);
         thumb.setStyle("-thumb-color: " + Util.colorToCss((Color) getSkinnable().getThumbColor()) + ";");
 
-        pane = new Pane(background, on, off, thumb);
+        pane = new Pane(background, selectedText, deselectedText, thumb);
         pane.getStyleClass().setAll("on-off-switch");
 
-        moveToSwitchedOff = new TranslateTransition(Duration.millis(180), thumb);
-        moveToSwitchedOn = new TranslateTransition(Duration.millis(180), thumb);
+        moveToDeselected = new TranslateTransition(Duration.millis(180), thumb);
+        moveToSelected = new TranslateTransition(Duration.millis(180), thumb);
 
         // Add all nodes
         getChildren().setAll(pane);
@@ -131,8 +131,14 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
         getSkinnable().textColorOnProperty().addListener(observable -> handleControlPropertyChanged("TEXT_ON_COLOR"));
         getSkinnable().textColorOffProperty().addListener(observable -> handleControlPropertyChanged("TEXT_OFF_COLOR"));
         getSkinnable().thumbColorProperty().addListener(observable -> handleControlPropertyChanged("THUMB_COLOR"));
-        getSkinnable().onProperty().addListener(observable -> handleControlPropertyChanged("ON"));
-        pane.setOnMouseClicked(mouseEvent -> getSkinnable().setOn(!getSkinnable().isOn()));
+        getSkinnable().selectedProperty().addListener(observable -> handleControlPropertyChanged("SELECTED"));
+        pane.setOnMouseClicked(mouseEvent -> {
+            if (null == getSkinnable().getToggleGroup() || getSkinnable().getToggleGroup().getToggles().isEmpty()) {
+                getSkinnable().setSelected(!getSkinnable().isSelected());
+            } else {
+                getSkinnable().setSelected(true);
+            }
+        });
     }
 
 
@@ -143,16 +149,16 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
         } else if ("SWITCH_COLOR".equals(PROPERTY)) {
             background.setStyle("-switch-color: " + Util.colorToCss((Color) getSkinnable().getSwitchColor()) + ";");
         } else if ("TEXT_ON_COLOR".equals(PROPERTY)) {
-            on.setStyle("-text-color-on: " + Util.colorToCss((Color) getSkinnable().getTextColorOn()) + ";");
+            selectedText.setStyle("-text-color-selected: " + Util.colorToCss((Color) getSkinnable().getTextColorOn()) + ";");
         } else if ("TEXT_OFF_COLOR".equals(PROPERTY)) {
-            off.setStyle("-text-color-off: " + Util.colorToCss((Color) getSkinnable().getTextColorOff()) + ";");
+            deselectedText.setStyle("-text-color-deselected: " + Util.colorToCss((Color) getSkinnable().getTextColorOff()) + ";");
         } else if ("THUMB_COLOR".equals(PROPERTY)) {
             thumb.setStyle("-thumb-color: " + Util.colorToCss((Color) getSkinnable().getThumbColor()) + ";");
-        } else if ("ON".equals(PROPERTY)) {
-            if (getSkinnable().isOn()) {
-                moveToSwitchedOn.play();
+        } else if ("SELECTED".equals(PROPERTY)) {
+            if (getSkinnable().isSelected()) {
+                moveToSelected.play();
             } else {
-                moveToSwitchedOff.play();
+                moveToDeselected.play();
             }
         }
     }
@@ -203,23 +209,23 @@ public class OnOffSwitchSkin extends SkinBase<OnOffSwitch> implements Skin<OnOff
 
             background.setPrefSize(width, height);
 
-            on.setFont(font);
-            on.setTextOrigin(VPos.CENTER);
-            on.relocate(height * 0.3125, (height - on.getLayoutBounds().getHeight()) * 0.5);
+            selectedText.setFont(font);
+            selectedText.setTextOrigin(VPos.CENTER);
+            selectedText.relocate(height * 0.3125, (height - selectedText.getLayoutBounds().getHeight()) * 0.5);
 
-            off.setFont(font);
-            off.setTextOrigin(VPos.CENTER);
-            off.relocate(width - height * 0.3125 - off.getLayoutBounds().getWidth(), (height - off.getLayoutBounds().getHeight()) * 0.5);
+            deselectedText.setFont(font);
+            deselectedText.setTextOrigin(VPos.CENTER);
+            deselectedText.relocate(width - height * 0.3125 - deselectedText.getLayoutBounds().getWidth(), (height - deselectedText.getLayoutBounds().getHeight()) * 0.5);
 
             thumb.setPrefSize((height * 0.75), (height * 0.75));
-            thumb.setTranslateX(getSkinnable().isOn() ? height * 1.125 : height * 0.125);
+            thumb.setTranslateX(getSkinnable().isSelected() ? height * 1.125 : height * 0.125);
             thumb.setTranslateY(height * 0.125);
 
-            moveToSwitchedOff.setFromX(height * 1.125);
-            moveToSwitchedOff.setToX(height * 0.125);
+            moveToDeselected.setFromX(height * 1.125);
+            moveToDeselected.setToX(height * 0.125);
 
-            moveToSwitchedOn.setFromX(height * 0.125);
-            moveToSwitchedOn.setToX(height * 1.125);
+            moveToSelected.setFromX(height * 0.125);
+            moveToSelected.setToX(height * 1.125);
         }
     }
 }

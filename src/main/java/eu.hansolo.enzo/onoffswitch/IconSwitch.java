@@ -19,6 +19,8 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -32,20 +34,21 @@ import java.util.List;
  * Date: 10.10.13
  * Time: 08:41
  */
-public class IconSwitch extends Control {
-    public static final  Color         DEFAULT_SWITCH_COLOR = Color.WHITE;
-    public static final  Color         DEFAULT_THUMB_COLOR  = Color.WHITE;
-    public static final  Color         DEFAULT_SYMBOL_COLOR = Color.DARKGRAY;
-    private static final PseudoClass   ON_PSEUDO_CLASS      = PseudoClass.getPseudoClass("on");
-    private final Symbol               symbol;
+public class IconSwitch extends Control implements Toggle {
+    public static final  Color          DEFAULT_SWITCH_COLOR  = Color.WHITE;
+    public static final  Color          DEFAULT_THUMB_COLOR   = Color.WHITE;
+    public static final  Color          DEFAULT_SYMBOL_COLOR  = Color.DARKGRAY;
+    private static final PseudoClass    PSEUDO_CLASS_SELECTED = PseudoClass.getPseudoClass("selected");
+    private final Symbol                symbol;
 
     // CSS styleable properties
-    private ObjectProperty<Paint>      switchColor;
-    private ObjectProperty<Paint>      thumbColor;
-    private StringProperty             text;
+    private ObjectProperty<Paint>       switchColor;
+    private ObjectProperty<Paint>       thumbColor;
+    private StringProperty              text;
+    private ObjectProperty<ToggleGroup> toggleGroup;
 
     // CSS pseudo classes
-    private BooleanProperty            on;
+    private BooleanProperty             selected;
 
 
     // ******************** Constructors **************************************
@@ -56,28 +59,64 @@ public class IconSwitch extends Control {
 
 
     // ******************** Methods *******************************************
-    public final boolean isOn() {
-        return null == on ? false : on.get();
+    public final boolean isSelected() {
+        return null == selected ? false : selected.get();
     }
-    public final void setOn(final boolean ON) {
-        onProperty().set(ON);
+    public final void setSelected(final boolean ON) {
+        selectedProperty().set(ON);
     }
-    public final BooleanProperty onProperty() {
-        if (null == on) {
-            on = new BooleanPropertyBase(false) {
+    public final BooleanProperty selectedProperty() {
+        if (null == selected) {
+            selected = new BooleanPropertyBase() {
                 @Override protected void invalidated() {
-                    pseudoClassStateChanged(ON_PSEUDO_CLASS, get());
-                    if (on.get()) {
-                        fireSwitchEvent(new SwitchEvent(this, null, SwitchEvent.ON));
-                    } else {
-                        fireSwitchEvent(new SwitchEvent(this, null, SwitchEvent.OFF));
+                    if (null != getToggleGroup()) {
+                        if (get()) {
+                            getToggleGroup().selectToggle(IconSwitch.this);
+                        } else if (getToggleGroup().getSelectedToggle() == IconSwitch.this) {
+                            getToggleGroup().selectToggle(null);
+                        }
                     }
+                    if (selected.get()) {
+                        fireSelectionEvent(new SelectionEvent(this, null, SelectionEvent.SELECT));
+                    } else {
+                        fireSelectionEvent(new SelectionEvent(this, null, SelectionEvent.DESELECT));
+                    }
+                    pseudoClassStateChanged(PSEUDO_CLASS_SELECTED, get());
                 }
                 @Override public Object getBean() { return this; }
-                @Override public String getName() { return "on"; }
+                @Override public String getName() { return "selected"; }
             };
         }
-        return on;
+        return selected;
+    }
+
+    public final ToggleGroup getToggleGroup() {
+        return null == toggleGroup ? null : toggleGroup.get();
+    }
+    public final void setToggleGroup(ToggleGroup value) {
+        toggleGroupProperty().set(value);
+    }
+    public final ObjectProperty<ToggleGroup> toggleGroupProperty() {
+        if (null == toggleGroup) {
+            toggleGroup = new ObjectPropertyBase<ToggleGroup>() {
+                private ToggleGroup oldToggleGroup;
+                @Override protected void invalidated() {
+                    final ToggleGroup toggleGroup = get();
+                    if (null != toggleGroup && !toggleGroup.getToggles().contains(IconSwitch.this)) {
+                        if (oldToggleGroup != null) {
+                            oldToggleGroup.getToggles().remove(IconSwitch.this);
+                        }
+                        toggleGroup.getToggles().add(IconSwitch.this);
+                    } else if (null == toggleGroup) {
+                        oldToggleGroup.getToggles().remove(IconSwitch.this);
+                    }
+                    oldToggleGroup = toggleGroup;
+                }
+                @Override public Object getBean() { return IconSwitch.this; }
+                @Override public String getName() { return "toggleGroup"; }
+            };
+        }
+        return toggleGroup;
     }
 
     public final SymbolType getSymbolType() {
@@ -129,7 +168,9 @@ public class IconSwitch extends Control {
         if (null == switchColor) {
             switchColor = new StyleableObjectProperty<Paint>(DEFAULT_SWITCH_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.SWITCH_COLOR; }
+
                 @Override public Object getBean() { return IconSwitch.this; }
+
                 @Override public String getName() { return "switchColor"; }
             };
         }
@@ -146,7 +187,9 @@ public class IconSwitch extends Control {
         if (null == thumbColor) {
             thumbColor = new StyleableObjectProperty<Paint>(DEFAULT_THUMB_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.THUMB_COLOR; }
+
                 @Override public Object getBean() { return IconSwitch.this; }
+
                 @Override public String getName() { return "thumbColor"; }
             };
         }
@@ -215,32 +258,30 @@ public class IconSwitch extends Control {
 
 
     // ******************** Event handling*************************************
-    public final ObjectProperty<EventHandler<SwitchEvent>> onSwitchedOnProperty() { return onSwitchedOn; }
-    public final void setOnSwitchedOn(EventHandler<SwitchEvent> value) { onSwitchedOnProperty().set(value); }
-    public final EventHandler<SwitchEvent> getOnSwitchedOn() { return onSwitchedOnProperty().get(); }
-    private ObjectProperty<EventHandler<SwitchEvent>> onSwitchedOn = new ObjectPropertyBase<EventHandler<SwitchEvent>>() {
+    public final ObjectProperty<EventHandler<SelectionEvent>> onSelectProperty() { return onSelect; }
+    public final void setOnSelect(EventHandler<SelectionEvent> value) { onSelectProperty().set(value); }
+    public final EventHandler<SelectionEvent> getOnSelect() { return onSelectProperty().get(); }
+    private ObjectProperty<EventHandler<SelectionEvent>> onSelect = new ObjectPropertyBase<EventHandler<SelectionEvent>>() {
         @Override public Object getBean() { return this; }
-
-        @Override public String getName() { return "onSwitchedOn";}
+        @Override public String getName() { return "onSelect";}
     };
 
-    public final ObjectProperty<EventHandler<SwitchEvent>> onSwitchedOffProperty() { return onSwitchedOff; }
-    public final void setOnSwitchedOff(EventHandler<SwitchEvent> value) { onSwitchedOffProperty().set(value); }
-    public final EventHandler<SwitchEvent> getOnSwitchedOff() { return onSwitchedOffProperty().get(); }
-    private ObjectProperty<EventHandler<SwitchEvent>> onSwitchedOff = new ObjectPropertyBase<EventHandler<SwitchEvent>>() {
+    public final ObjectProperty<EventHandler<SelectionEvent>> onDeselectProperty() { return onDeselect; }
+    public final void setOnDeselect(EventHandler<SelectionEvent> value) { onDeselectProperty().set(value); }
+    public final EventHandler<SelectionEvent> getOnDeselect() { return onDeselectProperty().get(); }
+    private ObjectProperty<EventHandler<SelectionEvent>> onDeselect = new ObjectPropertyBase<EventHandler<SelectionEvent>>() {
         @Override public Object getBean() { return this; }
-
-        @Override public String getName() { return "onSwitchedOff";}
+        @Override public String getName() { return "onDeselect";}
     };
 
-    public void fireSwitchEvent(final SwitchEvent EVENT) {
+    public void fireSelectionEvent(final SelectionEvent EVENT) {
         fireEvent(EVENT);
         final EventType TYPE = EVENT.getEventType();
-        final EventHandler<SwitchEvent> HANDLER;
-        if (SwitchEvent.ON == TYPE) {
-            HANDLER = getOnSwitchedOn();
-        } else if (SwitchEvent.OFF == TYPE) {
-            HANDLER = getOnSwitchedOff();
+        final EventHandler<SelectionEvent> HANDLER;
+        if (SelectionEvent.SELECT == TYPE) {
+            HANDLER = getOnSelect();
+        } else if (SelectionEvent.DESELECT == TYPE) {
+            HANDLER = getOnDeselect();
         } else {
             HANDLER = null;
         }

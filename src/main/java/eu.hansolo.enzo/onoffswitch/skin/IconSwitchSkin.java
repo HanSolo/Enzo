@@ -42,8 +42,8 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
     private Symbol              symbol;
     private Font                font;
     private Label               text;
-    private TranslateTransition moveToSwitchedOff;
-    private TranslateTransition moveToSwitchedOn;
+    private TranslateTransition moveToDeselected;
+    private TranslateTransition moveToSelected;
 
 
     // ******************** Constructors **************************************
@@ -105,8 +105,8 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
         pane = new Pane(background, symbol, text, thumb);
         pane.getStyleClass().setAll("icon-switch");
 
-        moveToSwitchedOff = new TranslateTransition(Duration.millis(180), thumb);
-        moveToSwitchedOn  = new TranslateTransition(Duration.millis(180), thumb);
+        moveToDeselected = new TranslateTransition(Duration.millis(180), thumb);
+        moveToSelected = new TranslateTransition(Duration.millis(180), thumb);
 
         // Add all nodes
         getChildren().setAll(pane);
@@ -119,8 +119,14 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
         getSkinnable().thumbColorProperty().addListener(observable -> handleControlPropertyChanged("THUMB_COLOR"));
         getSkinnable().symbolColorProperty().addListener(observable -> handleControlPropertyChanged("SYMBOL_COLOR"));
         getSkinnable().textProperty().addListener(observable -> handleControlPropertyChanged("TEXT"));
-        getSkinnable().onProperty().addListener(observable -> handleControlPropertyChanged("ON"));
-        pane.setOnMouseClicked(mouseEvent -> getSkinnable().setOn(!getSkinnable().isOn()));
+        getSkinnable().selectedProperty().addListener(observable -> handleControlPropertyChanged("SELECTED"));
+        pane.setOnMouseClicked(mouseEvent -> {
+            if (null == getSkinnable().getToggleGroup() || getSkinnable().getToggleGroup().getToggles().isEmpty()) {
+                getSkinnable().setSelected(!getSkinnable().isSelected());
+            } else {
+                getSkinnable().setSelected(true);
+            }
+        });
     }
 
 
@@ -138,11 +144,11 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
         } else if ("TEXT".equals(PROPERTY)) {
             text.setText(getSkinnable().getText());
             resize();
-        } else if ("ON".equals(PROPERTY)) {
-            if (getSkinnable().isOn()) {
-                moveToSwitchedOn.play();
+        } else if ("SELECTED".equals(PROPERTY)) {
+            if (getSkinnable().isSelected()) {
+                moveToSelected.play();
             } else {
-                moveToSwitchedOff.play();
+                moveToDeselected.play();
             }
         }
     }
@@ -204,14 +210,14 @@ public class IconSwitchSkin extends SkinBase<IconSwitch> implements Skin<IconSwi
             text.relocate(height * 0.125, height * 0.15);
 
             thumb.setPrefSize((height * 0.75), (height * 0.75));
-            thumb.setTranslateX(getSkinnable().isOn() ? height * 1.625 : height * 0.875);
+            thumb.setTranslateX(getSkinnable().isSelected() ? height * 1.625 : height * 0.875);
             thumb.setTranslateY(height * 0.125);
 
-            moveToSwitchedOff.setFromX(height * 1.625);
-            moveToSwitchedOff.setToX(height * 0.875);
+            moveToDeselected.setFromX(height * 1.625);
+            moveToDeselected.setToX(height * 0.875);
 
-            moveToSwitchedOn.setFromX(height * 0.875);
-            moveToSwitchedOn.setToX(height * 1.625);
+            moveToSelected.setFromX(height * 0.875);
+            moveToSelected.setToX(height * 1.625);
         }
     }
 }
