@@ -89,6 +89,11 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
         return this;
     }
 
+    public final SimpleGaugeBuilder title(final String TITLE) {
+        properties.put("title", new SimpleStringProperty(TITLE));
+        return this;
+    }
+
     public final SimpleGaugeBuilder unit(final String UNIT) {
         properties.put("unit", new SimpleStringProperty(UNIT));
         return this;
@@ -322,6 +327,8 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
                 CONTROL.setSections(((ObjectProperty<List<Section>>) properties.get(key)).get());
             } else if("decimals".equals(key)) {
                 CONTROL.setDecimals(((IntegerProperty) properties.get(key)).get());
+            } else if ("title".equals(key)) {
+                CONTROL.setTitle(((StringProperty) properties.get(key)).get());
             } else if("unit".equals(key)) {
                 CONTROL.setUnit(((StringProperty) properties.get(key)).get());
             } else if("sectionTextVisible".equals(key)) {
