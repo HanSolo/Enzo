@@ -39,7 +39,7 @@
 /******************************************************************************
  * SIMPLEGAUGE needle                                                         *
  *****************************************************************************/
-.simple-gauge .needle {
+.simple-gauge > .needle {
     -fx-fill            :-needle;
     -fx-stroke          : white;
     -fx-stroke-line-cap : round;
@@ -50,15 +50,15 @@
 /******************************************************************************
  * SIMPLEGAUGE value, title, section-text                                     *
  *****************************************************************************/
-.simple-gauge .value {
+.simple-gauge > .value {
     -fx-fill: -value-text;
 }
 
-.simple-gauge .title {
+.simple-gauge > .title {
     -fx-fill: -title-text;
 }
 
-.simple-gauge .section {
+.simple-gauge > .section {
     -fx-fill: -section-text;
 }
 

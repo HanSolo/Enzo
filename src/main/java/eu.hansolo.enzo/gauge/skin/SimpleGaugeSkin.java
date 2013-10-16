@@ -140,6 +140,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
 
         // Add all nodes
         pane = new Pane();
+        pane.getStyleClass().add("simple-gauge");
         pane.getChildren().setAll(sectionsCanvas,
                                   needle,
                                   value,
@@ -327,7 +328,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
         value.setTranslateY(size * 0.5);
 
-        title.setFont(Font.font("Open Sans", FontWeight.NORMAL, size * 0.05));
+        title.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.05));
         if (value.getLayoutBounds().getWidth() > 0.5 * size) {
             double decrement = 0d;
             while (title.getLayoutBounds().getWidth() > 0.5 * size && title.getFont().getSize() > 0) {

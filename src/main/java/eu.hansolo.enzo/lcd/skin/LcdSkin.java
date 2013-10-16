@@ -268,6 +268,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
                                          lowerCenterText);
 
         pane = new Pane();
+        pane.getStyleClass().add("lcd");
         pane.getChildren().setAll(main,
                                   crystalOverlay,
                                   backgroundText,
@@ -434,7 +435,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         decBuffer.append("0");
 
         if (DECIMALS > 0) {
-            decBuffer.append("");
+            decBuffer.append(".");
         }
 
         for (int i = 0; i < DECIMALS; i++) {
@@ -447,6 +448,10 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         decBuffer.trimToSize();
 
         DEC_FORMAT.applyPattern(decBuffer.toString());
+
+        //decBuffer.setLength(0);
+        //decBuffer.append("%.").append(DECIMALS).append("f");
+        //return String.format(Locale.US, decBuffer.toString(), VALUE);
         return DEC_FORMAT.format(VALUE);
     }
 

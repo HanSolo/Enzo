@@ -121,7 +121,7 @@ public class DemoLcd extends Application {
                             .threshold(26)
                             .thresholdVisible(true)
                             .trendVisible(true)
-                            //.numberSystemVisible(false)
+                            .numberSystemVisible(false)
                             .lowerRightTextVisible(true)
                             .lowerRightText("Info")
                             //.valueFont(Lcd.LcdFont.BUS)
