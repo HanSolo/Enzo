@@ -128,6 +128,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         needle.setFillRule(FillRule.EVEN_ODD);
         needle.getStyleClass().setAll("needle");
         needle.getTransforms().setAll(needleRotate);
+        
 
         value = new Text(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getMinValue()) + getSkinnable().getUnit());
         value.setMouseTransparent(true);
@@ -190,7 +191,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
             value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue) + getSkinnable().getUnit());
             value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
-            if (value.getLayoutBounds().getWidth() > 0.5 * size) {
+            if (value.getLayoutBounds().getWidth() > 0.45 * size) {
                 resizeText();
             }
             // Check sections
@@ -318,7 +319,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
 
     private void resizeText() {
         value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.15));
-        if (value.getLayoutBounds().getWidth() > 0.5 * size) {
+        if (value.getLayoutBounds().getWidth() > 0.45 * size) {
             double decrement = 0d;
             while (value.getLayoutBounds().getWidth() > 0.5 * size && value.getFont().getSize() > 0) {
                 value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * (0.15 - decrement)));
@@ -326,7 +327,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             }
         }
         value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
-        value.setTranslateY(size * 0.5);
+        value.setTranslateY(size * (title.getText().isEmpty() ? 0.5 : 0.48));
 
         title.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.05));
         if (value.getLayoutBounds().getWidth() > 0.5 * size) {
@@ -337,13 +338,11 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             }
         }
         title.setTranslateX((size - title.getLayoutBounds().getWidth()) * 0.5);
-        title.setTranslateY(size * 0.5 + value.getFont().getSize() * 0.75);
+        title.setTranslateY(size * 0.5 + value.getFont().getSize() * 0.7);
     }
 
     private void resize() {
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
-
-        //pane.setPrefSize(size, size);
 
         sectionsCanvas.setWidth(size);
         sectionsCanvas.setHeight(size);
@@ -378,7 +377,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
                                                   0.24 * size, 0.37166666666666665 * size,
                                                   0.24 * size, 0.5 * size));
         needle.getElements().add(new ClosePath());
-        needle.setStrokeWidth(size * 0.0283333333);
+        needle.setStrokeWidth(size * 0.032);
 
         needle.relocate(needle.getLayoutBounds().getMinX(), needle.getLayoutBounds().getMinY());
         needleRotate.setPivotX(size * 0.5);
