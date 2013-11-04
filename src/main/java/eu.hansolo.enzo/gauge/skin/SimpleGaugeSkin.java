@@ -32,10 +32,12 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.FillRule;
+import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
@@ -127,8 +129,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         needle = new Path();
         needle.setFillRule(FillRule.EVEN_ODD);
         needle.getStyleClass().setAll("needle");
-        needle.getTransforms().setAll(needleRotate);
-        
+        needle.getTransforms().setAll(needleRotate);       
 
         value = new Text(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getMinValue()) + getSkinnable().getUnit());
         value.setMouseTransparent(true);
@@ -252,10 +253,12 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
 
     private final void drawSections() {
         sectionsCtx.clearRect(0, 0, size, size);
-        final double MIN_VALUE   = getSkinnable().getMinValue();
-        final double MAX_VALUE   = getSkinnable().getMaxValue();
-        final double OFFSET      = getSkinnable().getStartAngle() - 90;
-        final int NO_OF_SECTIONS = getSkinnable().getSections().size();
+        final double MIN_VALUE       = getSkinnable().getMinValue();
+        final double MAX_VALUE       = getSkinnable().getMaxValue();
+        final double OFFSET          = getSkinnable().getStartAngle() - 90;
+        final int NO_OF_SECTIONS     = getSkinnable().getSections().size();
+        final double SECTIONS_OFFSET = size * 0.015;
+        final double SECTIONS_SIZE   = size - (size * 0.03);
         double sinValue;
         double cosValue;
         for (int i = 0 ; i < NO_OF_SECTIONS ; i++) {
@@ -287,14 +290,14 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
                 case 8: sectionsCtx.setFill(getSkinnable().getSectionFill8()); break;
                 case 9: sectionsCtx.setFill(getSkinnable().getSectionFill9()); break;
             }
-            sectionsCtx.fillArc(0, 0, size, size, (OFFSET - SECTION_START_ANGLE), -SECTION_ANGLE_EXTEND, ArcType.ROUND);
+            sectionsCtx.fillArc(SECTIONS_OFFSET, SECTIONS_OFFSET, SECTIONS_SIZE, SECTIONS_SIZE, (OFFSET - SECTION_START_ANGLE), -SECTION_ANGLE_EXTEND, ArcType.ROUND);
 
             // Draw Section Text
             if (getSkinnable().isSectionTextVisible()) {
                 sinValue = -Math.sin(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
                 cosValue = -Math.cos(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
-                Point2D textPoint = new Point2D(size * 0.5 + size * 0.4 * sinValue, size * 0.5 + size * 0.4 * cosValue);
-                sectionsCtx.setFont(Font.font("Open Sans", FontWeight.NORMAL, 0.1 * size));
+                Point2D textPoint = new Point2D(size * 0.5 + size * 0.365 * sinValue, size * 0.5 + size * 0.365 * cosValue);
+                sectionsCtx.setFont(Font.font("Open Sans", FontWeight.NORMAL, 0.08 * size));
                 sectionsCtx.setTextAlign(TextAlignment.CENTER);
                 sectionsCtx.setTextBaseline(VPos.CENTER);
                 sectionsCtx.setFill(getSkinnable().getSectionTextColor());
@@ -308,18 +311,24 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
                         Image icon = SECTION.getImage();
                         sinValue = -Math.sin(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
                         cosValue = -Math.cos(Math.toRadians(OFFSET - 90 - SECTION_START_ANGLE - SECTION_ANGLE_EXTEND * 0.5));
-                        Point2D iconPoint = new Point2D(size * 0.5 + size * 0.4 * sinValue, size * 0.5 + size * 0.4 * cosValue);
+                        Point2D iconPoint = new Point2D(size * 0.5 + size * 0.365 * sinValue, size * 0.5 + size * 0.365 * cosValue);
                         sectionsCtx.drawImage(icon, iconPoint.getX() - size * 0.06, iconPoint.getY() - size * 0.06, size * 0.12, size * 0.12);
                     }
                 }
             }
+            
+            // Draw white border around area                        
+            sectionsCtx.setStroke(Color.WHITE);
+            sectionsCtx.setLineWidth(size * 0.032);            
+            sectionsCtx.strokeArc(SECTIONS_OFFSET, SECTIONS_OFFSET, SECTIONS_SIZE, SECTIONS_SIZE, (OFFSET - MIN_VALUE * angleStep), -MAX_VALUE * angleStep, ArcType.ROUND);
+            
             sectionsCtx.restore();
         }
     }
 
     private void resizeText() {
-        value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.15));
-        if (value.getLayoutBounds().getWidth() > 0.45 * size) {
+        value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.145));
+        if (value.getLayoutBounds().getWidth() > 0.42 * size) {
             double decrement = 0d;
             while (value.getLayoutBounds().getWidth() > 0.5 * size && value.getFont().getSize() > 0) {
                 value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * (0.15 - decrement)));
@@ -329,8 +338,8 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
         value.setTranslateY(size * (title.getText().isEmpty() ? 0.5 : 0.48));
 
-        title.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.05));
-        if (value.getLayoutBounds().getWidth() > 0.5 * size) {
+        title.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.045));
+        if (value.getLayoutBounds().getWidth() > 0.45 * size) {
             double decrement = 0d;
             while (title.getLayoutBounds().getWidth() > 0.5 * size && title.getFont().getSize() > 0) {
                 title.setFont(Font.font("Open Sans", FontWeight.BOLD, size * (0.05 - decrement)));
@@ -357,27 +366,23 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         title.setText(getSkinnable().getTitle());
 
         needle.getElements().clear();
-        needle.getElements().add(new MoveTo(0.24 * size, 0.5 * size));
-        needle.getElements().add(new CubicCurveTo(0.24 * size, 0.6433333333333333 * size,
-                                                  0.3566666666666667 * size, 0.76 * size,
-                                                  0.5 * size, 0.76 * size));
-        needle.getElements().add(new CubicCurveTo(0.6433333333333333 * size, 0.76 * size,
-                                                  0.76 * size, 0.6433333333333333 * size,
-                                                  0.76 * size, 0.5 * size));
-        needle.getElements().add(new CubicCurveTo(0.76 * size, 0.37166666666666665 * size,
-                                                  0.6666666666666666 * size, 0.265 * size,
-                                                  0.545 * size, 0.24333333333333335 * size));
-        needle.getElements().add(new CubicCurveTo(0.545 * size, 0.24333333333333335 * size,
-                                                  0.5 * size, 0.0,
-                                                  0.5 * size, 0.0));
-        needle.getElements().add(new CubicCurveTo(0.5 * size, 0.0,
-                                                  0.45666666666666667 * size, 0.24333333333333335 * size,
-                                                  0.45666666666666667 * size, 0.24333333333333335 * size));
-        needle.getElements().add(new CubicCurveTo(0.3333333333333333 * size, 0.265 * size,
-                                                  0.24 * size, 0.37166666666666665 * size,
-                                                  0.24 * size, 0.5 * size));
+        needle.getElements().add(new MoveTo(0.275 * size, 0.5 * size));
+        needle.getElements().add(new CubicCurveTo(0.275 * size, 0.62426575 * size,
+                                                  0.37573425 * size, 0.725 * size,
+                                                  0.5 * size, 0.725 * size));
+        needle.getElements().add(new CubicCurveTo(0.62426575 * size, 0.725 * size,
+                                                  0.725 * size, 0.62426575 * size,
+                                                  0.725 * size, 0.5 * size));
+        needle.getElements().add(new CubicCurveTo(0.725 * size, 0.3891265 * size,
+                                                  0.6448105 * size, 0.296985 * size,
+                                                  0.5392625 * size, 0.2784125 * size));
+        needle.getElements().add(new LineTo(0.5 * size, 0.0225));
+        needle.getElements().add(new LineTo(0.4607375 * size, 0.2784125 * size));
+        needle.getElements().add(new CubicCurveTo(0.3551895 * size, 0.296985 * size,
+                                                  0.275 * size, 0.3891265 * size,
+                                                  0.275 * size, 0.5 * size));
         needle.getElements().add(new ClosePath());
-        needle.setStrokeWidth(size * 0.032);
+        needle.setStrokeWidth(size * 0.03);
 
         needle.relocate(needle.getLayoutBounds().getMinX(), needle.getLayoutBounds().getMinY());
         needleRotate.setPivotX(size * 0.5);

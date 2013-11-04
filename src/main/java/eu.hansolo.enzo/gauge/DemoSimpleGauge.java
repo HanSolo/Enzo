@@ -106,8 +106,8 @@ public class DemoSimpleGauge extends Application {
 
     @Override public void start(Stage stage) throws Exception {
         HBox pane = new HBox();
-        pane.setPadding(new Insets(5, 5, 5, 5));
-        pane.setSpacing(5);
+        pane.setPadding(new Insets(10, 10, 10, 10));
+        pane.setSpacing(10);
         pane.getChildren().addAll(thermoMeter, wattMeter, energyMeter);
 
         final Scene scene = new Scene(pane, Color.BLACK);
