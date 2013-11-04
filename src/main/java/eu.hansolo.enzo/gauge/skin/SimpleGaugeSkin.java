@@ -239,7 +239,8 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
     private void rotateNeedle() {
         angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
         double targetAngle = needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue()) * angleStep;
-
+        targetAngle = clamp(180 - getSkinnable().getStartAngle(), 180 - getSkinnable().getStartAngle() + getSkinnable().getAngleRange(), targetAngle);
+        
         if (getSkinnable().isAnimated()) {
             timeline.stop();
             final KeyValue KEY_VALUE = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
@@ -325,6 +326,12 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         }
     }
 
+    private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {
+        if (VALUE < MIN_VALUE) return MIN_VALUE;
+        if (VALUE > MAX_VALUE) return MAX_VALUE;
+        return VALUE;
+    }
+    
     private void resizeText() {        
         value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.145));
         if (value.getLayoutBounds().getWidth() > 0.38 * size) {
