@@ -321,7 +321,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             // Draw white border around area                        
             sectionsCtx.setStroke(Color.WHITE);
             sectionsCtx.setLineWidth(size * 0.032);            
-            sectionsCtx.strokeArc(SECTIONS_OFFSET, SECTIONS_OFFSET, SECTIONS_SIZE, SECTIONS_SIZE, (OFFSET - MIN_VALUE * angleStep), -MAX_VALUE * angleStep, ArcType.ROUND);                        
+            sectionsCtx.strokeArc(SECTIONS_OFFSET, SECTIONS_OFFSET, SECTIONS_SIZE, SECTIONS_SIZE, OFFSET + 90, 270, ArcType.ROUND);                        
         }
     }
 
