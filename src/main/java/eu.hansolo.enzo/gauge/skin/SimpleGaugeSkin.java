@@ -316,21 +316,20 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
                     }
                 }
             }
+            sectionsCtx.restore();
             
             // Draw white border around area                        
             sectionsCtx.setStroke(Color.WHITE);
             sectionsCtx.setLineWidth(size * 0.032);            
-            sectionsCtx.strokeArc(SECTIONS_OFFSET, SECTIONS_OFFSET, SECTIONS_SIZE, SECTIONS_SIZE, (OFFSET - MIN_VALUE * angleStep), -MAX_VALUE * angleStep, ArcType.ROUND);
-            
-            sectionsCtx.restore();
+            sectionsCtx.strokeArc(SECTIONS_OFFSET, SECTIONS_OFFSET, SECTIONS_SIZE, SECTIONS_SIZE, (OFFSET - MIN_VALUE * angleStep), -MAX_VALUE * angleStep, ArcType.ROUND);                        
         }
     }
 
-    private void resizeText() {
+    private void resizeText() {        
         value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.145));
-        if (value.getLayoutBounds().getWidth() > 0.42 * size) {
+        if (value.getLayoutBounds().getWidth() > 0.38 * size) {
             double decrement = 0d;
-            while (value.getLayoutBounds().getWidth() > 0.5 * size && value.getFont().getSize() > 0) {
+            while (value.getLayoutBounds().getWidth() > 0.38 * size && value.getFont().getSize() > 0) {
                 value.setFont(Font.font("Open Sans", FontWeight.BOLD, size * (0.15 - decrement)));
                 decrement += 0.01;
             }
@@ -339,9 +338,9 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         value.setTranslateY(size * (title.getText().isEmpty() ? 0.5 : 0.48));
 
         title.setFont(Font.font("Open Sans", FontWeight.BOLD, size * 0.045));
-        if (value.getLayoutBounds().getWidth() > 0.45 * size) {
+        if (title.getLayoutBounds().getWidth() > 0.38 * size) {
             double decrement = 0d;
-            while (title.getLayoutBounds().getWidth() > 0.5 * size && title.getFont().getSize() > 0) {
+            while (title.getLayoutBounds().getWidth() > 0.38 * size && title.getFont().getSize() > 0) {
                 title.setFont(Font.font("Open Sans", FontWeight.BOLD, size * (0.05 - decrement)));
                 decrement += 0.01;
             }
