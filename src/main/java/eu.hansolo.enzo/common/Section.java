@@ -42,6 +42,8 @@ public class Section {
     private String                _text;
     private StringProperty        text;
     private ObjectProperty<Image> icon;
+    private String                _styleClass;
+    private StringProperty        styleClass;
 
 
     // ******************** Constructors **************************************
@@ -55,10 +57,14 @@ public class Section {
         this(START, STOP, TEXT, null);
     }
     public Section(final double START, final double STOP, final String TEXT, final Image ICON) {
-        _start = START;
-        _stop  = STOP;
-        _text  = TEXT;
-        icon   = new SimpleObjectProperty<>(this, "icon", ICON);
+        this(START, STOP, TEXT, ICON, "");
+    }
+    public Section(final double START, final double STOP, final String TEXT, final Image ICON, final String STYLE_CLASS) {
+        _start      = START;
+        _stop       = STOP;
+        _text       = TEXT;
+        icon        = new SimpleObjectProperty<>(this, "icon", ICON);
+        _styleClass = STYLE_CLASS;
     }
 
 
@@ -124,6 +130,23 @@ public class Section {
         return icon;
     }
 
+    public final String getStyleClass() {
+        return null == styleClass ? _styleClass : styleClass.get();
+    }
+    public final void setStyleClass(final String STYLE_CLASS) {
+        if (null == styleClass) {
+            _styleClass = STYLE_CLASS;
+        } else {
+            styleClass.set(STYLE_CLASS);
+        }
+    }
+    public final StringProperty styleClassProperty() {
+        if (null == styleClass) {
+            styleClass = new SimpleStringProperty(this, "styleClass", _styleClass);
+        }
+        return styleClass;
+    }    
+    
     public boolean contains(final double VALUE) {
         return ((Double.compare(VALUE, getStart()) >= 0 && Double.compare(VALUE, getStop()) <= 0));
     }

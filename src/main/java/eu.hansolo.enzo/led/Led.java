@@ -292,4 +292,3 @@ public class Led extends Control {
         return getClassCssMetaData();
     }
 }
-

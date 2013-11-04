@@ -24,6 +24,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -183,7 +184,7 @@ public class SimpleGauge extends Control {
         minValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE));
         validate();
     }
-    public final DoubleProperty minValueProperty() {
+    public final ReadOnlyDoubleProperty minValueProperty() {
         return minValue;
     }
 
@@ -194,7 +195,7 @@ public class SimpleGauge extends Control {
         maxValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE));
         validate();
     }
-    public final DoubleProperty maxValueProperty() {
+    public final ReadOnlyDoubleProperty maxValueProperty() {
         return maxValue;
     }
 
@@ -208,7 +209,7 @@ public class SimpleGauge extends Control {
             decimals.set(clamp(0, 3, DECIMALS));
         }
     }
-    public final IntegerProperty decimalsProperty() {
+    public final ReadOnlyIntegerProperty decimalsProperty() {
         if (null == decimals) {
             decimals = new SimpleIntegerProperty(this, "decimals", _decimals);
         }

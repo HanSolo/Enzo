@@ -141,11 +141,7 @@ public class LedBargraphSkin extends SkinBase<LedBargraph> implements Skin<LedBa
         getSkinnable().ledSizeProperty().addListener(observable -> handleControlPropertyChanged("LED_SIZE") );
         getSkinnable().orientationProperty().addListener(observable -> handleControlPropertyChanged("ORIENTATION") );
         getSkinnable().noOfLedsProperty().addListener(observable -> handleControlPropertyChanged("LED_NUMBER") );
-        getSkinnable().ledColorsProperty().addListener(new ListChangeListener<Color>() {
-            @Override public void onChanged(Change<? extends Color> change) {
-                handleControlPropertyChanged("LED_COLOR");
-            }
-        });
+        getSkinnable().ledColorsProperty().addListener((ListChangeListener<Color>) change -> handleControlPropertyChanged("LED_COLOR"));
     }
 
 

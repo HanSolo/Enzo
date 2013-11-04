@@ -64,6 +64,11 @@ public class SectionBuilder {
         properties.put("icon", new SimpleObjectProperty<>(IMAGE));
         return this;
     }
+    
+    public final SectionBuilder styleClass(final String STYLE_CLASS) {
+        properties.put("styleClass", new SimpleStringProperty(STYLE_CLASS));
+        return this;
+    }
 
     public final Section build() {
         final Section SECTION = new Section();
@@ -76,6 +81,8 @@ public class SectionBuilder {
                 SECTION.setText(((StringProperty) properties.get(key)).get());
             } else if("icon".equals(key)) {
                 SECTION.setIcon(((ObjectProperty<Image>) properties.get(key)).get());
+            } else if ("styleClass".equals(key)) {
+                SECTION.setStyleClass(((StringProperty) properties.get(key)).get());
             }
         }
         return SECTION;

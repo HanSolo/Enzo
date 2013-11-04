@@ -19,6 +19,10 @@ package eu.hansolo.enzo.ledbargraph;
 import eu.hansolo.enzo.led.Led;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -34,6 +38,7 @@ import java.util.Random;
  * Time: 04:02
  */
 public class Demo extends Application {
+    private static int noOfNodes  = 0;
     private static final Random RND = new Random();
     private LedBargraph         control;
     private long                lastTimerCall;
@@ -41,7 +46,9 @@ public class Demo extends Application {
 
     @Override public void init() {
         control = LedBargraphBuilder.create()
-                                    .ledType(Led.LedType.ROUND)
+                                    .ledType(Led.LedType.HORIZONTAL)
+                                    .orientation(Orientation.VERTICAL)
+                                    .peakValueVisible(true)
                                     .ledSize(32)
                                     .build();
         lastTimerCall = System.nanoTime();
@@ -67,6 +74,9 @@ public class Demo extends Application {
         stage.show();
 
         timer.start();
+
+        calcNoOfNodes(scene.getRoot());
+        System.out.println(noOfNodes + " Nodes in SceneGraph");
     }
 
     @Override public void stop() {
@@ -75,5 +85,19 @@ public class Demo extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    // ******************** Misc **********************************************
+    private static void calcNoOfNodes(Node node) {
+        if (node instanceof Parent) {
+            if (((Parent) node).getChildrenUnmodifiable().size() != 0) {
+                ObservableList<Node> tempChildren = ((Parent) node).getChildrenUnmodifiable();
+                noOfNodes += tempChildren.size();
+                for (Node n : tempChildren) {
+                    calcNoOfNodes(n);
+                    //System.out.println(n.getStyleClass().toString());
+                }
+            }
+        }
     }
 }
