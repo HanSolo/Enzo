@@ -94,7 +94,7 @@ public class DemoSimpleGauge extends Application {
         lastTimerCall = System.nanoTime() + 2_000_000_000l;
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
-                if (now > lastTimerCall + 2_500_000_000l) {
+                if (now > lastTimerCall + 5_000_000_000l) {
                     thermoMeter.setValue(RND.nextDouble() * 100);
                     wattMeter.setValue(RND.nextDouble() * 100);
                     energyMeter.setValue(RND.nextDouble() * 100);
