@@ -205,6 +205,19 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         }
     }
 
+    public void stopAnimation() {
+        timeline.stop();
+    }
+    
+    public void resetNeedle() {        
+        needleRotate.setAngle(180 - getSkinnable().getStartAngle());
+        if (getSkinnable().getMinValue() < 0) {
+            needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() - getSkinnable().getMinValue()) * angleStep);
+        } else {
+            //needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() + getSkinnable().getMinValue()) * angleStep);
+        }    
+    }    
+    
     @Override protected double computeMinWidth(final double HEIGHT, double TOP_INSET, double RIGHT_INSET, double BOTTOM_INSET, double LEFT_INSET) {
         return super.computeMinWidth(Math.max(MINIMUM_HEIGHT, HEIGHT - TOP_INSET - BOTTOM_INSET), TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
@@ -237,12 +250,12 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
 
     // ******************** Private Methods ***********************************
     private void rotateNeedle() {
-        angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+        angleStep          = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
         double targetAngle = needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue()) * angleStep;
-        targetAngle = clamp(180 - getSkinnable().getStartAngle(), 180 - getSkinnable().getStartAngle() + getSkinnable().getAngleRange(), targetAngle);
+        targetAngle        = clamp(180 - getSkinnable().getStartAngle(), 180 - getSkinnable().getStartAngle() + getSkinnable().getAngleRange(), targetAngle);
         
         if (getSkinnable().isAnimated()) {
-            timeline.stop();
+            timeline.stop();            
             final KeyValue KEY_VALUE = new KeyValue(needleRotate.angleProperty(), targetAngle, Interpolator.SPLINE(0.5, 0.4, 0.4, 1.0));
             final KeyFrame KEY_FRAME = new KeyFrame(Duration.millis(getSkinnable().getAnimationDuration()), KEY_VALUE);
             timeline.getKeyFrames().setAll(KEY_FRAME);

@@ -450,7 +450,7 @@ public class SimpleGauge extends Control {
         }
         return sectionIconVisible;
     }
-
+        
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {
         if (VALUE < MIN_VALUE) return MIN_VALUE;
         if (VALUE > MAX_VALUE) return MAX_VALUE;
