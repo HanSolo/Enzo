@@ -204,18 +204,15 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
             }
         }
     }
-
-    public void stopAnimation() {
+        
+    public void resetNeedle() {
         timeline.stop();
-    }
-    
-    public void resetNeedle() {        
-        needleRotate.setAngle(180 - getSkinnable().getStartAngle());
-        if (getSkinnable().getMinValue() < 0) {
-            needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() - getSkinnable().getMinValue()) * angleStep);
-        } else {
-            //needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() - getSkinnable().getOldValue() + getSkinnable().getMinValue()) * angleStep);
-        }    
+        boolean wasAnimated = getSkinnable().isAnimated();                
+        getSkinnable().setAnimated(false);            
+        getSkinnable().setValue(getSkinnable().getMinValue());
+        if (wasAnimated) {
+            getSkinnable().setAnimated(true);
+        }
     }    
     
     @Override protected double computeMinWidth(final double HEIGHT, double TOP_INSET, double RIGHT_INSET, double BOTTOM_INSET, double LEFT_INSET) {
