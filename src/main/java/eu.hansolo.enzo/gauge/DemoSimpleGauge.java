@@ -75,19 +75,19 @@ public class DemoSimpleGauge extends Application {
                                       .build();
         energyMeter = SimpleGaugeBuilder.create()
                                         .prefSize(400, 400)
-                                        .sections(new Section(0, 10, "G"),
-                                                  new Section(10, 20, "H"),
-                                                  new Section(20, 30, "G"),
-                                                  new Section(30, 40, "F"),
-                                                  new Section(40, 50, "E"),
+                                        .sections(new Section(0, 10, "A++"),
+                                                  new Section(10, 20, "A+"),
+                                                  new Section(20, 30, "A"),
+                                                  new Section(30, 40, "B"),
+                                                  new Section(40, 50, "C"),
                                                   new Section(50, 60, "D"),
-                                                  new Section(60, 70, "C"),
-                                                  new Section(70, 80, "B"),
-                                                  new Section(80, 90, "A"),
-                                                  new Section(90, 100, "A+"))
+                                                  new Section(60, 70, "E"),
+                                                  new Section(70, 80, "F"),
+                                                  new Section(80, 90, "G"),
+                                                  new Section(90, 100, "H"))
                                         .sectionTextVisible(true)
                                         .unit("W")
-                                        .styleClass(SimpleGauge.STYLE_CLASS_RED_TO_GREEN_10)
+                                        .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_RED_10)
                                         .build();
 
 
