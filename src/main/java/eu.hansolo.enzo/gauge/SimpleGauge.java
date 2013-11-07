@@ -576,13 +576,13 @@ public class SimpleGauge extends Control {
     }
     public final ObjectProperty<Paint> titleTextColorProperty() {
         if (null == titleTextColor) {
-            sectionTextColor = new StyleableObjectProperty<Paint>(DEFAULT_TITLE_TEXT_COLOR) {
+            titleTextColor = new StyleableObjectProperty<Paint>(DEFAULT_TITLE_TEXT_COLOR) {
                 @Override public CssMetaData getCssMetaData() { return StyleableProperties.TITLE_TEXT_COLOR; }
                 @Override public Object getBean() { return this; }
                 @Override public String getName() { return "titleTextColor"; }
             };
         }
-        return sectionTextColor;
+        return titleTextColor;
     }
 
     public final Paint getSectionTextColor() {
