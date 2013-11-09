@@ -33,6 +33,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
@@ -78,7 +80,8 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
     private Text                     infoText;
     private Text                     value;
     private String                   newTarget;
-    private GradientLookup           gradientLookup;    
+    private GradientLookup           gradientLookup;   
+    private InnerShadow              innerShadow;
     private double                   angleStep;
     private double                   interactiveAngle;
     private EventHandler<MouseEvent> mouseEventHandler;
@@ -135,14 +138,17 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
     }
 
     private void initGraphics() {                        
+        innerShadow = new InnerShadow(BlurType.TWO_PASS_BOX, Color.rgb(0, 0, 0, 0.65), PREFERRED_HEIGHT * 0.1, 0, 0, 0);
         Color color = gradientLookup.getColorAt(getSkinnable().getValue() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue())); 
         background = new Circle(0.5 * PREFERRED_WIDTH, 0.5 * PREFERRED_HEIGHT, 0.5 * PREFERRED_WIDTH);
         background.setFill(new LinearGradient(0, 0, 0, PREFERRED_HEIGHT,
                                               false, CycleMethod.NO_CYCLE,
                                               new Stop(0, color.deriveColor(0, 1, 0.8, 1)),
                                               new Stop(1, color.deriveColor(0, 1, 0.6, 1))));
+        background.setEffect(innerShadow);
 
         ticksCanvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
+        ticksCanvas.setMouseTransparent(true);
         ticks = ticksCanvas.getGraphicsContext2D();
 
         targetIndicator = new Region();
@@ -160,12 +166,14 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
         infoText = new Text(getSkinnable().getInfoText().toUpperCase());
         infoText.setTextOrigin(VPos.CENTER);
         infoText.setFont(Fonts.opensansSemiBold(0.06 * PREFERRED_HEIGHT));
-        infoText.getStyleClass().setAll("info-text");
+        infoText.setMouseTransparent(true);
+        infoText.getStyleClass().setAll("info-text");        
 
         value = new Text(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getValue()));
         value.setMouseTransparent(true);
         value.setTextOrigin(VPos.CENTER);
         value.setFont(Fonts.opensansBold(0.32 * PREFERRED_HEIGHT));
+        value.setMouseTransparent(true);
         value.getStyleClass().setAll("value");
 
         // Add all nodes
@@ -436,6 +444,8 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
         size = getSkinnable().getWidth() < getSkinnable().getHeight() ? getSkinnable().getWidth() : getSkinnable().getHeight();
         centerX = size * 0.5;
         centerY = size * 0.5;
+        
+        innerShadow.setRadius(size * 0.1);
         
         background.setCenterX(centerX);
         background.setCenterY(centerY);
