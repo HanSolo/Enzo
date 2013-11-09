@@ -46,7 +46,7 @@ import java.util.List;
  * Date: 08.11.13
  * Time: 16:35
  */
-public class HeatControl extends Control {       
+public class HeatControl extends Control {
     private DoubleProperty  value;
     private double          oldValue;
     private DoubleProperty  minValue;
@@ -64,7 +64,7 @@ public class HeatControl extends Control {
     private double          _startAngle;
     private DoubleProperty  startAngle;
     private double          _angleRange;
-    private DoubleProperty  angleRange;
+    private DoubleProperty  angleRange;    
 
     // CSS styleable properties
     private ObjectProperty<Paint> tickMarkFill;
@@ -83,7 +83,7 @@ public class HeatControl extends Control {
         _decimals         = 0;
         _infoText         = "";
         _startAngle       = 325;
-        _angleRange       = 290;
+        _angleRange       = 290;                
     }
 
 
@@ -91,10 +91,10 @@ public class HeatControl extends Control {
     public final double getValue() {
         return value.get();
     }
-    public final void setValue(final double VALUE) {        
+    public final void setValue(final double VALUE) {
         oldValue = value.get();
         value.set(clamp(getMinValue(), getMaxValue(), VALUE));
-        if (Math.abs(value.get() - target.get()) < 0.9) {
+        if (Math.abs(value.get() - target.get()) < 0.5) {
             setInfoText("");
         }
     }
@@ -280,7 +280,7 @@ public class HeatControl extends Control {
         if (getValue() < getMinValue()) setValue(getMinValue());
         if (getValue() > getMaxValue()) setValue(getMaxValue());
     }
-
+        
 
     // ******************** CSS Stylable Properties ***************************
     public final Paint getTickMarkFill() {

@@ -38,6 +38,8 @@ import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeLineCap;
@@ -54,12 +56,13 @@ import java.util.Locale;
  * Time: 16:35
  */
 public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatControl> {
-    private static final double PREFERRED_WIDTH  = 200;
-    private static final double PREFERRED_HEIGHT = 200;
-    private static final double MINIMUM_WIDTH    = 50;
-    private static final double MINIMUM_HEIGHT   = 50;
-    private static final double MAXIMUM_WIDTH    = 1024;
-    private static final double MAXIMUM_HEIGHT   = 1024;    
+    private static final double      PREFERRED_WIDTH  = 200;
+    private static final double      PREFERRED_HEIGHT = 200;
+    private static final double      MINIMUM_WIDTH    = 50;
+    private static final double      MINIMUM_HEIGHT   = 50;
+    private static final double      MAXIMUM_WIDTH    = 1024;
+    private static final double      MAXIMUM_HEIGHT   = 1024; 
+    private static boolean           userAction;
     private double                   size;
     private double                   centerX;
     private double                   centerY;
@@ -75,7 +78,7 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
     private Text                     infoText;
     private Text                     value;
     private String                   newTarget;
-    private GradientLookup           gradientLookup;
+    private GradientLookup           gradientLookup;    
     private double                   angleStep;
     private double                   interactiveAngle;
     private EventHandler<MouseEvent> mouseEventHandler;
@@ -85,12 +88,13 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
     // ******************** Constructors **************************************
     public HeatControlSkin(HeatControl heatControl) {
         super(heatControl);
+        userAction        = false;
         newTarget         = "";
         gradientLookup    = new GradientLookup(new Stop(0.10, Color.web("#3221c9")),                                               
                                                new Stop(0.20, Color.web("#216ec9")),
                                                new Stop(0.30, Color.web("#21bac9")),
                                                new Stop(0.40, Color.web("#30cb22")),
-                                               new Stop(0.50, Color.web("#b7df25")),
+                                               new Stop(0.50, Color.web("#2fcb22")),
                                                new Stop(0.60, Color.web("#f1ec28")),
                                                new Stop(0.70, Color.web("#f1c428")),
                                                new Stop(0.80, Color.web("#f19c28")),
@@ -130,9 +134,13 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
         }
     }
 
-    private void initGraphics() {        
+    private void initGraphics() {                        
+        Color color = gradientLookup.getColorAt(getSkinnable().getValue() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue())); 
         background = new Circle(0.5 * PREFERRED_WIDTH, 0.5 * PREFERRED_HEIGHT, 0.5 * PREFERRED_WIDTH);
-        background.setFill(gradientLookup.getColorAt(getSkinnable().getValue() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue())));
+        background.setFill(new LinearGradient(0, 0, 0, PREFERRED_HEIGHT,
+                                              false, CycleMethod.NO_CYCLE,
+                                              new Stop(0, color.deriveColor(0, 1, 0.8, 1)),
+                                              new Stop(1, color.deriveColor(0, 1, 0.6, 1))));
 
         ticksCanvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
         ticks = ticksCanvas.getGraphicsContext2D();
@@ -217,8 +225,10 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
             resize();
         } else if ("ANGLE".equals(PROPERTY)) {            
             double currentValue = (valueIndicatorRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
-            value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue));
-            value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+            if (!userAction) {
+                value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue));
+                value.setTranslateX((size - value.getLayoutBounds().getWidth()) * 0.5);
+            }
             // Check targetIndicator
             if (targetExceeded) {
                 if (currentValue < getSkinnable().getTarget()) {
@@ -271,7 +281,8 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
         final Object    SRC  = MOUSE_EVENT.getSource();
         final EventType TYPE = MOUSE_EVENT.getEventType();
         if (SRC.equals(targetIndicator)) {
-            if (MouseEvent.MOUSE_PRESSED == TYPE) {                                
+            if (MouseEvent.MOUSE_PRESSED == TYPE) {    
+                userAction = true;
                 value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getTarget()));
                 resizeText();                
             } else if (MouseEvent.MOUSE_DRAGGED == TYPE) {
@@ -358,7 +369,8 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
             }
             
             resizeText();
-            drawTickMarks(ticks);            
+            drawTickMarks(ticks);
+            userAction = false;
         });
 
         SequentialTransition sequence = new SequentialTransition(parallelOut, pause, parallelIn);
@@ -376,7 +388,11 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
     }
    
     private void adjustBackgroundColor() {
-        background.setFill(gradientLookup.getColorAt(getSkinnable().getValue() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue())));                
+        Color color = gradientLookup.getColorAt(getSkinnable().getValue() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue()));
+        background.setFill(new LinearGradient(0, 0, 0, size,
+                                              false, CycleMethod.NO_CYCLE,
+                                              new Stop(0, color.deriveColor(0, 1, 0.8, 1)),
+                                              new Stop(1, color.deriveColor(0, 1, 0.6, 1))));                        
     }
     
     private void drawTickMarks(final GraphicsContext CTX) {        
