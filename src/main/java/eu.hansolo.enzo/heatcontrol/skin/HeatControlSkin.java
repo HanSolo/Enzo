@@ -59,8 +59,7 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
     private static final double MINIMUM_WIDTH    = 50;
     private static final double MINIMUM_HEIGHT   = 50;
     private static final double MAXIMUM_WIDTH    = 1024;
-    private static final double MAXIMUM_HEIGHT   = 1024;
-    private static boolean           interactive;
+    private static final double MAXIMUM_HEIGHT   = 1024;    
     private double                   size;
     private double                   centerX;
     private double                   centerY;
@@ -86,7 +85,6 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
     // ******************** Constructors **************************************
     public HeatControlSkin(HeatControl heatControl) {
         super(heatControl);
-        interactive       = false;
         newTarget         = "";
         gradientLookup    = new GradientLookup(new Stop(0.10, Color.web("#3221c9")),                                               
                                                new Stop(0.20, Color.web("#216ec9")),
@@ -273,8 +271,7 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
         final Object    SRC  = MOUSE_EVENT.getSource();
         final EventType TYPE = MOUSE_EVENT.getEventType();
         if (SRC.equals(targetIndicator)) {
-            if (MouseEvent.MOUSE_PRESSED == TYPE) {                
-                interactive = true;
+            if (MouseEvent.MOUSE_PRESSED == TYPE) {                                
                 value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", getSkinnable().getTarget()));
                 resizeText();                
             } else if (MouseEvent.MOUSE_DRAGGED == TYPE) {
@@ -361,8 +358,7 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
             }
             
             resizeText();
-            drawTickMarks(ticks);
-            interactive = false;
+            drawTickMarks(ticks);            
         });
 
         SequentialTransition sequence = new SequentialTransition(parallelOut, pause, parallelIn);
