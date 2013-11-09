@@ -31,8 +31,10 @@ public final class Fonts {
     private static final String DIGITAL_READOUT_BOLD_NAME;
     private static final String DIN_FUN_NAME;
     private static final String DROID_SANS_MONO_NAME;
-    private static final String ELEKTRA_NAME;    
+    private static final String ELEKTRA_NAME;
+    private static final String OPENSANS_LIGHT_NAME;
     private static final String OPENSANS_SEMI_BOLD_NAME;
+    private static final String OPENSANS_BOLD_NAME;
         
     private static String bebasNeueName;
     private static String digitalName;
@@ -41,7 +43,9 @@ public final class Fonts {
     private static String dinFunName;
     private static String droidSansMonoName;
     private static String elektraName;
+    private static String openSansLightName;
     private static String openSansSemiBoldName;
+    private static String openSansBoldName;
 
     static {
         try {
@@ -52,7 +56,9 @@ public final class Fonts {
             dinFunName             = Font.loadFont(Fonts.class.getResourceAsStream("/eu/hansolo/enzo/fonts/din.otf"), 10).getName();
             droidSansMonoName      = Font.loadFont(Fonts.class.getResourceAsStream("/eu/hansolo/enzo/fonts/droidsansmono.ttf"), 10).getName();
             elektraName            = Font.loadFont(Fonts.class.getResourceAsStream("/eu/hansolo/enzo/fonts/elektra.ttf"), 10).getName();
+            openSansLightName      = Font.loadFont(Fonts.class.getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-light.ttf"), 10).getName();
             openSansSemiBoldName   = Font.loadFont(Fonts.class.getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-semibold.ttf"), 10).getName();
+            openSansBoldName       = Font.loadFont(Fonts.class.getResourceAsStream("/eu/hansolo/enzo/fonts/opensans-bold.ttf"), 10).getName();
         } catch (Exception exception) { }
         BEBAS_NEUE_NAME           = bebasNeueName;
         DIGITAL_NAME              = digitalName;
@@ -61,7 +67,9 @@ public final class Fonts {
         DIN_FUN_NAME              = dinFunName;
         DROID_SANS_MONO_NAME      = droidSansMonoName;
         ELEKTRA_NAME              = elektraName;
+        OPENSANS_LIGHT_NAME       = openSansLightName;
         OPENSANS_SEMI_BOLD_NAME   = openSansSemiBoldName;
+        OPENSANS_BOLD_NAME        = openSansBoldName;
     }
 
     
@@ -93,8 +101,16 @@ public final class Fonts {
     public static Font elektra(final double SIZE) {
         return new Font(ELEKTRA_NAME, SIZE);
     }
+
+    public static Font opensansLight(final double SIZE) {
+        return new Font(OPENSANS_LIGHT_NAME, SIZE);
+    }
     
     public static Font opensansSemiBold(final double SIZE) {
         return new Font(OPENSANS_SEMI_BOLD_NAME, SIZE);
+    }
+
+    public static Font opensansBold(final double SIZE) {
+        return new Font(OPENSANS_BOLD_NAME, SIZE);
     }
 }
