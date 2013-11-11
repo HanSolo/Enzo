@@ -513,7 +513,7 @@
     -lcd-fg     : rgb(255, 255, 255);
     -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
 }
-.lcd-flat-gree-sea {
+.lcd-flat-green-sea {
     -lcd-frame  : white;
     -lcd-bg0    : rgb( 26, 188, 156);
     -lcd-bg1    : rgb( 26, 188, 156);

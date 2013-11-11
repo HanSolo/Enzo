@@ -102,7 +102,7 @@ public class DemoLcd extends Application {
         control = LcdBuilder.create()
                             .prefWidth(1280)
                             .prefHeight(400)
-                            .styleClass(Lcd.STYLE_CLASS_YOCTOPUCE)
+                            //.styleClass(Lcd.STYLE_CLASS_GREEN_DARKGREEN)
                             .foregroundShadowVisible(true)
                             .crystalOverlayVisible(true)
                             .title("Room Temp")
@@ -149,6 +149,7 @@ public class DemoLcd extends Application {
                         control.setCrystalOverlayVisible(true);
                     }
                     control.getStyleClass().setAll("lcd", STYLE_CLASSES[styleClassCounter]);
+                    System.out.println(control.getStyleClass());
                     control.setValue(RND.nextDouble() * 100);
                     control.setTrend(Lcd.Trend.values()[RND.nextInt(5)]);
                     charge += 0.02;
@@ -177,8 +178,8 @@ public class DemoLcd extends Application {
         stage.centerOnScreen();
         //stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
-        stage.show();
-
+        stage.show();        
+                
         timer.start();
 
         calcNoOfNodes(scene.getRoot());

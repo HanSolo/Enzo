@@ -268,7 +268,6 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
                                          lowerCenterText);
 
         pane = new Pane();
-        pane.getStyleClass().add("lcd");
         pane.getChildren().setAll(main,
                                   crystalOverlay,
                                   backgroundText,
