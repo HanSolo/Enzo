@@ -23,6 +23,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -83,6 +84,9 @@ public class SimpleGauge extends Control {
     private static final Color      DEFAULT_SECTION_FILL_7           = Color.web("#c84164");
     private static final Color      DEFAULT_SECTION_FILL_8           = Color.web("#888888");
     private static final Color      DEFAULT_SECTION_FILL_9           = Color.web("#aaaaaa");
+    
+    // Default measured range color
+    private static final Color      DEFAULT_RANGE_FILL               = Color.rgb(0, 0, 0, 0.25);
 
     private DoubleProperty          value;
     private double                  oldValue;
@@ -90,6 +94,8 @@ public class SimpleGauge extends Control {
     private double                  exactMinValue;
     private DoubleProperty          maxValue;
     private double                  exactMaxValue;
+    private double                  minMeasuredValue;
+    private double                  maxMeasuredValue;
     private int                     _decimals;
     private IntegerProperty         decimals;
     private String                  _unit;
@@ -109,6 +115,8 @@ public class SimpleGauge extends Control {
     private BooleanProperty         sectionTextVisible;
     private boolean                 _sectionIconVisible;
     private BooleanProperty         sectionIconVisible;
+    private boolean                 _measuredRangeVisible;
+    private BooleanProperty         measuredRangeVisible;
 
     private Color                   _needleColor;
     private ObjectProperty<Color>   needleColor;
@@ -134,30 +142,32 @@ public class SimpleGauge extends Control {
     private ObjectProperty<Paint>   sectionFill7;
     private ObjectProperty<Paint>   sectionFill8;
     private ObjectProperty<Paint>   sectionFill9;
+    private ObjectProperty<Paint>   rangeFill;
 
 
     // ******************** Constructors **************************************
     public SimpleGauge() {
         getStyleClass().add("simple-gauge");
-        value               = new SimpleDoubleProperty(this, "value", 0);
-        minValue            = new SimpleDoubleProperty(this, "minValue", 0);
-        maxValue            = new SimpleDoubleProperty(this, "maxValue", 100);
-        oldValue            = 0;
-        _decimals           = 0;
-        _unit               = "";
-        _animated           = true;
-        _startAngle         = 315;
-        _angleRange         = 270;
-        _clockwise          = true;
-        _autoScale          = false;
-        _needleColor        = Color.web("#5a615f");
-        _sectionTextVisible = false;
-        _sectionIconVisible = false;
-        sections            = FXCollections.observableArrayList();
-        _majorTickSpace     = 10;
-        _minorTickSpace     = 1;
-        _title              = "";
-        animationDuration   = 3000;
+        value                 = new SimpleDoubleProperty(this, "value", 0);
+        minValue              = new SimpleDoubleProperty(this, "minValue", 0);
+        maxValue              = new SimpleDoubleProperty(this, "maxValue", 100);
+        oldValue              = 0;
+        _decimals             = 0;
+        _unit                 = "";
+        _animated             = true;
+        _startAngle           = 315;
+        _angleRange           = 270;
+        _clockwise            = true;
+        _autoScale            = false;
+        _needleColor          = Color.web("#5a615f");
+        _sectionTextVisible   = false;
+        _sectionIconVisible   = false;
+        _measuredRangeVisible = false;
+        sections              = FXCollections.observableArrayList();
+        _majorTickSpace       = 10;
+        _minorTickSpace       = 1;
+        _title                = "";
+        animationDuration     = 3000;        
     }
 
 
@@ -199,6 +209,25 @@ public class SimpleGauge extends Control {
         return maxValue;
     }
 
+    public final double getMinMeasuredValue() {
+        return minMeasuredValue;
+    }
+    public final void setMinMeasuredValue(final double MIN_MEASURED_VALUE) {
+        minMeasuredValue = clamp(getMinValue(), getMaxValue(), MIN_MEASURED_VALUE);
+    }
+    
+    public final double getMaxMeasuredValue() {
+        return maxMeasuredValue;
+    } 
+    public final void setMaxMeasuredValue(final double MAX_MEASURED_VALUE) {
+        maxMeasuredValue = clamp(getMinValue(), getMaxValue(), MAX_MEASURED_VALUE);
+    }
+    
+    public final void resetMinMaxMeasuredValues() {
+        minMeasuredValue = getValue();
+        maxMeasuredValue = getValue();
+    }
+    
     public final int getDecimals() {
         return null == decimals ? _decimals : decimals.get();
     }
@@ -449,6 +478,23 @@ public class SimpleGauge extends Control {
             sectionIconVisible = new SimpleBooleanProperty(this, "sectionIconVisible", _sectionIconVisible);
         }
         return sectionIconVisible;
+    }
+    
+    public final boolean isMeasuredRangeVisible() {
+        return null == measuredRangeVisible ? _measuredRangeVisible : measuredRangeVisible.get();
+    }
+    public final void setMeasuredRangeVisible(final boolean MEASURED_RANGE_VISIBLE) {
+        if (null == measuredRangeVisible) {
+            _measuredRangeVisible = MEASURED_RANGE_VISIBLE;
+        } else {
+            measuredRangeVisible.set(MEASURED_RANGE_VISIBLE);
+        }
+    }
+    public final ReadOnlyBooleanProperty measuredRangeVisibleProperty() {
+        if (null == measuredRangeVisible) {
+            measuredRangeVisible = new SimpleBooleanProperty(this, "measuredRangeVisible", _measuredRangeVisible);
+        }
+        return measuredRangeVisible;
     }
         
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {
@@ -772,6 +818,23 @@ public class SimpleGauge extends Control {
         return sectionFill9;
     }
 
+    public final Paint getRangeFill() {
+        return null == rangeFill ? DEFAULT_RANGE_FILL : rangeFill.get();
+    }
+    public final void setRangeFill(Paint value) {
+        rangeFillProperty().set(value);
+    }
+    public final ObjectProperty<Paint> rangeFillProperty() {
+        if (null == rangeFill) {
+            rangeFill = new StyleableObjectProperty<Paint>(DEFAULT_RANGE_FILL) {
+                @Override public CssMetaData getCssMetaData() { return StyleableProperties.RANGE_FILL; }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "rangeFill"; }
+            };
+        }
+        return rangeFill;
+    }
+    
 
     // ******************** Style related *************************************
     @Override protected Skin createDefaultSkin() {
@@ -991,6 +1054,22 @@ public class SimpleGauge extends Control {
                 }
             };
 
+        private static final CssMetaData<SimpleGauge, Paint> RANGE_FILL =
+            new CssMetaData<SimpleGauge, Paint>("-range-fill", PaintConverter.getInstance(), DEFAULT_RANGE_FILL) {
+
+                @Override public boolean isSettable(SimpleGauge gauge) {
+                    return null == gauge.rangeFill || !gauge.rangeFill.isBound();
+                }
+
+                @Override public StyleableProperty<Paint> getStyleableProperty(SimpleGauge gauge) {
+                    return (StyleableProperty) gauge.rangeFillProperty();
+                }
+
+                @Override public Paint getInitialValue(SimpleGauge gauge) {
+                    return gauge.getRangeFill();
+                }
+            };
+        
         private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
@@ -1007,7 +1086,8 @@ public class SimpleGauge extends Control {
                                SECTION_FILL_6,
                                SECTION_FILL_7,
                                SECTION_FILL_8,
-                               SECTION_FILL_9);
+                               SECTION_FILL_9,
+                               RANGE_FILL);
             STYLEABLES = Collections.unmodifiableList(styleables);
         }
     }

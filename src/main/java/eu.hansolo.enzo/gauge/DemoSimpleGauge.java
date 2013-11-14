@@ -71,6 +71,8 @@ public class DemoSimpleGauge extends Application {
                                                 new Section(66.66666, 83.33333, "4"),
                                                 new Section(83.33333, 100.0, "5"))
                                       .unit("W")
+                                      .measuredRangeVisible(true)
+                                      .rangeFill(Color.rgb(0, 0, 200, 0.5))
                                       .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_DARKGREEN_6)
                                       .build();
         energyMeter = SimpleGaugeBuilder.create()

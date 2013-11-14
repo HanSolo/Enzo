@@ -65,8 +65,10 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
     private static final double MAXIMUM_HEIGHT   = 1024;
     private double              size;
     private Pane                pane;
-    private Canvas              sectionsCanvas;
+    private Canvas              sectionsCanvas;    
     private GraphicsContext     sectionsCtx;
+    private Canvas              measuredRangeCanvas;
+    private GraphicsContext     measuredRangeCtx;
     private Path                needle;
     private Rotate              needleRotate;
     private Text                value;
@@ -113,6 +115,11 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         sectionsCanvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
         sectionsCtx    = sectionsCanvas.getGraphicsContext2D();
 
+        measuredRangeCanvas = new Canvas(PREFERRED_WIDTH, PREFERRED_HEIGHT);
+        measuredRangeCanvas.setManaged(getSkinnable().isMeasuredRangeVisible());
+        measuredRangeCanvas.setVisible(getSkinnable().isMeasuredRangeVisible());
+        measuredRangeCtx    = measuredRangeCanvas.getGraphicsContext2D();        
+        
         if (getSkinnable().getValue() < getSkinnable().getMinValue()) getSkinnable().setValue(getSkinnable().getMinValue());
         if (getSkinnable().getValue() > getSkinnable().getMaxValue()) getSkinnable().setValue(getSkinnable().getMaxValue());
 
@@ -144,6 +151,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         pane = new Pane();
         pane.getStyleClass().add("simple-gauge");
         pane.getChildren().setAll(sectionsCanvas,
+                                  measuredRangeCanvas,
                                   needle,
                                   value,
                                   title);
@@ -167,7 +175,8 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         getSkinnable().valueTextColorProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().titleTextColorProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().sectionTextColorProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
-        getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("RESIZE"));
+        getSkinnable().measuredRangeVisibleProperty().addListener(observable -> handleControlPropertyChanged("MEASURED_RANGE_VISIBLE"));
+        getSkinnable().getSections().addListener((ListChangeListener<Section>) change -> handleControlPropertyChanged("RESIZE"));        
 
         needleRotate.angleProperty().addListener(observable -> handleControlPropertyChanged("ANGLE"));
     }
@@ -202,6 +211,17 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
                     break;
                 }
             }
+            // Adjust minMeasured and maxMeasured values
+            if (currentValue < getSkinnable().getMinMeasuredValue()) {
+                getSkinnable().setMinMeasuredValue(currentValue);                
+            }
+            if (currentValue > getSkinnable().getMaxMeasuredValue()) {
+                getSkinnable().setMaxMeasuredValue(currentValue);                
+            }
+            if (getSkinnable().isMeasuredRangeVisible()) drawMeasuredRange();
+        } else if ("MEASURED_RANGE_VISIBLE".equals(PROPERTY)) {
+            measuredRangeCanvas.setManaged(getSkinnable().isMeasuredRangeVisible());
+            measuredRangeCanvas.setVisible(getSkinnable().isMeasuredRangeVisible());            
         }
     }
         
@@ -336,6 +356,24 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         }
     }
 
+    private final void drawMeasuredRange() {        
+        final double MIN_VALUE    = getSkinnable().getMinValue();        
+        final double OFFSET       = getSkinnable().getStartAngle() - 90;
+        final double START_ANGLE  = (getSkinnable().getMinMeasuredValue() - MIN_VALUE) * angleStep;
+        final double ANGLE_EXTEND = (getSkinnable().getMaxMeasuredValue() - getSkinnable().getMinMeasuredValue()) * angleStep;
+        final double RANGE_OFFSET = size * 0.015;
+        final double RANGE_SIZE   = size - (size * 0.03);        
+        
+        measuredRangeCtx.save();
+        measuredRangeCtx.clearRect(0, 0, size, size);
+        measuredRangeCtx.setFill(getSkinnable().getRangeFill());
+        measuredRangeCtx.fillArc(RANGE_OFFSET, RANGE_OFFSET, RANGE_SIZE, RANGE_SIZE, (OFFSET - START_ANGLE), -ANGLE_EXTEND, ArcType.ROUND);
+        measuredRangeCtx.setStroke(Color.WHITE);
+        measuredRangeCtx.setLineWidth(size * 0.032);
+        measuredRangeCtx.strokeArc(RANGE_OFFSET, RANGE_OFFSET, RANGE_SIZE, RANGE_SIZE, (OFFSET - START_ANGLE), -ANGLE_EXTEND, ArcType.ROUND);
+        measuredRangeCtx.restore();
+    }
+    
     private double clamp(final double MIN_VALUE, final double MAX_VALUE, final double VALUE) {
         if (VALUE < MIN_VALUE) return MIN_VALUE;
         if (VALUE > MAX_VALUE) return MAX_VALUE;
@@ -375,6 +413,10 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         sectionsCanvas.setCache(true);
         sectionsCanvas.setCacheHint(CacheHint.QUALITY);
 
+        measuredRangeCanvas.setWidth(size);
+        measuredRangeCanvas.setHeight(size);
+        drawMeasuredRange();        
+        
         double currentValue = (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep + getSkinnable().getMinValue();
         value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", currentValue) + getSkinnable().getUnit());
         //value.setText(String.format(Locale.US, "%." + getSkinnable().getDecimals() + "f", (needleRotate.getAngle() + getSkinnable().getStartAngle() - 180) / angleStep) + getSkinnable().getUnit());

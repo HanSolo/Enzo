@@ -109,6 +109,11 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
         return this;
     }
 
+    public final SimpleGaugeBuilder measuredRangeVisible(final boolean MEASURED_RANGE_VISIBLE) {
+        properties.put("measuredRangeVisible", new SimpleBooleanProperty(MEASURED_RANGE_VISIBLE));
+        return this;
+    }
+    
     public final SimpleGaugeBuilder valueTextColor(final Color VALUE_TEXT_COLOR) {
         properties.put("valueTextColor", new SimpleObjectProperty<Color>(VALUE_TEXT_COLOR));
         return this;
@@ -204,6 +209,11 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
         return this;
     }
 
+    public final SimpleGaugeBuilder rangeFill(final Color RANGE_FILL) {
+        properties.put("rangeFill", new SimpleObjectProperty<Color>(RANGE_FILL));
+        return this;
+    }
+    
     public final SimpleGaugeBuilder styleClass(final String... STYLES) {
         properties.put("styleClass", new SimpleObjectProperty<>(STYLES));
         return this;
@@ -377,6 +387,10 @@ public class SimpleGaugeBuilder<B extends SimpleGaugeBuilder<B>> {
                 CONTROL.setTitleTextColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("sectionTextColor".equals(key)) {
                 CONTROL.setSectionTextColor(((ObjectProperty<Color>) properties.get(key)).get());
+            } else if ("measuredRangeVisible".equals(key)) {
+                CONTROL.setMeasuredRangeVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("rangeFill".equals(key)) {
+                CONTROL.setRangeFill(((ObjectProperty<Color>) properties.get(key)).get());
             }
         }
         return CONTROL;

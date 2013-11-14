@@ -33,6 +33,7 @@
     -section-fill-7    : #c84164;
     -section-fill-8    : #888888;
     -section-fill-9    : #aaaaaa;
+    -range-fill        : rgba(0, 0, 0, 0.25);
 }
 
 
@@ -95,6 +96,14 @@
 }
 .simple-gauge .section9 {
     -fx-fill: -section-fill-9;
+}
+
+
+/******************************************************************************
+ * SIMPLEGAUGE measured value range                                           *
+ *****************************************************************************/
+.simple-gauge .range {
+    -fx-fill: -range-fill;
 }
 
 
