@@ -23,6 +23,7 @@ import eu.hansolo.enzo.gauge.skin.GaugeSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.DoublePropertyBase;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -207,9 +208,45 @@ public class Gauge extends Control {
     // ******************** Constructors **************************************
     public Gauge() {
         getStyleClass().add("gauge");
-        value                    = new SimpleDoubleProperty(this, "value", 0);
-        minValue                 = new SimpleDoubleProperty(this, "minValue", 0);
-        maxValue                 = new SimpleDoubleProperty(this, "maxValue", 100);
+        value                    = new DoublePropertyBase(0) {
+            @Override protected void invalidated() {
+                set(clamp(getMinValue(), getMaxValue(), get()));
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "value"; }
+        };
+        minValue                 = new DoublePropertyBase(0) {
+            @Override protected void invalidated() {
+                set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+                if (getValue() < get()) setValue(get());
+                if (getThreshold() < get()) setThreshold(get());
+                for (Marker marker : markers.keySet()) {
+                    if (marker.getValue() < get()) marker.setValue(get());                 
+                }
+                for (Section section : sections) {
+                    if (section.getStart() < get()) section.setStart(get());                    
+                    if (section.getStop() < get()) section.setStop(get());                    
+                }
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "minValue"; }
+        };
+        maxValue                 = new DoublePropertyBase(100) {
+            @Override protected void invalidated() {
+                set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+                if (getValue() > get()) setValue(get());
+                if (getThreshold() > get()) setThreshold(get());
+                for (Marker marker : markers.keySet()) {                    
+                    if (marker.getValue() > get()) marker.setValue(get());
+                }
+                for (Section section : sections) {                    
+                    if (section.getStart() > get()) section.setStart(get());                    
+                    if (section.getStop() > get()) section.setStop(get());
+                }
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "maxValue"; }
+        };
         oldValue                 = 0;
         _threshold               = 50;
         _thresholdVisible        = false;
@@ -249,9 +286,9 @@ public class Gauge extends Control {
     public final void setValue(final double VALUE) {
         if (isInteractive()) return;
         oldValue = value.get();
-        value.set(clamp(getMinValue(), getMaxValue(), VALUE));
+        value.set(VALUE);
     }
-    public final ReadOnlyDoubleProperty valueProperty() {
+    public final DoubleProperty valueProperty() {
         return value;
     }
 
@@ -263,8 +300,7 @@ public class Gauge extends Control {
         return minValue.get();
     }
     public final void setMinValue(final double MIN_VALUE) {
-        minValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE));
-        validate();
+        minValue.set(MIN_VALUE);
     }
     public final DoubleProperty minValueProperty() {
         return minValue;
@@ -274,8 +310,7 @@ public class Gauge extends Control {
         return maxValue.get();
     }
     public final void setMaxValue(final double MAX_VALUE) {
-        maxValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE));
-        validate();
+        maxValue.set(MAX_VALUE);
     }
     public final DoubleProperty maxValueProperty() {
         return maxValue;
@@ -288,12 +323,16 @@ public class Gauge extends Control {
         if (null == threshold) {
             _threshold = clamp(getMinValue(), getMaxValue(), THRESHOLD);
         } else {
-            threshold.set(clamp(getMinValue(), getMaxValue(), THRESHOLD));
+            threshold.set(THRESHOLD);
         }
     }
     public final DoubleProperty thresholdProperty() {
-        if (null == threshold) {
-            threshold = new SimpleDoubleProperty(this, "threshold", _threshold);
+        if (null == threshold) {            
+            threshold = new DoublePropertyBase(_threshold) {
+                @Override protected void invalidated() { set(clamp(getMinValue(), getMaxValue(), get())); }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "threshold"; }
+            };
         }
         return threshold;
     }
@@ -418,12 +457,16 @@ public class Gauge extends Control {
         if (null == startAngle) {
             _startAngle = clamp(0, 360, START_ANGLE);
         } else {
-            startAngle.set(clamp(0, 360, START_ANGLE));
+            startAngle.set(START_ANGLE);
         }
     }
     public final DoubleProperty startAngleProperty() {
-        if (null == startAngle) {
-            startAngle = new SimpleDoubleProperty(this, "startAngle", _startAngle);
+        if (null == startAngle) {            
+            startAngle = new DoublePropertyBase(_startAngle) {
+                @Override protected void invalidated() { set(clamp(0d, 360d, get())); }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "startAngle"; }
+            };
         }
         return startAngle;
     }
@@ -442,12 +485,16 @@ public class Gauge extends Control {
         if (null == angleRange) {
             _angleRange = clamp(0.0, 360.0, ANGLE_RANGE);
         } else {
-            angleRange.set(clamp(0.0, 360.0, ANGLE_RANGE));
+            angleRange.set(ANGLE_RANGE);
         }
     }
     public final DoubleProperty angleRangeProperty() {
-        if (null == angleRange) {
-            angleRange = new SimpleDoubleProperty(this, "angleRange", _angleRange);
+        if (null == angleRange) {            
+            angleRange = new DoublePropertyBase(_angleRange) {
+                @Override protected void invalidated() { set(clamp(0d, 360d, get())); }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "angleRange"; }
+            };
         }
         return angleRange;
     }
@@ -472,14 +519,7 @@ public class Gauge extends Control {
     public final boolean isAutoScale() {
         return null == autoScale ? _autoScale : autoScale.get();
     }
-    public final void setAutoScale(final boolean AUTO_SCALE) {
-        if (AUTO_SCALE) {
-            exactMinValue = getMinValue();
-            exactMaxValue = getMaxValue();
-        } else {
-            setMinValue(exactMinValue);
-            setMaxValue(exactMaxValue);
-        }
+    public final void setAutoScale(final boolean AUTO_SCALE) {        
         if (null == autoScale) {
             _autoScale = AUTO_SCALE;
         } else {
@@ -487,8 +527,20 @@ public class Gauge extends Control {
         }
     }
     public final BooleanProperty autoScaleProperty() {
-        if (null == autoScale) {
-            autoScale = new SimpleBooleanProperty(this, "autoScale", _autoScale);
+        if (null == autoScale) {            
+            autoScale = new BooleanPropertyBase(_autoScale) {
+                @Override protected void invalidated() {
+                    if (get()) {
+                        exactMinValue = getMinValue();
+                        exactMaxValue = getMaxValue();
+                    } else {
+                        setMinValue(exactMinValue);
+                        setMaxValue(exactMaxValue);
+                    }                    
+                }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "autoScale"; }
+            };
         }
         return autoScale;
     }
@@ -868,24 +920,7 @@ public class Gauge extends Control {
         //}
         return niceFraction * Math.pow(10, EXPONENT);
     }
-
-    private void validate() {
-        if (getThreshold() < getMinValue()) setThreshold(getMinValue());
-        if (getThreshold() > getMaxValue()) setThreshold(getMaxValue());
-        if (getValue() < getMinValue()) setValue(getMinValue());
-        if (getValue() > getMaxValue()) setValue(getMaxValue());
-        for (Marker marker : markers.keySet()) {
-            if (marker.getValue() < getMinValue()) marker.setValue(getMinValue());
-            if (marker.getValue() > getMaxValue()) marker.setValue(getMaxValue());
-        }
-        for (Section section : sections) {
-            if (section.getStart() < getMinValue()) section.setStart(getMinValue());
-            if (section.getStart() > getMaxValue()) section.setStart(getMaxValue());
-            if (section.getStop() < getMinValue()) section.setStop(getMinValue());
-            if (section.getStop() > getMaxValue()) section.setStop(getMaxValue());
-        }
-    }
-
+    
 
     // ******************** CSS Stylable Properties ***************************
     public final Paint getTickMarkFill() {

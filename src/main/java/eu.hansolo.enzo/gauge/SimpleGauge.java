@@ -21,14 +21,13 @@ import eu.hansolo.enzo.common.Section;
 import eu.hansolo.enzo.gauge.skin.SimpleGaugeSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.DoublePropertyBase;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.IntegerPropertyBase;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -117,7 +116,7 @@ public class SimpleGauge extends Control {
     private BooleanProperty         sectionIconVisible;
     private boolean                 _measuredRangeVisible;
     private BooleanProperty         measuredRangeVisible;
-
+    
     private Color                   _needleColor;
     private ObjectProperty<Color>   needleColor;
     private ObservableList<Section> sections;
@@ -127,7 +126,7 @@ public class SimpleGauge extends Control {
     private DoubleProperty          minorTickSpace;
     private String                  _title;
     private StringProperty          title;
-
+    
     // CSS styleable properties
     private ObjectProperty<Paint>   valueTextColor;
     private ObjectProperty<Paint>   titleTextColor;
@@ -143,14 +142,34 @@ public class SimpleGauge extends Control {
     private ObjectProperty<Paint>   sectionFill8;
     private ObjectProperty<Paint>   sectionFill9;
     private ObjectProperty<Paint>   rangeFill;
-
+        
 
     // ******************** Constructors **************************************
     public SimpleGauge() {
-        getStyleClass().add("simple-gauge");
-        value                 = new SimpleDoubleProperty(this, "value", 0);
-        minValue              = new SimpleDoubleProperty(this, "minValue", 0);
-        maxValue              = new SimpleDoubleProperty(this, "maxValue", 100);
+        getStyleClass().add("simple-gauge");        
+        value                 = new DoublePropertyBase(0) {
+            @Override protected void invalidated() {                
+                set(clamp(getMinValue(), getMaxValue(), get()));    
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "value"; }
+        };                
+        minValue              = new DoublePropertyBase(0) {
+            @Override protected void invalidated() { 
+                set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+                if (getValue() < get()) setValue(get());                
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "minValue"; }
+        };
+        maxValue              = new DoublePropertyBase(100) {
+            @Override protected void invalidated() { 
+                set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+                if (getValue() > get()) setValue(get());
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "maxValue"; }
+        };
         oldValue              = 0;
         _decimals             = 0;
         _unit                 = "";
@@ -176,10 +195,11 @@ public class SimpleGauge extends Control {
         return value.get();
     }
     public final void setValue(final double VALUE) {
-        oldValue = value.get();
-        value.set(clamp(getMinValue(), getMaxValue(), VALUE));
+        oldValue = valueProperty().get();
+        //value.set(clamp(getMinValue(), getMaxValue(), VALUE));
+        value.set(VALUE);
     }
-    public final ReadOnlyDoubleProperty valueProperty() {
+    public final DoubleProperty valueProperty() {                        
         return value;
     }
 
@@ -191,10 +211,9 @@ public class SimpleGauge extends Control {
         return minValue.get();
     }
     public final void setMinValue(final double MIN_VALUE) {
-        minValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE));
-        validate();
+        minValue.set(MIN_VALUE);
     }
-    public final ReadOnlyDoubleProperty minValueProperty() {
+    public final DoubleProperty minValueProperty() {                
         return minValue;
     }
 
@@ -202,10 +221,9 @@ public class SimpleGauge extends Control {
         return maxValue.get();
     }
     public final void setMaxValue(final double MAX_VALUE) {
-        maxValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE));
-        validate();
+        maxValue.set(MAX_VALUE);
     }
-    public final ReadOnlyDoubleProperty maxValueProperty() {
+    public final DoubleProperty maxValueProperty() {
         return maxValue;
     }
 
@@ -235,12 +253,16 @@ public class SimpleGauge extends Control {
         if (null == decimals) {
             _decimals = clamp(0, 3, DECIMALS);
         } else {
-            decimals.set(clamp(0, 3, DECIMALS));
+            decimals.set(DECIMALS);
         }
     }
-    public final ReadOnlyIntegerProperty decimalsProperty() {
+    public final IntegerProperty decimalsProperty() {
         if (null == decimals) {
-            decimals = new SimpleIntegerProperty(this, "decimals", _decimals);
+            decimals  = new IntegerPropertyBase(_decimals) {
+                @Override protected void invalidated() { set(clamp(0, 3, get())); }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "decimals"; }
+            };
         }
         return decimals;
     }
@@ -286,12 +308,18 @@ public class SimpleGauge extends Control {
         if (null == startAngle) {
             _startAngle = clamp(0, 360, START_ANGLE);
         } else {
-            startAngle.set(clamp(0, 360, START_ANGLE));
+            startAngle.set(START_ANGLE);
         }
     }
     public final DoubleProperty startAngleProperty() {
-        if (null == startAngle) {
-            startAngle = new SimpleDoubleProperty(this, "startAngle", _startAngle);
+        if (null == startAngle) {            
+            startAngle = new DoublePropertyBase(_startAngle) {
+                @Override protected void invalidated() {
+                    set(clamp(0d, 360d, get()));                    
+                }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "startAngle"; }
+            };
         }
         return startAngle;
     }
@@ -310,12 +338,16 @@ public class SimpleGauge extends Control {
         if (null == angleRange) {
             _angleRange = clamp(0.0, 360.0, ANGLE_RANGE);
         } else {
-            angleRange.set(clamp(0.0, 360.0, ANGLE_RANGE));
+            angleRange.set(ANGLE_RANGE);
         }
     }
     public final DoubleProperty angleRangeProperty() {
-        if (null == angleRange) {
-            angleRange = new SimpleDoubleProperty(this, "angleRange", _angleRange);
+        if (null == angleRange) {                        
+            angleRange = new DoublePropertyBase(_angleRange) {
+                @Override protected void invalidated() { set(clamp(0d, 360d, get())); }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "angleRange"; }
+            };
         }
         return angleRange;
     }
@@ -583,9 +615,9 @@ public class SimpleGauge extends Control {
     }
 
     private void validate() {
+        /*
         if (getValue() < getMinValue()) setValue(getMinValue());
         if (getValue() > getMaxValue()) setValue(getMaxValue());
-        /*
         for (Section section : sections) {
             if (section.getStart() < getMinValue()) section.setStart(getMinValue());
             if (section.getStart() > getMaxValue()) section.setStart(getMaxValue());
