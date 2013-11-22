@@ -195,8 +195,7 @@ public class SimpleGauge extends Control {
         return value.get();
     }
     public final void setValue(final double VALUE) {
-        oldValue = valueProperty().get();
-        //value.set(clamp(getMinValue(), getMaxValue(), VALUE));
+        oldValue = valueProperty().get();        
         value.set(VALUE);
     }
     public final DoubleProperty valueProperty() {                        

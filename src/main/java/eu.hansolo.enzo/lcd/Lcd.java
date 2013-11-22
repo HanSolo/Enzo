@@ -25,6 +25,7 @@ import javafx.animation.Transition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.DoublePropertyBase;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -250,8 +251,14 @@ public class Lcd extends Control {
 
     // ******************** Constructors **************************************
     public Lcd() {
-        getStyleClass().add("lcd");
-        value                     = new SimpleDoubleProperty(0);
+        getStyleClass().add("lcd");        
+        value                     = new DoublePropertyBase(0) {
+            @Override protected void invalidated() {
+                set(clamp(getMinValue(), getMaxValue(), get()));
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "value"; }
+        };
         currentValue              = new SimpleDoubleProperty(0);
         formerValue               = new SimpleDoubleProperty(0);
         initialized               = false;
@@ -384,10 +391,9 @@ public class Lcd extends Control {
         return value.get();
     }
     public final void setValue(final double VALUE) {
-        formerValue.set(value.get());
-        value.set(clamp(getMinValue(), getMaxValue(), VALUE));
+        formerValue.set(value.get());        
     }
-    public final ReadOnlyDoubleProperty valueProperty() {
+    public final DoubleProperty valueProperty() {
         return value;
     }
 
@@ -446,12 +452,18 @@ public class Lcd extends Control {
         if (null == minValue) {
             _minValue = clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE);
         } else {
-            minValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE));
+            minValue.set(MIN_VALUE);
         }
     }
     public final DoubleProperty minValueProperty() {
-        if (null == minValue) {
-            minValue = new SimpleDoubleProperty(this, "minValue", _minValue);
+        if (null == minValue) {            
+            minValue = new DoublePropertyBase(_minValue) {
+                @Override protected void invalidated() {
+                    set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+                }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "minValue"; }
+            };
         }
         return minValue;
     }
@@ -463,12 +475,18 @@ public class Lcd extends Control {
         if (null == maxValue) {
             _maxValue = clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE);
         } else {
-            maxValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE));
+            maxValue.set(MAX_VALUE);
         }
     }
     public final DoubleProperty maxValueProperty() {
-        if (null == maxValue) {
-            maxValue = new SimpleDoubleProperty(this, "maxValue", _maxValue);
+        if (null == maxValue) {            
+            maxValue = new DoublePropertyBase(_maxValue) {
+                @Override protected void invalidated() {
+                    set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+                }
+                @Override public Object getBean() { return this; }
+                @Override public String getName() { return "maxValue"; }
+            };
         }
         return maxValue;
     }
