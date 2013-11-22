@@ -391,7 +391,8 @@ public class Lcd extends Control {
         return value.get();
     }
     public final void setValue(final double VALUE) {
-        formerValue.set(value.get());        
+        formerValue.set(value.get());
+        value.set(VALUE);
     }
     public final DoubleProperty valueProperty() {
         return value;
