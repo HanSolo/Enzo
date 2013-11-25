@@ -584,7 +584,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         widthOfDecimals = 0 == getSkinnable().getDecimals() ? 0 : getSkinnable().getDecimals() * oneSegmentWidth + (Lcd.LcdFont.LCD == getSkinnable().getValueFont() ? oneSegmentWidth : dotSegmentWidth);        
         
         // Available width
-        availableWidth = width - (0.0151515152 * width) - 2 - valueOffsetRight - widthOfDecimals;
+        availableWidth = width - (0.0151515152 * width) - (0.0416666667 * height) - 2 - valueOffsetRight - widthOfDecimals;
 
         // Number of segments
         noOfSegments = (int) Math.floor(availableWidth / oneSegmentWidth);
