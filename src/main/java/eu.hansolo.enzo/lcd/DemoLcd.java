@@ -111,7 +111,7 @@ public class DemoLcd extends Application {
                             .alarmVisible(true)
                             .unit("°C")
                             .unitVisible(true)
-                            .decimals(2)
+                            .decimals(3)
                             .animationDurationInMs(1500)
                             .minMeasuredValueDecimals(2)
                             .minMeasuredValueVisible(true)
@@ -124,7 +124,7 @@ public class DemoLcd extends Application {
                             .numberSystemVisible(false)
                             .lowerRightTextVisible(true)
                             .lowerRightText("Info")
-                            //.valueFont(Lcd.LcdFont.BUS)
+                            //.valueFont(Lcd.LcdFont.ELEKTRA)
                             .valueFont(Lcd.LcdFont.LCD)
                             .animated(true)
                             .build();

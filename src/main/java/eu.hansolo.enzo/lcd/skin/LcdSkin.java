@@ -54,6 +54,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     private static final double        MAXIMUM_HEIGHT     = 1024;
     private static double              aspectRatio        = PREFERRED_HEIGHT / PREFERRED_WIDTH;
     private static Text                oneSegment         = new Text("8");
+    private static Text                dotSegment         = new Text(".");
     private static final DecimalFormat DEC_FORMAT         = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US));
     private static final boolean       SCIFI_FORMAT       = false;
     private static final Color         DARK_NOISE_COLOR   = Color.rgb(100, 100, 100, 0.10);
@@ -93,6 +94,7 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     private Font                       titleFont;
     private Font                       smallFont;
     private double                     oneSegmentWidth;
+    private double                     dotSegmentWidth;
     private double                     widthOfDecimals;
     private double                     availableWidth;
     private int                        noOfSegments;
@@ -560,13 +562,14 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     private void updateBackgroundText() {
         // Setup the semitransparent background text
         backgroundText.setTextOrigin(VPos.BASELINE);
-        backgroundText.setTextAlignment(TextAlignment.RIGHT);
+        backgroundText.setTextAlignment(TextAlignment.RIGHT);        
 
         // Setup the semitransparent background text
         // Width of one segment
         oneSegment.setFont(valueFont);
+        dotSegment.setText(".");
         if (Lcd.LcdFont.LCD == getSkinnable().getValueFont()) {
-            oneSegment.setText("8");
+            oneSegment.setText("8");                        
         } else if (Lcd.LcdFont.DIGITAL == getSkinnable().getValueFont()) {
             oneSegment.setText("_");
         } else if (Lcd.LcdFont.DIGITAL_BOLD == getSkinnable().getValueFont()) {
@@ -575,12 +578,13 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
             oneSegment.setText("_");
         }
         oneSegmentWidth = oneSegment.getLayoutBounds().getWidth();
+        dotSegmentWidth = dotSegment.getLayoutBounds().getWidth();
 
-        // Width of decimals
-        widthOfDecimals = getSkinnable().getDecimals() == 0 ? 0 : getSkinnable().getDecimals() * oneSegmentWidth + oneSegmentWidth;
-
+        // Width of decimals        
+        widthOfDecimals = 0 == getSkinnable().getDecimals() ? 0 : getSkinnable().getDecimals() * oneSegmentWidth + (Lcd.LcdFont.LCD == getSkinnable().getValueFont() ? oneSegmentWidth : dotSegmentWidth);        
+        
         // Available width
-        availableWidth = width - 2 - valueOffsetRight - widthOfDecimals;
+        availableWidth = width - (0.0151515152 * width) - 2 - valueOffsetRight - widthOfDecimals;
 
         // Number of segments
         noOfSegments = (int) Math.floor(availableWidth / oneSegmentWidth);
@@ -590,8 +594,9 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         for (int i = 0 ; i < getSkinnable().getDecimals() ; i++) {
             backgroundTextBuilder.append(oneSegment.getText());
         }
-        if (getSkinnable().getDecimals() != 0) {
-            backgroundTextBuilder.insert(0, "");
+        
+        if (getSkinnable().getDecimals() != 0) {            
+            backgroundTextBuilder.insert(0, ".");            
         }
 
         for (int i = 0 ; i < noOfSegments ; i++) {
