@@ -58,7 +58,6 @@ public enum Notifier {
 	private static Stage          stageRef      = null;
     private Duration              popupLifetime;
     private Stage                 stage;
-    private StackPane             pane;
     private Scene                 scene;
     private ObservableList<Popup> popups;
 
@@ -76,9 +75,8 @@ public enum Notifier {
         popups        = FXCollections.observableArrayList();
     }
 
-    private void initGraphics() {
-        pane  = new StackPane();
-        scene = new Scene(pane);
+    private void initGraphics() {        
+        scene = new Scene(new Region());
         scene.setFill(null);
         scene.getStylesheets().add(getClass().getResource("notifier.css").toExternalForm());
 
@@ -259,11 +257,7 @@ public enum Notifier {
      * Creates and shows a popup with the data from the given Notification object
      * @param NOTIFICATION
      */
-    private void showPopup(final Notification NOTIFICATION) {
-        Region body = new Region();
-        body.getStyleClass().addAll("body");
-        body.setPrefSize(width, height);
-
+    private void showPopup(final Notification NOTIFICATION) {      
         Label title = new Label(NOTIFICATION.TITLE);
         title.getStyleClass().add("title");
 
@@ -279,14 +273,15 @@ public enum Notifier {
         popupLayout.setPadding(new Insets(10, 10, 10, 10));
         popupLayout.getChildren().addAll(title, message);
 
-        StackPane popupPane = new StackPane();
-        popupPane.getStyleClass().add("notification");
-        popupPane.getChildren().addAll(body, popupLayout);
-
-        final Popup POPUP = new Popup();
+        StackPane popupContent = new StackPane();
+        popupContent.setPrefSize(width, height);
+        popupContent.getStyleClass().add("notification");
+        popupContent.getChildren().addAll(popupLayout);
+        
+        final Popup POPUP = new Popup();        
 		POPUP.setX( getX() );
 		POPUP.setY( getY() );
-        POPUP.getContent().add(popupPane);
+        POPUP.getContent().add(popupContent);
 
         popups.add(POPUP);
 

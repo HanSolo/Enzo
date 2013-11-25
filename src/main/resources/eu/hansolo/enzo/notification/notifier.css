@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
+.root {
+    -fx-background-color: transparent;
+    -fx-fill            : transparent;
+}
 .notification {
-    -background-color: rgba(15, 15, 15, 0.8);
-    -foreground-color: white;
-    -icon-color      : white;
+    -fx-background-color : rgba(15, 15, 15, 0.8);
+    -fx-background-radius: 5;
+    -fx-effect           : innershadow(two-pass-box, rgba(255, 255, 255, 0.6), 5.0, 0.25, 0, 0);    
+    -foreground-color    : white;
+    -icon-color          : white;
 }
 
-.notification .body {
-    -fx-background-color : -background-color;
-    -fx-background-radius: 5;
-    -fx-effect           : innershadow(two-pass-box, rgba(255, 255, 255, 0.6), 5.0, 0.25, 0, 0);
-}
 .notification .title {
     -fx-font-size  : 1.083333em;
     -fx-font-weight: bold;
