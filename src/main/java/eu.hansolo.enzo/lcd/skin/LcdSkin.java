@@ -580,29 +580,44 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         oneSegmentWidth = oneSegment.getLayoutBounds().getWidth();
         dotSegmentWidth = dotSegment.getLayoutBounds().getWidth();
 
-        // Width of decimals        
-        widthOfDecimals = 0 == getSkinnable().getDecimals() ? 0 : getSkinnable().getDecimals() * oneSegmentWidth + (Lcd.LcdFont.LCD == getSkinnable().getValueFont() ? oneSegmentWidth : dotSegmentWidth);        
-        
-        // Available width
-        availableWidth = width - (0.0151515152 * width) - (0.0416666667 * height) - 2 - valueOffsetRight - widthOfDecimals;
+        if (Lcd.NumberSystem.DECIMAL == getSkinnable().getNumberSystem()) {        
+            // Width of decimals        
+            widthOfDecimals = 0 == getSkinnable().getDecimals() ? 0 : getSkinnable().getDecimals() * oneSegmentWidth + (Lcd.LcdFont.LCD == getSkinnable().getValueFont() ? oneSegmentWidth : dotSegmentWidth);        
+            
+            // Available width
+            availableWidth = width - (0.0151515152 * width) - (0.0416666667 * height) - 2 - valueOffsetRight - widthOfDecimals;
+    
+            // Number of segments
+            noOfSegments = (int) Math.floor(availableWidth / oneSegmentWidth);
+    
+            // Add segments to background text
+            backgroundTextBuilder.setLength(0);
+            for (int i = 0 ; i < getSkinnable().getDecimals() ; i++) {
+                backgroundTextBuilder.append(oneSegment.getText());
+            }
+            
+            if (getSkinnable().getDecimals() != 0) {            
+                backgroundTextBuilder.insert(0, ".");            
+            }
+    
+            for (int i = 0 ; i < noOfSegments ; i++) {
+                backgroundTextBuilder.insert(0, oneSegment.getText());
+            }
+            backgroundText.setText(backgroundTextBuilder.toString());
+        } else {            
+            // Available width
+            availableWidth = width - (0.0151515152 * width) - (0.0416666667 * height) - 2 - valueOffsetRight;
 
-        // Number of segments
-        noOfSegments = (int) Math.floor(availableWidth / oneSegmentWidth);
+            // Number of segments
+            noOfSegments = (int) Math.floor(availableWidth / oneSegmentWidth);
 
-        // Add segments to background text
-        backgroundTextBuilder.setLength(0);
-        for (int i = 0 ; i < getSkinnable().getDecimals() ; i++) {
-            backgroundTextBuilder.append(oneSegment.getText());
+            // Add segments to background text
+            backgroundTextBuilder.setLength(0);            
+            for (int i = 0 ; i < noOfSegments ; i++) {
+                backgroundTextBuilder.insert(0, oneSegment.getText());
+            }
+            backgroundText.setText(backgroundTextBuilder.toString());    
         }
-        
-        if (getSkinnable().getDecimals() != 0) {            
-            backgroundTextBuilder.insert(0, ".");            
-        }
-
-        for (int i = 0 ; i < noOfSegments ; i++) {
-            backgroundTextBuilder.insert(0, oneSegment.getText());
-        }
-        backgroundText.setText(backgroundTextBuilder.toString());
     }
 
     private void updateLcd() {
