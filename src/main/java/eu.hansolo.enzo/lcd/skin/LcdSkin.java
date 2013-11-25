@@ -503,7 +503,8 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
         backgroundText.setOpacity((Lcd.LcdFont.LCD == getSkinnable().getValueFont() ||
                                    Lcd.LcdFont.DIGITAL == getSkinnable().getValueFont() ||
                                    Lcd.LcdFont.DIGITAL_BOLD == getSkinnable().getValueFont() ||
-                                   Lcd.LcdFont.ELEKTRA == getSkinnable().getValueFont()) ? 1 : 0);
+                                   Lcd.LcdFont.ELEKTRA == getSkinnable().getValueFont()) &&
+                                   !getSkinnable().isTextMode() ? 1 : 0);
         text.setFont(valueFont);
         unitFont  = Font.font(getSkinnable().getUnitFont(), FontWeight.NORMAL, (0.26 * height));
         titleFont = Font.font(getSkinnable().getTitleFont(), FontWeight.BOLD, (0.1666666667 * height));
@@ -621,19 +622,22 @@ public class LcdSkin extends SkinBase<Lcd> implements Skin<Lcd> {
     }
 
     private void updateLcd() {
-        switch (getSkinnable().getNumberSystem()) {
-            case HEXADECIMAL:
-                text.setText(Integer.toHexString((int) getSkinnable().getCurrentValue()).toUpperCase());
-                break;
-            case OCTAL:
-                text.setText(Integer.toOctalString((int) getSkinnable().getCurrentValue()).toUpperCase());
-                break;
-            case DECIMAL:
-            default:
-                text.setText(formatLcdValue(getSkinnable().getCurrentValue(), getSkinnable().getDecimals()));
-                break;
+        if (getSkinnable().isTextMode() && Lcd.LcdFont.LCD != getSkinnable().getValueFont()) {
+            text.setText(getSkinnable().getText());
+        } else {
+            switch (getSkinnable().getNumberSystem()) {
+                case HEXADECIMAL:
+                    text.setText(Integer.toHexString((int) getSkinnable().getCurrentValue()).toUpperCase());
+                    break;
+                case OCTAL:
+                    text.setText(Integer.toOctalString((int) getSkinnable().getCurrentValue()).toUpperCase());
+                    break;
+                case DECIMAL:
+                default:
+                    text.setText(formatLcdValue(getSkinnable().getCurrentValue(), getSkinnable().getDecimals()));
+                    break;
+            }
         }
-
         if (isNoOfDigitsInvalid()) {
             text.setText("-E-");
         }
