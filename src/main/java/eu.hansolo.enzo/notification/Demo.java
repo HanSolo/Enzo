@@ -34,15 +34,15 @@ import java.util.Random;
 
 
 public class Demo extends Application {
-    private static final Random RND = new Random();
+    private static final Random         RND           = new Random();
     private static final Notification[] NOTIFICATIONS = {
         new Notification("Info", "New information", Notification.INFO_ICON),
         new Notification("Warning", "Attention, somethings wrong", Notification.WARNING_ICON),
         new Notification("Success", "Great it works", Notification.SUCCESS_ICON),
         new Notification("Error", "ZOMG", Notification.ERROR_ICON)
     };
-    private Notifier notifier;
-    private Button   button;
+    private Notification.Notifier notifier;
+    private Button                button;
 
 
     // ******************** Initialization ************************************
@@ -56,7 +56,7 @@ public class Demo extends Application {
 
     // ******************** Application start *********************************
     @Override public void start(Stage stage) {
-        notifier = Notifier.INSTANCE;
+        notifier = Notification.Notifier.INSTANCE;
 
         StackPane pane = new StackPane();
         pane.setPadding(new Insets(10, 10, 10, 10));

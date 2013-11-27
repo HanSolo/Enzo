@@ -37,6 +37,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 
 public class LcdClock extends Control {
@@ -104,10 +105,25 @@ public class LcdClock extends Control {
         DIGITAL_BOLD,
         ELEKTRA
     }
+    public static enum DateFormat {
+        YEAR_MONTH_DAY,
+        DAY_MONTH_YEAR; 
+    }
+    public static enum DateSeparator {
+        DOT("."),
+        SLASH("/"),
+        MINUS("-");
+        
+        public final String chr;
+        
+        private DateSeparator(final String CHR) {
+            chr = CHR;
+        }
+    }
 
     // CSS pseudo classes
-    private static final PseudoClass      NO_FRAME_PSEUDO_CLASS = PseudoClass.getPseudoClass("no-frame");
-    private BooleanProperty               noFrame;
+    private static final PseudoClass NO_FRAME_PSEUDO_CLASS = PseudoClass.getPseudoClass("no-frame");
+    private BooleanProperty noFrame;
 
     private boolean                       initialized;
     private boolean                       firstTime;
@@ -128,10 +144,13 @@ public class LcdClock extends Control {
     private BooleanProperty               mainInnerShadowVisible;
     private boolean                       _foregroundShadowVisible = false;
     private BooleanProperty               foregroundShadowVisible;
+    private ObjectProperty<Locale>        locale;
     private ObservableList<Alarm>         alarms;
     private List<Alarm>                   alarmsToRemove;
     private ObjectProperty<Clock>         clock;
     private ObjectProperty<LocalDateTime> time;
+    private ObjectProperty<DateFormat>    dateFormat;
+    private ObjectProperty<DateSeparator> dateSeparator;
     private long                          lastTimerCall;
     private AnimationTimer                timer;
 
@@ -140,14 +159,14 @@ public class LcdClock extends Control {
     public LcdClock() {
         getStyleClass().add("lcd-clock");
         clock          = new SimpleObjectProperty<>(this, "clock", Clock.systemDefaultZone());
-        time           = new SimpleObjectProperty<>(this, "time", LocalDateTime.now(clock.get()));
+        time           = new SimpleObjectProperty<>(this, "time", LocalDateTime.now(clock.get()));        
         alarms         = FXCollections.observableArrayList();
         alarmsToRemove = new ArrayList<>();
         initialized    = false;
         firstTime      = true;
         keepAspect     = true;
         lastTimerCall  = System.nanoTime();
-        timer          = new AnimationTimer() {
+        timer = new AnimationTimer() {
             @Override public void handle(final long NOW) {
                 if (NOW > lastTimerCall + 1_000_000_000l) {
                     time.set(LocalDateTime.now(clock.get()));
@@ -166,7 +185,7 @@ public class LcdClock extends Control {
         timeProperty().addListener(observable -> {
             alarmsToRemove.clear();
             for (Alarm alarm : alarms) {
-                switch(alarm.getRepetition()) {
+                switch (alarm.getRepetition()) {
                     case ONCE:
                         if (getTime().isAfter(alarm.getTime())) {
                             if (alarm.isArmed()) {
@@ -243,7 +262,7 @@ public class LcdClock extends Control {
     public final ReadOnlyObjectProperty timeProperty() {
         return time;
     }
-
+        
     public final String getTitle() {
         return null == title ? _title : title.get();
     }
@@ -399,6 +418,45 @@ public class LcdClock extends Control {
         return smallFont;
     }
 
+    public final Locale getLocale() {
+        return null == locale ? Locale.US : locale.get();
+    }
+    public final void setLocale(final Locale LOCALE) {
+        localeProperty().set(LOCALE);        
+    }
+    public final ObjectProperty<Locale> localeProperty() {
+        if (null == locale) {
+            locale = new SimpleObjectProperty<>(this, "locale", Locale.US);
+        }
+        return locale;
+    }
+
+    public final DateFormat getDateFormat() {
+        return null == dateFormat ? DateFormat.YEAR_MONTH_DAY : dateFormat.get();
+    }
+    public final void setDateFormat(final DateFormat DATE_FORMAT) {
+        dateFormatProperty().set(DATE_FORMAT);
+    }
+    public final ObjectProperty<DateFormat> dateFormatProperty() {
+        if (null == dateFormat) {
+            dateFormat = new SimpleObjectProperty<>(this, "dateFormat", DateFormat.YEAR_MONTH_DAY);
+        }
+        return dateFormat;
+    }
+
+    public final DateSeparator getDateSeparator() {
+        return null == dateSeparator ? DateSeparator.SLASH : dateSeparator.get();
+    }
+    public final void setDateSeparator(final DateSeparator DATE_SEPARATOR) {
+        dateSeparatorProperty().set(DATE_SEPARATOR);
+    } 
+    public final ObjectProperty<DateSeparator> dateSeparatorProperty() {
+        if (null == dateSeparator) {
+            dateSeparator = new SimpleObjectProperty<>(this, "dateSeparator", DateSeparator.SLASH);
+        }
+        return dateSeparator;
+    }
+    
     public final ObservableList<Alarm> getAlarms() {
         return alarms;
     }

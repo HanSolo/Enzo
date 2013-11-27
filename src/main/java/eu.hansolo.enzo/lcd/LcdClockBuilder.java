@@ -30,6 +30,7 @@ import javafx.geometry.Dimension2D;
 import java.time.Clock;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -105,7 +106,7 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
         properties.put("alarmsList", new SimpleObjectProperty<>(ALARMS));
         return this;
     }
-
+       
     public final LcdClockBuilder titleFont(final String TITLE_FONT) {
         properties.put("titleFont", new SimpleStringProperty(TITLE_FONT));
         return this;
@@ -123,6 +124,21 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
 
     public final LcdClockBuilder smallFont(final String SMALL_FONT) {
         properties.put("smallFont", new SimpleStringProperty(SMALL_FONT));
+        return this;
+    }
+    
+    public final LcdClockBuilder locale(final Locale LOCALE) {
+        properties.put("locale", new SimpleObjectProperty<Locale>(LOCALE));
+        return this;
+    }
+    
+    public final LcdClockBuilder dateFormat(final LcdClock.DateFormat DATE_FORMAT) {
+        properties.put("dateFormat", new SimpleObjectProperty<LcdClock.DateFormat>(DATE_FORMAT));
+        return this;
+    }
+    
+    public final LcdClockBuilder dateSeparator(final LcdClock.DateSeparator DATE_SEPARATOR) {
+        properties.put("dateSeparator", new SimpleObjectProperty<LcdClock.DateSeparator>(DATE_SEPARATOR));
         return this;
     }
 
@@ -255,6 +271,12 @@ public class LcdClockBuilder<B extends LcdClockBuilder<B>> {
                 CONTROL.setAlarms(((ObjectProperty<Alarm[]>) properties.get(key)).get());
             } else if("alarmsList".equals(key)) {
                 CONTROL.setAlarms(((ObjectProperty<List<Alarm>>) properties.get(key)).get());
+            } else if ("locale".equals(key)) {
+                CONTROL.setLocale(((ObjectProperty<Locale>) properties.get(key)).get());
+            } else if ("dateFormat".equals(key)) {
+                CONTROL.setDateFormat(((ObjectProperty<LcdClock.DateFormat>) properties.get(key)).get());
+            } else if ("dateSeparator".equals(key)) {
+                CONTROL.setDateSeparator(((ObjectProperty<LcdClock.DateSeparator>) properties.get(key)).get());
             }
         }
         return CONTROL;

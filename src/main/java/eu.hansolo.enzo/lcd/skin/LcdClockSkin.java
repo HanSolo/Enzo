@@ -39,8 +39,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.Locale;
 import java.util.Random;
 
 
@@ -51,50 +51,51 @@ import java.util.Random;
  * Time: 08:14
  */
 public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
-    private static final double     PREFERRED_WIDTH    = 76;
-    private static final double     PREFERRED_HEIGHT   = 40;
-    private static final double     MINIMUM_WIDTH      = 5;
-    private static final double     MINIMUM_HEIGHT     = 5;
-    private static final double     MAXIMUM_WIDTH      = 1024;
-    private static final double     MAXIMUM_HEIGHT     = 1024;
-    private static final Color      DARK_NOISE_COLOR   = Color.rgb(100, 100, 100, 0.10);
-    private static final Color      BRIGHT_NOISE_COLOR = Color.rgb(200, 200, 200, 0.05);
-    private static final DropShadow FOREGROUND_SHADOW  = new DropShadow();
-    private static double           aspectRatio        = PREFERRED_HEIGHT / PREFERRED_WIDTH;
-    private static Text             oneTimeSegment     = new Text("8");
-    private static Text             oneSecondSegment   = new Text("8");
-    private double                  width;
-    private double                  height;
-    private Pane                    pane;
-    private Region                  main;
-    private ImageView               crystalOverlay;
-    private Image                   crystalImage;
-    private Rectangle               crystalClip;
-    private InnerShadow             mainInnerShadow0;
-    private InnerShadow             mainInnerShadow1;
-    private Region                  alarm;
-    private Text                    timeText;
-    private Text                    backgroundTimeText;
-    private Text                    secondText;
-    private Text                    backgroundSecondText;
-    private Text                    title;
-    private Text                    dateText;
-    private Text                    dayOfWeekText;
-    private double                  valueOffsetRight;
-    private double                  digitalFontSizeFactor;
-    private Font                    timeFont;
-    private Font                    secondFont;
-    private Font                    titleFont;
-    private Font                    smallFont;
-    private StringBuilder           backgroundTextBuilder;
-    private Group                   shadowGroup;
+    private static final double      PREFERRED_WIDTH    = 76;
+    private static final double      PREFERRED_HEIGHT   = 40;
+    private static final double      MINIMUM_WIDTH      = 5;
+    private static final double      MINIMUM_HEIGHT     = 5;
+    private static final double      MAXIMUM_WIDTH      = 1024;
+    private static final double      MAXIMUM_HEIGHT     = 1024;
+    private static final Color       DARK_NOISE_COLOR   = Color.rgb(100, 100, 100, 0.10);
+    private static final Color       BRIGHT_NOISE_COLOR = Color.rgb(200, 200, 200, 0.05);
+    private static final DropShadow  FOREGROUND_SHADOW  = new DropShadow();    
+    private static       double      aspectRatio        = PREFERRED_HEIGHT / PREFERRED_WIDTH;
+    private static       Text        oneTimeSegment     = new Text("8");
+    private static       Text        oneSecondSegment   = new Text("8");
+    private double                   width;
+    private double                   height;
+    private Pane                     pane;
+    private Region                   main;
+    private ImageView                crystalOverlay;
+    private Image                    crystalImage;
+    private Rectangle                crystalClip;
+    private InnerShadow              mainInnerShadow0;
+    private InnerShadow              mainInnerShadow1;
+    private Region                   alarm;
+    private Text                     timeText;
+    private Text                     backgroundTimeText;
+    private Text                     secondText;
+    private Text                     backgroundSecondText;
+    private Text                     title;
+    private Text                     dateText;
+    private Text                     dayOfWeekText;
+    private DateTimeFormatter        dateFormat;
+    private double                   valueOffsetRight;
+    private double                   digitalFontSizeFactor;
+    private Font                     timeFont;
+    private Font                     secondFont;
+    private Font                     titleFont;
+    private Font                     smallFont;
+    private StringBuilder            backgroundTextBuilder;
+    private Group                    shadowGroup;
 
 
     // ******************** Constructors **************************************
     public LcdClockSkin(final LcdClock CONTROL) {
         super(CONTROL);
-        aspectRatio           = PREFERRED_HEIGHT / PREFERRED_WIDTH;
-        valueOffsetRight      = 0.0;
+        aspectRatio = PREFERRED_HEIGHT / PREFERRED_WIDTH;
+        valueOffsetRight = 0.0;
         digitalFontSizeFactor = 1.0;
         backgroundTextBuilder = new StringBuilder();
         FOREGROUND_SHADOW.setOffsetX(0);
@@ -102,6 +103,7 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
         FOREGROUND_SHADOW.setColor(Color.rgb(0, 0, 0, 0.5));
         FOREGROUND_SHADOW.setBlurType(BlurType.TWO_PASS_BOX);
         FOREGROUND_SHADOW.setRadius(2);
+        adjustDateFormat();
         init();
         initGraphics();
         registerListeners();
@@ -110,8 +112,10 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
 
     // ******************** Initialization ************************************
     private void init() {
-        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(), 0.0) <= 0 ||
-            Double.compare(getSkinnable().getWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getHeight(), 0.0) <= 0) {
+        if (Double.compare(getSkinnable().getPrefWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getPrefHeight(),
+                                                                                      0.0) <= 0 ||
+            Double.compare(getSkinnable().getWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getHeight(),
+                                                                                  0.0) <= 0) {
             if (getSkinnable().getPrefWidth() > 0 && getSkinnable().getPrefHeight() > 0) {
                 getSkinnable().setPrefSize(getSkinnable().getPrefWidth(), getSkinnable().getPrefHeight());
             } else {
@@ -119,7 +123,8 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
             }
         }
 
-        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(), 0.0) <= 0) {
+        if (Double.compare(getSkinnable().getMinWidth(), 0.0) <= 0 || Double.compare(getSkinnable().getMinHeight(),
+                                                                                     0.0) <= 0) {
             getSkinnable().setMinSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
         }
 
@@ -221,6 +226,7 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
         getSkinnable().clockProperty().addListener(observable -> handleControlPropertyChanged("UPDATE"));
         getSkinnable().timeProperty().addListener(observable -> handleControlPropertyChanged("UPDATE"));
         getSkinnable().titleProperty().addListener(observable -> handleControlPropertyChanged("UPDATE"));
+        getSkinnable().localeProperty().addListener(observable -> handleControlPropertyChanged("UPDATE"));
         getSkinnable().prefWidthProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE"));
         getSkinnable().prefHeightProperty().addListener(observable -> handleControlPropertyChanged("PREF_SIZE"));
         getSkinnable().timeFontProperty().addListener(observable -> handleControlPropertyChanged("FONT"));
@@ -229,7 +235,9 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
         getSkinnable().crystalOverlayVisibleProperty().addListener(observable -> handleControlPropertyChanged("CRYSTAL_OVERLAY_VISIBLE"));
         getSkinnable().mainInnerShadowVisibleProperty().addListener(observable -> handleControlPropertyChanged("MAIN_INNER_SHADOW_VISIBLE"));
         getSkinnable().foregroundShadowVisibleProperty().addListener(observable -> handleControlPropertyChanged("FOREGROUND_SHADOW_VISIBLE"));
-
+        getSkinnable().dateFormatProperty().addListener(observable -> handleControlPropertyChanged("DATE_FORMAT"));
+        getSkinnable().dateSeparatorProperty().addListener(observable -> handleControlPropertyChanged("DATE_FORMAT"));
+        
         getSkinnable().getAlarms().addListener((ListChangeListener<Alarm>) change -> handleControlPropertyChanged("ALARM"));
         getSkinnable().getStyleClass().addListener((ListChangeListener<String>) change -> {
             resize();
@@ -261,6 +269,9 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
             updateFonts();
         } else if ("ALARM".equals(PROPERTY)) {
             alarm.setOpacity(getSkinnable().getAlarms().isEmpty() || allAlarmsInactive() ? 0 : 1);
+        } else if ("DATE_FORMAT".equals(PROPERTY)) {
+            adjustDateFormat();
+            updateLcd();
         }
     }
 
@@ -300,6 +311,18 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
         return Integer.toString(NUMBER);
     }
 
+    private void adjustDateFormat() {
+        switch (getSkinnable().getDateFormat()) {
+            case DAY_MONTH_YEAR:
+                dateFormat = DateTimeFormatter.ofPattern("dd" + getSkinnable().getDateSeparator().chr + "MM" + getSkinnable().getDateSeparator().chr + "yyyy");
+                break;
+            case YEAR_MONTH_DAY:
+            default:
+                dateFormat = DateTimeFormatter.ofPattern("yyyy" + getSkinnable().getDateSeparator().chr + "MM" + getSkinnable().getDateSeparator().chr + "dd");
+                break;
+        }
+    }
+    
     private boolean allAlarmsInactive() {
         boolean allAlarmsInactive = true;
         for (Alarm alarm : getSkinnable().getAlarms()) {
@@ -442,11 +465,11 @@ public class LcdClockSkin extends SkinBase<LcdClock> implements Skin<LcdClock> {
         title.setX((width - title.getLayoutBounds().getWidth()) * 0.5);
 
         // Update the lower center timeText
-        dayOfWeekText.setText(getSkinnable().getTime().getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, Locale.US));
+        dayOfWeekText.setText(getSkinnable().getTime().getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, getSkinnable().getLocale()));
         dayOfWeekText.setX(0.0416666667 * height);
 
-        // Update the lower right timeText
-        dateText.setText(ensureTwoDigits(getSkinnable().getTime().getMonthValue()) + "/" + ensureTwoDigits(getSkinnable().getTime().getDayOfMonth()) + "/" + getSkinnable().getTime().getYear());
+        // Update the lower right timeText        
+        dateText.setText(dateFormat.format(getSkinnable().getTime()));        
         dateText.setX(width - dateText.getLayoutBounds().getWidth() - 0.0416666667 * height);
         dateText.setY(main.getLayoutY() + height - 3 - 0.0416666667 * height);
     }

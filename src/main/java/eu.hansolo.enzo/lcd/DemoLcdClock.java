@@ -29,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 
 /**
@@ -38,7 +39,7 @@ import java.time.LocalDateTime;
  * Time: 08:21
  */
 public class DemoLcdClock extends Application {
-    private static int            noOfNodes = 0;
+    private static       int      noOfNodes     = 0;
     private static final String[] STYLE_CLASSES = {
         "lcd-beige",
         "lcd-blue",
@@ -100,7 +101,8 @@ public class DemoLcdClock extends Application {
     private long           lastTimerCall;
     private int            styleClassCounter;
     private AnimationTimer timer;
-    private Commando       commando = new Commando();
+    private Commando1      commando1 = new Commando1();
+    private Commando2      commando2 = new Commando2();
 
     @Override public void init() {
         control = LcdClockBuilder.create()
@@ -111,8 +113,12 @@ public class DemoLcdClock extends Application {
                                  .foregroundShadowVisible(true)
                                  .crystalOverlayVisible(true)
                                  .timeFont(LcdClock.LcdFont.LCD)
+                                 .locale(Locale.GERMAN)
+                                 .dateFormat(LcdClock.DateFormat.DAY_MONTH_YEAR)
+                                 .dateSeparator(LcdClock.DateSeparator.DOT)
                                  .alarms(new Alarm[]{
-                                     new Alarm(Alarm.Repetition.ONCE, LocalDateTime.now().plusSeconds(20), Alarm.ARMED, "20s after Start", commando)
+                                     new Alarm(Alarm.Repetition.ONCE, LocalDateTime.now().plusSeconds(20), Alarm.ARMED, "20s after Start"),
+                                     new Alarm(Alarm.Repetition.ONCE, LocalDateTime.now().plusSeconds(30), Alarm.ARMED, "30s after Start", commando2)
                                  })
                                  .build();
 
@@ -159,7 +165,7 @@ public class DemoLcdClock extends Application {
         stage.setScene(scene);
         stage.show();
 
-        timer.start();
+        //timer.start();
 
         calcNoOfNodes(scene.getRoot());
         System.out.println(noOfNodes + " Nodes in SceneGraph");
@@ -185,9 +191,15 @@ public class DemoLcdClock extends Application {
     }
 
 
-    public class Commando implements Alarm.Command {
+    public class Commando1 implements Alarm.Command {
         @Override public void execute() {
             System.out.println("Now execute something triggered by the Alarm");
+        }
+    }
+    
+    public class Commando2 implements Alarm.Command {
+        @Override public void execute() {
+            System.out.println("Another class that will be executed by an Alarm");
         }
     }
 }
