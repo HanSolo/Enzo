@@ -54,6 +54,7 @@ public class Demo extends Application {
                              .running(true)
                              .text("San Francisco")
                              .offset(Duration.of(-9, ChronoUnit.HOURS))
+                             .autoNightMode(false)
                              .build();
         clock2 = ClockBuilder.create()
                              .prefSize(400, 400)
@@ -62,12 +63,14 @@ public class Demo extends Application {
                              .running(true)
                              .text("New York")
                              .offset(Duration.of(-6, ChronoUnit.HOURS))
+                             .autoNightMode(true)
                              .build();
         clock3 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.DB)
                              .running(true)
                              .text("Berlin")
+                             .autoNightMode(true)
                              .build();
         clock4 = ClockBuilder.create()
                              .prefSize(400, 400)
@@ -76,6 +79,7 @@ public class Demo extends Application {
                              .running(true)
                              .text("Moskau")
                              .offset(Duration.of(3, ChronoUnit.HOURS))
+                             .autoNightMode(true)  
                              .build();
         clock5 = ClockBuilder.create()
                              .prefSize(400, 400)
@@ -84,6 +88,7 @@ public class Demo extends Application {
                              .running(true)
                              .text("Hongkong")
                              .offset(Duration.of(7, ChronoUnit.HOURS))
+                             .autoNightMode(true)
                              .build();
         clock6 = ClockBuilder.create()
                              .prefSize(400, 400)
@@ -94,6 +99,7 @@ public class Demo extends Application {
                              .running(true)
                              .text("Sydney")
                              .offset(Duration.of(10, ChronoUnit.HOURS))
+                             .autoNightMode(true)
                              .build();
     }
 

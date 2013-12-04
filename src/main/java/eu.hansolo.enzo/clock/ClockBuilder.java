@@ -96,6 +96,11 @@ public class ClockBuilder<B extends ClockBuilder<B>> {
         properties.put("running", new SimpleBooleanProperty(RUNNING));
         return this;
     }
+    
+    public final ClockBuilder autoNightMode(final boolean AUTO_NIGHT_MODE) {
+        properties.put("autoNightMode", new SimpleBooleanProperty(AUTO_NIGHT_MODE));
+        return this;
+    }
 
     public final B prefSize(final double WIDTH, final double HEIGHT) {
         properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
@@ -219,6 +224,8 @@ public class ClockBuilder<B extends ClockBuilder<B>> {
                 CONTROL.setOffset(((ObjectProperty<Duration>) properties.get(key)).get());
             } else if ("running".equals(key)) {
                 CONTROL.setRunning(((BooleanProperty) properties.get(key)).get());
+            } else if ("autoNightMode".equals(key)) {
+                CONTROL.setAutoNightMode(((BooleanProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

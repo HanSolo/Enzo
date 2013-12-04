@@ -424,7 +424,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
-    private void updateTime(final LocalDateTime DATE_TIME) {        
+    private void updateTime(final LocalDateTime DATE_TIME) {                
         // Seconds
         if (getSkinnable().isDiscreteSecond()) {
             secondAngle.setAngle(DATE_TIME.getSecond() * 6);
@@ -434,7 +434,20 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         // Minutes
         minute.set(DATE_TIME.getMinute() * 6);
         // Hours
-        minuteAngle.setAngle(DATE_TIME.getHour() * 30 + 0.5 * DATE_TIME.getMinute());        
+        minuteAngle.setAngle(DATE_TIME.getHour() * 30 + 0.5 * DATE_TIME.getMinute());
+        
+        if (getSkinnable().isAutoNightMode()) checkForNight(DATE_TIME);
+    }
+    
+    private void checkForNight(final LocalDateTime DATE_TIME) {
+        int hour   = DATE_TIME.getHour();
+        int minute = DATE_TIME.getMinute();
+        
+        if (0 <= hour && minute >= 0 && hour <= 5 && minute <= 59|| 17 <= hour && minute <= 59 && hour <= 23 && minute <= 59) {
+            getSkinnable().setNightMode(true);
+        } else {
+            getSkinnable().setNightMode(false);
+        }
     }
     
     private void drawLogoLayer() {

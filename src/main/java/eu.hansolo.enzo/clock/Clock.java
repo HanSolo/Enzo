@@ -62,6 +62,7 @@ public class Clock extends Control {
     private ObjectProperty<Duration>      offset;
     private boolean                       _running;
     private BooleanProperty               running;
+    private boolean                       _autoNightMode;   
 
 
     // ******************** Constructors **************************************
@@ -79,6 +80,7 @@ public class Clock extends Control {
         _dateTime             = DATE_TIME;
         _offset               = Duration.of(0, ChronoUnit.MINUTES);
         _running              = false;
+        _autoNightMode        = false;
     }
 
 
@@ -247,6 +249,13 @@ public class Clock extends Control {
         return running;
     }
 
+    public final boolean isAutoNightMode() {
+        return _autoNightMode;
+    }
+    public final void setAutoNightMode(final boolean AUTO_NIGHT_MODE) {
+        _autoNightMode = AUTO_NIGHT_MODE;
+    }
+    
     private Duration clamp(Duration min, Duration max, Duration value) {
         if (getDateTime().plus(value).isBefore(getDateTime().plus(min))) return min;
         if (getDateTime().plus(value).isAfter(getDateTime().plus(max))) return max;
