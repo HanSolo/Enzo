@@ -44,7 +44,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,16 +142,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         timer = new AnimationTimer() {
             @Override public void handle(final long NOW) {
                 if (NOW >= lastTimerCall + INTERVAL) {
-                    // SecondsRight
-                    if (getSkinnable().isDiscreteSecond()) {
-                        secondAngle.setAngle(LocalTime.now().getSecond() * 6);
-                    } else {
-                        secondAngle.setAngle(LocalTime.now().getSecond() * 6 + LocalTime.now().get(ChronoField.MILLI_OF_SECOND) * 0.006);
-                    }
-                    // Minutes
-                    minute.set(LocalTime.now().getMinute() * 6);
-                    // Hours
-                    minuteAngle.setAngle(LocalTime.now().getHour() * 30 + 0.5 * LocalTime.now().getMinute());
+                    updateTime(LocalDateTime.now());                    
                     lastTimerCall = NOW;
                 }
             }
@@ -161,7 +152,11 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         init();
         initGraphics();
         registerListeners();
-        timer.start();
+        if (getSkinnable().isRunning()) {
+            timer.start();
+        } else {
+            updateTime(LocalDateTime.now());
+        }
     }
 
 
@@ -375,6 +370,8 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         getSkinnable().nightModeProperty().addListener(observable -> handleControlPropertyChanged("DESIGN") );
         getSkinnable().designProperty().addListener(observable -> handleControlPropertyChanged("DESIGN") );
         getSkinnable().highlightVisibleProperty().addListener(observable -> handleControlPropertyChanged("DESIGN") );
+        getSkinnable().dateTimeProperty().addListener(observable -> handleControlPropertyChanged("DATE_TIME"));
+        getSkinnable().runningProperty().addListener(observable -> handleControlPropertyChanged("RUNNING"));
     }
 
 
@@ -386,6 +383,14 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             updateDesign();
         } else if ("SECOND_POINTER_VISIBLE".equals(PROPERTY)) {
             secondPointerGroup.setOpacity(getSkinnable().isSecondPointerVisible() ? 1 : 0);
+        } else if ("DATE_TIME".equals(PROPERTY)) {
+            if (getSkinnable().isRunning()) updateTime(getSkinnable().getDateTime());    
+        } else if ("RUNNING".equals(PROPERTY)) {
+            if (getSkinnable().isRunning()) {
+                timer.start();
+            } else {
+                timer.stop();                
+            }
         }
     }
 
@@ -418,6 +423,19 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         return super.computePrefHeight(prefWidth, TOP_INSET, RIGHT_INSET, BOTTOM_INSET, LEFT_INSET);
     }
 
+    private void updateTime(final LocalDateTime DATE_TIME) {        
+        // Seconds
+        if (getSkinnable().isDiscreteSecond()) {
+            secondAngle.setAngle(DATE_TIME.getSecond() * 6);
+        } else {
+            secondAngle.setAngle(DATE_TIME.getSecond() * 6 + DATE_TIME.get(ChronoField.MILLI_OF_SECOND) * 0.006);
+        }
+        // Minutes
+        minute.set(DATE_TIME.getMinute() * 6);
+        // Hours
+        minuteAngle.setAngle(DATE_TIME.getHour() * 30 + 0.5 * DATE_TIME.getMinute());        
+    }
+    
     private void drawLogoLayer() {
         ctx.clearRect(0, 0, size, size);
         if (Clock.Design.BOSCH == getSkinnable().getDesign()) {

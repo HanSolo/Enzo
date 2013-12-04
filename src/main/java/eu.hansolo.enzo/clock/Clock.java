@@ -24,6 +24,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 
+import java.time.LocalDateTime;
+
 
 /**
  * User: hansolo
@@ -37,26 +39,36 @@ public class Clock extends Control {
         BRAUN,
         BOSCH
     }
-    private boolean                _discreteSecond;
-    private BooleanProperty        discreteSecond;
-    private boolean                _secondPointerVisible;
-    private BooleanProperty        secondPointerVisible;
-    private boolean                _nightMode;
-    private BooleanProperty        nightMode;
-    private Design                 _design;
-    private ObjectProperty<Design> design;
-    private boolean                _highlightVisible;
-    private BooleanProperty        highlightVisible;
+
+    private boolean                       _discreteSecond;
+    private BooleanProperty               discreteSecond;
+    private boolean                       _secondPointerVisible;
+    private BooleanProperty               secondPointerVisible;
+    private boolean                       _nightMode;
+    private BooleanProperty               nightMode;
+    private Design                        _design;
+    private ObjectProperty<Design>        design;
+    private boolean                       _highlightVisible;
+    private BooleanProperty               highlightVisible;
+    private boolean                       _running;
+    private BooleanProperty               running;
+    private LocalDateTime                 _dateTime;
+    private ObjectProperty<LocalDateTime> dateTime;
 
 
     // ******************** Constructors **************************************
     public Clock() {
+        this(LocalDateTime.now());
+    }
+    public Clock(final LocalDateTime DATE_TIME) {
         getStyleClass().add("clock");
+        _dateTime             = DATE_TIME;
         _discreteSecond       = false;
         _secondPointerVisible = true;
         _nightMode            = false;
         _design               = Design.IOS6;
         _highlightVisible     = true;
+        _running              = false;
     }
 
 
@@ -144,6 +156,40 @@ public class Clock extends Control {
             highlightVisible = new SimpleBooleanProperty(this, "highlightVisible", _highlightVisible);
         }
         return highlightVisible;
+    }
+    
+    public final LocalDateTime getDateTime() {
+        return null == dateTime ? _dateTime : dateTime.get();
+    }
+    public final void setDateTime(final LocalDateTime DATE_TIME) {
+        if (null == dateTime) {
+            _dateTime = DATE_TIME;
+        } else {
+            dateTime.set(DATE_TIME);
+        }
+    }
+    public final ObjectProperty<LocalDateTime> dateTimeProperty() {
+        if (null == dateTime) {
+            dateTime = new SimpleObjectProperty<>(this, "dateTime", _dateTime);
+        }
+        return dateTime;
+    }
+    
+    public final boolean isRunning() {
+        return null == running ? _running : running.get();
+    }
+    public final void setRunning(final boolean RUNNING) {
+        if (null == running) {
+            _running = RUNNING;
+        } else {
+            running.set(RUNNING);
+        }
+    }
+    public final BooleanProperty runningProperty() {
+        if (null == running) {
+            running = new SimpleBooleanProperty(this, "running", _running);
+        }
+        return running;
     }
 
 

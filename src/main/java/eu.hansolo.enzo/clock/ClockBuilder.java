@@ -25,6 +25,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Dimension2D;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 
@@ -70,6 +71,16 @@ public class ClockBuilder<B extends ClockBuilder<B>> {
 
     public final ClockBuilder highlightVisible(final boolean HIGHLIGHT_VISIBLE) {
         properties.put("highlightVisible", new SimpleBooleanProperty(HIGHLIGHT_VISIBLE));
+        return this;
+    }
+    
+    public final ClockBuilder dateTime(final LocalDateTime DATE_TIME) {
+        properties.put("dateTime", new SimpleObjectProperty<LocalDateTime>(DATE_TIME));
+        return this;
+    }
+    
+    public final ClockBuilder running(final boolean RUNNING) {
+        properties.put("running", new SimpleBooleanProperty(RUNNING));
         return this;
     }
 
@@ -187,6 +198,10 @@ public class ClockBuilder<B extends ClockBuilder<B>> {
                 CONTROL.setSecondPointerVisible(((BooleanProperty) properties.get(key)).get());
             } else if ("highlightVisible".equals(key)) {
                 CONTROL.setHighlightVisible(((BooleanProperty) properties.get(key)).get());
+            } else if ("dateTime".equals(key)) {
+                CONTROL.setDateTime(((ObjectProperty<LocalDateTime>) properties.get(key)).get());
+            } else if ("running".equals(key)) {
+                CONTROL.setRunning(((BooleanProperty) properties.get(key)).get());
             }
         }
         return CONTROL;

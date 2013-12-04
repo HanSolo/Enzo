@@ -48,31 +48,37 @@ public class Demo extends Application {
         clock1 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.BOSCH)
+                             .running(true)
                              .build();
         clock2 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.IOS6)
                              .nightMode(true)
+                             .running(true)
                              .build();
         clock3 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.DB)
+                             .running(true)
                              .build();
         clock4 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.DB)
                              .nightMode(true)
+                             .running(true)
                              .build();
         clock5 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.BRAUN)
                              .discreteSecond(true)
+                             .running(true)
                              .build();
         clock6 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.BRAUN)
                              .nightMode(true)
                              .discreteSecond(true)
+                             .running(true)
                              .build();
     }
 
