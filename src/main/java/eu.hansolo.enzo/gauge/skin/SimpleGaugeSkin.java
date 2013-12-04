@@ -189,12 +189,11 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         } else if ("VALUE".equals(PROPERTY)) {
             rotateNeedle();
         } else if ("RECALC".equals(PROPERTY)) {
-            if (getSkinnable().getMinValue() < 0) {
-                angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() - getSkinnable().getMinValue());
+            angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() + getSkinnable().getMinValue());
+            if (getSkinnable().getMinValue() < 0) {                
                 needleRotate.setAngle(180 - getSkinnable().getStartAngle() - (getSkinnable().getMinValue()) * angleStep);
-            } else {
-                angleStep = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() + getSkinnable().getMinValue());
-                needleRotate.setAngle(180 - getSkinnable().getStartAngle() * angleStep);
+            } else {                                
+                needleRotate.setAngle(needleRotate.getAngle() + (getSkinnable().getValue() * angleStep));
             }
             resize();
         } else if ("ANGLE".equals(PROPERTY)) {
@@ -290,6 +289,7 @@ public class SimpleGaugeSkin extends SkinBase<SimpleGauge> implements Skin<Simpl
         final int NO_OF_SECTIONS     = getSkinnable().getSections().size();
         final double SECTIONS_OFFSET = size * 0.015;
         final double SECTIONS_SIZE   = size - (size * 0.03);
+        angleStep                    = getSkinnable().getAngleRange() / (getSkinnable().getMaxValue() + getSkinnable().getMinValue());
         double sinValue;
         double cosValue;
         for (int i = 0 ; i < NO_OF_SECTIONS ; i++) {
