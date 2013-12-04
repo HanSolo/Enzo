@@ -19,12 +19,15 @@ package eu.hansolo.enzo.clock;
 import eu.hansolo.enzo.clock.skin.ClockSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 /**
@@ -49,11 +52,13 @@ public class Clock extends Control {
     private Design                        _design;
     private ObjectProperty<Design>        design;
     private boolean                       _highlightVisible;
-    private BooleanProperty               highlightVisible;
-    private boolean                       _running;
-    private BooleanProperty               running;
+    private BooleanProperty               highlightVisible;    
     private LocalDateTime                 _dateTime;
     private ObjectProperty<LocalDateTime> dateTime;
+    private Duration                      _offset;
+    private ObjectProperty<Duration>      offset;
+    private boolean                       _running;
+    private BooleanProperty               running;
 
 
     // ******************** Constructors **************************************
@@ -62,12 +67,13 @@ public class Clock extends Control {
     }
     public Clock(final LocalDateTime DATE_TIME) {
         getStyleClass().add("clock");
-        _dateTime             = DATE_TIME;
         _discreteSecond       = false;
         _secondPointerVisible = true;
         _nightMode            = false;
         _design               = Design.IOS6;
         _highlightVisible     = true;
+        _dateTime             = DATE_TIME;
+        _offset               = Duration.of(0, ChronoUnit.MINUTES);
         _running              = false;
     }
 
@@ -174,6 +180,34 @@ public class Clock extends Control {
         }
         return dateTime;
     }
+
+    public final Duration getOffset() {
+        return null == offset ? _offset : offset.get();
+    }
+    public final void setOffset(final Duration OFFSET) {
+        if (null == offset) {
+            _offset = OFFSET;
+        } else {
+            offset.set(OFFSET);
+        }
+    }
+    public final ObjectProperty<Duration> offsetProperty() {
+        if (null == offset) {
+            offset = new ObjectPropertyBase<Duration>() {
+                @Override protected void invalidated() {
+                    set(clamp(Duration.of(-12, ChronoUnit.HOURS), Duration.of(12, ChronoUnit.HOURS), get()));
+                }
+                @Override public Object getBean() {
+                    return this;
+                }
+                @Override public String getName() {
+                    return "offset";
+                }
+            };
+            offset = new SimpleObjectProperty<>(this, "offset", _offset);
+        }
+        return offset;
+    }
     
     public final boolean isRunning() {
         return null == running ? _running : running.get();
@@ -192,6 +226,12 @@ public class Clock extends Control {
         return running;
     }
 
+    private Duration clamp(Duration min, Duration max, Duration value) {
+        if (getDateTime().plus(value).isBefore(getDateTime().plus(min))) return min;
+        if (getDateTime().plus(value).isAfter(getDateTime().plus(max))) return max;
+        return value;
+    }
+    
 
     // ******************** Style related *************************************
     @Override protected Skin createDefaultSkin() {

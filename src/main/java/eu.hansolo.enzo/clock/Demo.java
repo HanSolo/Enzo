@@ -26,6 +26,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -78,6 +81,7 @@ public class Demo extends Application {
                              .design(Clock.Design.BRAUN)
                              .nightMode(true)
                              .discreteSecond(true)
+                             .offset(Duration.of(90, ChronoUnit.MINUTES))
                              .running(true)
                              .build();
     }

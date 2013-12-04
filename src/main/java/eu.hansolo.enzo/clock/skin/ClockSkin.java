@@ -142,7 +142,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         timer = new AnimationTimer() {
             @Override public void handle(final long NOW) {
                 if (NOW >= lastTimerCall + INTERVAL) {
-                    updateTime(LocalDateTime.now());                    
+                    updateTime(LocalDateTime.now().plus(getSkinnable().getOffset()));                    
                     lastTimerCall = NOW;
                 }
             }
@@ -155,7 +155,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         if (getSkinnable().isRunning()) {
             timer.start();
         } else {
-            updateTime(LocalDateTime.now());
+            updateTime(LocalDateTime.now().plus(getSkinnable().getOffset()));
         }
     }
 
@@ -384,7 +384,7 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
         } else if ("SECOND_POINTER_VISIBLE".equals(PROPERTY)) {
             secondPointerGroup.setOpacity(getSkinnable().isSecondPointerVisible() ? 1 : 0);
         } else if ("DATE_TIME".equals(PROPERTY)) {
-            if (getSkinnable().isRunning()) updateTime(getSkinnable().getDateTime());    
+            if (getSkinnable().isRunning()) updateTime(getSkinnable().getDateTime().plus(getSkinnable().getOffset()));    
         } else if ("RUNNING".equals(PROPERTY)) {
             if (getSkinnable().isRunning()) {
                 timer.start();
