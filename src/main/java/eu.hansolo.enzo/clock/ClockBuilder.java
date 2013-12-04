@@ -23,6 +23,8 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Dimension2D;
 
 import java.time.Duration;
@@ -50,6 +52,11 @@ public class ClockBuilder<B extends ClockBuilder<B>> {
         return new ClockBuilder();
     }
 
+    public final ClockBuilder text(final String TEXT) {
+        properties.put("text", new SimpleStringProperty(TEXT));
+        return this;
+    }
+    
     public final ClockBuilder nightMode(final boolean NIGHT_MODE) {
         properties.put("nightMode", new SimpleBooleanProperty(NIGHT_MODE));
         return this;
@@ -194,6 +201,8 @@ public class ClockBuilder<B extends ClockBuilder<B>> {
                 CONTROL.setTranslateX(((DoubleProperty) properties.get(key)).get());
             } else if ("translateY".equals(key)) {
                 CONTROL.setTranslateY(((DoubleProperty) properties.get(key)).get());
+            } else if ("text".equals(key)) {
+                CONTROL.setText(((StringProperty) properties.get(key)).get());
             } else if ("nightMode".equals(key)) {
                 CONTROL.setNightMode(((BooleanProperty) properties.get(key)).get());
             } else if ("design".equals(key)) {

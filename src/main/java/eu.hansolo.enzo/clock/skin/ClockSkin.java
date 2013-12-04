@@ -17,6 +17,7 @@
 package eu.hansolo.enzo.clock.skin;
 
 import eu.hansolo.enzo.clock.Clock;
+import eu.hansolo.enzo.common.Fonts;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -445,6 +446,12 @@ public class ClockSkin extends SkinBase<Clock> implements Skin<Clock> {
             ctx.fillRect(size * 0.18, size * 0.5 - 1, size * 0.27, 2);
             ctx.fillRect(size * 0.55, size * 0.5 - 1, size * 0.27, 2);
         }
+        if (getSkinnable().getText().isEmpty()) return;
+        ctx.setFill(getSkinnable().isNightMode() ? Color.WHITE : Color.BLACK);
+        ctx.setFont(Fonts.opensansSemiBold(size * 0.05));
+        ctx.setTextBaseline(VPos.CENTER);
+        ctx.setTextAlign(TextAlignment.CENTER);        
+        ctx.fillText(getSkinnable().getText(), size * 0.5, size * 0.675, size * 0.8);
     }
 
     private void updateDesign() {

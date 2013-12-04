@@ -50,31 +50,40 @@ public class Demo extends Application {
     @Override public void init() {
         clock1 = ClockBuilder.create()
                              .prefSize(400, 400)
-                             .design(Clock.Design.BOSCH)
+                             .design(Clock.Design.BOSCH)                             
                              .running(true)
+                             .text("San Francisco")
+                             .offset(Duration.of(-9, ChronoUnit.HOURS))
                              .build();
         clock2 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.IOS6)
                              .nightMode(true)
                              .running(true)
+                             .text("New York")
+                             .offset(Duration.of(-6, ChronoUnit.HOURS))
                              .build();
         clock3 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.DB)
                              .running(true)
+                             .text("Berlin")
                              .build();
         clock4 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.DB)
                              .nightMode(true)
                              .running(true)
+                             .text("Moskau")
+                             .offset(Duration.of(3, ChronoUnit.HOURS))
                              .build();
         clock5 = ClockBuilder.create()
                              .prefSize(400, 400)
                              .design(Clock.Design.BRAUN)
                              .discreteSecond(true)
                              .running(true)
+                             .text("Hongkong")
+                             .offset(Duration.of(7, ChronoUnit.HOURS))
                              .build();
         clock6 = ClockBuilder.create()
                              .prefSize(400, 400)
@@ -83,6 +92,8 @@ public class Demo extends Application {
                              .discreteSecond(true)
                              .offset(Duration.of(90, ChronoUnit.MINUTES))
                              .running(true)
+                             .text("Sydney")
+                             .offset(Duration.of(10, ChronoUnit.HOURS))
                              .build();
     }
 

@@ -22,6 +22,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 
@@ -42,7 +44,8 @@ public class Clock extends Control {
         BRAUN,
         BOSCH
     }
-
+    private String                        _text;
+    private StringProperty                text;
     private boolean                       _discreteSecond;
     private BooleanProperty               discreteSecond;
     private boolean                       _secondPointerVisible;
@@ -67,6 +70,7 @@ public class Clock extends Control {
     }
     public Clock(final LocalDateTime DATE_TIME) {
         getStyleClass().add("clock");
+        _text                 = "";
         _discreteSecond       = false;
         _secondPointerVisible = true;
         _nightMode            = false;
@@ -79,6 +83,23 @@ public class Clock extends Control {
 
 
     // ******************** Methods *******************************************
+    public final String getText() {
+        return null == text ? _text : text.get();
+    }
+    public final void setText(final String TEXT) {
+        if (null == text) {
+            _text = TEXT;
+        } else {
+            text.set(TEXT);
+        }
+    }
+    public final StringProperty textProperty() {
+        if (null == text) {
+            text = new SimpleStringProperty(this, "text", _text);
+        }
+        return text;
+    }
+    
     public final boolean isDiscreteSecond() {
         return null == discreteSecond ? _discreteSecond : discreteSecond.get();
     }
