@@ -60,7 +60,7 @@ public class DemoSimpleGauge extends Application {
                                         .unit("C")
                                         .value(20)                                        
                                         .styleClass(SimpleGauge.STYLE_CLASS_GREEN_TO_RED_6)
-                                        .build();
+                                        .build();        
 
         wattMeter = SimpleGaugeBuilder.create()
                                       .prefSize(400, 400)

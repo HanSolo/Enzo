@@ -155,16 +155,14 @@ public class SimpleGauge extends Control {
             @Override public String getName() { return "value"; }
         };                
         minValue              = new DoublePropertyBase(0) {
-            @Override protected void invalidated() { 
-                set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+            @Override protected void invalidated() {                 
                 if (getValue() < get()) setValue(get());                
             }
             @Override public Object getBean() { return this; }
             @Override public String getName() { return "minValue"; }
         };
         maxValue              = new DoublePropertyBase(100) {
-            @Override protected void invalidated() { 
-                set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+            @Override protected void invalidated() {                 
                 if (getValue() > get()) setValue(get());
             }
             @Override public Object getBean() { return this; }

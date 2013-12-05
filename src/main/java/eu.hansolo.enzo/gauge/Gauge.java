@@ -217,7 +217,7 @@ public class Gauge extends Control {
         };
         minValue                 = new DoublePropertyBase(0) {
             @Override protected void invalidated() {
-                set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+                //set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
                 if (getValue() < get()) setValue(get());
                 if (getThreshold() < get()) setThreshold(get());
                 for (Marker marker : markers.keySet()) {
@@ -233,7 +233,7 @@ public class Gauge extends Control {
         };
         maxValue                 = new DoublePropertyBase(100) {
             @Override protected void invalidated() {
-                set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
+                //set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, get()));
                 if (getValue() > get()) setValue(get());
                 if (getThreshold() > get()) setThreshold(get());
                 for (Marker marker : markers.keySet()) {                    

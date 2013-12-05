@@ -19,6 +19,7 @@ package eu.hansolo.enzo.heatcontrol;
 import com.sun.javafx.css.converters.PaintConverter;
 import eu.hansolo.enzo.heatcontrol.skin.HeatControlSkin;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.DoublePropertyBase;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -72,12 +73,36 @@ public class HeatControl extends Control {
 
     // ******************** Constructors **************************************
     public HeatControl() {
-        getStyleClass().add("heat-control");
-        value             = new SimpleDoubleProperty(this, "value", 0);
-        minValue          = new SimpleDoubleProperty(this, "minValue", 0);
-        maxValue          = new SimpleDoubleProperty(this, "maxValue", 40);
+        getStyleClass().add("heat-control");        
+        value             = new DoublePropertyBase(0) {
+            @Override protected void invalidated() {
+                set(clamp(getMinValue(), getMaxValue(), get()));
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "value"; }
+        };
+        minValue          = new DoublePropertyBase(0) {
+            @Override protected void invalidated() {                
+                if (getValue() < get()) setValue(get());
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "minValue"; }
+        };
+        maxValue          = new DoublePropertyBase(40) {
+            @Override protected void invalidated() {                
+                if (getValue() > get()) setValue(get());
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "maxValue"; }
+        };        
         oldValue          = 0;
-        _target           = 20;
+        target            = new DoublePropertyBase(20) {
+            @Override protected void invalidated() {
+                set(clamp(getMinValue(), getMaxValue(), get()));
+            }
+            @Override public Object getBean() { return this; }
+            @Override public String getName() { return "target"; }
+        };        
         _minMeasuredValue = maxValue.getValue();
         _maxMeasuredValue = 0;
         _decimals         = 0;
@@ -98,7 +123,7 @@ public class HeatControl extends Control {
             setInfoText("");
         }
     }
-    public final ReadOnlyDoubleProperty valueProperty() {
+    public final DoubleProperty valueProperty() {
         return value;
     }
 
@@ -113,7 +138,7 @@ public class HeatControl extends Control {
         minValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MIN_VALUE));
         validate();
     }
-    public final ReadOnlyDoubleProperty minValueProperty() {
+    public final DoubleProperty minValueProperty() {
         return minValue;
     }
 
@@ -124,24 +149,17 @@ public class HeatControl extends Control {
         maxValue.set(clamp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, MAX_VALUE));
         validate();
     }
-    public final ReadOnlyDoubleProperty maxValueProperty() {
+    public final DoubleProperty maxValueProperty() {
         return maxValue;
     }
 
     public final double getTarget() {
-        return null == target ? _target : target.get();
+        return target.get();
     }
-    public final void setTarget(final double TARGET) {
-        if (null == target) {
-            _target = clamp(getMinValue(), getMaxValue(), TARGET);
-        } else {
-            target.set(clamp(getMinValue(), getMaxValue(), TARGET));
-        }
+    public final void setTarget(final double TARGET) {        
+        target.set(clamp(getMinValue(), getMaxValue(), TARGET));        
     }
-    public final ReadOnlyDoubleProperty thresholdProperty() {
-        if (null == target) {
-            target = new SimpleDoubleProperty(this, "target", _target);
-        }
+    public final DoubleProperty thresholdProperty() {        
         return target;
     }
 
