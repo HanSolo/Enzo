@@ -18,11 +18,13 @@ package eu.hansolo.enzo.heatcontrol;
 
 import com.sun.javafx.css.converters.PaintConverter;
 import eu.hansolo.enzo.heatcontrol.skin.HeatControlSkin;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.DoublePropertyBase;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -52,7 +54,6 @@ public class HeatControl extends Control {
     private double          oldValue;
     private DoubleProperty  minValue;
     private DoubleProperty  maxValue;
-    private double          _target;
     private DoubleProperty  target;
     private double          _minMeasuredValue;
     private DoubleProperty  minMeasuredValue;
@@ -62,10 +63,11 @@ public class HeatControl extends Control {
     private IntegerProperty decimals;
     private String          _infoText;
     private StringProperty  infoText;
+    private BooleanProperty targetEnabled;
     private double          _startAngle;
     private DoubleProperty  startAngle;
     private double          _angleRange;
-    private DoubleProperty  angleRange;    
+    private DoubleProperty  angleRange;
 
     // CSS styleable properties
     private ObjectProperty<Paint> tickMarkFill;
@@ -73,7 +75,7 @@ public class HeatControl extends Control {
 
     // ******************** Constructors **************************************
     public HeatControl() {
-        getStyleClass().add("heat-control");        
+        getStyleClass().add("heat-control");
         value             = new DoublePropertyBase(0) {
             @Override protected void invalidated() {
                 set(clamp(getMinValue(), getMaxValue(), get()));
@@ -82,19 +84,19 @@ public class HeatControl extends Control {
             @Override public String getName() { return "value"; }
         };
         minValue          = new DoublePropertyBase(0) {
-            @Override protected void invalidated() {                
+            @Override protected void invalidated() {
                 if (getValue() < get()) setValue(get());
             }
             @Override public Object getBean() { return this; }
             @Override public String getName() { return "minValue"; }
         };
         maxValue          = new DoublePropertyBase(40) {
-            @Override protected void invalidated() {                
+            @Override protected void invalidated() {
                 if (getValue() > get()) setValue(get());
             }
             @Override public Object getBean() { return this; }
             @Override public String getName() { return "maxValue"; }
-        };        
+        };
         oldValue          = 0;
         target            = new DoublePropertyBase(20) {
             @Override protected void invalidated() {
@@ -102,11 +104,12 @@ public class HeatControl extends Control {
             }
             @Override public Object getBean() { return this; }
             @Override public String getName() { return "target"; }
-        };        
+        };
         _minMeasuredValue = maxValue.getValue();
         _maxMeasuredValue = 0;
         _decimals         = 0;
         _infoText         = "";
+        targetEnabled     = new SimpleBooleanProperty(this, "targetEnabled", false);
         _startAngle       = 325;
         _angleRange       = 290;                
     }
@@ -242,6 +245,16 @@ public class HeatControl extends Control {
         return infoText;
     }
 
+    public final boolean isTargetEnabled() {
+        return targetEnabled.get();
+    }
+    public final void setTargetEnabled(final boolean TARGET_ENABLED) {
+        targetEnabled.set(TARGET_ENABLED);
+    }
+    public final BooleanProperty targetEnabledProperty() {
+        return targetEnabled;
+    }
+    
     public double getStartAngle() {
         return null == startAngle ? _startAngle : startAngle.get();
     }

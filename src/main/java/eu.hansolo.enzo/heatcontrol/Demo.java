@@ -35,6 +35,7 @@ public class Demo extends Application {
 
     @Override public void init() {
         control       = new HeatControl();
+        control.setTargetEnabled(true);
         lastTimerCall = System.nanoTime();
         timer         = new AnimationTimer() {
             @Override public void handle(long now) {

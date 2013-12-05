@@ -156,6 +156,7 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
         targetIndicatorRotate = new Rotate(180 - getSkinnable().getStartAngle() - getSkinnable().getMinValue() * angleStep);
         targetIndicator.getTransforms().setAll(targetIndicatorRotate);       
         targetExceeded = false;
+        targetIndicator.setVisible(getSkinnable().isTargetEnabled());
 
         valueIndicator = new Region();
         valueIndicator.getStyleClass().setAll("value-indicator");
@@ -192,6 +193,7 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
         getSkinnable().widthProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().heightProperty().addListener(observable -> handleControlPropertyChanged("RESIZE"));
         getSkinnable().infoTextProperty().addListener(observable -> handleControlPropertyChanged("INFO_TEXT"));
+        getSkinnable().targetEnabledProperty().addListener(observable -> handleControlPropertyChanged("TARGET_ENABLED"));
         getSkinnable().valueProperty().addListener(observable -> handleControlPropertyChanged("VALUE"));
         getSkinnable().minValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
         getSkinnable().maxValueProperty().addListener(observable -> handleControlPropertyChanged("RECALC"));
@@ -251,6 +253,8 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
             }                                    
         } else if ("TARGET".equals(PROPERTY)) {
             targetIndicatorRotate.setAngle(getSkinnable().getTarget() * angleStep - 180 - getSkinnable().getStartAngle());
+        } else if ("TARGET_ENABLED".equals(PROPERTY)) {
+            targetIndicator.setVisible(getSkinnable().isTargetEnabled());
         }
     }
 
@@ -418,13 +422,14 @@ public class HeatControlSkin extends SkinBase<HeatControl> implements Skin<HeatC
             Point2D innerPoint = new Point2D(center.getX() + size * 0.368 * sinValue, center.getY() + size * 0.368 * cosValue);            
             Point2D outerPoint = new Point2D(center.getX() + size * 0.457 * sinValue, center.getY() + size * 0.457 * cosValue);            
 
-            CTX.setStroke(getSkinnable().getTickMarkFill());            
-            if (counter > getSkinnable().getValue() && counter < getSkinnable().getTarget() ||
+            CTX.setStroke(getSkinnable().getTickMarkFill());                        
+            if (getSkinnable().isTargetEnabled() && 
+                counter > getSkinnable().getValue() && counter < getSkinnable().getTarget() ||
                 counter > getSkinnable().getTarget() && counter < getSkinnable().getValue()) {
                 CTX.setLineWidth(rangeLineWidth);
             } else {
                 CTX.setLineWidth(stdLineWidth);    
-            }            
+            }
             CTX.setLineCap(StrokeLineCap.ROUND);
             CTX.strokeLine(innerPoint.getX(), innerPoint.getY(), outerPoint.getX(), outerPoint.getY());                            
         }
