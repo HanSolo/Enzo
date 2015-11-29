@@ -1,20 +1,4 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-out/
-Enzo.iml
-.idea/
-META-INF/
-classes/
-.gradle/
-build/
-/.gradle/1.5/taskArtifacts/fileHashes.bin
-/.gradle/1.5/taskArtifacts/fileSnapshots.bin
-/.gradle/1.5/taskArtifacts/outputFileStates.bin
-/.gradle/1.5/taskArtifacts/taskArtifacts.bin
-/.DS_Store
-/src/main/resources/eu/hansolo/enzo/fonts/.DS_Store
+/target/
+/.projectKnowledge/
+/nb-configuration.xml/
+/nbactions.xml/

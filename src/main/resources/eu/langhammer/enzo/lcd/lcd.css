@@ -1,0 +1,706 @@
+/*
+ * Copyright (c) 2013 by Gerrit Grunwald
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/************************************************************
+* LCD class                                                 *
+************************************************************/
+.lcd {
+    -fx-skin    : "eu.langhammer.enzo.lcd.skin.LcdSkin";
+    -lcd-frame  : linear-gradient(from 50% 0% to 50% 97%,
+                                  rgb(26, 26, 26) 0%,
+                                  rgb(77, 77, 77) 1%,
+                                  rgb(77, 77, 77) 99%,
+                                  rgb(221, 221, 221) 100%);
+    -lcd-bg0    : rgb(131, 133, 119);
+    -lcd-bg1    : rgb(176, 183, 167);
+    -lcd-bg2    : rgb(165, 174, 153);
+    -lcd-bg3    : rgb(166, 175, 156);
+    -lcd-bg4    : rgb(175, 184, 165);
+    -lcd-fg     : rgb( 35,  42,  52);
+    -lcd-fg-trsp: rgba(35,  42,  52, 0.1);
+}
+
+
+/************************************************************
+* LCD components                                            *
+************************************************************/
+.lcd .main {
+    -fx-background-color : -lcd-frame,
+                           linear-gradient(from 0% 0% to 0% 100%,
+                                           -lcd-bg0 0%,
+                                           -lcd-bg1 3%,
+                                           -lcd-bg2 50%,
+                                           -lcd-bg3 50%,
+                                           -lcd-bg4 100%);
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 5, 4;
+    /*
+    -fx-scale-shape      : true;
+    -fx-shape            : "M 1 5 C 1 3 3 1 5 1 C 5 1 127 1 127 1 C 129 1 131 3 131 5 C 131 5 131 43 131 43 C 131 45 129 47 127 47 C 127 47 5 47 5 47 C 3 47 1 45 1 43 C 1 43 1 5 1 5 Z";
+    */
+}
+.lcd:no-frame .main {
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+}
+.lcd .fg {
+    -fx-fill  : -lcd-fg  ;
+    -fx-stroke: transparent;
+}
+.lcd .fg-trsp {
+    -fx-fill  : -lcd-fg-trsp;
+    -fx-stroke: transparent;
+}
+.lcd .glow {
+    -fx-background-color: rgba(0, 255, 255, 0.50196);
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 1 5 C 1 3 3 1 5 1 C 5 1 127 1 127 1 C 129 1 131 3 131 5 C 131 5 131 43 131 43 C 131 45 129 47 127 47 C 127 47 5 47 5 47 C 3 47 1 45 1 43 C 1 43 1 5 1 5 Z";
+    -fx-effect          : innershadow(two-pass-box, rgba(0, 255, 255, 0.50196), 7%, 0.0, 0%, 0%);
+}
+.lcd .threshold {
+    -fx-background-color: -lcd-fg  ;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 4.053334 7.093335 L 5.0666667 7.0933335 L 5.0666667 8.1066667 L 4.053334 8.1066667 L 4.0533334 7.0933335 ZM 4.0533334 3.04 L 5.066667 3.04 L 5.066667 6.586667 L 4.053334 6.586667 L 4.053334 3.04 ZM 0.0 9.12 L 9.12 9.12 L 4.56 0.0 L 0.0 9.12 Z";
+}
+.lcd .trend-down {
+    -fx-background-color: -lcd-fg  ;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 24 39 L 28 45 L 32 39 L 24 39 Z";
+}
+.lcd .trend-falling {
+    -fx-background-color: -lcd-fg  ;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 24 43 L 32 45 L 27 39 L 24 43 Z";
+}
+.lcd .trend-steady {
+    -fx-background-color: -lcd-fg  ;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 24 39 L 32 42 L 24 45 L 24 39 Z";
+}
+.lcd .trend-rising {
+    -fx-background-color: -lcd-fg  ;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 24 41 L 32 39 L 27 45 L 24 41 Z";
+}
+.lcd .trend-up {
+    -fx-background-color: -lcd-fg  ;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 24 45 L 28 39 L 32 45 L 24 45 Z";
+}
+.lcd .battery-empty {
+    -fx-background-color: -lcd-fg;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 0.9375 2.25 L 0.9375 2.4 L 0.7813 2.4 C 0.3498 2.4 0 2.7358 0 3.15 L 0 5.85 C 0 6.2642 0.3498 6.6 0.7813 6.6 L 0.9375 6.6 L 0.9375 6.75 C 0.9375 7.9927 1.9868 9 3.2813 9 L 12.6563 9 C 13.9507 9 15 7.9927 15 6.75 L 15 2.25 C 15 1.0073 13.9507 0 12.6563 0 L 3.2813 0 C 1.9868 0 0.9375 1.0073 0.9375 2.25 L 0.9375 2.25 ZM 2.1875 1.8 C 2.1875 1.3588 2.3529 1.2 2.8125 1.2 L 13.125 1.2 C 13.5846 1.2 13.75 1.3588 13.75 1.8 L 13.75 7.2 C 13.75 7.6412 13.5846 7.8 13.125 7.8 L 2.8125 7.8 C 2.3529 7.8 2.1875 7.6412 2.1875 7.2 L 2.1875 5.7 L 1.5625 5.7 C 1.3899 5.7 1.25 5.5657 1.25 5.4 L 1.25 3.6 C 1.25 3.4343 1.3899 3.3 1.5625 3.3 L 2.1875 3.3 L 2.1875 1.8 L 2.1875 1.8 Z";
+}
+.lcd .battery-almost-empty {
+    -fx-background-color: -lcd-fg;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 11.5625 1.8 L 11.5625 7.2 L 13.125 7.2 L 13.125 1.8 L 11.5625 1.8 L 11.5625 1.8 ZM 0.9375 2.25 L 0.9375 2.4 L 0.7813 2.4 C 0.3498 2.4 0 2.7358 0 3.15 L 0 5.85 C 0 6.2642 0.3498 6.6 0.7813 6.6 L 0.9375 6.6 L 0.9375 6.75 C 0.9375 7.9927 1.9868 9 3.2813 9 L 12.6563 9 C 13.9507 9 15 7.9927 15 6.75 L 15 2.25 C 15 1.0073 13.9507 0 12.6563 0 L 3.2813 0 C 1.9868 0 0.9375 1.0073 0.9375 2.25 L 0.9375 2.25 ZM 2.1875 1.8 C 2.1875 1.3588 2.3529 1.2 2.8125 1.2 L 13.125 1.2 C 13.5846 1.2 13.75 1.3588 13.75 1.8 L 13.75 7.2 C 13.75 7.6412 13.5846 7.8 13.125 7.8 L 2.8125 7.8 C 2.3529 7.8 2.1875 7.6412 2.1875 7.2 L 2.1875 5.7 L 1.5625 5.7 C 1.3899 5.7 1.25 5.5657 1.25 5.4 L 1.25 3.6 C 1.25 3.4343 1.3899 3.3 1.5625 3.3 L 2.1875 3.3 L 2.1875 1.8 L 2.1875 1.8 Z";
+}
+.lcd .battery-25 {
+    -fx-background-color: -lcd-fg;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 10.3125 1.8 L 10.3125 7.2 L 13.125 7.2 L 13.125 1.8 L 10.3125 1.8 L 10.3125 1.8 ZM 0.9375 2.25 L 0.9375 2.4 L 0.7813 2.4 C 0.3498 2.4 0 2.7358 0 3.15 L 0 5.85 C 0 6.2642 0.3498 6.6 0.7813 6.6 L 0.9375 6.6 L 0.9375 6.75 C 0.9375 7.9927 1.9868 9 3.2813 9 L 12.6563 9 C 13.9507 9 15 7.9927 15 6.75 L 15 2.25 C 15 1.0073 13.9507 0 12.6563 0 L 3.2813 0 C 1.9868 0 0.9375 1.0073 0.9375 2.25 L 0.9375 2.25 ZM 2.1875 1.8 C 2.1875 1.3588 2.3529 1.2 2.8125 1.2 L 13.125 1.2 C 13.5846 1.2 13.75 1.3588 13.75 1.8 L 13.75 7.2 C 13.75 7.6412 13.5846 7.8 13.125 7.8 L 2.8125 7.8 C 2.3529 7.8 2.1875 7.6412 2.1875 7.2 L 2.1875 5.7 L 1.5625 5.7 C 1.3899 5.7 1.25 5.5657 1.25 5.4 L 1.25 3.6 C 1.25 3.4343 1.3899 3.3 1.5625 3.3 L 2.1875 3.3 L 2.1875 1.8 L 2.1875 1.8 Z";
+}
+.lcd .battery-50 {
+    -fx-background-color: -lcd-fg;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 8.125 1.8 L 8.125 7.2 L 13.125 7.2 L 13.125 1.8 L 8.125 1.8 L 8.125 1.8 ZM 0.9375 2.25 L 0.9375 2.4 L 0.7813 2.4 C 0.3498 2.4 0 2.7358 0 3.15 L 0 5.85 C 0 6.2642 0.3498 6.6 0.7813 6.6 L 0.9375 6.6 L 0.9375 6.75 C 0.9375 7.9927 1.9868 9 3.2813 9 L 12.6563 9 C 13.9507 9 15 7.9927 15 6.75 L 15 2.25 C 15 1.0073 13.9507 0 12.6563 0 L 3.2813 0 C 1.9868 0 0.9375 1.0073 0.9375 2.25 L 0.9375 2.25 ZM 2.1875 1.8 C 2.1875 1.3588 2.3529 1.2 2.8125 1.2 L 13.125 1.2 C 13.5846 1.2 13.75 1.3588 13.75 1.8 L 13.75 7.2 C 13.75 7.6412 13.5846 7.8 13.125 7.8 L 2.8125 7.8 C 2.3529 7.8 2.1875 7.6412 2.1875 7.2 L 2.1875 5.7 L 1.5625 5.7 C 1.3899 5.7 1.25 5.5657 1.25 5.4 L 1.25 3.6 C 1.25 3.4343 1.3899 3.3 1.5625 3.3 L 2.1875 3.3 L 2.1875 1.8 L 2.1875 1.8 Z";
+}
+.lcd .battery-75 {
+    -fx-background-color: -lcd-fg;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 5.3125 1.8 L 5.3125 7.2 L 13.125 7.2 L 13.125 1.8 L 5.3125 1.8 L 5.3125 1.8 ZM 0.9375 2.25 L 0.9375 2.4 L 0.7813 2.4 C 0.3498 2.4 0 2.7358 0 3.15 L 0 5.85 C 0 6.2642 0.3498 6.6 0.7813 6.6 L 0.9375 6.6 L 0.9375 6.75 C 0.9375 7.9927 1.9868 9 3.2813 9 L 12.6563 9 C 13.9507 9 15 7.9927 15 6.75 L 15 2.25 C 15 1.0073 13.9507 0 12.6563 0 L 3.2813 0 C 1.9868 0 0.9375 1.0073 0.9375 2.25 L 0.9375 2.25 ZM 2.1875 1.8 C 2.1875 1.3588 2.3529 1.2 2.8125 1.2 L 13.125 1.2 C 13.5846 1.2 13.75 1.3588 13.75 1.8 L 13.75 7.2 C 13.75 7.6412 13.5846 7.8 13.125 7.8 L 2.8125 7.8 C 2.3529 7.8 2.1875 7.6412 2.1875 7.2 L 2.1875 5.7 L 1.5625 5.7 C 1.3899 5.7 1.25 5.5657 1.25 5.4 L 1.25 3.6 C 1.25 3.4343 1.3899 3.3 1.5625 3.3 L 2.1875 3.3 L 2.1875 1.8 L 2.1875 1.8 Z";
+}
+.lcd .battery-almost-full {
+    -fx-background-color: -lcd-fg;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 4.0625 1.8 L 4.0625 7.2 L 13.125 7.2 L 13.125 1.8 L 4.0625 1.8 L 4.0625 1.8 ZM 0.9375 2.25 L 0.9375 2.4 L 0.7813 2.4 C 0.3498 2.4 0 2.7358 0 3.15 L 0 5.85 C 0 6.2642 0.3498 6.6 0.7813 6.6 L 0.9375 6.6 L 0.9375 6.75 C 0.9375 7.9927 1.9868 9 3.2813 9 L 12.6563 9 C 13.9507 9 15 7.9927 15 6.75 L 15 2.25 C 15 1.0073 13.9507 0 12.6563 0 L 3.2813 0 C 1.9868 0 0.9375 1.0073 0.9375 2.25 L 0.9375 2.25 ZM 2.1875 1.8 C 2.1875 1.3588 2.3529 1.2 2.8125 1.2 L 13.125 1.2 C 13.5846 1.2 13.75 1.3588 13.75 1.8 L 13.75 7.2 C 13.75 7.6412 13.5846 7.8 13.125 7.8 L 2.8125 7.8 C 2.3529 7.8 2.1875 7.6412 2.1875 7.2 L 2.1875 5.7 L 1.5625 5.7 C 1.3899 5.7 1.25 5.5657 1.25 5.4 L 1.25 3.6 C 1.25 3.4343 1.3899 3.3 1.5625 3.3 L 2.1875 3.3 L 2.1875 1.8 L 2.1875 1.8 Z";
+}
+.lcd .battery-full {
+    -fx-background-color: -lcd-fg;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 2.8125 1.8 L 2.8125 7.2 L 13.125 7.2 L 13.125 1.8 L 2.8125 1.8 L 2.8125 1.8 ZM 0.9375 2.25 L 0.9375 2.4 L 0.7813 2.4 C 0.3498 2.4 0 2.7358 0 3.15 L 0 5.85 C 0 6.2642 0.3498 6.6 0.7813 6.6 L 0.9375 6.6 L 0.9375 6.75 C 0.9375 7.9927 1.9868 9 3.2813 9 L 12.6563 9 C 13.9507 9 15 7.9927 15 6.75 L 15 2.25 C 15 1.0073 13.9507 0 12.6563 0 L 3.2813 0 C 1.9868 0 0.9375 1.0073 0.9375 2.25 L 0.9375 2.25 ZM 2.1875 1.8 C 2.1875 1.3588 2.3529 1.2 2.8125 1.2 L 13.125 1.2 C 13.5846 1.2 13.75 1.3588 13.75 1.8 L 13.75 7.2 C 13.75 7.6412 13.5846 7.8 13.125 7.8 L 2.8125 7.8 C 2.3529 7.8 2.1875 7.6412 2.1875 7.2 L 2.1875 5.7 L 1.5625 5.7 C 1.3899 5.7 1.25 5.5657 1.25 5.4 L 1.25 3.6 C 1.25 3.4343 1.3899 3.3 1.5625 3.3 L 2.1875 3.3 L 2.1875 1.8 L 2.1875 1.8 Z";
+}
+.lcd .signal {
+    -fx-background-color: -lcd-fg-trsp;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 0 0 L 0 6 L 2 6 L 2 0 L 0 0 ZM 0 7 L 0 13 L 2 13 L 2 7 L 0 7 ZM 0 14 L 0 20 L 2 20 L 2 14 L 0 14 ZM 0 21 L 0 27 L 2 27 L 2 21 L 0 21 Z";
+}
+.lcd .signal-0 {
+    -fx-background-color: -lcd-fg-trsp;
+}
+.lcd .signal-25 {
+    -fx-background-color: linear-gradient(to bottom,
+                                          -lcd-fg-trsp 0%,
+                                          -lcd-fg-trsp 75%,
+                                          -lcd-fg 75%,
+                                          -lcd-fg 100%);
+}
+.lcd .signal-50 {
+    -fx-background-color: linear-gradient(to bottom,
+                                          -lcd-fg-trsp 0%,
+                                          -lcd-fg-trsp 50%,
+                                          -lcd-fg 50%,
+                                          -lcd-fg 100%);
+}
+.lcd .signal-75 {
+    -fx-background-color: linear-gradient(to bottom,
+                                          -lcd-fg-trsp 0%,
+                                          -lcd-fg-trsp 25%,
+                                          -lcd-fg 25%,
+                                          -lcd-fg 100%);
+}
+.lcd .signal-100 {
+    -fx-background-color: -lcd-fg;
+}
+.lcd .alarm {
+    -fx-background-color: -lcd-fg;
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 5.9063 8 C 5.7014 8.6554 5.1493 9.25 4.5 9.25 C 3.8506 9.25 3.2985 8.6554 3.0938 8 L 5.9063 8 ZM 8.9048 6.8203 C 5.9063 4.7813 8.1563 0 4.5 0 L 4.5 0 L 4.5 0 C 0.8438 0 3.0938 4.7813 0.0952 6.8203 C 0.0271 6.8666 0 6.9521 0 7.0313 C 0 7.0646 0.0059 6.7858 0.0181 6.8182 C 0.0595 6.9276 0.1642 7 0.2813 7 L 4.5 7 L 8.7188 7 C 8.8358 7 8.9404 6.9276 8.9819 6.8182 C 8.9941 6.7858 9 7.0646 9 7.0313 C 9 6.9521 8.9729 6.8666 8.9048 6.8203 Z";
+}
+
+
+/************************************************************
+* LCD designs                                               *
+************************************************************/
+.lcd-beige {
+    -lcd-bg0    : rgb(200, 200, 177);
+    -lcd-bg1    : rgb(241, 237, 207);
+    -lcd-bg2    : rgb(234, 230, 194);
+    -lcd-bg3    : rgb(225, 220, 183);
+    -lcd-bg4    : rgb(237, 232, 191);
+    -lcd-fg     : rgb(  0,   0,   0);
+    -lcd-fg-trsp: rgba( 0,   0,   0, 0.1);
+}
+.lcd-blue {
+    -lcd-bg0    : rgb(255, 255, 255);
+    -lcd-bg1    : rgb(231, 246, 255);
+    -lcd-bg2    : rgb(170, 224, 255);
+    -lcd-bg3    : rgb(136, 212, 255);
+    -lcd-bg4    : rgb(192, 232, 255);
+    -lcd-fg     : rgb( 18,  69, 100);
+    -lcd-fg-trsp: rgba(18,  69, 100, 0.1);
+}
+.lcd-orange {
+    -lcd-bg0    : rgb(255, 255, 255);
+    -lcd-bg1    : rgb(255, 245, 225);
+    -lcd-bg2    : rgb(255, 217, 147);
+    -lcd-bg3    : rgb(255, 201, 104);
+    -lcd-bg4    : rgb(255, 227, 173);
+    -lcd-fg     : rgb( 80,  55,   0);
+    -lcd-fg-trsp: rgba(80,  55,   0, 0.1);
+}
+.lcd-red {
+    -lcd-bg0    : rgb(255, 255, 255);
+    -lcd-bg1    : rgb(255, 225, 225);
+    -lcd-bg2    : rgb(252, 114, 115);
+    -lcd-bg3    : rgb(252, 114, 115);
+    -lcd-bg4    : rgb(254, 178, 178);
+    -lcd-fg     : rgb( 79,  12,  14);
+    -lcd-fg-trsp: rgba(79,  12,  14, 0.1);
+}
+.lcd-yellow {
+    -lcd-bg0    : rgb(255, 255, 255);
+    -lcd-bg1    : rgb(245, 255, 186);
+    -lcd-bg2    : rgb(158, 205,   0);
+    -lcd-bg3    : rgb(158, 205,   0);
+    -lcd-bg4    : rgb(210, 255,   0);
+    -lcd-fg     : rgb( 64,  83,   0);
+    -lcd-fg-trsp: rgba(64,  83,   0, 0.1);
+}
+.lcd-white {
+    -lcd-bg0    : rgb(255, 255, 255);
+    -lcd-bg1    : rgb(255, 255, 255);
+    -lcd-bg2    : rgb(241, 246, 242);
+    -lcd-bg3    : rgb(229, 239, 244);
+    -lcd-bg4    : rgb(255, 255, 255);
+    -lcd-fg     : rgb(  0,   0,   0);
+    -lcd-fg-trsp: rgba(0,    0,   0, 0.1);
+}
+.lcd-gray {
+    -lcd-bg0    : rgb( 65,  65,  65);
+    -lcd-bg1    : rgb(117, 117, 117);
+    -lcd-bg2    : rgb( 87,  87,  87);
+    -lcd-bg3    : rgb( 65,  65,  65);
+    -lcd-bg4    : rgb( 81,  81,  81);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-black {
+    -lcd-bg0    : rgb( 65,  65,  65);
+    -lcd-bg1    : rgb(102, 102, 102);
+    -lcd-bg2    : rgb( 51,  51,  51);
+    -lcd-bg3    : rgb(  0,   0,   0);
+    -lcd-bg4    : rgb( 51,  51,  51);
+    -lcd-fg     : rgb(204, 204, 204);
+    -lcd-fg-trsp: rgba(204, 204, 204, 0.1);
+}
+.lcd-green {
+    -lcd-bg0    : rgb( 33,  67,  67);
+    -lcd-bg1    : rgb( 33,  67,  67);
+    -lcd-bg2    : rgb( 29,  58,  58);
+    -lcd-bg3    : rgb( 28,  57,  57);
+    -lcd-bg4    : rgb( 23,  46,  46);
+    -lcd-fg     : rgb(  0, 185, 165);
+    -lcd-fg-trsp: rgba(0,  185, 165, 0.1);
+}
+.lcd-green-darkgreen {
+    -lcd-bg0    : rgb( 27,  41,  17);
+    -lcd-bg1    : rgb( 70,  84,  58);
+    -lcd-bg2    : rgb( 36,  60,  14);
+    -lcd-bg3    : rgb( 24,  50,   1);
+    -lcd-bg4    : rgb(  8,  10,   7);
+    -lcd-fg     : rgb(152,  255, 74);
+    -lcd-fg-trsp: rgba(152, 255, 74, 0.1);
+}
+.lcd-blue2 {
+    -lcd-bg0    : rgb(  0,  68, 103);
+    -lcd-bg1    : rgb(  8, 109, 165);
+    -lcd-bg2    : rgb(  0,  72, 117);
+    -lcd-bg3    : rgb(  0,  72, 117);
+    -lcd-bg4    : rgb(  0,  68, 103);
+    -lcd-fg     : rgb(111, 182, 228);
+    -lcd-fg-trsp: rgba(111, 182, 228, 0.1);
+}
+.lcd-blue-black {
+    -lcd-bg0    : rgb( 22, 125, 212);
+    -lcd-bg1    : rgb(  3, 162, 254);
+    -lcd-bg2    : rgb(  3, 162, 254);
+    -lcd-bg3    : rgb(  3, 162, 254);
+    -lcd-bg4    : rgb( 11, 172, 244);
+    -lcd-fg     : rgb(  0,   0,   0);
+    -lcd-fg-trsp: rgba( 0,   0,   0, 0.1);
+}
+.lcd-blue-darkblue {
+    -lcd-bg0    : rgb( 18,  33,  88);
+    -lcd-bg1    : rgb( 18,  33,  88);
+    -lcd-bg2    : rgb( 19,  30,  90);
+    -lcd-bg3    : rgb( 17,  31,  94);
+    -lcd-bg4    : rgb( 21,  25,  90);
+    -lcd-fg     : rgb( 23,  99, 221);
+    -lcd-fg-trsp: rgba(23,  99, 221, 0.1);
+}
+.lcd-blue-lightblue {
+    -lcd-bg0    : rgb( 88, 107, 132);
+    -lcd-bg1    : rgb( 53,  74, 104);
+    -lcd-bg2    : rgb( 27,  37,  65);
+    -lcd-bg3    : rgb(  5,  12,  40);
+    -lcd-bg4    : rgb( 32,  47,  79);
+    -lcd-fg     : rgb( 71, 178, 254);
+    -lcd-fg-trsp: rgba(71, 178, 254, 0.1);
+}
+.lcd-blue-gray {
+    -lcd-bg0    : rgb(135, 174, 255);
+    -lcd-bg1    : rgb(101, 159, 255);
+    -lcd-bg2    : rgb( 44,  93, 255);
+    -lcd-bg3    : rgb( 27,  65, 254);
+    -lcd-bg4    : rgb( 12,  50, 255);
+    -lcd-fg     : rgb(178, 180, 237);
+    -lcd-fg-trsp: rgba(178, 180, 237, 0.1);
+}
+.lcd-standard {
+    -lcd-bg0    : rgb(131, 133, 119);
+    -lcd-bg1    : rgb(176, 183, 167);
+    -lcd-bg2    : rgb(165, 174, 153);
+    -lcd-bg3    : rgb(166, 175, 156);
+    -lcd-bg4    : rgb(175, 184, 165);
+    -lcd-fg     : rgb( 35,  42,  52);
+    -lcd-fg-trsp: rgba(35,  42,  52, 0.1);
+}
+.lcd-lightgreen {
+    -lcd-bg0    : rgb(194, 212, 188);
+    -lcd-bg1    : rgb(212, 234, 206);
+    -lcd-bg2    : rgb(205, 224, 194);
+    -lcd-bg3    : rgb(206, 225, 194);
+    -lcd-bg4    : rgb(214, 233, 206);
+	-lcd-fg     : rgb(  0,  12,   6);
+	-lcd-fg-trsp: rgba(0,   12,   6, 0.1);
+}
+.lcd-standard-green {
+    -lcd-bg0    : rgb(255, 255, 255);
+    -lcd-bg1    : rgb(219, 230, 220);
+    -lcd-bg2    : rgb(179, 194, 178);
+    -lcd-bg3    : rgb(153, 176, 151);
+    -lcd-bg4    : rgb(114, 138, 109);
+    -lcd-fg     : rgb(  0,  12,   6);
+    -lcd-fg-trsp: rgba(0,   12,   6, 0.1);
+}
+.lcd-blue-blue {
+    -lcd-bg0    : rgb(100, 168, 253);
+    -lcd-bg1    : rgb(100, 168, 253);
+    -lcd-bg2    : rgb( 95, 160, 250);
+    -lcd-bg3    : rgb( 80, 144, 252);
+    -lcd-bg4    : rgb( 74, 134, 255);
+    -lcd-fg     : rgb(  0,  44, 187);
+    -lcd-fg-trsp: rgba( 0,  44, 187, 0.1);
+}
+.lcd-red-darkred {
+    -lcd-bg0    : rgb( 72,  36,  50);
+    -lcd-bg1    : rgb(185, 111, 110);
+    -lcd-bg2    : rgb(148,  66,  72);
+    -lcd-bg3    : rgb( 83,  19,  20);
+    -lcd-bg4    : rgb(  7,   6,  14);
+    -lcd-fg     : rgb(254, 139, 146);
+    -lcd-fg-trsp: rgba(254, 139, 146, 0.1);
+}
+.lcd-darkblue {
+    -lcd-bg0    : rgb( 14,  24,  31);
+    -lcd-bg1    : rgb( 46, 105, 144);
+    -lcd-bg2    : rgb( 19,  64,  96);
+    -lcd-bg3    : rgb(  6,  20,  29);
+    -lcd-bg4    : rgb(  8,   9,  10);
+    -lcd-fg     : rgb( 61, 179, 255);
+    -lcd-fg-trsp: rgba(61, 179, 255, 0.1);
+}
+.lcd-purple {
+    -lcd-bg0    : rgb(175, 164, 255);
+    -lcd-bg1    : rgb(188, 168, 253);
+    -lcd-bg2    : rgb(176, 159, 255);
+    -lcd-bg3    : rgb(174, 147, 252);
+    -lcd-bg4    : rgb(168, 136, 233);
+    -lcd-fg     : rgb(  7,  97,  72);
+    -lcd-fg-trsp: rgba( 7,  97,  72, 0.1);
+}
+.lcd-black-red {
+    -lcd-bg0    : rgb(  8,  12,  11);
+    -lcd-bg1    : rgb( 10,  11,  13);
+    -lcd-bg2    : rgb( 11,  10,  15);
+    -lcd-bg3    : rgb(  7,  13,   9);
+    -lcd-bg4    : rgb(  9,  13,  14);
+    -lcd-fg     : rgb(181,   0,  38);
+    -lcd-fg-trsp: rgba(181,  0,  38, 0.1);
+}
+.lcd-darkgreen {
+    -lcd-bg0    : rgb( 25,  85,   0);
+    -lcd-bg1    : rgb( 47, 154,   0);
+    -lcd-bg2    : rgb( 30, 101,   0);
+    -lcd-bg3    : rgb( 30, 101,   0);
+    -lcd-bg4    : rgb( 25,  85,   0);
+    -lcd-fg     : rgb( 35,  49,  35);
+    -lcd-fg-trsp: rgba(35,  49,  35, 0.1);
+}
+.lcd-amber {
+    -lcd-bg0    : rgb(182,  71,   0);
+    -lcd-bg1    : rgb(236, 155,  25);
+    -lcd-bg2    : rgb(212,  93,   5);
+    -lcd-bg3    : rgb(212,  93,   5);
+    -lcd-bg4    : rgb(182,  71,   0);
+    -lcd-fg     : rgb( 89,  58,  10);
+    -lcd-fg-trsp: rgba(89,  58,  10, 0.1);
+}
+.lcd-lightblue {
+    -lcd-bg0    : rgb(125, 146, 184);
+    -lcd-bg1    : rgb(197, 212, 231);
+    -lcd-bg2    : rgb(138, 155, 194);
+    -lcd-bg3    : rgb(138, 155, 194);
+    -lcd-bg4    : rgb(125, 146, 184);
+    -lcd-fg     : rgb(  9,   0,  81);
+    -lcd-fg-trsp: rgba( 9,   0,  81, 0.1);
+}
+.lcd-green-black {
+    -lcd-bg0    : rgb(  1,  47,   0);
+    -lcd-bg1    : rgb( 20, 106,  61);
+    -lcd-bg2    : rgb( 33, 125,  84);
+    -lcd-bg3    : rgb( 33, 125,  84);
+    -lcd-bg4    : rgb( 33, 109,  63);
+    -lcd-fg     : rgb(  3,  15,  11);
+    -lcd-fg-trsp: rgba(3, 15, 11, 0.1);
+}
+.lcd-yellow-black {
+    -lcd-bg0    : rgb(223, 248,  86);
+    -lcd-bg1    : rgb(222, 255,  28);
+    -lcd-bg2    : rgb(213, 245,  24);
+    -lcd-bg3    : rgb(213, 245,  24);
+    -lcd-bg4    : rgb(224, 248,  88);
+    -lcd-fg     : rgb(  9,  19,   0);
+    -lcd-fg-trsp: rgba( 9,  19,   0, 0.1);
+}
+.lcd-black-yellow {
+    -lcd-bg0    : rgb( 43,   3,   3);
+    -lcd-bg1    : rgb( 29,   0,   0);
+    -lcd-bg2    : rgb( 26,   2,   2);
+    -lcd-bg3    : rgb( 31,   5,   8);
+    -lcd-bg4    : rgb( 30,   1,   3);
+    -lcd-fg     : rgb(255, 254,  24);
+    -lcd-fg-trsp: rgba(255, 254, 24, 0.1);
+}
+.lcd-lightgreen-black {
+    -lcd-bg0    : rgb( 79, 121,  19);
+    -lcd-bg1    : rgb( 96, 169,   0);
+    -lcd-bg2    : rgb(120, 201,   2);
+    -lcd-bg3    : rgb(118, 201,   0);
+    -lcd-bg4    : rgb(105, 179,   4);
+    -lcd-fg     : rgb(  0,  35,   0);
+    -lcd-fg-trsp: rgba( 0,  35,   0, 0.1);
+}
+.lcd-darkpurple {
+    -lcd-bg0    : rgb( 35,  24,  75);
+    -lcd-bg1    : rgb( 42,  20, 111);
+    -lcd-bg2    : rgb( 40,  22, 103);
+    -lcd-bg3    : rgb( 40,  22, 103);
+    -lcd-bg4    : rgb( 41,  21, 111);
+    -lcd-fg     : rgb(158, 167, 210);
+    -lcd-fg-trsp: rgba(158, 167, 210, 0.1);
+}
+.lcd-darkamber {
+    -lcd-bg0    : rgb(134,  39,  17);
+    -lcd-bg1    : rgb(120,  24,   0);
+    -lcd-bg2    : rgb( 83,  15,  12);
+    -lcd-bg3    : rgb( 83,  15,  12);
+    -lcd-bg4    : rgb(120,  24,   0);
+    -lcd-fg     : rgb(233, 140,  44);
+    -lcd-fg-trsp: rgba(233, 140, 44, 0.1);
+}
+.lcd-blue-lightblue2 {
+    -lcd-bg0    : rgb( 15,  84, 151);
+    -lcd-bg1    : rgb( 60, 103, 198);
+    -lcd-bg2    : rgb( 67, 109, 209);
+    -lcd-bg3    : rgb( 67, 109, 209);
+    -lcd-bg4    : rgb( 64, 101, 190);
+    -lcd-fg     : rgb(193, 253, 254);
+    -lcd-fg-trsp: rgba(193, 253, 254, 0.1);
+}
+.lcd-gray-purple {
+    -lcd-bg0    : rgb(153, 164, 161);
+    -lcd-bg1    : rgb(203, 215, 213);
+    -lcd-bg2    : rgb(202, 212, 211);
+    -lcd-bg3    : rgb(202, 212, 211);
+    -lcd-bg4    : rgb(198, 209, 213);
+    -lcd-fg     : rgb( 99, 124, 204);
+    -lcd-fg-trsp: rgba(99, 124, 204, 0.1);
+}
+.lcd-sections {
+    -lcd-bg0    : #B2B2B2;
+    -lcd-bg1    : #FFFFFF;
+    -lcd-bg2    : #C4C4C4;
+    -lcd-bg3    : #C4C4C4;
+    -lcd-bg4    : #B2B2B2;
+    -lcd-fg     : #000000;
+    -lcd-fg-trsp: rgba(0, 0, 0, 0.1);
+}
+.lcd-yoctopuce {
+    -lcd-bg0    : #0E181F;
+    -lcd-bg1    : #232341;
+    -lcd-bg2    : #1E1E3C;
+    -lcd-bg3    : #1E1E3C;
+    -lcd-bg4    : #191937;
+    -lcd-fg     : #99E5FF;
+    -lcd-fg-trsp: rgba(153,229,255, 0.1);
+}
+
+/* Flat UI Color based designs */
+.lcd-flat-turqoise {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb( 26, 188, 156);
+    -lcd-bg1    : rgb( 26, 188, 156);
+    -lcd-bg2    : rgb( 26, 188, 156);
+    -lcd-bg3    : rgb( 26, 188, 156);
+    -lcd-bg4    : rgb( 26, 188, 156);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-green-sea {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb( 26, 188, 156);
+    -lcd-bg1    : rgb( 26, 188, 156);
+    -lcd-bg2    : rgb( 26, 188, 156);
+    -lcd-bg3    : rgb( 26, 188, 156);
+    -lcd-bg4    : rgb( 26, 188, 156);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-emerland {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb( 46, 204, 113);
+    -lcd-bg1    : rgb( 46, 204, 113);
+    -lcd-bg2    : rgb( 46, 204, 113);
+    -lcd-bg3    : rgb( 46, 204, 113);
+    -lcd-bg4    : rgb( 46, 204, 113);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-nephritis {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb( 39, 174,  96);
+    -lcd-bg1    : rgb( 39, 174,  96);
+    -lcd-bg2    : rgb( 39, 174,  96);
+    -lcd-bg3    : rgb( 39, 174,  96);
+    -lcd-bg4    : rgb( 39, 174,  96);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-peter-river {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb( 52, 152, 219);
+    -lcd-bg1    : rgb( 52, 152, 219);
+    -lcd-bg2    : rgb( 52, 152, 219);
+    -lcd-bg3    : rgb( 52, 152, 219);
+    -lcd-bg4    : rgb( 52, 152, 219);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-belize-hole {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb( 41, 128, 185);
+    -lcd-bg1    : rgb( 41, 128, 185);
+    -lcd-bg2    : rgb( 41, 128, 185);
+    -lcd-bg3    : rgb( 41, 128, 185);
+    -lcd-bg4    : rgb( 41, 128, 185);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-amethyst {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(155,  89, 182);
+    -lcd-bg1    : rgb(155,  89, 182);
+    -lcd-bg2    : rgb(155,  89, 182);
+    -lcd-bg3    : rgb(155,  89, 182);
+    -lcd-bg4    : rgb(155,  89, 182);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-wisteria {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(142,  68, 173);
+    -lcd-bg1    : rgb(142,  68, 173);
+    -lcd-bg2    : rgb(142,  68, 173);
+    -lcd-bg3    : rgb(142,  68, 173);
+    -lcd-bg4    : rgb(142,  68, 173);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-sunflower {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(241, 196,  15);
+    -lcd-bg1    : rgb(241, 196,  15);
+    -lcd-bg2    : rgb(241, 196,  15);
+    -lcd-bg3    : rgb(241, 196,  15);
+    -lcd-bg4    : rgb(241, 196,  15);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-orange {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(243, 156,  18);
+    -lcd-bg1    : rgb(243, 156,  18);
+    -lcd-bg2    : rgb(243, 156,  18);
+    -lcd-bg3    : rgb(243, 156,  18);
+    -lcd-bg4    : rgb(243, 156,  18);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-carrot {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(230, 126,  34);
+    -lcd-bg1    : rgb(230, 126,  34);
+    -lcd-bg2    : rgb(230, 126,  34);
+    -lcd-bg3    : rgb(230, 126,  34);
+    -lcd-bg4    : rgb(230, 126,  34);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-pumpkin {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(211,  84,   0);
+    -lcd-bg1    : rgb(211,  84,   0);
+    -lcd-bg2    : rgb(211,  84,   0);
+    -lcd-bg3    : rgb(211,  84,   0);
+    -lcd-bg4    : rgb(211,  84,   0);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-alizarin {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(231,  76,  60);
+    -lcd-bg1    : rgb(231,  76,  60);
+    -lcd-bg2    : rgb(231,  76,  60);
+    -lcd-bg3    : rgb(231,  76,  60);
+    -lcd-bg4    : rgb(231,  76,  60);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-pomegranate {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(192,  57,  43);
+    -lcd-bg1    : rgb(192,  57,  43);
+    -lcd-bg2    : rgb(192,  57,  43);
+    -lcd-bg3    : rgb(192,  57,  43);
+    -lcd-bg4    : rgb(192,  57,  43);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-clouds {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(236, 240, 241);
+    -lcd-bg1    : rgb(236, 240, 241);
+    -lcd-bg2    : rgb(236, 240, 241);
+    -lcd-bg3    : rgb(236, 240, 241);
+    -lcd-bg4    : rgb(236, 240, 241);
+    -lcd-fg     : rgb(  0,   0,   0);
+    -lcd-fg-trsp: rgba(  0,   0,   0, 0.1);
+}
+.lcd-flat-silver {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(189, 195, 199);
+    -lcd-bg1    : rgb(189, 195, 199);
+    -lcd-bg2    : rgb(189, 195, 199);
+    -lcd-bg3    : rgb(189, 195, 199);
+    -lcd-bg4    : rgb(189, 195, 199);
+    -lcd-fg     : rgb(  0,   0,   0);
+    -lcd-fg-trsp: rgba(  0,   0,   0, 0.1);
+}
+.lcd-flat-concrete {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(149, 165, 166);
+    -lcd-bg1    : rgb(149, 165, 166);
+    -lcd-bg2    : rgb(149, 165, 166);
+    -lcd-bg3    : rgb(149, 165, 166);
+    -lcd-bg4    : rgb(149, 165, 166);
+    -lcd-fg     : rgb(  0,   0,   0);
+    -lcd-fg-trsp: rgba(  0,   0,   0, 0.1);
+}
+.lcd-flat-asbestos {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb(127, 140, 141);
+    -lcd-bg1    : rgb(127, 140, 141);
+    -lcd-bg2    : rgb(127, 140, 141);
+    -lcd-bg3    : rgb(127, 140, 141);
+    -lcd-bg4    : rgb(127, 140, 141);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-wet-asphalt {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb( 52,  73,  94);
+    -lcd-bg1    : rgb( 52,  73,  94);
+    -lcd-bg2    : rgb( 52,  73,  94);
+    -lcd-bg3    : rgb( 52,  73,  94);
+    -lcd-bg4    : rgb( 52,  73,  94);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+.lcd-flat-midnight-blue {
+    -lcd-frame  : white;
+    -lcd-bg0    : rgb( 44,  62,  80);
+    -lcd-bg1    : rgb( 44,  62,  80);
+    -lcd-bg2    : rgb( 44,  62,  80);
+    -lcd-bg3    : rgb( 44,  62,  80);
+    -lcd-bg4    : rgb( 44,  62,  80);
+    -lcd-fg     : rgb(255, 255, 255);
+    -lcd-fg-trsp: rgba(255, 255, 255, 0.1);
+}
+

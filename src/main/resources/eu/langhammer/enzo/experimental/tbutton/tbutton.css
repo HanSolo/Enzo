@@ -1,0 +1,72 @@
+/*
+ * Copyright (c) 2013 by Gerrit Grunwald
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.tbutton {
+    -fx-skin  : "eu.langhammer.enzo.experimental.tbutton.skin.TButtonSkin";
+    -led-color: rgb(255, 255, 0);
+}
+.tbutton .frame {
+    -fx-background-color: radial-gradient(focus-angle 0deg, focus-distance 0%, 
+                                          center 50% 50%, 
+                                          radius 50%, 
+                                          transparent 0%, 
+                                          rgb(154, 154, 154) 82%, 
+                                          rgb(153, 153, 153) 83%, 
+                                          rgb(226, 226, 226) 86%, 
+                                          rgb(238, 238, 238) 87%, 
+                                          rgb(187, 187, 187) 100%);
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 0.0 72.0 C 0.0 32.0 32.0 0.0 72.0 0.0 C 112.0 0.0 144.0 32.0 144.0 72.0 C 144.0 112.0 112.0 144.0 72.0 144.0 C 32.0 144.0 0.0 112.0 0.0 72.0 Z";
+}
+.tbutton .off {
+    -fx-background-color: linear-gradient(from 50% 0% to 50% 100%, 
+                                          rgb(232, 231, 233) 0%, 
+                                          rgb(232, 231, 233) 66%, 
+                                          rgb(243, 243, 244) 89%, 
+                                          rgb(227, 227, 224) 100%);
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 15.0 72.0 C 15.0 41.0 41.0 15.0 72.0 15.0 C 103.0 15.0 129.0 41.0 129.0 72.0 C 129.0 103.0 103.0 129.0 72.0 129.0 C 41.0 129.0 15.0 103.0 15.0 72.0 Z";
+}
+.tbutton .off-led {
+    -fx-background-color: rgb(220, 219, 221);
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 66.0 111.0 C 66.0 108.0 69.0 105.0 72.0 105.0 C 75.0 105.0 78.0 108.0 78.0 111.0 C 78.0 114.0 75.0 117.0 72.0 117.0 C 69.0 117.0 66.0 114.0 66.0 111.0 Z";
+}
+.tbutton .on {
+    -fx-background-color: radial-gradient(focus-angle 0deg, focus-distance 0%, 
+                                          center 50% 84%, 
+                                          radius 80%, 
+                                          rgb(187, 187, 187) 0%, 
+                                          rgb(246, 246, 246) 100%);
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 15.0 72.0 C 15.0 41.0 41.0 15.0 72.0 15.0 C 103.0 15.0 129.0 41.0 129.0 72.0 C 129.0 103.0 103.0 129.0 72.0 129.0 C 41.0 129.0 15.0 103.0 15.0 72.0 Z";
+}
+.tbutton .on-led {
+    -fx-background-color: radial-gradient(focus-angle 0deg, focus-distance 0%, 
+                                          center 50% 50%, 
+                                          radius 50%, 
+                                          -led-color 0%,
+                                          derive(-led-color, -10%) 73%,
+                                          derive(-led-color, -70%) 100%);
+    -fx-scale-shape     : true;
+    -fx-shape           : "M 66.0 114.0 C 66.0 111.0 69.0 108.0 72.0 108.0 C 75.0 108.0 78.0 111.0 78.0 114.0 C 78.0 117.0 75.0 120.0 72.0 120.0 C 69.0 120.0 66.0 117.0 66.0 114.0 Z";
+}
+.tbutton .text {
+    -fx-fill: derive(rgb(220, 219, 221), -10%);
+}
+
+
+
