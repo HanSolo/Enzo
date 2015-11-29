@@ -1,4 +1,4 @@
 /target/
 /.projectKnowledge/
-/.nb-configuartion.xml/
-/.nbactions.xml/
+/nb-configuartion.xml/
+/nbactions.xml/
