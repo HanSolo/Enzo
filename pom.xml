@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.langhammer</groupId>
-    <artifactId>Enzo2</artifactId>
+    <artifactId>Enzo_Rebuild</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Enzo2</name>
+    <name>Enzo_Rebuild</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -105,5 +105,5 @@
             </plugin>
         </plugins>
     </build>
-    <description>This is a enhanced version of Gerrit Grunwald's Enzo library.</description>
+    <description>This is a rebuild of Gerrit Grunwald's Enzo library.</description>
 </project>
