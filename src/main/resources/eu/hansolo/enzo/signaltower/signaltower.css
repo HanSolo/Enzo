@@ -15,7 +15,7 @@
  */
 
 .signal-tower {
-    -fx-skin     : "eu.hansolo.enzo.signaltower.skin.SignalTowerSkin";
+    -fx-skin     : "eu.langhammer.enzo2.signaltower.skin.SignalTowerSkin";
     -off-gradient: linear-gradient(to right,
                                    rgb(203, 202, 202) 0%,
                                    rgb(163, 159, 158) 4%,

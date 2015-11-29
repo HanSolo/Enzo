@@ -18,7 +18,7 @@
 * LED class                                                 *
 ************************************************************/
 .led {
-    -fx-skin     : "eu.hansolo.enzo.led.skin.LedSkin";
+    -fx-skin     : "eu.langhammer.enzo2.led.skin.LedSkin";
     -led-type    : round;   /* round, square, vertical, horizontal, triangle-up, triangle-right, triangle-down, triangle-left */
     -led-color   : red;
     -frame-color : linear-gradient(from 14% 14% to 84% 84%,

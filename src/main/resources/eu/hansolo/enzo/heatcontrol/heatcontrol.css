@@ -18,7 +18,7 @@
  * HEATCONTROL class                                                          *
  *****************************************************************************/
 .heat-control {
-    -fx-skin           : "eu.hansolo.enzo.heatcontrol.skin.HeatControlSkin";               
+    -fx-skin           : "eu.langhammer.enzo2.heatcontrol.skin.HeatControlSkin";               
     -needle            : white;
     -text              : white;
     -target-indicator  : white;

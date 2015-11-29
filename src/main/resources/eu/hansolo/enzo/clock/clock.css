@@ -18,7 +18,7 @@
  * CLOCK class                                                                *
  *****************************************************************************/
 .clock {
-    -fx-skin             : "eu.hansolo.enzo.clock.skin.ClockSkin";
+    -fx-skin             : "eu.langhammer.enzo2.clock.skin.ClockSkin";
     -clock-background    : white;
     -hour-pointer-color  : rgb(44, 44, 44);
     -minute-pointer-color: rgb(44, 44, 44);

@@ -31,7 +31,7 @@
 *                                                                             *
 ******************************************************************************/
 .sixteen-segment {
-    -fx-skin           : "eu.hansolo.enzo.sixteensegment.skin.SixteenSegmentSkin";
+    -fx-skin           : "eu.langhammer.enzo2.sixteensegment.skin.SixteenSegmentSkin";
     -segment-color     : rgb(180, 180, 180);
     -segment-glow-color: transparent;
 }

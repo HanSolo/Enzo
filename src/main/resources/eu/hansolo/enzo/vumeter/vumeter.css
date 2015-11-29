@@ -18,7 +18,7 @@
 * VU METER class                                            *
 ************************************************************/
 .vu-meter {
-    -fx-skin       : "eu.hansolo.enzo.vumeter.skin.VuMeterSkin";
+    -fx-skin       : "eu.langhammer.enzo2.vumeter.skin.VuMeterSkin";
     -led-type      : vertical;   /* round, square, vertical, horizontal */
     -led-color     : red;
     -frame-fill    : linear-gradient(to bottom,

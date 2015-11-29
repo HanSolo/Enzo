@@ -18,7 +18,7 @@
  * SIMPLEGAUGE class                                                          *
  *****************************************************************************/
 .simple-gauge {
-    -fx-skin           : "eu.hansolo.enzo.gauge.skin.SimpleGaugeSkin";
+    -fx-skin           : "eu.langhammer.enzo2.gauge.skin.SimpleGaugeSkin";
     -needle            : #5a615f;
     -value-text        : white;
     -title-text        : white;

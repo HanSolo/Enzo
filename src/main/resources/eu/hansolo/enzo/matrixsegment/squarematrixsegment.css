@@ -15,7 +15,7 @@
  */
 
 .square-matrix-segment {
-    -fx-skin     : "eu.hansolo.enzo.matrixsegment.skin.SquareMatrixSegmentSkin";
+    -fx-skin     : "eu.langhammer.enzo2.matrixsegment.skin.SquareMatrixSegmentSkin";
     -dot-on-color: red;
 }
 

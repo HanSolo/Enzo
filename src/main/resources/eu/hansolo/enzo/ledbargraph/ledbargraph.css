@@ -18,5 +18,5 @@
 * BARGRAPH class                                            *
 ************************************************************/
 .bargraph {
-    -fx-skin: "eu.hansolo.enzo.ledbargraph.skin.LedBargraphSkin";
+    -fx-skin: "eu.langhammer.enzo2.ledbargraph.skin.LedBargraphSkin";
 }

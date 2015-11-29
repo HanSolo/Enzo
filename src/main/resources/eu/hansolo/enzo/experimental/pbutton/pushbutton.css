@@ -15,7 +15,7 @@
  */
 
 .push-button {
-    -fx-skin     : "eu.hansolo.enzo.experimental.pbutton.skin.PushButtonSkin";
+    -fx-skin     : "eu.langhammer.enzo2.experimental.pbutton.skin.PushButtonSkin";
     -pbutton-base: rgb(0, 128, 255);
 }
 

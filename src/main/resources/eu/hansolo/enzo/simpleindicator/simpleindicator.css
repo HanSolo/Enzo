@@ -18,7 +18,7 @@
 * INDICATOR class                                           *
 ************************************************************/
 .indicator {
-    -fx-skin                 : "eu.hansolo.enzo.simpleindicator.skin.SimpleIndicatorSkin";
+    -fx-skin                 : "eu.langhammer.enzo2.simpleindicator.skin.SimpleIndicatorSkin";
     -fx-indicator-inner-color: #fcfcfc;
     -fx-indicator-outer-color: #cccccc;
     -fx-indicator-glow-color : transparent;

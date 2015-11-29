@@ -18,7 +18,7 @@
 * LCDCLOCK class                                            *
 ************************************************************/
 .lcd-clock {
-    -fx-skin    : "eu.hansolo.enzo.lcd.skin.LcdClockSkin";
+    -fx-skin    : "eu.langhammer.enzo2.lcd.skin.LcdClockSkin";
     -lcd-frame  : linear-gradient(from 50% 0% to 50% 97%,
                                   rgb(26, 26, 26) 0%,
                                   rgb(77, 77, 77) 1%,

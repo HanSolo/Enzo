@@ -17,7 +17,7 @@
  * SIMPLE CANVAS CHART                                                        *
  *****************************************************************************/
 .simple-line-chart {
-    -fx-skin           : "eu.hansolo.enzo.charts.skin.SimpleLineChartSkin";
+    -fx-skin           : "eu.langhammer.enzo2.charts.skin.SimpleLineChartSkin";
     -section-fill-0    : rgba(  0,   0, 178, 0.5);
     -section-fill-1    : rgba(  0, 128, 255, 0.5);
     -section-fill-2    : rgba(  0, 255, 255, 0.5);

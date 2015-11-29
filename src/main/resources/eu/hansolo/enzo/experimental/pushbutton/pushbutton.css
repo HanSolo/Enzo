@@ -19,7 +19,7 @@
 * PUSH BUTTON class                                         *
 ************************************************************/
 .push-button {
-    -fx-skin: "eu.hansolo.enzo.experimental.pushbutton.skin.PushButtonSkin";
+    -fx-skin: "eu.langhammer.enzo2.experimental.pushbutton.skin.PushButtonSkin";
     -icon-on: cyan;
 }
 

@@ -18,7 +18,7 @@
 * SPLIT-FLAP class                                          *
 ************************************************************/
 .split-flap {
-    -fx-skin        : "eu.hansolo.enzo.splitflap.skin.SplitFlapSkin";
+    -fx-skin        : "eu.langhammer.enzo2.splitflap.skin.SplitFlapSkin";
     -flap-base      : rgb(59, 58, 53);
 }
 

@@ -18,7 +18,7 @@
 * LCD class                                                 *
 ************************************************************/
 .lcd {
-    -fx-skin    : "eu.hansolo.enzo.lcd.skin.LcdSkin";
+    -fx-skin    : "eu.langhammer.enzo2.lcd.skin.LcdSkin";
     -lcd-frame  : linear-gradient(from 50% 0% to 50% 97%,
                                   rgb(26, 26, 26) 0%,
                                   rgb(77, 77, 77) 1%,

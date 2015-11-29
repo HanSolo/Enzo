@@ -19,7 +19,7 @@
 * QLOCKTWO class                                            *
 ************************************************************/
 .qlocktwo {
-    -fx-skin               : "eu.hansolo.enzo.qlocktwo.skin.QlockTwoSkin";
+    -fx-skin               : "eu.langhammer.enzo2.qlocktwo.skin.QlockTwoSkin";
     -qlock-background      : black;
     -qlock-on              : white;
     -qlock-off             : rgb(64, 62, 65);
