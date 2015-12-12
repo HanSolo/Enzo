@@ -88,6 +88,8 @@ public class SimpleIndicatorSkin extends SkinBase<SimpleIndicator> implements Sk
         pane.getChildren().setAll(outerFrame, innerFrame, mainBack, main, highlight);
 
         getChildren().setAll(pane);
+        
+        update();
     }
 
     private void registerListeners() {
