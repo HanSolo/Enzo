@@ -65,6 +65,8 @@ public class LedBargraph extends Control {
         getStyleClass().add("bargraph");
         ledColors = new SimpleListProperty(this, "ledColors", FXCollections.<Color>observableArrayList());
         value     = new SimpleDoubleProperty(this, "value", 0);
+        noOfLeds = new SimpleIntegerProperty(this, "noOfLeds", _noOfLeds);
+        ledSize = new SimpleDoubleProperty(this, "ledSize", _ledSize);
 
         for (int i = 0 ; i < getNoOfLeds() ; i++) {
             if (i < 11) {
